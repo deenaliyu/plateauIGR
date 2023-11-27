@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="./assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>Prime Gauge</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" /> -->
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="./assets/css/dataTable.css" />
+  <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+  <!-- Page CSS -->
+
+  <!-- <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css"> -->
+  <!-- Helpers -->
+  <script src="./assets/vendor/js/helpers.js"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <script src="./assets/js/config.js"></script>
+</head>
+
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside id="layout-menu" class="aside layout-menu menu-vertical menu bg-menu-theme"></aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav
+          class="layout-navbar navi container-xxl navbar navbar-expand-xl h-[15vh] align-items-center bg-navbar-theme"
+          id="layout-navbar"></nav>
+
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <section class="content-wrapper border-t-2 border-grey-500 bg-white">
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <section class="w-12/12 main_section">
+              <div class="p-2">
+                <div class="w-full">
+                  <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
+                    <div class="dashCards card card-hidden w-full flex-col space-y-2">
+                      <div class="flex items-center  justify-start">
+                        <div class="icoCont bg-[#d7a1271f] mr-auto">
+                          <iconify-icon class="text-[#D7A127]" icon="mdi:recurring-payment"></iconify-icon>
+                        </div>
+                        <p class="text-gray-500 text-xs text-end ">
+                          TOTAL NUMBER OF INVOICE
+                        </p>
+                      </div>
+                      <p class="zanumbers text-end" id="totalInv">-</p>
+                    </div>
+
+                    <div class="dashCards card card-hidden w-full flex-col space-y-2">
+                      <div class="flex items-center  justify-start">
+                        <div class="icoCont bg-[#d7a1271f] mr-auto">
+                          <iconify-icon class="text-[#D7A127]" icon="mdi:recurring-payment"></iconify-icon>
+                        </div>
+                        <p class=" text-gray-500 text-xs text-end">
+                          TOTAL REMITTANCE
+                        </p>
+                      </div>
+
+                      <p class="zanumbers text-end">
+                        <!-- &#8358; -->
+                        <span id="totalRem">-</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="grid md:grid-cols-12 grid-cols-1 md:mt-8 md:space-x-4">
+                    <div class="col-span-1 md:col-span-6">
+                      <div class="w-full card mt-4 border-2">
+
+                        <div class="chartBar" id="dashboardPie"></div>
+
+                      </div>
+                    </div>
+
+                    <div class="col-span-1 md:col-span-6">
+                      <div class="w-full card mt-4 border-2">
+
+                        <div class="chartBar" id="dashboardPi"></div>
+
+                      </div>
+                    </div>
+
+                    <!-- </div> -->
+                  </div>
+
+                  <div class="grid md:grid-cols-12 grid-cols-1 md:mt-8 md:space-x-4 mb-8">
+                    <!-- 
+                    <div class="col-span-6">
+                      <div class="card table-responsive border-2">
+                        <div class="flex flex-row my-2 mx-2 justify-content-between">
+                          <h1 class=" text-xl font-semibold text-black">
+                            User Acitvity Report
+                          </h1>
+                          <a href="./Users.html" class=" mt-2 text-[2vh] text-decoration-underline text-[#CDA545]">view
+                            more</a>
+                        </div>
+                        <table class="table table-striped">
+                          <thead class="text-center">
+                            <tr>
+                              <th>NAME OF USER</th>
+                              <th>LAST LOGIN</th>
+                              <th>TOTAL NO. OF INVOICE GENERATED</th>
+                            </tr>
+                          </thead>
+                          <tbody id="useractivity" class="text-center">
+
+                          </tbody>
+                        </table>
+                      </div>
+                    </div> -->
+
+                    <div class="col-span-12">
+                      <div class="card table-responsive  border-2">
+                        <h1 class="my-2 mx-2 text-xl font-semibold text-black">
+                          Recent Payment
+                        </h1>
+                        <div class="table-responsive p-2">
+                          <table class="table table-striped" id="dataTable">
+                            <thead class="text-center">
+                              <tr>
+                                <th>Payer Name</th>
+                                <th>Revenue Head</th>
+                                <th>Amount</th>
+                                <th>Date</th>
+                              </tr>
+                            </thead>
+                            <tbody id="recentPayment" class="text-center">
+
+                            </tbody>
+                          </table>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+
+                </div>
+            </section>
+          </div>
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
+          <div class="content-backdrop fade"></div>
+        </section>
+
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
+
+  <!-- Core JS
+    <!-- build:js assets/vendor/js/core.js -->
+  <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="./assets/vendor/libs/popper/popper.js"></script>
+  <script src="./assets/vendor/js/bootstrap.js"></script>
+  <script src="./assets/js/jquery.datatables.min.js"></script>
+  <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
+  <script src="./assets/vendor/libs/echarts/echarts.js"></script>
+  <script src="./assets/vendor/libs/chartjs/dist/chart.js"></script>
+  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="./assets/js/nav.js"></script>
+  <!-- <script src="./assets/js/session.js"></script> -->
+  <script>
+    let theAtivo = document.querySelector(`.dass`);
+    theAtivo.parentElement.classList.add("active");
+  </script>
+  <script src="./assets/vendor/js/menu.js"></script>
+  <!-- endbuild -->
+
+  <!-- Vendors JS -->
+
+  <!-- Main JS -->
+  <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/dashboard.js"></script>
+  <!-- Page JS -->
+
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script> -->
+
+
+</body>
+
+</html>

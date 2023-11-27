@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="./assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>Prime Gauge</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+  <!-- Page CSS -->
+
+  <!-- Helpers -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="./assets/vendor/js/helpers.js"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <script src="./assets/js/config.js"></script>
+</head>
+
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside id="layout-menu" class="aside layout-menu menu-vertical menu bg-menu-theme"></aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav
+          class="layout-navbar navi container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          id="layout-navbar">
+
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+              <i class="bx bx-menu bx-sm"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
+            <div class="">
+              <p class="text-sm text-black datei" id="datei">-</p>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Users</h1>
+            </div>
+
+            <div class="mt-4 flex gap-x-5">
+              <div class="input-group input-group-merge md:w-72 hidden md:flex ">
+                <span class="input-group-text rounded-full" id="basic-addon-search31"><i
+                    class="bx bx-search"></i></span>
+                <input type="text" class="form-control rounded-full" placeholder="Search..." aria-label="Search..."
+                  aria-describedby="basic-addon-search31">
+              </div>
+              <a href="createuser.html" class="button">Create new User</a>
+
+
+
+              <div class="avatar avatar-online">
+                <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
+
+              </div>
+              <h4 class="text-mm text-black self-center hidden md:flex adminName">System Admin</h4>
+            </div>
+
+          </div>
+
+        </nav>
+
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <section class="content-wrapper">
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <section class="w-12/12 main_section">
+              <div class="p-2">
+                <div class="w-full">
+                  <a type="button" style='color: #CDA545; font-weight: 500;' onclick="history.back()">Back to User
+                    list</a>
+                  <h1 class="fontBold text-xl mb-4">Manage users</h1>
+
+                  <div class="card card-body" id="accessLevelview">
+
+                  </div>
+
+                  <section class="card-body card mt-4">
+
+
+                    <form action="">
+
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Name of User <span
+                              class="text-[red]">*</span></label>
+                          <input required type="text" class="form-control userInputs" data-name="fullname"
+                            placeholder="Enter Full Name.." />
+                        </div>
+                      </div>
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Email Address <span
+                              class="text-[red]">*</span></label>
+                          <input required type="email" class="form-control userInputs" data-name="email"
+                            placeholder="Email address" />
+                        </div>
+                      </div>
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Phone Number <span
+                              class="text-[red]">*</span></label>
+                          <input required type="number" class="form-control userInputs" data-name="phone"
+                            placeholder="Phone Number" />
+                        </div>
+                      </div>
+
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Role<span
+                              class="text-[red]">*</span></label>
+
+                          <select class="form-select userInputs" data-name="role">
+                            <option value="Support Admin">Support Admin</option>
+                            <option value="Admin">Admin</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Password <span
+                              class="text-[red]">*</span></label>
+                          <div class=" input-group">
+                            <input required type="password" class="form-control passInput userInputs"
+                              data-name="password" id="basic-default-password12" placeholder="Create password for user">
+
+                            <span id="opPas" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="mt-3 md:w-[800px]">
+                        <p class="text-[#555555] mb-5">Access Level</p>
+
+
+                        <div class="row gy-4">
+
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Dashboard</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="dashboard_access" value="dashboard_access"> Full Access</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="dashboard_access" value="no_access"> No Access</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Analytics</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="analytics_access" value="view_revenue"> View Revenue Performance</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="analytics_access" value="view_invoice"> View Invoice Manager</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="analytics_access" value="view_taxpayer"> View Taxpayer Relations</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="analytics_access" value="view_tin"> View TIN requests manager</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="analytics_access" value="view_impressions"> View Impressions</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">MDAs</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="mda_access" value="view_mda"> View MDA list</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="mda_access" value="create_mda"> Create MDA</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="mda_access" value="activate_mda"> Activate/Deactivate MDA</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="mda_access" value="create_revenue"> Create revenue head</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="mda_access" value="update_revenue"> Update revenue head</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="mda_access" value="approve_revenue"> Approve revenue head</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="mda_access" value="activate_revenue"> Activate/Deactivate revenue head</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Reports</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="reports_access" value="view_inv_list"> View Invoice list</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="reports_access" value="generate_inv_report"> Generate Invoice Report</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="reports_access" value="view_coll_list"> View Collection list</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="reports_access" value="generate_coll_report"> Generate Collection Report</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="reports_access" value="view_settle_list"> View Settlement list</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="reports_access" value="generate_settle_report"> Generate Settlement Report</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Tax Payers</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="tax_payer_access" value="view_tax_list"> View Tax Payer list</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="tax_payer_access" value="view_tax_detail"> Edit Tax Payer details</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="tax_payer_access" value="acti_taxpayer"> Activate/deactivate Taxpayer</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="tax_payer_access" value="allocate_appli"> Allocate applicable taxes</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="tax_payer_access" value="download_report"> Download report</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Enumeration</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="enumeration_access" value="reg_user"> Register new user</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="enumeration_access" value="view_enum_list"> View the general enumeration list</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="enumeration_access" value="updt_taxpayer"> Update taxpayer details</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="enumeration_access" value="download_report"> Download report</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="enumeration_access" value="access_enum"> Access Enumeration dashboard</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Audit Trails</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="audit_trail_access" value="view_audit"> View the audit trail module</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="audit_trail_access" value="analyze_audit"> Analyze audit logs (by use of filters and maneuvering the data)</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="audit_trail_access" value="generate_reports"> Generate reports</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="audit_trail_access" value="manage_logs"> Manage Logs</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">User Management</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="users_access" value="view_admin"> View Admin User List</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="users_access" value="create_new_user"> Create a new user and Assign a Role</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="users_access" value="update_user"> Update user role</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="users_access" value="activate_users"> Activate/deactivate users</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">CMS</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="cms_access" value="create_gallery"> Create a new post - Gallery</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="cms_access" value="create_news"> Create a new post - News</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="cms_access" value="manage_publication_gallery"> Manage publication - Gallery</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="cms_access" value="manage_publication_news"> Manage publication - News</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+                          <div class="col-md-6">
+                            <div class="form-group">
+                              <label for="">Support</label>
+                              <div class="checkbox-group">
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="support" value="view_support"> View support Module</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="support" value="respond_ticket"> Respond to tickets</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="support" value="escalate_issues"> Escalate issues</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="support" value="export_support"> Export support data</label>
+                                <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" data-name="support" value="generate_report"> Generate report</label>
+                              </div>
+                            </div>
+                          </div>
+                          
+
+                        </div>
+                      </div>
+
+                      <div class="flex justify-center mt-4">
+                        <button id="createUser" type="button" style="background: #CDA545;" class="btn btn-primary rounded-xl mt-2 w-4/12">Edit
+                          User</button>
+                      </div>
+
+
+                      <div id="msg_box"></div>
+                    </form>
+
+                  </section>
+
+
+                </div>
+            </section>
+          </div>
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
+          <div class="content-backdrop fade"></div>
+        </section>
+
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+
+
+  <!-- Core JS -->
+  <!-- build:js assets/vendor/js/core.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="./assets/vendor/libs/popper/popper.js"></script>
+  <script src="./assets/vendor/js/bootstrap.js"></script>
+  <script src="./assets/vendor/libs/echarts/echarts.js"></script>
+  <script src="./assets/vendor/libs/chartjs/dist/chart.js"></script>
+  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="./assets/js/nav.js"></script>
+  <!-- <script src="./assets/js/session.js"></script> -->
+  <script src="./assets/vendor/js/menu.js"></script>
+  <script src="./assets/js/manageusers.js"></script>
+  <script src="./assets/js/main.js"></script>
+</body>
+
+</html>
