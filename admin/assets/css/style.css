@@ -740,3 +740,11 @@ a:hover {
   color: #999;
   margin-top: 4px;
 }
+
+.payeTable tr th {
+  font-size: 10px;
+}
+
+.payeTable tr td {
+  font-size: 13px;
+}
