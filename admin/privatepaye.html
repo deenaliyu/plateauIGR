@@ -99,12 +99,157 @@
 
         <!-- Content wrapper -->
         <section class="content-wrapper">
+
           <div class="container-xxl flex-grow-1 container-p-y">
-            <section class="w-12/12 main_section">
-              <div class="p-2">
+            <section class="w-full main_section">
+              <h1 class="text-xl mb-3 fontBold text-black">Overview</h1>
+              <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
+
+                <div class="dashCards card w-full flex-col space-y-2  ">
+
+                  <div class="flex items-center gap-2">
+                    <div class="icoCont bg-[#1c315c1f]">
+                      <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                    </div>
+                    <p class="text-gray-500 impMetrics text-xs">REGISTERED BODIES</p>
+                  </div>
+
+                  <p class="zanumbers text-end" style="margin-top: 30px;">
+                    <span id="total_amount_invoiced">20</span>
+                  </p>
+                </div>
+
+                <div class="dashCards card w-full flex-col space-y-2  ">
+                  <div class="flex items-center gap-2">
+                    <div class="icoCont bg-[#1c315c1f]">
+                      <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                    </div>
+                    <p class="text-gray-500 impMetrics text-xs">REGISTERED STAFFS</p>
+                  </div>
+
+                  <p class="zanumbers text-end" style="margin-top: 30px;">
+                    <span id="total_amount_invoiced2">1000</span>
+                  </p>
+                </div>
+
+                <div class="dashCards card w-full flex-col space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="icoCont bg-[#f890301f]">
+                      <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                    </div>
+                    <p class="text-gray-500 text-xs impMetrics">ANNUAL ESTIMATE</p>
+                  </div>
+
+
+                  <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
+                    <select class="form-select form-select-sm" required name="" id="">
+                      <option value="2023">2023</option>
+                    </select>
+
+                    <p class="text-base fontBold">
+                      &#8358;<span id="due_amount">100,000</span>
+                    </p>
+                  </div>
+                </div>
+
+                <div class="dashCards card w-full flex-col space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="icoCont bg-[#f890301f]">
+                      <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                    </div>
+
+                    <p class="text-gray-500 text-xs impMetrics">ANNUAL REMITTANCE</p>
+                  </div>
+
+                  <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
+                    <select class="form-select form-select-sm" required name="" id="">
+                      <option value="2023">2023</option>
+                    </select>
+
+                    <p class="text-base fontBold">
+                      &#8358;<span id="due_amount">768,000,00</span>
+                    </p>
+                  </div>
+
+                </div>
+
+                <div class="dashCards card w-full flex-col space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="icoCont bg-[#f890301f]">
+                      <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                    </div>
+
+                    <p class="text-gray-500 text-xs impMetrics">MONTHLY ESTIMATE</p>
+                  </div>
+
+                  <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
+                    <select class="form-select form-select-sm" required name="" id="">
+                      <option value="February">February</option>
+                    </select>
+
+                    <p class="text-base fontBold">
+                      &#8358;<span id="due_amount">768,000,00</span>
+                    </p>
+                  </div>
+
+                </div>
+
+                <div class="dashCards card w-full flex-col space-y-2">
+                  <div class="flex items-center gap-2">
+                    <div class="icoCont bg-[#f890301f]">
+                      <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                    </div>
+
+                    <p class="text-gray-500 text-xs impMetrics">MONTHLY REMITTANCE</p>
+                  </div>
+
+                  <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
+                    <select class="form-select form-select-sm" required name="" id="">
+                      <option value="February">February</option>
+                    </select>
+
+                    <p class="text-base fontBold">
+                      &#8358;<span id="due_amount">768,000,00</span>
+                    </p>
+                  </div>
+
+                </div>
+
+              </div>
+
+
+              <section class="mt-4">
+                <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-2" id="pills-tab" role="tablist">
+
+                  <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#selfReg" type="button"
+                      role="tab">
+                      All
+                    </button>
+                  </li>
+
+                  <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-enumRegs" type="button"
+                      role="tab">
+                      Defaulters
+                    </button>
+                  </li>
+
+                  <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#pills-enumRegs" type="button"
+                      role="tab">
+                      Current
+                    </button>
+                  </li>
+
+                </ul>
+
+              </section>
+
 
             </section>
           </div>
+
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
           <div class="content-backdrop fade"></div>
         </section>
