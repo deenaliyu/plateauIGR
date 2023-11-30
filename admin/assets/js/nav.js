@@ -1,7 +1,8 @@
 // let HOST = "http://localhost/payzamfaranew/php/index.php"
-// let HOST = "https://steamledge.com/primeguage/php/index.php";
+let HOST = "https://steamledge.com/primeguage/php/index.php";
 // let HOST = "http://localhost/primeguagenew/php/index.php";
-let HOST = "https://useibs.com/payzamfara/php1/index.php"
+// let HOST = "https://useibs.com/payzamfara/php1/index.php"
+
 let userInfo2 = JSON.parse(window.localStorage.getItem("adminDataPrime"));
 
 $(".aside").html(`
@@ -61,15 +62,15 @@ $(".aside").html(`
             </a>
           </li>
 
-          ${userInfo2.email === "primeguage@gmail.com" ? 
-          `
+          ${userInfo2.email === "primeguage@gmail.com" ?
+    `
             <li class="menu-item">
               <a href="settlement.html" class="menu-link">
                 <div data-i18n="Input groups">Settlement Report</div>
               </a>
             </li>
-          ` 
-          : ''}
+          `
+    : ''}
           
           
         </ul>
@@ -100,6 +101,31 @@ $(".aside").html(`
           <div data-i18n="Basic">CMS</div>
         </a>
       </li>
+
+
+
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle mdoo">
+          <iconify-icon icon="mdi:account-payment-outline" class="menu-icon"></iconify-icon>
+          <div data-i18n="Form Elements">PAYE Management</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="privatepaye.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Private</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="publicpaye.html" class="menu-link">
+              <div data-i18n="Input groups">Public</div>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
+
       <li class="menu-item">
       <a href="service.html" class="menu-link mdol">
       <i class='menu-icon tf-icons bx bxs-group' ></i>
@@ -189,19 +215,19 @@ $(".datem").html(currentDate.toLocaleDateString());
 let logoutTimeout;
 
 function startLogoutTimer() {
-    // Set the timeout to 10 minutes (600,000 milliseconds)
-    logoutTimeout = setTimeout(logout, 600000);
+  // Set the timeout to 10 minutes (600,000 milliseconds)
+  logoutTimeout = setTimeout(logout, 600000);
 }
 
 function resetLogoutTimer() {
-    clearTimeout(logoutTimeout);
-    startLogoutTimer();
+  clearTimeout(logoutTimeout);
+  startLogoutTimer();
 }
 
 function logout() {
   localStorage.removeItem("adminDataPrime");
-    // alert('You have been logged out due to inactivity.');
-    window.location.href = "./index.html";
+  // alert('You have been logged out due to inactivity.');
+  window.location.href = "./index.html";
 }
 
 // Attach event listeners to reset the logout timer on user activity
