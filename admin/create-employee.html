@@ -75,9 +75,9 @@
             <img src="./assets/img/verside2.png" />
           </div>
 
-          </div>
         </div>
       </div>
+    </div>
 
     </div>
 
@@ -94,23 +94,257 @@
 
         <form action="" class="mt-4 w-8/12">
 
-          <h1 class="fontBold text-lg">Register</h1>
+          <h1 class="fontBold text-xl">Add New Employee</h1>
           <p class="mt-2 mb-4">Basic Information</p>
 
 
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Full Name*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="fullname" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Email*</label>
+              <input type="email" class="form-control w-full enumInput" data-name="email" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Phone*</label>
+              <input type="tel" class="form-control w-full enumInput" data-name="phone" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Payer ID*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="payerID" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Basic Salary*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="basic_salary" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Payer ID*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="date_employed" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Housing*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="housing" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Transport*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="transport" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Utility*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="utility" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Medical*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="medical" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Entertainment*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="entertainment" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Leave*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="leave" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Annual Gross Income*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="housing" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">New Gross*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="transport" required>
+            </div>
+
+          </div>
 
 
+          <button class="button w-full mb-4" type="button" onclick="nextPrev(1)">Continue</button>
 
-          <button class="button w-full mb-4" type="button" onclick="continueReg()">Continue</button>
+        </form>
+
+      </section>
+
+      <section class="formTabs h-full">
+
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="history.go(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="" class="mt-4 w-8/12">
+
+          <h1 class="fontBold text-xl">Add New Employee</h1>
+          <p class="mt-2 mb-4">Secondary Information</p>
+
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Consilidated Allowance*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="consilidated_allowance" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">NHF*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="nhf" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">NHS*</label>
+              <input type="tel" class="form-control w-full enumInput" data-name="nhs" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Life Insurance*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="life_insurance" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Pension*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="pension" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Gratuities*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="gratuities" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Total Allowance*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="total_allowance" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Chargeable Income*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="chargeable_income" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">1st 300,000 @ 7%*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="fist_thouse_perc" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Next 300,000 @ 7%*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="next_thouse_perc" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Next 500,000 @ 17%*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="fist_thouse_perc" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Next 300,000 @ 19%*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="next_thouse_perc" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Next 1,600,000 @ 21%*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="fist_thouse_perc" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Excess 3,200,000 @ 24%*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="next_thouse_perc" required>
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Annual Minimum Tax*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="annual_minimum_tax" required>
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Annual Tax Payable*</label>
+              <input type="text" class="form-control w-full enumInput" data-name="annual_tax_payable" required>
+            </div>
+
+          </div>
+
+          <div class="form-group md:w-6/12 mb-3">
+            <label for="">Monthly Tax Payable*</label>
+            <input type="text" class="form-control w-full enumInput" data-name="monthly_tax_payable" required>
+          </div>
+
+          <button class="button w-full mb-4" type="button" onclick="window.open('privatepaye.html')">Continue</button>
 
         </form>
 
       </section>
 
 
- 
 
-  
+
+
 
 
     </div>
