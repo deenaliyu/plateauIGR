@@ -748,3 +748,17 @@ a:hover {
 .payeTable tr td {
   font-size: 13px;
 }
+
+.formTabs {
+  display: none;
+}
+
+/* .invTa tr td {
+  padding-left: 0;
+  padding-bottom: 0px;
+  font-size: 14px;
+} */
+
+.imgTabs {
+  display: none;
+}
