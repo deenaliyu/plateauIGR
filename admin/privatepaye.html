@@ -81,7 +81,17 @@
             <div class="mt-4 flex gap-x-5">
               <div class="flex items-center gap-3" id="theCms">
 
-                <a href="#" class="button">Register a Body</a>
+                <div class="dropdown">
+                  <button class="button dropdown-toggle" type="button" id="bodyDrop" data-bs-toggle="dropdown"
+                    aria-expanded="false">
+                    Register a Body
+                  </button>
+
+                  <ul class="dropdown-menu" aria-labelledby="bodyDrop">
+                    <li><a class="dropdown-item" href="body-registration.html#private">Private PAYE</a></li>
+                    <li><a class="dropdown-item" href="body-registration.html#public">Public PAYE</a></li>
+                  </ul>
+                </div>
               </div>
 
 
