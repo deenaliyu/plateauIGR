@@ -81,8 +81,6 @@
                   aria-describedby="basic-addon-search31">
               </div> -->
 
-                            <a href="add-employee.html" class="button">
-                                <iconify-icon icon="ic:baseline-plus"></iconify-icon> Add employee</a>
 
                             <iconify-icon icon="mdi:bell-notification" data-bs-toggle="modal"
                                 data-bs-target="#notiModal" class="hidden md:flex cursor-pointer text-[#CDA545]"
@@ -102,42 +100,145 @@
                 <section class="content-wrapper">
 
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        <section class="w-12/12 main_section bg-[#FFFF] flex justify-center relative">
-                            <div class="p-4 w-[779px]">
-                                <div class="flex justify-center">
-                                    <iconify-icon icon="clarity:sad-face-line" class="text-[80px]"></iconify-icon>
+                        <section class="w-full main_section">
+                            <h1 class="text-xl mb-3 fontBold text-black">Overview</h1>
+                            <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
+              
+                              <div class="dashCards card w-full flex-col space-y-2  ">
+              
+                                <div class="flex items-center gap-2">
+                                    <div class="icoCont bg-[#f890301f]">
+                                        <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                                      </div>
+                                  <p class="text-gray-500 impMetrics text-xs">MONTHLY REMITANCE</p>
                                 </div>
-                                <div class="mt-4 text-justify">
-                                    <p class="text-[15px] text-black italic">There are no listed employees to your
-                                        account at the moment.</p>
-                                    <p class="text-[15px] my-3">List your employees to manage their PAYE details,
-                                        view tax information, and facilitate seamless payroll processing.</p>
-                                    <p class="text-[15px]">Follow the below steps to list your employees:</p>
-                                    <div class="px-7 my-2 ">
-                                        <ul class="list-disc">
-                                            <li>Click on the "Add Employee" button below.</li>
-                                            <li>Once linked, you can oversee and manage PAYE information for your
-                                                employees efficiently.</li>
-                                        </ul>
-                                    </div>
-                                    <div class="my-3 flex justify-center">
-                                        <a href="add-employee.html" class="button">
-                                            <iconify-icon icon="ic:baseline-plus"></iconify-icon> Add employee</a>
-                                    </div>
-
-
-                                    <p class="text-[15px] my-3">Need assistance in linking your employees' accounts or
-                                        have questions? Our support team is here to help.</p>
-
-                                    <p class="text-[15px] text-black italic">Thank you for choosing our platform for
-                                        your payroll needs.</p>
+              
+                                <p class="zanumbers text-end" style="margin-top: 30px;">
+                                  <span id="total_amount_invoiced">N24,000,000</span>
+                                </p>
+                              </div>
+                            
+                              <div class="dashCards card w-full flex-col space-y-2">
+                                <div class="flex items-center gap-2">
+                                  <div class="icoCont bg-[#f890301f]">
+                                    <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                                  </div>
+                                  <p class="text-gray-500 text-xs impMetrics">ANNUAL REMITANCE</p>
                                 </div>
-                                <a class="flex justify-end mt-5" href="payee-message.html">
-                                    <iconify-icon icon="ph:chat-dots-fill" class="text-[#CDA545] text-[40px]"></iconify-icon>
-                                </a>
-                                
+              
+              
+                                <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
+                                  <select class="form-select form-select-sm" required name="" id="">
+                                    <option value="February">February</option>
+                                  </select>
+              
+                                  <p class="text-base fontBold">
+                                    &#8358;<span id="due_amount">100,000</span>
+                                  </p>
+                                </div>
+                              </div>
+              
+                              <div class="dashCards card w-full flex-col space-y-2">
+                                <div class="flex items-center gap-2">
+                                  <div class="icoCont bg-[#f890301f]">
+                                    <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                                  </div>
+                                  <p class="text-gray-500 text-xs impMetrics">  TOTAL ANNUAL REMITANCE </p>
+                                </div>
+              
+              
+                                <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
+                                  <select class="form-select form-select-sm" required name="" id="">
+                                    <option value="February">February</option>
+                                  </select>
+              
+                                  <p class="text-base fontBold">
+                                    &#8358;<span id="due_amount">100,000</span>
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-                        </section>
+              
+                            <section class="mt-4 card px-2 ">
+                             
+                <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-2 border-b" id="pills-tab" role="tablist">
+              
+
+                  <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#defaultersPaye" type="button"
+                      role="tab">
+                      Payment History
+                    </button>
+                  </li>
+
+                </ul>
+
+                <div class="tab-content" id="pills-tabContent">
+
+                  <div class="tab-pane fade show active" id="defaultersPaye" role="tabpanel">
+
+                    <div class="table-responsive">
+                      <table class="table payeTable" id="dataTable2">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Payment ref No.</th>
+                            <th>Payment for</th>
+                            <th>Month</th>
+                            <th>Amount</th>
+                            <th>Payment method</th>
+                            <th>Date of Payment</th>
+                            <th>Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>1</td>
+                            <td>INV-576383IRP</td>
+                            <td>Pay as you Earn(PAYE)</td>
+                            <td>October</td>
+                            <td>&#8358; 2,000,000</td>
+                            <td>Paystack</td>
+                            <td>26/09/2023</td>
+                            <td><span class="badge bg-success rounded-pill">paid</span></td>
+                          </tr>
+
+                          <tr>
+                            <td>2</td>
+                            <td>INV-576383IRP</td>
+                            <td>Pay as you Earn(PAYE)</td>
+                            <td>September</td>
+                            <td>Nil</td>
+                            <td>Nil</td>
+                            <td>26/09/2023</td>
+                            <td><span class="badge bg-danger rounded-pill">Due</span></td>
+                          </tr>
+
+                          <tr>
+                            <td>2</td>
+                            <td>INV-576383IRP</td>
+                            <td>Pay as you Earn(PAYE)</td>
+                            <td>September</td>
+                            <td>&#8358; 1,500,000</td>
+                            <td>Remita</td>
+                            <td>26/09/2023</td>
+                            <td><span class="badge bg-warning rounded-pill">Partial</span></td>
+                          </tr>
+
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+
+                </div>
+                            
+                             
+                            </section>
+              
+              
+                          </section>
                        
                     </div>
                     <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">

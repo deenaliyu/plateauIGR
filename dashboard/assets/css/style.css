@@ -28,20 +28,21 @@
   margin-left: 10px;
   padding: 8px 16px;
   font-size: 16px;
-  color: #000;
-  background-color: #3366ff;
+  color: #fff;
+  background-color: #CDA545;
   border: none;
   border-radius: 4px;
   cursor: pointer;
 }
 
 .send-button:hover {
-  background-color: #1952cc;
+  background-color: #CDA545;
 }
 
 .send-button:focus {
   outline: none;
-  box-shadow: 0 0 5px rgba(51, 102, 255, 0.5);
+  background-color: #CDA545;
+  /* box-shadow: 0 0 5px rgba(51, 102, 255, 0.5); */
 }
 
 /* Container for the conversation */
