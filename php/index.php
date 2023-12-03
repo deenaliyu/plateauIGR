@@ -5,13 +5,20 @@ declare(strict_types=1);
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 header('Content-Type: application/json');
+date_default_timezone_set('Africa/Lagos');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   include 'gate.php';
   if (isset($_GET['login'])) {
     $username = (string) $_GET['email'];
     $password = (string) $_GET['password'];
     login($username, $password);
-  } elseif (isset($_GET['loginAdmin'])) {
+  }  elseif (isset($_GET['test'])) {
+    hi();
+  }  elseif (isset($_GET['invoicesPaidBeforeDue'])) {
+    invoicesPaidBeforeDue();
+  }  elseif (isset($_GET['inAppNotification'])) {
+    inAppNotification($_GET['user_id']);
+  }elseif (isset($_GET['loginAdmin'])) {
     $username = (string) $_GET['email'];
     $password = (string) $_GET['password'];
     loginAdmin($username, $password);
@@ -52,13 +59,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   } elseif (isset($_GET['updateRevenueHead'])) {
     updateRevenueHead($_GET);
   } elseif (isset($_GET['generateInvoices'])) {
-    generateInvoice($_GET['taxPayerNumber']);
+    generateInvoice($_GET);
   } elseif (isset($_GET['generateSingleInvoices'])) {
     generateSignleInvoice($_GET);
   } elseif (isset($_GET['updateTaxPayer'])) {
     updateTaxPayer($_GET);
   } elseif (isset($_GET['getTaxPayer'])) {
-    getTaxPayerList($_GET);
+    getTaxPayerList();
   } elseif (isset($_GET['getSingleTaxPayer'])) {
     getSingleTaxPayerList($_GET['id']);
   } elseif (isset($_GET['fetchPayment'])) {
@@ -82,7 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
   } elseif (isset($_GET['sendSMS'])) {
     sendSMS($_GET['number'], $_GET['msg']);
   } elseif (isset($_GET['getSingleInvoice'])) {
-    userInvoiceSingle($_GET['invoiceNumber']);
+    userInvoiceSingle($_GET['invoiceNumber'], $_GET['source']);
   } elseif (isset($_GET['getDashboardAnalytics'])) {
     dashboardAnalyticsEndUser($_GET['user_id']);
   } elseif (isset($_GET['UpdateTaxPayersTINStatus'])) {
@@ -272,8 +279,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     getPresumptiveTaxId($_GET['tax_number']);
   }elseif (isset($_GET['getTotalUserError'])) {
     getTotalUserError();
+  }elseif (isset($_GET['getApplicableTaxes'])) {
+    getApplicableTaxes($_GET['tax_number']);
+  } elseif (isset($_GET['getEnumCount'])) {
+    getEnumCount();
+  } elseif (isset($_GET['dashboardAnalyticsMda'])) {
+    dashboardAnalyticsMda($_GET['id']);
   }
-
 
 } elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
   include 'gate.php';
@@ -302,7 +314,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
       createMultpleMDARevenueHeads($data['data']);
       // print_r($data['data']);
     } elseif ($data['endpoint'] == "createInvidualPayment") {
-      // print_r($data['data']);
+    //   print_r($data['data']);
       paymentToMDARevenueHeads($data['data']);
     } elseif ($data['endpoint'] == "createPayerAccount") {
       createPayerUser($data['data']);

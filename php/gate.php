@@ -1,12 +1,26 @@
 <?php
 session_start();
-use PHPMailer\PHPMailer\PHPMailer;
-use PHPMailer\PHPMailer\SMTP;
-use PHPMailer\PHPMailer\Exception;
 
-require 'phpmailer/src/Exception.php';
-require 'phpmailer/src/PHPMailer.php';
-require 'phpmailer/src/SMTP.php';
+// date_default_timezone_set('Africa/Lagos');
+// date_default_timezone_set('Africa/Lagos');
+
+function hi(){
+    
+
+// Now, PHP will use the 'Africa/Lagos' time zone for date and time functions
+$currentTime = date('Y-m-d H:i:s'); // Get the current date and time in the 'Africa/Lagos' time zone
+
+echo "Current time in Lagos, Nigeria: $currentTime";
+
+}
+
+function invoicesPaidBeforeDue(){
+    exit(json_encode(check_db_query_staus("SELECT ( COUNT(i.invoice_number) / COUNT(*) ) * 100 AS on_time_percentage FROM invoices i LEFT JOIN payment_collection_report_individual p ON i.invoice_number = p.invoice_number WHERE i.payment_status = 'paid' AND p.timeIn <= i.due_date;", "CHK")));
+}
+
+function inAppNotification($data){
+    exit(json_encode(check_db_query_staus1("SELECT comment, timeIn FROM activity_logs WHERE user_id='{$data}'", "CHK")));
+}
 
 function generateUniqueID() {
     // Generate a unique ID based on the current time in microseconds
@@ -14,6 +28,7 @@ function generateUniqueID() {
     
     return $uniqueID;
 }
+
 
 
 function check_db_query_staus($db_state, $db_actions)
@@ -218,10 +233,7 @@ function getMDALGAPerformance()
     include "config/index.php";
 
       // Query to get the number of invoices per 'lga'
-    $query = "SELECT m.lga, COUNT(p.invoice_number) AS count
-              FROM mda m
-              LEFT JOIN payment_collection_report_individual p ON m.fullname = p.mda_id
-              GROUP BY m.lga";
+    $query = "SELECT u.lga, SUM(p.amount_paid) AS total_payment FROM payer_user u INNER JOIN payment_collection_report_individual p ON u.tax_number = p.user_id GROUP BY u.lga ORDER BY total_payment DESC";
               
     $result = mysqli_query($ibsConnection, $query) or die(mysqli_error($ibsConnection));
         $invoicesPerLGA = array();
@@ -232,7 +244,7 @@ function getMDALGAPerformance()
     if ($result->num_rows > 0) {
         while ($row = $result->fetch_assoc()) {
             $lga = $row['lga'];
-            $count = $row['count'];
+            $count = $row['total_payment'];
 
            
             $invoicesPerLGA[] = array(
@@ -548,7 +560,7 @@ function login($username, $password)
     if ($totalRows_User_re > 0) {
         if ($row_User_re['password'] != $password) {
             $arr = ['status' => 0, 'message' => 'Incorrect Password'];
-            // $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+            // $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
            
             $user_category = "Payer User";
              $user_id = $row_User_re['id'];
@@ -568,7 +580,7 @@ function login($username, $password)
             exit(json_encode($arr));
         } else {
             unset($row_User_re['password']);
-            $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+            $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
             $_SESSION['session_id'] = generateUniqueID();
             $_SESSION['user_id'] = $row_User_re['tax_number'];
             $ipAddress = $_SERVER['REMOTE_ADDR'];
@@ -606,7 +618,7 @@ function login($username, $password)
                 exit(json_encode($arr));
             }else{
                 // unset($row_User_re1['password']);
-                $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re1];
+                $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re1];
                 $_SESSION['session_id'] = generateUniqueID();
             $_SESSION['user_id'] = $row_User_re['tax_number'];
             $ipAddress = $_SERVER['REMOTE_ADDR'];
@@ -618,6 +630,7 @@ function login($username, $password)
                 exit(json_encode($arr));
             }
         }else{
+              $arr = ['status' => 0, 'message' => 'Login details do not match an existing user, Please register or check details again',];
             exit(json_encode($arr));
         }
 
@@ -634,7 +647,7 @@ function loginAdmin($username, $password)
     $totalRows_User_re = mysqli_num_rows($User_re);
     if ($totalRows_User_re > 0) {
         if ($row_User_re['password'] == $password) {
-            $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+            $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
                 $_SESSION['session_id'] = generateUniqueID();
             $_SESSION['user_id'] = $row_User_re['id'];
             $ipAddress = $_SERVER['REMOTE_ADDR'];
@@ -668,7 +681,7 @@ function loginMda($username, $password)
     $totalRows_User_re = mysqli_num_rows($User_re);
     if ($totalRows_User_re > 0) {
         if ($row_User_re['password'] === $password) {
-            $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+            $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
                 $_SESSION['session_id'] = generateUniqueID();
             $_SESSION['user_id'] = $row_User_re['id'];
              $user_category = "Mda User";
@@ -708,11 +721,6 @@ function createUser($data)
     $password = $data->password;
     $fullname = $data->fullname;
     $phone = $data->phone;
-//     $chg = [
-//     '1' => 'view',
-//     '2' => 'full',
-//     '3' => 'no'
-// ];
     $dashboard_access = "$data->dashboard_access";
     $analytics_access = "$data->analytics_access";
     $mda_access = "$data->mda_access";
@@ -737,44 +745,69 @@ function createUser($data)
         $User_re = mysqli_query($ibsConnection, $query_User_re) or die(mysqli_error($ibsConnection));
         if ($User_re) {
             $last_id = mysqli_insert_id($ibsConnection);
-            $sender = "info@useibs.com";
-
-            $to = "$email";
-            $subject = "Account Verification";
-            // Email Template
-            $message = "Hi $fullname! <br />
-            Your account on the IBS has been created Successfully<br />
-            Here are Your Account details: <br />
-            Username: $email. <br />
-            Your roles and permissions: <br />
-
-            <ol style='list-style-type: A;'>
-            <li >Dashboard : $dashboard_access</li>
-            <li style='margin: top 5px;'>Analytics : $analytics_access</li>
-            <li style='margin: top 5px;'>Mda : $mda_access</li>
-            <li style='margin: top 5px;'>Report : $reports_access</li>
-            <li style='margin: top 5px;'>Tax_payer : $tax_payer_access</li>
-            <li style='margin: top 5px;'>Users : $users_access</li>
-            <li style='margin: top 5px;'>Cms : $cms_access</li>
-            <li style='margin: top 5px;'>Support : $support</li>
-            </ol>
-            <br />
+             // Define the API endpoint URL
+            $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
-            Click on the verification link below to create your password; <br />
-             https://useibs.com/createpassword.html?id=$last_id&verification=$verification";
-
-
-            $header = "From:'$sender'";
-            $header .= "MIME-Version: 1.0\r\n";
-            $header .= "Content-type: text/html\r\n";
-            $retval = mail($to, $subject, $message, $header);
+            // Define your API key
+            $apiKey = "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";
+            
+            // Create an array with the email data
+            $emailData = [
+                "to" => [
+                    [
+                        "email" => $email,
+                        "name" => $fullname,
+                    ],
+                ],
+                "templateId" => 14,
+                "params" => [
+                    "Fname" => $fullname,
+                    "email" => $email,
+                    "dashboard_access" => $dashboard_access,
+                    "analytics_access" => $analytics_access,
+                    "ada_access" => $mda_access,
+                    "reports_access" => $reports_access,
+                    "tax_payer_access" => $tax_payer_access,
+                    "users_access" => $users_access,
+                    "cms_access" => $cms_access,
+                    "support" => $support,
+                    "enum_access" => $enumeration,
+                    "audit_acess" => $audit_trail,
+                    "URL" => "https://plateaugr.useibs.com/createpassword.html?id=$last_id&verification=$verification"
+                ],
+                "headers" => [
+                    "X-Mailin-custom" => "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                    "charset" => "iso-8859-1",
+                ],
+            ];
+            
+            // Convert the email data to a JSON string
+            $jsonData = json_encode($emailData);
+            
+            // Initialize cURL session
+            $ch = curl_init($apiUrl);
+            
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            
+            // Execute cURL request
+            $response = curl_exec($ch);
+            
+            curl_close($ch);
 
             $returnResponse = ['status' => 1, 'message' => "{$email} added successfully", "id" => $last_id];
           
             $user_category = "Admin User";
              $user_id = "$last_id";
              $comment = "Admin User Registration";
-             $session_id = $_SESSION['session_id'];
+             $session_id = 0;
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             exit(json_encode($returnResponse));
@@ -783,7 +816,7 @@ function createUser($data)
             $user_category = "Admin User";
              $user_id = "$email";
              $comment = "Registration Failed";
-             $session_id = $_SESSION['session_id'];
+             $session_id = 0;
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             exit(json_encode($returnResponse));
@@ -835,22 +868,52 @@ function createMDA($data)
             VALUES ('$last_id', '$fullname', '$email', '$phone', '$password','$dashboard_access','$revenue_head_access','$payment_access','$users_access','$report_access')");
             $User_re1 = mysqli_query($ibsConnection, $query_User_re1) or die(mysqli_error($ibsConnection));
             
-            $sender = "info@useibs.com";
-
-            $to = "$email";
-            $subject = "Account Verification";
-            // Email Template
-            $message = "Hi $fullname! Your account has been Created Successfully <br />
-            Here is Your Account details: <br />
-            Username: $email. <br />
+             // Define the API endpoint URL
+            $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
-            Click on the link to verify your Account https://useibs.com/mdapassword.html?id=$last_id";
-
-
-            $header = "From:'$sender'";
-            $header .= "MIME-Version: 1.0\r\n";
-            $header .= "Content-type: text/html\r\n";
-            $retval = mail($to, $subject, $message, $header);
+            // Define your API key
+            $apiKey = "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";
+            
+            // Create an array with the email data
+            $emailData = [
+                "to" => [
+                    [
+                        "email" => $email,
+                        "name" => $name,
+                    ],
+                ],
+                "templateId" => 9,
+                "params" => [
+                     "Fname" => $name,
+                     "email" => $email,
+                     "URL" => "https://plateaugr.useibs.com/mdapassword.html?id=$last_id"
+                ],
+                "headers" => [
+                    "X-Mailin-custom" => "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                    "charset" => "iso-8859-1",
+                ],
+            ];
+            
+            // Convert the email data to a JSON string
+            $jsonData = json_encode($emailData);
+            
+            // Initialize cURL session
+            $ch = curl_init($apiUrl);
+            
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            
+            // Execute cURL request
+            $response = curl_exec($ch);
+            
+            curl_close($ch);
             $returnResponse = ['status' => 1, 'message' => "{$email} added successfully", 'pass' => $password];
             $user_category = "Admin User";
              $user_id = "$last_id";
@@ -920,7 +983,23 @@ function getMDAs()
 {
     include "config/index.php";
     //include "config/enctp.php";
-    $query_User_re = sprintf("SELECT `id`, `fullname`, `email`, `phone`, `industry`, `state`, `geolocation`, `lga`, `address`,`time_in`,`status`,`total_gen_revenue`,`allow_payment`,`office_creation` FROM `mda`");
+    $query_User_re = sprintf("SELECT
+    MAX(id) as id,
+    fullname,
+    MAX(email) as email,
+    MAX(phone) as phone,
+    MAX(industry) as industry,
+    MAX(state) as state,
+    MAX(geolocation) as geolocation,
+    MAX(lga) as lga,
+    MAX(address) as address,
+    MAX(time_in) as time_in,
+    MAX(status) as status,
+    MAX(total_gen_revenue) as total_gen_revenue,
+    MAX(allow_payment) as allow_payment,
+    MAX(office_creation) as office_creation
+FROM mda
+GROUP BY fullname");
     $User_re = mysqli_query($ibsConnection, $query_User_re) or die(mysqli_error($ibsConnection));
     $row_User_re = mysqli_fetch_assoc($User_re);
     $totalRows_User_re = mysqli_num_rows($User_re);
@@ -978,7 +1057,7 @@ function getIndustries()
 
 function getTaxPayerList()
 {
-    $pull_data = check_db_query_staus1("SELECT * FROM `payer_user`", "CHK");
+    $pull_data = check_db_query_staus1("SELECT `id`,`tax_number`,`tin`,`category`, `first_name`, `surname`, `email`, `phone`, `state`, `business_type`, `employment_status`, `number_of_staff`, `lga`, `address`, `password`, `verification_status`, `verification_code`, `tin_status`, `timeIn` FROM `payer_user`", "CHK");
     exit(json_encode($pull_data));
 }
 function getSingleTaxPayerList($data)
@@ -1047,6 +1126,7 @@ function paymentToMDARevenueHeads($data)
     $payment_channel = $data->payment_channel;
     $payment_reference_number = $data->payment_reference_number;
     $receipt_number = $data->receipt_number;
+    $amount_paid = $data->amount_paid;
     $other_details = check_db_query_staus("SELECT * FROM invoices WHERE invoice_number='{$invoice_number}'", "CHK");
     // if ($other_details['status'] == 1) {
     // $revenue_head = $other_details['message']['revenue_head'];
@@ -1059,12 +1139,12 @@ function paymentToMDARevenueHeads($data)
         $mda_id = $other_details1['message']['COL_3'];
         $amount = $other_details1['message']['COL_6'];
         $rev_name = $other_details1['message']['COL_4'];
-        $query_User_re = sprintf("INSERT INTO `payment_collection_report_individual`(`mda_id`, `revenue_head`, `user_id`, `invoice_number`, `payment_channel`, `payment_reference_number`, `receipt_number`)
-                    VALUES ('$mda_id', '$revenue_head', '$user_id', '$invoice_number', '$payment_channel', '$payment_reference_number', '$receipt_number')");
+        $query_User_re = sprintf("INSERT INTO `payment_collection_report_individual`(`mda_id`, `revenue_head`, `user_id`, `invoice_number`, `payment_channel`, `payment_reference_number`, `receipt_number`, `amount_paid`)
+                    VALUES ('$mda_id', '$revenue_head', '$user_id', '$invoice_number', '$payment_channel', '$payment_reference_number', '$receipt_number', '$amount_paid')");
                       $user_category = "Payer User";
              $user_id = $user_id;
              $comment = "Payment successful";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
         $check_exist = check_db_query_staus("SELECT payment_reference_number FROM payment_collection_report_individual WHERE payment_reference_number='{$payment_reference_number}'", "CHK");
@@ -1077,13 +1157,13 @@ function paymentToMDARevenueHeads($data)
                 $paid = "paid";
 
                 check_db_query_staus("UPDATE `invoices` SET `payment_status`='{$paid}' WHERE `invoice_number`='{$invoice_number}'", "UPD");
-                check_db_query_staus("UPDATE `mda` SET `total_gen_revenue`= total_gen_revenue + {$amount} WHERE `fullname`='{$mda_id}'", "UPD");
-                check_db_query_staus("UPDATE `revenue_heads` SET `total_gen_revenue`= total_gen_revenue + {$amount} WHERE `COL_4`='{$rev_name}'", "UPD");
+                check_db_query_staus("UPDATE `mda` SET `total_gen_revenue`= total_gen_revenue + {$amount_paid} WHERE `fullname`='{$mda_id}'", "UPD");
+                check_db_query_staus("UPDATE `revenue_heads` SET `total_gen_revenue`= total_gen_revenue + {$amount_paid} WHERE `COL_4`='{$rev_name}'", "UPD");
                 $returnResponse = ['status' => 1, 'message' => "{$invoice_number} added successfully"];
                       $user_category = "Payer User";
              $user_id = $user_id;
              $comment = "Payment successful";
-             $session_id = $_SESSION['session_id'];
+           $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
                 exit(json_encode($returnResponse));
@@ -1092,7 +1172,7 @@ function paymentToMDARevenueHeads($data)
                       $user_category = "Payer User";
              $user_id = $user_id;
              $comment = "Payment Failed";
-             $session_id = $_SESSION['session_id'];
+            $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
                 exit(json_encode($returnResponse));
@@ -1108,7 +1188,7 @@ function paymentToMDARevenueHeads($data)
 function generatePayerID()
 {
     $chars = "0123456789";
-    $payerID = substr(str_shuffle($chars), 0, 5);
+    $payerID = substr(str_shuffle($chars), 0, 10);
     return $payerID;
 }
 
@@ -1131,7 +1211,7 @@ function createPayerUser($data)
     } else if ($category == 4) {
         $category1 = "F";
     }
-    $tax_number = "AKW" . $category1 . "-" . generatePayerID();
+    $tax_number = "PL" . $category1 . "-" . generatePayerID();
     $phone = $data->phone;
     $state = $data->state;
     $employment_status = $data->employment_status;
@@ -1160,13 +1240,13 @@ function createPayerUser($data)
                 if ($User_re) {
                     $last_id = mysqli_insert_id($ibsConnection);
                     $fetched_data_last_id = check_db_query_staus("SELECT tax_number FROM payer_user WHERE id = $last_id", "CHK");
-                    $returnResponse = ['status' => 1, 'message' => "{$email} added successfully", "data" => $fetched_data_last_id['message'], "id" => $last_id];
+                    $returnResponse = ['status' => 1, 'message' => "User Account created successfully", "data" => $fetched_data_last_id['message'], "id" => $last_id];
                     $_SESSION['session_id'] = generateUniqueID();
                     $_SESSION['user_id'] = $last_id;
                           $user_category = "Payer User";
              $user_id = $last_id;
              $comment = "User Registration";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
                     exit(json_encode($returnResponse));
@@ -1175,7 +1255,7 @@ function createPayerUser($data)
                     $user_category = "Payer User";
              $user_id = $email;
              $comment = "User Registration Failed";
-             $session_id = $_SESSION['session_id'];
+             $session_id ="0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
                     exit(json_encode($returnResponse));
@@ -1187,11 +1267,11 @@ function createPayerUser($data)
         if ($User_re) {
             $last_id = mysqli_insert_id($ibsConnection);
             $fetched_data_last_id = check_db_query_staus("SELECT tax_number FROM payer_user WHERE id = $last_id", "CHK");
-            $returnResponse = ['status' => 1, 'message' => "{$email} added successfully", "data" => $fetched_data_last_id['message'], "id" => $last_id];
+            $returnResponse = ['status' => 1, 'message' => "User Account created successfully", "data" => $fetched_data_last_id['message'], "id" => $last_id];
              $user_category = "Payer User";
              $user_id = $tax_number;
              $comment = "Payer User Registration";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             exit(json_encode($returnResponse));
@@ -1200,7 +1280,7 @@ function createPayerUser($data)
             $user_category = "Payer User";
              $user_id = $tax_number;
              $comment = "Payer User Registration Failed";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             exit(json_encode($returnResponse));
@@ -1211,12 +1291,12 @@ function createPayerUser($data)
 function userProfile($id)
 {
     include "config/index.php";
-    $query_User_re = sprintf("SELECT * FROM `payer_user` WHERE id='{$id}'");
+    $query_User_re = sprintf("SELECT * FROM `payer_user` WHERE tax_number='{$id}'");
     $User_re = mysqli_query($ibsConnection, $query_User_re) or die(mysqli_error($ibsConnection));
     $row_User_re = mysqli_fetch_assoc($User_re);
     $totalRows_User_re = mysqli_num_rows($User_re);
     if ($totalRows_User_re > 0) {
-        $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+        $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
         exit(json_encode($arr));
     } else {
         $arr = ['status' => 0, 'message' => 'User does not exist',];
@@ -1231,7 +1311,7 @@ function userProfileAdmin($id)
     $row_User_re = mysqli_fetch_assoc($User_re);
     $totalRows_User_re = mysqli_num_rows($User_re);
     if ($totalRows_User_re > 0) {
-        $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+        $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
         exit(json_encode($arr));
     } else {
         $arr = ['status' => 0, 'message' => 'User does not exist',];
@@ -1362,7 +1442,7 @@ function generateInvoice($data)
 {
     include "config/index.php";
     // Retrieve the relevant information from the "payer" table
-    $tax_number = $data;
+    $tax_number = $data['taxPayerNumber'];
     $sql = "SELECT id, category, first_name, surname, email, phone, state, lga, address FROM payer_user WHERE tax_number = '$tax_number'";
     $result = mysqli_query($ibsConnection, $sql);
     $resp = [];
@@ -1408,6 +1488,7 @@ function generateSignleInvoice($data)
     // Retrieve the relevant information from the "payer" table
     $tax_number = $data['tax_number'];
     $revenue_head_id1 = $data['revenue_head_id'];
+    $price = $data['price'];
     $check_exist_001 = check_db_query_staus("SELECT `last_name` AS `surname`, `account_type` AS `category`, `first_name`, `email`, `phone`, `state`, `lga`, `address`, `tax_number`, `id` FROM `enumerator_tax_payers` WHERE tax_number='{$tax_number}'", "CHK");
     if($check_exist_001['status'] == 1){
         $sql = "SELECT `last_name` AS `surname`, `account_type` AS `category`, `first_name`, `email`, `phone`, `state`, `lga`, `address`, `tax_number`, `id` FROM `enumerator_tax_payers` WHERE tax_number='{$tax_number}'";
@@ -1415,6 +1496,7 @@ function generateSignleInvoice($data)
         $sql = "SELECT id, category, first_name, surname, email, phone, state, lga, address FROM payer_user WHERE tax_number = '$tax_number'";    
     }
     
+  
     $result = mysqli_query($ibsConnection, $sql);
     $resp = [];
     // Iterate over the results
@@ -1439,45 +1521,69 @@ function generateSignleInvoice($data)
             $revenue_head = $row1["COL_4"];
             $mda = $row1["COL_3"];
             $category1 = $row1["COL_5"];
-            $price = $row1["COL_6"];
+            $price = $price;
             // Set the due date as a future date
             $due_date = date("Y-m-d", strtotime("+1 month"));
             // Insert the new invoice into the "invoice" table
-            $sql2 = "INSERT INTO invoices (invoice_number, payer_id, revenue_head, due_date, payment_status) 
-                    VALUES ('$invoice_number', '$tax_number', $revenue_head_id,'$due_date', 2)";
-
-            $sender = "info@useibs.com";
-            //    $contact = "me";
-            //    $postmessage = "message";  
-            $to = "$email";
-            $subject = "Generate Invoice";
-            // Email Template
-            $message = "<html><body>
-            <p>Dear $first_name<p>
-            <p>You have successfully generated an invoice for $revenue_head. </p>
-            <p>Your invoice number is $invoice_number  and this invoice expires on $due_date. </p>
-            <p>Please click https://useibs.com/viewinvoice.html?load=true&invnumber=$invoice_number to make your payment.</p>
-            <p>Yoursâ€™</p>
-            <p>Akwa Ibom Inland Revenue Service</p>
-            </body></html>
-            ";
-            //    $message .= "<b>Contact Number : </b>".$contact."<br>";
-            //    $message .= "<b>Email Address : </b>".$email."<br>";
-            //    $message .= "<b>Message : </b>".$postmessage."<br>";
-
-            $header = "From:'$sender'";
-            $header .= "MIME-Version: 1.0\r\n";
-            $header .= "Content-type: text/html\r\n";
-            $retval = mail($to, $subject, $message, $header);
+            $sql2 = "INSERT INTO invoices (invoice_number, payer_id, revenue_head, due_date, payment_status, amount_paid) 
+                    VALUES ('$invoice_number', '$tax_number', $revenue_head_id,'$due_date', 2, '$price')";
+  // Define the API endpoint URL
+            $apiUrl = "https://api.brevo.com/v3/smtp/email";
+            
+            // Define your API key
+            $apiKey = "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";
+            
+            // Create an array with the email data
+            $emailData = [
+                "to" => [
+                    [
+                        "email" => $email,
+                        "name" => $first_name,
+                    ],
+                ],
+                "templateId" => 15,
+                "params" => [
+                    "Fname" => $first_name,
+                    "due" => $due_date,
+                    "InvoiceN" => $invoice_number,
+                    "RevenueHead" => $revenue_head,
+                    "URL" => "https://plateaugr.useibs.com/viewinvoice.html?load=true&invnumber=$invoice_number"
+                ],
+                "headers" => [
+                    "X-Mailin-custom" => "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                    "charset" => "iso-8859-1",
+                ],
+            ];
+            
+            // Convert the email data to a JSON string
+            $jsonData = json_encode($emailData);
+            
+            // Initialize cURL session
+            $ch = curl_init($apiUrl);
+            
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            
+            // Execute cURL request
+            $response = curl_exec($ch);
+            
+            curl_close($ch);
             
           $destination = $phone;
             $msg = "
             Dear $first_name
             You have successfully generated an invoice for $revenue_head.
             Your invoice number is $invoice_number  and this invoice expires on $due_date.
-            Please click https://useibs.com/viewinvoice.html?load=true&invnumber=$invoice_number to make your payment.
+            Please click https://plateaugr.useibs.com/viewinvoice.html?load=true&invnumber=$invoice_number to make your payment.
             Yours
-            Akwa Ibom Inland Revenue Service
+            Plateau Inland Revenue Service
             ";
 
             sendSMS($destination, $msg);
@@ -1487,11 +1593,11 @@ function generateSignleInvoice($data)
                     VALUES ($payer_id, $revenue_head_id,'$tax_number', '$revenue_head')";
                 mysqli_query($ibsConnection, $sql4);
                     
-                $resp = ["status" => 1, "message" => "Invoice generated successfully", "invoice_number" => $invoice_number];
+                $resp = ["status" => 1, "message" => "Invoice generated successfully", "invoice_number" => $invoice_number, "price"=> $price];
                  $user_category = "Payer User";
              $user_id = $tax_number;
              $comment = "Invoice generated successfully";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             } else {
@@ -1499,7 +1605,7 @@ function generateSignleInvoice($data)
                  $user_category = "Payer User";
              $user_id = $tax_number;
              $comment = "Error generating Invoice";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             }
@@ -1514,7 +1620,7 @@ function generateSignleInvoice($data)
 function fetchAllPayment()
 {
     // print_r($data);
-    exit(json_encode(check_db_query_staus1("SELECT * FROM payment_collection_report_individual INNER JOIN revenue_heads on payment_collection_report_individual.revenue_head=revenue_heads.id INNER JOIN payer_user on payment_collection_report_individual.user_id=payer_user.id", "CHK")));
+    exit(json_encode(check_db_query_staus1("SELECT * FROM payment_collection_report_individual INNER JOIN revenue_heads on payment_collection_report_individual.revenue_head=revenue_heads.id INNER JOIN payer_user on payment_collection_report_individual.user_id=payer_user.tax_number", "CHK")));
 }
 
 function fetchPayment($data)
@@ -1542,7 +1648,7 @@ function verifyInvoice($data)
                          $user_category = "Payer User";
              $user_id = $data;
              $comment = "Verification of Invoice";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
         exit(json_encode($check_exist));
@@ -1550,7 +1656,7 @@ function verifyInvoice($data)
              $user_category = "Payer User";
              $user_id = $data;
              $comment = "Error Verifiying Invoice";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
         exit(json_encode($check_exist));
@@ -1562,11 +1668,11 @@ function userInvoices($data)
     include "config/index.php";
     //include "config/enctp.php";
     //print_r($data);
-    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname,payer_user.address,payer_user.email,payer_user.phone FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id = '{$data}'", "CHK");
+    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, invoices.amount_paid, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname,payer_user.address,payer_user.email,payer_user.phone FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id = '{$data}'", "CHK");
     if ($check_exist['status'] == 1) {
         exit(json_encode($check_exist));
     } else if ($check_exist['status'] == 0) {
-               $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6 FROM invoices JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}'", "CHK");
+               $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, invoices.amount_paid, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6 FROM invoices JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}'", "CHK");
         if($check_exist['status'] == 1){
             foreach($check_exist['message'] as $key => $value){
                     $check_exist1 = check_db_query_staus1("SELECT tax_number, first_name, last_name AS surname, address, email, phone FROM enumerator_tax_payers WHERE tax_number='{$value['payer_id']}'", "CHK");  
@@ -1591,11 +1697,11 @@ function getAllInvoice()
 {
     //include "config/enctp.php";
     //print_r($data);
-    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname,payer_user.address,payer_user.email,payer_user.phone FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id", "CHK");
+    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, invoices.amount_paid, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname,payer_user.address,payer_user.email,payer_user.phone FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id", "CHK");
     if ($check_exist['status'] == 1) {
         exit(json_encode($check_exist));
     } else if ($check_exist['status'] == 0) {
-        $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6 FROM invoices JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id", "CHK");
+        $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, invoices.amount_paid, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6 FROM invoices JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id", "CHK");
         if($check_exist['status'] == 1){
             foreach($check_exist['message'] as $key => $value){
                     $check_exist1 = check_db_query_staus1("SELECT tax_number, first_name, last_name AS surname, address, email, phone FROM enumerator_tax_payers WHERE tax_number='{$value['payer_id']}'", "CHK");  
@@ -1617,16 +1723,28 @@ function getAllInvoice()
     }
 }
 
-function userInvoiceSingle($data)
+function userInvoiceSingle($data, $source)
 {
     include "config/index.php";
     //include "config/enctp.php";
     //print_r($data);
-    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname,payer_user.address,payer_user.email,payer_user.phone FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.invoice_number='{$data}'", "CHK");
+    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.amount_paid, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname,payer_user.address,payer_user.email,payer_user.phone FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.invoice_number='{$data}'", "CHK");
     if ($check_exist['status'] == 1) {
-        exit(json_encode($check_exist));
+       if($source == 'eTranzact'){
+            $check_exist['message'][0]['MDA'] = $check_exist['message'][0]['COL_3'];
+            $check_exist['message'][0]['revenue_head_name'] = $check_exist['message'][0]['COL_4'];
+            $check_exist['message'][0]['amount'] = $check_exist['message'][0]['amount_paid'];
+            unset($check_exist['message'][0]['COL_3']);
+            unset($check_exist['message'][0]['COL_4']);
+            unset($check_exist['message'][0]['COL_6']);
+            unset($check_exist['message'][0]['amount_paid']);
+            exit(json_encode($check_exist));            
+        }else{
+            exit(json_encode($check_exist));    
+        }
+        
     } else if ($check_exist['status'] == 0) {
-        $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6 FROM invoices JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.invoice_number='{$data}'", "CHK");
+        $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status, invoices.amount_paid, invoices.date_created, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6 FROM invoices JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.invoice_number='{$data}'", "CHK");
         if($check_exist['status'] == 1){
             foreach($check_exist['message'] as $key => $value){
                     $check_exist1 = check_db_query_staus1("SELECT tax_number, first_name, last_name AS surname, address, email, phone FROM enumerator_tax_payers WHERE tax_number='{$value['payer_id']}'", "CHK");  
@@ -1643,8 +1761,19 @@ function userInvoiceSingle($data)
         }else{
             
         }
-        
-        exit(json_encode($check_exist));     
+        if($source == 'eTranzact'){
+            $check_exist['message'][0]['MDA'] = $check_exist['message'][0]['COL_3'];
+            $check_exist['message'][0]['revenue_head_name'] = $check_exist['message'][0]['COL_4'];
+            $check_exist['message'][0]['amount'] = $check_exist['message'][0]['amount_paid'];
+            unset($check_exist['message'][0]['COL_3']);
+            unset($check_exist['message'][0]['COL_4']);
+            unset($check_exist['message'][0]['COL_6']);
+            unset($check_exist['message'][0]['amount_paid']);
+            exit(json_encode($check_exist));            
+        }else{
+            exit(json_encode($check_exist));    
+        }
+        // exit(json_encode($check_exist));     
     }
 }
 
@@ -1684,7 +1813,7 @@ function sendSMS($destination, $msg)
 
     $apiKey = "5Img2CELv9EZRZCHrEKHN1N7aRl28e7l1ZxYA1WykaF7wozSxeiDbkOiO0qO"; // Your BulkSMS Nigeria API key
 
-    $url = "https://www.bulksmsnigeria.com/api/v1/sms/create?api_token=" . $apiKey . "&from=AKW-IBS&to=" . $destination . "&body=" . urlencode($msg) . "&dnd=6";
+    $url = "https://www.bulksmsnigeria.com/api/v1/sms/create?api_token=" . $apiKey . "&from=ZA-IBS&to=" . $destination . "&body=" . urlencode($msg) . "&dnd=6";
 
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL, $url);
@@ -1712,9 +1841,10 @@ function dashboardAnalyticsEndUser($data)
 
     //DUE AMOUNT
     $c_date = date('Y-m-d');
-    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status,revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.id JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}' AND invoices.due_date < '{$c_date}'", "CHK");
-    $check_exist1 = check_db_query_staus1("SELECT SUM(revenue_heads.COL_6) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.id JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}'", "CHK");
-    $check_exist2 = check_db_query_staus1("SELECT SUM(revenue_heads.COL_6) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.id JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}' AND invoices.payment_status='paid'", "CHK");
+    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status,invoices.amount_paid, revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.id JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}' AND invoices.due_date < '{$c_date}'", "CHK");
+    $check_exist1 = check_db_query_staus1("SELECT SUM(invoices.amount_paid) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}'", "CHK");
+    $check_exist2 = check_db_query_staus1("SELECT SUM(invoices.amount_paid) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}' AND invoices.payment_status='paid'", "CHK");
+    $check_exist3 = check_db_query_staus1("SELECT SUM(invoices.payment_status) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payer_id='{$data}' AND invoices.payment_status='paid'", "CHK");
 
     $due_amount = (int)"";
     $due_invoices = (int)"";
@@ -1724,7 +1854,7 @@ function dashboardAnalyticsEndUser($data)
         // $check_exist['message'];
         $due_invoices = count($check_exist['message']);
         foreach ($check_exist['message'] as $key => $value) {
-            $due_amount += (int) $value['COL_6'];
+            $due_amount += (int) $value['amount_paid'];
         }
     } else if ($check_exist['status'] == 0) {
         $due_amount = 0;
@@ -1745,7 +1875,15 @@ function dashboardAnalyticsEndUser($data)
         // $due_invoices = 0;
     }
 
-    $arr = ["due_amount" => $due_amount, "due_invoices" => $due_invoices, "total_amount_invoiced" => $total_amount_invoiced, "total_amount_paid" => $total_amount_paid];
+    if ($check_exist2['status'] == 1) {
+        // $check_exist['message'];
+        $total_paid_invoice = (int)$check_exist3['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_paid_invoice = 0;
+        // $due_invoices = 0;
+    }
+    
+    $arr = ["due_amount" => $due_amount, "due_invoices" => $due_invoices, "total_amount_invoiced" => $total_amount_invoiced, "total_amount_paid" => $total_amount_paid, "total_invoice_paid" => $total_paid_invoice];
     exit(json_encode($arr));
 
     //
@@ -1754,7 +1892,7 @@ function dashboardAnalyticsEndUser($data)
 function UpdateTINStatus($data)
 {
     include "config/index.php";
-    //include "config/enctp.php";
+    // include "config/enctp.php";
 
     $id = $_GET['id'];
     $status = $_GET['status'];
@@ -1767,14 +1905,14 @@ function UpdateTINStatus($data)
             $status = 'Unverified';
         }
         //print_r($status); die;
-        $query = "UPDATE `{$user_type}` SET `tin_status`='{$status}' WHERE `id` = {$id}";
+        $query = "UPDATE `{$user_type}` SET `tin_status`='{$status}' WHERE `tax_number` = '{$id}'";
         $User_re = mysqli_query($ibsConnection, $query) or die(mysqli_error($ibsConnection));
         if ($User_re) {
             $arr = ["status" => 1, "message" => "Tax payers tin status successfully updated"];
             $user_category = "Payer User";
              $user_id = $id;
              $comment = "tin status update";
-             $session_id = $_SESSION['session_id'];
+             $session_id = 0;
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             exit(json_encode($arr));
@@ -1783,7 +1921,7 @@ function UpdateTINStatus($data)
             $user_category = "Payer User";
              $user_id = $id;
              $comment = "tin status update failed";
-             $session_id = $_SESSION['session_id'];
+             $session_id = 0;
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
             exit(json_encode($error_updating));
@@ -1799,7 +1937,7 @@ function updatePassword()
     $id = $_GET['id'];
     $password = $_GET['password'];
 
-    $query = "UPDATE `payer_user` SET `password`='{$password}' WHERE `id` = {$id}";
+    $query = "UPDATE `payer_user` SET `password`='{$password}' WHERE `tax_number` = '{$id}'";
     $User_re = mysqli_query($ibsConnection, $query) or die(mysqli_error($ibsConnection));
     if ($User_re) {
         $arr = ["status" => 1, "message" => "Password successfully updated"];
@@ -1978,24 +2116,34 @@ function dashboardAnalyticsAdmin()
 
     //DUE AMOUNT
     $c_date = date('Y-m-d');
-    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.payment_status,revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.id JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.due_date < '{$c_date}'", "CHK");
-    $check_exist1 = check_db_query_staus1("SELECT SUM(revenue_heads.COL_6) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.id JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id", "CHK");
-    $check_exist2 = check_db_query_staus1("SELECT SUM(revenue_heads.COL_6) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.id JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payment_status='paid'", "CHK");
-
+    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.amount_paid, invoices.payment_status,revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.due_date < '{$c_date}'", "CHK");
+    $check_exist1 = check_db_query_staus1("SELECT SUM(invoices.amount_paid) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id", "CHK");
+    $check_exist2 = check_db_query_staus1("SELECT SUM(invoices.amount_paid) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payment_status='paid'", "CHK");
+    $check_exist3 = check_db_query_staus1("SELECT COUNT(*) as total FROM invoices", "CHK");
+    $check_exist4 = check_db_query_staus1("SELECT COUNT(*) as total FROM invoices WHERE payment_status = 'paid'", "CHK");
+    $check_exist5 = check_db_query_staus1("SELECT COUNT(*) as total FROM enumerator_tax_payers", "CHK");
+    $check_exist6 = check_db_query_staus1("SELECT COUNT(*) as total FROM payer_user", "CHK");
+    
     $due_amount = (int)"";
     $due_invoices = (int)"";
     $total_amount_invoiced = (int)"";
     $total_amount_paid = (int)"";
+    $total_invoice = (int)"";
+    $total_invoice_paid = (int)"";
+    $total_taxpayer = (int)"";
+    $total_enumpayer = (int)"";
+    
     if ($check_exist['status'] == 1) {
         // $check_exist['message'];
         $due_invoices = count($check_exist['message']);
         foreach ($check_exist['message'] as $key => $value) {
-            $due_amount += (int) $value['COL_6'];
+            $due_amount += (int) $value['amount_paid'];
         }
     } else if ($check_exist['status'] == 0) {
         $due_amount = 0;
         $due_invoices = 0;
     }
+    
     if ($check_exist1['status'] == 1) {
         // $check_exist['message'];
         $total_amount_invoiced = (int)$check_exist1['message'][0]['total'];
@@ -2003,6 +2151,7 @@ function dashboardAnalyticsAdmin()
         $total_amount_invoiced = 0;
         // $due_invoices = 0;
     }
+    
     if ($check_exist2['status'] == 1) {
         // $check_exist['message'];
         $total_amount_paid = (int)$check_exist2['message'][0]['total'];
@@ -2010,8 +2159,126 @@ function dashboardAnalyticsAdmin()
         $total_amount_paid = 0;
         // $due_invoices = 0;
     }
+    
+    if ($check_exist3['status'] == 1) {
+        // $check_exist['message'];
+        $total_invoice = (int)$check_exist3['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_invoice = 0;
+        // $due_invoices = 0;
+    }
+    
+    if ($check_exist4['status'] == 1) {
+        // $check_exist['message'];
+        $total_invoice_paid = (int)$check_exist4['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_invoice_paid = 0;
+        // $due_invoices = 0;
+    }
+    
+    if ($check_exist5['status'] == 1) {
+        // $check_exist['message'];
+        $total_taxpayer = (int)$check_exist5['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_taxpayer = 0;
+        // $due_invoices = 0;
+    }
+    
+    if ($check_exist6['status'] == 1) {
+        // $check_exist['message'];
+        $total_enumpayer = (int)$check_exist6['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_enumpayer = 0;
+        // $due_invoices = 0;
+    }
 
-    $arr = ["due_amount" => $due_amount, "due_invoices" => $due_invoices, "total_amount_invoiced" => $total_amount_invoiced, "total_amount_paid" => $total_amount_paid];
+    $total_user = $total_taxpayer + $total_enumpayer;
+
+
+    $arr = ["due_amount" => $due_amount, "due_invoices" => $due_invoices, "total_amount_invoiced" => $total_amount_invoiced, "total_amount_paid" => $total_amount_paid, "total_invoice" => $total_invoice, "total_invoice_paid" => $total_invoice_paid , "total_user" => $total_user ] ;
+    exit(json_encode($arr));
+
+    //
+}
+
+
+function dashboardAnalyticsMda($id)
+{
+    include "config/index.php";
+    //include "config/enctp.php";
+    //print_r($data);
+
+    //DUE AMOUNT
+    $c_date = date('Y-m-d');
+    $check_exist = check_db_query_staus1("SELECT invoices.payer_id, invoices.revenue_head,invoices.invoice_number, invoices.due_date, invoices.amount_paid, invoices.payment_status,revenue_heads.COL_3,revenue_heads.COL_4,revenue_heads.COL_6,payer_user.tax_number,payer_user.first_name,payer_user.surname FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.due_date < '{$c_date}'", "CHK");
+    $check_exist1 = check_db_query_staus1("SELECT SUM(invoices.amount_paid) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id", "CHK");
+    $check_exist2 = check_db_query_staus1("SELECT SUM(invoices.amount_paid) as total FROM invoices JOIN payer_user ON invoices.payer_id = payer_user.tax_number JOIN revenue_heads ON invoices.revenue_head = revenue_heads.id WHERE invoices.payment_status='paid'", "CHK");
+    $check_exist3 = check_db_query_staus1("SELECT COUNT(*) as total FROM invoices", "CHK");
+    $check_exist4 = check_db_query_staus1("SELECT COUNT(*) as total FROM invoices WHERE payment_status = 'paid'", "CHK");
+    $check_exist5 = check_db_query_staus1("SELECT COUNT(total_gen_revenue) as total FROM mda WHERE `fullname` = '{$id}'", "CHK");
+     
+    $due_amount = (int)"";
+    $due_invoices = (int)"";
+    $total_amount_invoiced = (int)"";
+    $total_amount_paid = (int)"";
+    $total_invoice = (int)"";
+    $total_invoice_paid = (int)"";
+    $total_amount = (int)"";
+    
+    if ($check_exist['status'] == 1) {
+        // $check_exist['message'];
+        $due_invoices = count($check_exist['message']);
+        foreach ($check_exist['message'] as $key => $value) {
+            $due_amount += (int) $value['amount_paid'];
+        }
+    } else if ($check_exist['status'] == 0) {
+        $due_amount = 0;
+        $due_invoices = 0;
+    }
+    
+    if ($check_exist1['status'] == 1) {
+        // $check_exist['message'];
+        $total_amount_invoiced = (int)$check_exist1['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_amount_invoiced = 0;
+        // $due_invoices = 0;
+    }
+    
+    if ($check_exist2['status'] == 1) {
+        // $check_exist['message'];
+        $total_amount_paid = (int)$check_exist2['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_amount_paid = 0;
+        // $due_invoices = 0;
+    }
+    
+    if ($check_exist3['status'] == 1) {
+        // $check_exist['message'];
+        $total_invoice = (int)$check_exist3['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_invoice = 0;
+        // $due_invoices = 0;
+    }
+    
+    if ($check_exist4['status'] == 1) {
+        // $check_exist['message'];
+        $total_invoice_paid = (int)$check_exist4['message'][0]['total'];
+    } else if ($check_exist['status'] == 0) {
+        $total_invoice_paid = 0;
+        // $due_invoices = 0;
+    }
+    
+    if ($check_exist5['status'] == 1) {
+        // $check_exist['message'];
+        $total_amount = (int)$check_exist5['message'][0]['total'];
+    } else if ($check_exist5['status'] == 0) {
+        $total_amount = 0;
+        // $due_invoices = 0;
+    }
+    
+
+
+    $arr = ["due_amount" => $due_amount, "due_invoices" => $due_invoices, "total_amount_invoiced" => $total_amount_invoiced, "total_amount_paid" => $total_amount_paid, "total_invoice" => $total_invoice, "total_invoice_paid" => $total_invoice_paid, "total_amount" => $total_amount] ;
     exit(json_encode($arr));
 
     //
@@ -2151,26 +2418,56 @@ function verifyEmail($id)
         $verification = $row_User_re['verification_status'];
         $id = $row_User_re['id'];
 
-        $sender = "info@useibs.com";
-        //    $contact = "me";
-        //    $postmessage = "message";  
-        $to = "$email";
-        $subject = "Account Verification";
-        // Email Template
-        $message = "Hi $name! Click on the link to verify your Account https://useibs.com/emailverification.html?id=$id&verification=$verification";
-        //    $message .= "<b>Contact Number : </b>".$contact."<br>";
-        //    $message .= "<b>Email Address : </b>".$email."<br>";
-        //    $message .= "<b>Message : </b>".$postmessage."<br>";
-
-        $header = "From:'$sender'";
-        $header .= "MIME-Version: 1.0\r\n";
-        $header .= "Content-type: text/html\r\n";
-        $retval = mail($to, $subject, $message, $header);
+         // Define the API endpoint URL
+            $apiUrl = "https://api.brevo.com/v3/smtp/email";
+            
+            // Define your API key
+            $apiKey = "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";
+            
+            // Create an array with the email data
+            $emailData = [
+                "to" => [
+                    [
+                        "email" => $email,
+                        "name" => $name,
+                    ],
+                ],
+                "templateId" => 5,
+                "params" => [
+                    
+                    "URL" => "https://plateaugr.useibs.com/emailverification.html?id=$id&verification=$verification"
+                ],
+                "headers" => [
+                    "X-Mailin-custom" => "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                    "charset" => "iso-8859-1",
+                ],
+            ];
+            
+            // Convert the email data to a JSON string
+            $jsonData = json_encode($emailData);
+            
+            // Initialize cURL session
+            $ch = curl_init($apiUrl);
+            
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            
+            // Execute cURL request
+            $response = curl_exec($ch);
+            
+            curl_close($ch);
         $arr = ['status' => 1, 'message' => 'Message sent  Successfully Ã°Å¸ËœÅ½'];
         $user_category = "Payer User";
              $user_id = $id;
              $comment = "Payer user Email verification";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
         exit(json_encode($arr));
@@ -2179,7 +2476,7 @@ function verifyEmail($id)
         $user_category = "Payer User";
              $user_id = $id;
              $comment = "Payer user Email verification failed";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "0";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
         exit(json_encode($arr));
@@ -2204,28 +2501,58 @@ function verifyEmailEnum($id)
         $id = $row_User_re['id'];
         $password = $row_User_re['password'];
 
-        $sender = "info@useibs.com";
-        //    $contact = "me";
-        //    $postmessage = "message";  
-        $to = "$email";
-        $subject = "Account Verification";
-        // Email Template
-        $message = "Hi $name! Click on the link to verify your Account https://useibs.com/emailverification2.html?id=$id&verification=$verification <br />
-        Email: $email; <br />
-        Password: $password";
-        //    $message .= "<b>Contact Number : </b>".$contact."<br>";
-        //    $message .= "<b>Email Address : </b>".$email."<br>";
-        //    $message .= "<b>Message : </b>".$postmessage."<br>";
-
-        $header = "From:'$sender'";
-        $header .= "MIME-Version: 1.0\r\n";
-        $header .= "Content-type: text/html\r\n";
-        $retval = mail($to, $subject, $message, $header);
+       // Define the API endpoint URL
+            $apiUrl = "https://api.brevo.com/v3/smtp/email";
+            
+            // Define your API key
+            $apiKey = "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";
+            
+            // Create an array with the email data
+            $emailData = [
+                "to" => [
+                    [
+                        "email" => $email,
+                        "name" => $name,
+                    ],
+                ],
+                "templateId" => 12,
+                "params" => [
+                    "Fname" => $name,
+                    "email" => $email,
+                    "password" => $password,
+                    "URL" => "https://plateaugr.useibs.com/emailverification2.html?id=$id&verification=$verification"
+                ],
+                "headers" => [
+                    "X-Mailin-custom" => "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                    "charset" => "iso-8859-1",
+                ],
+            ];
+            
+            // Convert the email data to a JSON string
+            $jsonData = json_encode($emailData);
+            
+            // Initialize cURL session
+            $ch = curl_init($apiUrl);
+            
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            
+            // Execute cURL request
+            $response = curl_exec($ch);
+            
+            curl_close($ch);
         $arr = ['status' => 1, 'message' => 'Message sent  Successfully Ã°Å¸ËœÅ½'];
         $user_category = "Enum User";
              $user_id = $id;
              $comment = "Enum user Email verification";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
         exit(json_encode($arr));
@@ -2287,7 +2614,7 @@ function UpdateAccountStatusEnum($data)
         $user_category = "Enum User";
              $user_id = $id;
              $comment = "Enum User Account status update";
-             $session_id = $_SESSION['session_id'];
+             $session_id = "";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
         exit(json_encode($arr));
@@ -2319,7 +2646,7 @@ function verifySms($data)
         $destination = $row_User_re['phone'];
         $apiKey = "5Img2CELv9EZRZCHrEKHN1N7aRl28e7l1ZxYA1WykaF7wozSxeiDbkOiO0qO"; // Your BulkSMS Nigeria API key
 
-        $url = "https://www.bulksmsnigeria.com/api/v1/sms/create?api_token=" . $apiKey . "&from=AKW-IBS&to=" . $destination . "&body=" . urlencode($message) . "&dnd=" . $numbere;
+        $url = "https://www.bulksmsnigeria.com/api/v1/sms/create?api_token=" . $apiKey . "&from=ZA-IBS&to=" . $destination . "&body=" . urlencode($message) . "&dnd=" . $numbere;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -2365,7 +2692,7 @@ function verifySmsEnum($data)
         $destination = $row_User_re['phone'];
         $apiKey = "5Img2CELv9EZRZCHrEKHN1N7aRl28e7l1ZxYA1WykaF7wozSxeiDbkOiO0qO"; // Your BulkSMS Nigeria API key
 
-        $url = "https://www.bulksmsnigeria.com/api/v1/sms/create?api_token=" . $apiKey . "&from=AKW-IBS&to=" . $destination . "&body=" . urlencode($message) . "&dnd=" . $numbere;
+        $url = "https://www.bulksmsnigeria.com/api/v1/sms/create?api_token=" . $apiKey . "&from=ZA-IBS&to=" . $destination . "&body=" . urlencode($message) . "&dnd=" . $numbere;
 
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, $url);
@@ -2454,12 +2781,17 @@ function UpdateAccountStatusSmsEnum($data)
 
 function getMDAsCount()
 {
-    $pull_data = check_db_query_staus1("SELECT COUNT(*) FROM mda", "CHK");
+    $pull_data = check_db_query_staus1("SELECT COUNT(DISTINCT fullname) as total FROM mda", "CHK");
     exit(json_encode($pull_data));
 }
 function getRevenueCount()
 {
-    $pull_data = check_db_query_staus1("SELECT COUNT(*) FROM revenue_heads", "CHK");
+    $pull_data = check_db_query_staus1("SELECT COUNT(COL_4) as total FROM revenue_heads", "CHK");
+    exit(json_encode($pull_data));
+}
+function getEnumCount()
+{
+    $pull_data = check_db_query_staus1("SELECT COUNT(DISTINCT fullname) as total FROM enumerator_users", "CHK");
     exit(json_encode($pull_data));
 }
 
@@ -2533,7 +2865,7 @@ function sendContactEmail($data)
     $message = "$message";
 
 
-    $header = "From:'$sender'";
+    $header = "From:'info@useibs.com'";
     $header .= "MIME-Version: 1.0\r\n";
     $header .= "Content-type: text/html\r\n";
     $retval = mail($to, $subject, $message, $header);
@@ -3220,23 +3552,53 @@ function resetPassword()
         $id = $row_User_re['id'];
         $name = $row_User_re['first_name'];
 
-        $sender = "info@useibs.com";
-        //    $contact = "me";
-        //    $postmessage = "message";  
-        $to = "$email";
-        $subject = "Reset Password";
-        // Email Template
-        $message = "Hi $name! Click on the link to to reset your password https://useibs.com/resetpass.html?id=$id";
-        //    $message .= "<b>Contact Number : </b>".$contact."<br>";
-        //    $message .= "<b>Email Address : </b>".$email."<br>";
-        //    $message .= "<b>Message : </b>".$postmessage."<br>";
-
-        $header = "From:'$sender'";
-        $header .= "MIME-Version: 1.0\r\n";
-        $header .= "Content-type: text/html\r\n";
-        $retval = mail($to, $subject, $message, $header);
+         // Define the API endpoint URL
+            $apiUrl = "https://api.brevo.com/v3/smtp/email";
+            
+            // Define your API key
+            $apiKey = "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";
+            
+            // Create an array with the email data
+            $emailData = [
+                "to" => [
+                    [
+                        "email" => $email,
+                        "name" => $name,
+                    ],
+                ],
+                "templateId" => 11,
+                "params" => [
+                    "Fname" => $name,
+                    "URL" => "https://plateaugr.useibs.com/resetpass.html?id=$id"
+                ],
+                "headers" => [
+                    "X-Mailin-custom" => "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                    "charset" => "iso-8859-1",
+                ],
+            ];
+            
+            // Convert the email data to a JSON string
+            $jsonData = json_encode($emailData);
+            
+            // Initialize cURL session
+            $ch = curl_init($apiUrl);
+            
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            
+            // Execute cURL request
+            $response = curl_exec($ch);
+            
+            curl_close($ch);
         // message Notification
-        if ($retval == true) {
+        if (curl_errno($ch)) {
             echo json_encode(array(
                 'status' => 1,
                 'success' => true,
@@ -3477,16 +3839,16 @@ function cmsCreation($data)
     include "config/index.php";
     //include "config/enctp.php";
     $page = $data->page;
-    $content = $data->content;
+    $content = urldecode($data->content);
+    $content1 = base64_encode($content);
     $title = $data->title;
     $image = $data->image;
     $caption = $data->caption;
 
     $query_User_re = sprintf("INSERT INTO `cms`( `page`, `content`, `title`, `image`, `caption`) 
-                VALUES ('$page', '$content', '$title', '$image', '$caption')");
+                VALUES ('$page', '$content1', '$title', '$image', '$caption')");
     $User_re = mysqli_query($ibsConnection, $query_User_re) or die(mysqli_error($ibsConnection));
     if ($User_re) {
-        $last_id = mysqli_insert_id($ibsConnection);
         $returnResponse = ['status' => 1, 'message' => "Created successfully"];
         exit(json_encode($returnResponse));
     } else {
@@ -3501,12 +3863,13 @@ function cmsUpdate($data)
     //include "config/enctp.php";
     $id = $data->id;
     $page = $data->page;
-    $content = $data->content;
+     $content = urldecode($data->content);
+    $content1 = base64_encode($content);
     $title = $data->title;
     $image = $data->image;
     $caption = $data->caption;
 
-    $query_User_re = sprintf("UPDATE `cms` SET `page` = '{$page}', `content` = '{$content}', `title` = '{$title}', `image` = '{$image}', `caption` = '{$caption}' WHERE `id` = '{$id}'");
+    $query_User_re = sprintf("UPDATE `cms` SET `page` = '{$page}', `content` = '{$content1}', `title` = '{$title}', `image` = '{$image}', `caption` = '{$caption}' WHERE `id` = '{$id}'");
     $User_re = mysqli_query($ibsConnection, $query_User_re) or die(mysqli_error($ibsConnection));
     if ($User_re) {
         $returnResponse = ['status' => 1, 'message' => "Updated successfully"];
@@ -3522,17 +3885,34 @@ function deleteCMS($cms_id)
     // print_r($data);
     exit(json_encode(check_db_query_staus("DELETE FROM `cms` WHERE `id`='{$cms_id}'", "DEL")));
 }
+
+
 function getcmsCreation()
 {
     include "config/index.php";
     //include "config/enctp.php";
-    //print_r($data);
-    $check_exist = check_db_query_staus1("SELECT * FROM cms", "CHK");
-    if ($check_exist['status'] == 1) {
-        exit(json_encode($check_exist));
-    } else if ($check_exist['status'] == 0) {
-        exit(json_encode($check_exist));
-    }
+    
+    $query_User_re = sprintf("SELECT * FROM cms");
+    $User_re = mysqli_query($ibsConnection, $query_User_re) or die(mysqli_error($ibsConnection));
+    $totalRows_User_re = mysqli_num_rows($User_re);
+   if ($User_re) {
+     if ($totalRows_User_re > 0) {
+                    $all = [];
+                    while ($row_User_re = mysqli_fetch_assoc($User_re)) {
+                         $revenue_head_id = $row_User_re["content"];
+                          $row_User_re["content"] = base64_decode($revenue_head_id);
+                        $all[] = $row_User_re;
+                    };
+                    $arr = ['status' => 1, 'message' => $all];
+                          exit(json_encode($arr));
+                } else {
+                    $returnResponse = ['status' => 0, 'message' => "failed to load, try again"];
+                           exit(json_encode($returnResponse));
+                }
+            } else {
+                $returnResponse = ['status' => 0, 'message' => "failed to load, try again"];
+                      exit(json_encode($returnResponse));
+            }
 }
 
 function supportCreation($data)
@@ -3750,7 +4130,7 @@ function MailTinRequest()
     //    $message .= "<b>Email Address : </b>".$email."<br>";
     //    $message .= "<b>Message : </b>".$postmessage."<br>";
 
-    $header = "From:'$sender'";
+    $header = "From:'info@useibs.com'";
     $header .= "MIME-Version: 1.0\r\n";
     $header .= "Content-type: text/html\r\n";
     $retval = mail($to, $subject, $message, $header);
@@ -3820,39 +4200,26 @@ function generatePassword($length = 8) {
 
 function generateSerialCode($lga) {
     $states = [
-        "AkwaIbom" => [
-            "Abak",
-            "Eastern Obolo",
-            "Eket",
-            "Esit Eket",
-            "Essien Udim",
-            "Etim Ekpo",
-            "Etinan",
-            "Ibeno",
-            "Ibesikpo Asutan",
-            "Ibiono-Ibom",
-            "Ika",
-            "Ikono",
-            "Ikot Abasi",
-            "Ikot Ekpene",
-            "Ini",
-            "Itu",
-            "Mbo",
-            "Mkpat-Enin",
-            "Nsit-Atai",
-            "Nsit-Ibom",
-            "Nsit-Ubium",
-            "Obot Akara",
-            "Okobo",
-            "Onna",
-            "Oron",
-            "Oruk Anam",
-            "Udung-Uko",
-            "Ukanafun",
-            "Uruan",
-            "Urue-Offong Oruko",
-            "Uyo"
-        ]
+          "Plateau" => [
+    "Bokkos",
+    "Barkin Ladi",
+    "Bassa",
+    "Jos East",
+    "Jos North",
+    "Jos South",
+    "Kanam",
+    "Kanke",
+    "Langtang South",
+    "Langtang North",
+    "Mangu",
+    "Mikang",
+    "Pankshin",
+    "Qua an Pan",
+    "Riyom",
+    "Shendam",
+    "Wase"
+  ]
+       
         // Add more states and their cities here
     ];
 
@@ -3881,7 +4248,7 @@ function createEnumerator($data)
     $lga = $data->lga;
     $address = $data->address;
     $password = generatePassword(10);
-    $agent_id = "AKW" . generatePayerID();
+    $agent_id = "PL" . generatePayerID();
     $query_User_re = sprintf("INSERT INTO `enumerator_users`(`email`, `fullname`, `state`, `phone`, `lga`, `address`,`status`,`password`, `agent_id`)
                 VALUES ('$email', '$fullname', '$state', '$phone', '$lga', '$address','1', '$password', '$agent_id')");
     $check_exist = check_db_query_staus("SELECT `email` FROM enumerator_users WHERE `email`='{$email}'", "CHK");
@@ -3893,23 +4260,53 @@ function createEnumerator($data)
         $User_re = mysqli_query($ibsConnection, $query_User_re) or die(mysqli_error($ibsConnection));
         if ($User_re) {
              $last_id = mysqli_insert_id($ibsConnection);
-             $sender = "info@useibs.com";
-
-            $to = "$email";
-            $subject = "Account Creation";
-            // Email Template
-            $message = "Hi $fullname! Your account has been Created Successfully <br />
-            Here is Your Account details: <br />
-            Username: $email. <br />
-            password: $password <br />
+             // Define the API endpoint URL
+            $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
-            Click on the link to Login into your Account https://useibs.com/enumeration";
-
-
-            $header = "From:'$sender'";
-            $header .= "MIME-Version: 1.0\r\n";
-            $header .= "Content-type: text/html\r\n";
-            $retval = mail($to, $subject, $message, $header);
+            // Define your API key
+            $apiKey = "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";
+            
+            // Create an array with the email data
+            $emailData = [
+                "to" => [
+                    [
+                        "email" => $email,
+                        "name" => $name,
+                    ],
+                ],
+                "templateId" => 12,
+                "params" => [
+                    "Fname" => $name,
+                    "email" => $email,
+                    "password" => $password,
+                    "URL" => "https://plateaugr.useibs.com/enumeration"
+                ],
+                "headers" => [
+                    "X-Mailin-custom" => "custom_header_1:custom_value_1|custom_header_2:custom_value_2|custom_header_3:custom_value_3",
+                    "charset" => "iso-8859-1",
+                ],
+            ];
+            
+            // Convert the email data to a JSON string
+            $jsonData = json_encode($emailData);
+            
+            // Initialize cURL session
+            $ch = curl_init($apiUrl);
+            
+            // Set cURL options
+            curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+            curl_setopt($ch, CURLOPT_HTTPHEADER, [
+                'Accept: application/json',
+                'api-key: ' . $apiKey,
+                'Content-Type: application/json',
+            ]);
+            curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonData);
+            
+            // Execute cURL request
+            $response = curl_exec($ch);
+            
+            curl_close($ch);
             $returnResponse = ['status' => 1, 'message' => "{$fullname} added successfully \n\n Password: $password"];
             $user_category = "Admin User";
              $user_id = $last_id;
@@ -3965,7 +4362,7 @@ function createEnumerationTax($data1)
         } else if ($account_type == 3) {
             $category1 = "P";
         } 
-        $payer_id = "AKW" . $category1 . "-" . generatePayerID();
+        $payer_id = "PL" . $category1 . "-" . generatePayerID();
         $verification = encripted_data($email . "Â£" . "2990" . "_");
         $verification_code = substr(str_shuffle(str_repeat("0123456789", 6)), 0, 6);
         // $password = generatePassword(10);
@@ -3985,7 +4382,7 @@ function createEnumerationTax($data1)
                       $user_category = "Enum User";
              $user_id = $last_id;
              $comment = "Enum Tax payer Creation";
-           $session_id = $_SESSION['session_id'];
+           $session_id = "";
              $ipAddress = $_SERVER['REMOTE_ADDR'];
              activityLogs($user_category, $user_id, $comment, $session_id, $ipAddress);
                 exit(json_encode($returnResponse));
@@ -4017,7 +4414,7 @@ function createEnumerationTax($data1)
             $revenue_return = $data1[0]->revenue_return;
             $valuation = $data1[0]->valuation;
             $img = $data1[0]->img;
-            $payer_id = "AKW" . $category1 . "-" . generatePayerID();
+            $payer_id = "PL" . $category1 . "-" . generatePayerID();
             // $password = generatePassword(10);
             $query_User_re = sprintf("INSERT INTO `enumerator_corperate_info`(`user_tax_number`, `category`, `name`, `industry`, `staff_quota`, `tin`, `email`, `state`, `lga`, `address`, `area`, `tax_category`, `business_type`, `revenue_return`, `valuation`,`img`)
                         VALUES ('$payer_id', $category','$name', '$industry', '$staff_quota', '$tin', '$email','$state', '$lga', '$address', '$area', '$tax_category', '$business_type', '$revenue_return', '$valuation','$img')");
@@ -4105,9 +4502,9 @@ function createEnumerationTax($data1)
             $area = $data1[0]->area;
             $tax_category = $data1[0]->tax_category;
             $serialCode = generateSerialCode($lga);
-            $property_id = "AKW" . $serialCode . generatePayerID();
+            $property_id = "PL" . $serialCode . generatePayerID();
             $img = $data1[0]->img;
-            $payer_id = "AKW" . $category1 . "-" . generatePayerID();
+            $payer_id = "PL" . $category1 . "-" . generatePayerID();
             // $password = generatePassword(10);
             $query_User_re = sprintf("INSERT INTO `enumerator_property_info`(`user_tax_number`,`property_id`,`property_file`, `property_type`, `property_area`, `latitude`, `longitude`, `state`, `lga`, `address`, `area`, `tax_category`,`img`)
                         VALUES ('$payer_id',$property_id','$property_file','$property_type', '$property_area', '$latitude', '$longitude', '$state', '$lga', '$address', '$area', '$tax_category','$img')");
@@ -4217,11 +4614,11 @@ function enumerator_users_login($username, $password)
     if ($totalRows_User_re > 0) {
         if ($row_User_re['password'] != $password) {
             $arr = ['status' => 0, 'message' => 'Incorrect Password'];
-            // $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+            // $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
             exit(json_encode($arr));
         } else {
             unset($row_User_re['password']);
-            $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+            $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
             $user_category = "Enum User";
              $user_id = $row_User_re['id'];
              $comment = "Enumerator Loggedin successfully";
@@ -4400,7 +4797,7 @@ function userProfileMda($id)
     $row_User_re = mysqli_fetch_assoc($User_re);
     $totalRows_User_re = mysqli_num_rows($User_re);
     if ($totalRows_User_re > 0) {
-        $arr = ['status' => 1, 'message' => 'Buzzing you in ðŸ˜Ž', 'user' => $row_User_re];
+        $arr = ['status' => 1, 'message' => 'Buzzing you in 😎', 'user' => $row_User_re];
         exit(json_encode($arr));
     } else {
         $arr = ['status' => 0, 'message' => 'User does not exist',];
@@ -4562,131 +4959,64 @@ function getTotalUserError()
 }
 
 function getApplicableTaxes($tax_number){
-    $check_exist_001 = check_db_query_staus1("SELECT * FROM `applicable_taxes` WHERE tax_number='{$tax_number}' AND revenue_head IN ('Witholding Tax (General)', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Renewal of Business Premises', 'Direct Assesment', 'Registration and Renewal of Contractor', 'Renewal of Private Educational Institutions', 'Dealers License', 'Renewl Fee of Evening Continunig Education', 'Renewal of Environmental Contractors/Consultant', 'Registration /RenewaI Fees for Private Medical Clinic', 'Renewal Fees Ambulances', 'Sitting /ApprovaI of GSM Renewal Charges', 'Renewal of Audit Firms', 'Listing & Reco Hotels Tourism Entterp. Fees', 'Right of Way', 'Land Rent — Temporary right of Occupancy', 'Land Use Rent (Privace C/O)')",  "CHK");
+    $check_exist_001 = check_db_query_staus1("SELECT * FROM `applicable_taxes` WHERE tax_number='{$tax_number}' AND revenue_head IN ('Pool Betting Tax', 'PAYE Organized Private Sector', 'PAYE Informal Sector', 'PAYE Public Local Government', 'PAYE Public State Government', 'Business and Trade Operation Fees (BPR) Registration & Renewal', 'Self Right of way fees', 'Private clinic registration / renewal(pharm)')",  "CHK");
     $all = [];
     foreach($check_exist_001['message'] as $key => $items){
       $business_type =  $items['revenue_head_id'];
       $revenue_head =  $items['revenue_head'];
          switch ($revenue_head) {
-        case 'Pools Betting License: Issues':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Witholding Tax (General)', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Renewal of Business Premises')",  "CHK");
+        case 'Pool Betting Tax':
+            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('PAYE', 'Withholding Tax General', 'Environmental Charge', 'Development Levy')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
    
             break;
-        case 'Pay As You Earn (PAYE)':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Witholding Tax (General)', 'Environmental Fees', 'Economic Development Levy', 'Renewal of Business Premises')",  "CHK");
+        case 'PAYE Organized Private Sector':
+            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('WTH tax on rent/Tenament', 'Rate', 'Environmental Charge', 'Development Levy')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
           
             break;
-        case 'Renewal of Business Premises':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Witholding Tax (General)', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy')",  "CHK");
+        case 'PAYE Informal Sector':
+            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('WTH tax on rent/Tenament', 'Rate', 'Environmental Charge', 'Development Levy')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
      
             break;
-        case 'Witholding Tax (General)':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy')",  "CHK");
+        case 'PAYE Public Local Government':
+             $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('WTH tax on rent/Tenament', 'Rate', 'Environmental Charge', 'Development Levy')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
        
             break;
-        case 'Direct Assesment':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)')",  "CHK");
+        case 'PAYE Public State Government':
+             $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('WTH tax on rent/Tenament', 'Rate', 'Environmental Charge', 'Development Levy')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
       
             break;
-            case 'Registration and Renewal of Contractor':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
+            case 'PAYE Federal Government Establishment':
+             $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('WTH tax on rent/Tenament', 'Rate', 'Environmental Charge', 'Development Levy')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
       
             break;
-            case 'Renewal of Private Educational Institutions':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
+            case 'Business and Trade Operation Fees (BPR) Registration & Renewal':
+            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('PAYE', 'Withholding Tax General', 'Environmental Charge', 'Development Levy')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
       
             break;
-            case 'Dealers License':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
+            case 'Right of way fees':
+            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('PAYE', 'Withholding Tax General', 'Environmental Charge', 'Development Levy', 'Self Assessment')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
       
             break;
-            case 'Renewl Fee of Evening Continunig Education':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
+            case 'Private clinic registration / renewal(pharm)':
+            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('PAYE', 'Withholding Tax General', 'Environmental Charge', 'Development Levy', 'Self Assessment')",  "CHK");
             $check_exist1['message']['business_type_id'] = $business_type;
             $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-            case 'Renewal of Environmental Contractors/Consultants':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-            case 'Registration /RenewaI Fees for Private Medical Clinic':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-             case 'Renewal Fees Ambulances':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-             case 'Sitting /ApprovaI of GSM Renewal Charges':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-             case 'Land Rent — Temporary right of Occupancy':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN (  'Environmental Fees', 'Economic Development Levy', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-            case 'Land Use Rent (Privace C/O)':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN (  'Environmental Fees', 'Economic Development Levy', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-             case 'Renewal of Driving School':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-              case 'Renewal of Audit Firms':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-              case 'Listing & Reco Hotels Tourism Entterp. Fees':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-              case 'Right of Way':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
-            break;
-              case 'Renewal of Driving School':
-            $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 IN ('Renewal of Business Premises', 'Pay As You Earn (PAYE)', 'Environmental Fees', 'Economic Development Levy', 'Witholding Tax (General)', 'Direct Assesment')",  "CHK");
-            $check_exist1['message']['business_type_id'] = $business_type;
-            $check_exist1['message']['business_type'] = $revenue_head;
-      
             break;
         default:
         // $check_exist1 = check_db_query_staus1("SELECT * FROM  `revenue_heads` WHERE COL_4 = '{$revenue_head}'",  "CHK");
@@ -4712,3 +5042,5 @@ function getActiveUsers(){
 function getAllMdaUsers(){
     exit(json_encode(check_db_query_staus1("SELECT id, name, email FROM mda_users", "CHK")));
 }
+
+

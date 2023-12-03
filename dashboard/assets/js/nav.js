@@ -40,13 +40,19 @@ $(".aside").html(`
       </li>
       <li class="menu-item">
         <a href="paymenthistory.html" class="menu-link mdp">
-        <i class='menu-icon tf-icons bx bxs-group' ></i>
+        <iconify-icon icon="bx:history" class="menu-icon"></iconify-icon>
           <div data-i18n="Basic">Payment history</div>
         </a>
       </li>
       <li class="menu-item">
+      <a href="payee-corporate.html" class="menu-link paye">
+      <iconify-icon icon="fluent-mdl2:edit-contact" class="menu-icon"></iconify-icon>
+        <div data-i18n="Basic">PAYE Management</div>
+      </a>
+    </li>
+      <li class="menu-item">
         <a href="eservice.html" class="menu-link mdd">
-        <i class='menu-icon tf-icons bx bxs-group' ></i>
+        <iconify-icon icon="carbon:dns-services" class="menu-icon"></iconify-icon>
           <div data-i18n="Basic">E-Services</div>
         </a>
       </li>
