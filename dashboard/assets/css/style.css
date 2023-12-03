@@ -393,3 +393,18 @@ a:hover {
 .collapse{
   visibility: visible  !important;
 }
+
+
+.formTabs {
+  display: none;
+}
+
+/* .invTa tr td {
+  padding-left: 0;
+  padding-bottom: 0px;
+  font-size: 14px;
+} */
+
+.imgTabs {
+  display: none;
+}
