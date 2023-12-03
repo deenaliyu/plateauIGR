@@ -1,5 +1,4 @@
-
-let HOST = "https://useibs.com/payzamfara/php1/index.php"
+let HOST = "https://plateaugr.useibs.com/php/index.php"
 
 $(".aside").html(`
 <div class="app-brand demo">

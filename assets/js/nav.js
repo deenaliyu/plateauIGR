@@ -1,6 +1,5 @@
 
-let HOST = "https://payzamfara.com/php/index.php"
-// let HOST = "https://useibs.com/payzamfara/php1/index.php"
+let HOST = "https://plateaugr.useibs.com/php/index.php"
 
 let THE_SESSION = localStorage.getItem("userDataPrime")
 

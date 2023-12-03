@@ -1,7 +1,4 @@
-// let HOST = "http://localhost/payzamfaranew/php/index.php"
-let HOST = "https://steamledge.com/primeguage/php/index.php";
-// let HOST = "http://localhost/primeguagenew/php/index.php";
-// let HOST = "https://useibs.com/payzamfara/php1/index.php"
+let HOST = "https://plateaugr.useibs.com/php/index.php"
 
 let userInfo2 = JSON.parse(window.localStorage.getItem("adminDataPrime"));
 
