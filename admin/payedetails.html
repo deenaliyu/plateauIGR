@@ -105,7 +105,7 @@
             <section class="w-full main_section">
 
               <div class="flex items-center justify-between mb-3">
-                <a href="privatepaye.html" class="text-[#CDA545]">Back to Paye Management</a>
+                <button onclick="history.go(-1)" class="text-[#CDA545]">Back to Paye Management</button>
 
                 <button class="button flex items-center justify-center">
                   <iconify-icon icon="icon-park-outline:message"></iconify-icon>
@@ -118,24 +118,24 @@
                     <div class="flex gap-2 mb-3">
                       <img src="#" alt="img" />
                       <div>
-                        <h1 class="text-lg text-black fontBold">Nasco HouseHold Products Limited</h1>
-                        <p class="text-xs"><span class="fontBold">Payer ID: </span> PLI-34567893</p>
+                        <h1 class="text-lg text-black fontBold" id="payeName">-</h1>
+                        <p class="text-xs"><span class="fontBold" id="payeID">Payer ID: </span> -</p>
                       </div>
                     </div>
 
-                    <p class="text-sm mb-2"><span class="fontBold">Email Address: </span> nasco@gmail.com</p>
-                    <p class="text-sm mb-2"><span class="fontBold">Contact: </span> 0908748383</p>
-                    <p class="text-sm mb-2"><span class="fontBold">Address: </span> 3-Yakubu Gowon Way</p>
+                    <div id="contactSection">
+                      <!-- CONTACT SECTION -->
+                    </div>
                   </div>
 
 
-                  <div class="grid md:grid-cols-2 grid-cols-2 gap-3">
+                  <div class="grid md:grid-cols-2 grid-cols-2 gap-3" id="metrics">
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
                       <p class="text-gray-500 impMetrics text-xs">REGISTERED STAFF</p>
 
                       <p class="zanumbers" style="margin-top: 30px;">
-                        <span id="total_amount_invoiced">100</span>
+                        <span id="reg_staff">-</span>
                       </p>
                     </div>
 
@@ -143,7 +143,7 @@
                       <p class="text-gray-500 impMetrics text-xs">MONTHLY REMITTANCE</p>
 
                       <p class="zanumbers" style="margin-top: 30px;">
-                        <span id="total_amount_invoiced2">1000</span>
+                        <span id="month_remm">-</span>
                       </p>
                     </div>
 
@@ -203,48 +203,16 @@
                             <th>Manage</th>
                           </tr>
                         </thead>
-                        <tbody>
-                          <tr>
-                            <td>1</td>
-                            <td>PL1-3864383</td>
-                            <td>David Adeola</td>
-                            <td>Human Resources</td>
-                            <td>&#8358; 2,000,000</td>
-                            <td>&#8358; 2,400,000</td>
-                            <td>&#8358; 24,000,000</td>
-                            <td>22/02/2023</td>
-                            <td>&#8358; 24,000,000</td>
-                            <td>
-                              <div class="flex items-center gap-2">
-                                <button><iconify-icon class="fontBold text-lg"
-                                    icon="basil:edit-outline"></iconify-icon></button>
-                                <button><iconify-icon class="fontBold text-lg"
-                                    icon="fluent:delete-24-regular"></iconify-icon></button>
-                              </div>
-                            </td>
-                          </tr>
 
-                          <tr>
-                            <td>1</td>
-                            <td>PL1-3864383</td>
-                            <td>Aliyu Adeola</td>
-                            <td>Finance</td>
-                            <td>&#8358; 2,000,000</td>
-                            <td>&#8358; 2,400,000</td>
-                            <td>&#8358; 24,000,000</td>
-                            <td>21/02/2023</td>
-                            <td>&#8358; 24,000,000</td>
-                            <td>
-                              <div class="flex items-center gap-2">
-                                <button><iconify-icon class="fontBold text-lg"
-                                    icon="basil:edit-outline"></iconify-icon></button>
-                                <button><iconify-icon class="fontBold text-lg"
-                                    icon="fluent:delete-24-regular"></iconify-icon></button>
-                              </div>
-                            </td>
-                          </tr>
+                        <tbody id="stafflistTable">
+
                         </tbody>
                       </table>
+
+                      <div class="flex justify-center items-center mt-4" id="loader">
+                        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                      </div>
+
                     </div>
 
                   </div>
@@ -385,10 +353,11 @@
   <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/main.js"></script>
 
+  <script src="./assets/js/payedetails.js"></script>
 
   <script>
-    $('#dataTable').DataTable();
-    $('#dataTable2').DataTable();
+
+    // $('#dataTable2').DataTable();
 
     let theAtivo = document.querySelector(".mdoo")
     theAtivo.parentElement.classList.add("active")

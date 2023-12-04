@@ -13,7 +13,7 @@ async function fetchPayeUsers() {
 
   } else {
 
-    let theRightUSers = specialUsers.message.filter(rihuser => rihuser.category.toLowerCase() === category)
+    let theRightUSers = specialUsers.message.reverse().filter(rihuser => rihuser.category.toLowerCase() === category)
 
     theRightUSers.forEach((rhUser, i) => {
       let annual = rhUser.annual_estimate
@@ -24,7 +24,7 @@ async function fetchPayeUsers() {
       htmlData = `
         <tr>
           <td>${i + 1}</td>
-          <td>${rhUser.payer_id}</td>
+          <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
           <td>${rhUser.name}</td>
           <td>${rhUser.category}</td>
           <td>${rhUser.staff_quota}</td>
@@ -32,7 +32,7 @@ async function fetchPayeUsers() {
           <td>&#8358; ${monthly.toLocaleString("en-US")}</td>
           <td>&#8358; 24,000,000</td>
           <td><span class="badge bg-danger rounded-pill">Defaulter</span></td>
-          <td><a href="payedetails.html" class="btn btn-sm button-3">View</a></td>
+          <td><a href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}" class="btn btn-sm button-3">View</a></td>
         </tr>
       `
 
