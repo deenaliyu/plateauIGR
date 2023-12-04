@@ -47,3 +47,53 @@ async function getStaffLists() {
 getStaffLists().then(tt => {
   $('#dataTable').DataTable();
 })
+
+async function getSpecialUsersDash1() {
+
+  const response = await fetch(`${HOST}/?getSpecialUsersDash1&payer_id=PL-PAYE-3978265401`)
+  const getDashData = await response.json()
+
+
+  if (getDashData.status === 0) {
+    // $('#dataTable').DataTable();
+
+  } else {
+    let dashData = getDashData.message[0]
+
+    $("#reg_bodies").html(dashData.Total_Special_Users)
+    $("#reg_staffs").html(dashData.Total_Staff)
+
+  }
+
+}
+
+getSpecialUsersDash1()
+
+async function getSpecialUsersDashAnnualEstimate(year) {
+  $("#annEstimate").html('-')
+
+  const response = await fetch(`${HOST}/?getSpecialUsersDashAnnualEstimate&year=${year}&payer_id=PL-PAYE-3978265401`)
+  const getDashData = await response.json()
+
+  if (getDashData.status === 0) {
+    $("#annEstimate").html(0)
+
+  } else {
+    let dashData = getDashData.message[0]
+    $("#annEstimate").html(dashData.Total_Annual_Estimate)
+  }
+
+}
+
+$(document).ready(function () {
+  let yearr = new Date().getFullYear()
+
+  getSpecialUsersDashAnnualEstimate(yearr)
+});
+
+$('#selYear').on('change', function () {
+  let value = $(this).val()
+
+  getSpecialUsersDashAnnualEstimate(value)
+
+})

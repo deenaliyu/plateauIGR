@@ -8,25 +8,20 @@
   <title>PrimeGuage</title>
 
   <!-- FAVION ICON -->
-  <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
-
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css" />
-  <link rel="stylesheet" href="../assets/css/style.css" />
-  <link rel="stylesheet" href="../assets/css/responsive.css" />
-  <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
-  <link rel="stylesheet" href="../assets/js/aos-master/dist/aos.css" />
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="assets/js/aos-master/dist/aos.css" />
+
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
   <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
 
 
   <style>
     .formTabs {
-      display: none;
-    }
-
-    .imgTabs {
       display: none;
     }
 
@@ -35,17 +30,15 @@
       padding-bottom: 0px;
       font-size: 14px;
     }
+
+    .imgTabs {
+      display: none;
+    }
   </style>
 </head>
 
 <body>
-  <header>
-    <div class="flex gap-2 items-center p-3 border-b">
-      <img src="./assets/img/logo.png" class="w-[50px]" alt="">
-      <p class="text-md fontBold">Primeguage IGR Portal</p>
-    </div>
-
-  </header>
+  <header class="flex justify-between px-10 bg-white py-3" id="theHeader"></header>
 
   <section class="flex h-[89vh] overflow-y-scroll headerBeginner">
 
@@ -53,22 +46,13 @@
 
       <div class="flex px-1 h-full">
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/1.png" />
+          <img src="./assets/img/invside1.png" />
         </div>
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/2.png" />
+          <img src="./assets/img/invside2.png" />
         </div>
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/2.png" />
-        </div>
-        <div class="mt-5 imgTabs">
-          <img src="./assets/img/3.png" />
-        </div>
-        <div class="mt-5 imgTabs">
-          <img src="./assets/img/4.png" />
-        </div>
-        <div class="mt-5 imgTabs">
-          <img src="./assets/img/5.png" />
+          <img src="./assets/img/invside2.png" />
         </div>
       </div>
 
@@ -76,60 +60,14 @@
 
     <div class="md:w-9/12 w-full bg-[url('./assets/img/slideimg.png')] bg-center overflow-y-scroll">
 
-      <section class="formTabs h-full">
-
-        <div class="md:pt-12 pt-6 md:px-10 px-4">
-          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
-            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
-            <span>Go back</span>
-          </button>
-          <h1 class="fontBold text-2xl mt-2">Select Staffs</h1>
-        </div>
-
-        <div class="mt-4 px-4">
-          <div class="table-responsive">
-            <table class="table " id="dataTable">
-
-              <thead>
-                <tr>
-                  <th></th>
-                  <th>S/N</th>
-                  <th>Payer ID</th>
-                  <th>Name</th>
-                  <th>Annual Gross Income</th>
-                  <th>Monthly Salary</th>
-                  <th>Total Remittance </th>
-                </tr>
-              </thead>
-              <tbody id="stafflistTable">
-
-              </tbody>
-
-              <div class="flex justify-center items-center mt-4" id="loader">
-                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-              </div>
-            </table>
-          </div>
-
-
-          <button class="button mt-3 hidden" type="button" id="generating_inv"
-            onclick="generateInvoiceNon()">Continue</button>
-          <div id="msg_box"></div>
-        </div>
-      </section>
-
-
       <section class="formTabs pb-5">
-        <div class="md:pt-10 pt-3 md:px-10 px-4">
-          <!-- <button class="flex items-center gap-2" onclick="nextPrev(-1)">
-            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
-            <span>Go back</span>
-          </button> -->
+        <div class="md:pt-14 pt-5 md:px-10 px-4" id="thePay">
+
         </div>
 
         <div class="invoiceContainer flex justify-center">
 
-          <div class="invoice bg-white md:w-[70%] w-[90%] shadow-md md:-mt-12 mt-2" id="invoiceCard">
+          <div class="invoice bg-white md:w-[80%] w-[90%] shadow-md md:-mt-12 mt-2" id="invoiceCard">
             <!-- COMING FROM JS invoice.js -->
           </div>
 
@@ -154,7 +92,7 @@
                 </button>
               </div>
 
-              <button class="button flex gap-3 items-center px-10" onclick="goToPayment2()">
+              <button class="button flex gap-3 items-center px-10" onclick="goToPayment()">
                 <span>Proceed</span>
                 <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
               </button>
@@ -190,10 +128,14 @@
           </button>
         </div>
 
-        <div class="invoiceContainer flex justify-center pr-10">
-          <div class="invoice bg-white w-[70%] shadow-md" id="receiptCard">
+        <div class="invoiceContainer flex justify-center mt-5 pr-10">
+          <div class="invoice bg-white w-[70%] shadow-md -mt-12" id="receiptCard">
 
           </div>
+          <!-- RECEIPT -->
+          <!-- RECEIPT WILL BE HERE -->
+
+
         </div>
 
         <div class="flex justify-center pr-10">
@@ -201,7 +143,7 @@
             <!-- <div class="mt-4">
               <p class="text-xl">Note: You can make part payment by editing amount you are to pay</p>
             </div> -->
-            <div class="flex justify-between flex-wrap mt-4">
+            <div class="flex justify-between mt-4">
               <div class="flex gap-3 items-center">
                 <button class="outline-btn flex gap-3 items-center px-10" onclick="downloadInvoice('receiptCard')">
                   <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
@@ -214,7 +156,7 @@
                 </button>
               </div>
 
-              <a href="index.html" class="button flex gap-3 items-center px-10">
+              <a href="index.html" class="button flex gap-3 items-center px-10" onclick="nextPrev(1)">
                 <span>Return to home page</span>
                 <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
               </a>
@@ -233,26 +175,19 @@
 
 
 
-  <script src="../assets/js/jquery.js"></script>
-  <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-  <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="assets/js/jquery.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="assets/js/aos-master/dist/aos.js"></script>
+  <script src="assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
-  <script src="../assets/js/jquery.datatables.min.js"></script>
-  <script src="../assets/js/dataTables.bootstrap5.min.js"></script>
   <script>
-    $(document).ready(function () {
-      //change selectboxes to selectize mode to be searchable
-      $(".revHeadInputSel").select2();
-    });
+    AOS.init();
   </script>
-  <script src="./assets/js/nav.js"></script>
-  <script src="../assets/js/payment.js"></script>
-  <script src="../assets/js/tabHandler.js"></script>
-  <script src="./assets/js/generate-payeinv.js"></script>
-  <script src="../assets/js/generateinvoice.js"></script>
-
-  <script src="../assets/js/invoice.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/payment.js"></script>
+  <script src="assets/js/tabHandler.js"></script>
+  <script src="assets/js/invoice2.js"></script>
+  <script src="assets/js/landingcms.js"></script>
 </body>
 
 </html>

@@ -148,8 +148,42 @@
 
                 <h1 class="text-xl mb-3 fontBold text-black">Overview</h1>
                 <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
+                  <div class="dashCards card w-full flex-col space-y-2">
+                    <div class="flex items-center gap-2">
+                      <div class="icoCont bg-[#1c315c1f]">
+                        <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                      </div>
+                      <p class="text-gray-500 impMetrics text-xs">REGISTERED STAFFS</p>
+                    </div>
 
-                  <div class="dashCards card w-full flex-col space-y-2  ">
+                    <p class="zanumbers text-end" style="margin-top: 30px;">
+                      <span id="reg_staffs">-</span>
+                    </p>
+                  </div>
+
+                  <div class="dashCards card w-full flex-col space-y-2">
+                    <div class="flex items-center gap-2">
+                      <div class="icoCont bg-[#f890301f]">
+                        <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                      </div>
+                      <p class="text-gray-500 text-xs impMetrics">ANNUAL ESTIMATE</p>
+                    </div>
+
+
+                    <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
+                      <select class="form-select form-select-sm" required name="" id="selYear">
+                        <option value="2023" selected>2023</option>
+                        <option value="2024">2024</option>
+                        <option value="2025">2025</option>
+                      </select>
+
+                      <p class="text-base fontBold">
+                        &#8358;<span id="annEstimate">-</span>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div class="dashCards card w-full flex-col space-y-2">
 
                     <div class="flex items-center gap-2">
                       <div class="icoCont bg-[#f890301f]">
@@ -162,6 +196,7 @@
                       <span id="total_amount_invoiced">N24,000,000</span>
                     </p>
                   </div>
+
                   <div class="dashCards card w-full flex-col space-y-2">
                     <div class="flex items-center gap-2">
                       <div class="icoCont bg-[#f890301f]">
@@ -196,18 +231,7 @@
                   </div>
 
 
-                  <div class="dashCards card w-full flex-col space-y-2">
-                    <div class="flex items-center gap-2">
-                      <div class="icoCont bg-[#f890301f]">
-                        <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
-                      </div>
-                      <p class="text-gray-500 impMetrics text-xs">REGISTERED STAFFS</p>
-                    </div>
 
-                    <p class="zanumbers text-end" style="margin-top: 30px;">
-                      <span id="total_amount_invoiced1">N24,000,000</span>
-                    </p>
-                  </div>
                 </div>
 
 
