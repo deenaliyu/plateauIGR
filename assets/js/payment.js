@@ -296,8 +296,8 @@ function makePaymentRemita() {
 }
 
 function makePayment() {
-  let thePay = document.querySelector("#theBal").textContent
-  console.log(thePay)
+  let thePay = document.querySelector("#theBal")
+  let finalPay = thePay.dataset.money
 
   async function openInvoice(invoicenum) {
     const response = await fetch(
@@ -320,7 +320,7 @@ function makePayment() {
             key: 'pk_test_f26de719a48fdedcf6788a6b8bba2d9bd2c3c0a4', // Replace with your public key
             
             email: 'ali@gmail.com',
-            amount: thePay * 100,
+            amount: finalPay * 100,
             currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
   
             callback: function (response) {
@@ -335,7 +335,7 @@ function makePayment() {
                   "payment_channel": "paystack",
                   "payment_reference_number": reference,
                   "receipt_number": reference,
-                  "amount_paid": thePay
+                  "amount_paid": finalPay
                 }
               }
               $.ajax({
