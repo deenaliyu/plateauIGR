@@ -2,8 +2,9 @@ const urlParams = new URLSearchParams(window.location.search);
 const payerID = urlParams.get('payerID');
 const fullname = urlParams.get('fullname');
 
-$("#payeName").html(fullname)
 $("#payeID").html(payerID)
+
+
 
 async function fetchPayeUser() {
 
@@ -26,7 +27,15 @@ async function fetchPayeUser() {
 
     $("#reg_staff").html(theInfo.staff_quota)
     $("#month_remm").html(theInfo.monthly_estimate)
+    $("#payeName").html(theInfo.name)
 
+    $("#pageName").html(theInfo.category === "Private" ? 'Private PAYE (PIT)' : 'Public PAYE')
+
+    let addAStaff = document.querySelector("#addAStaff")
+    if (addAStaff) {
+      addAStaff.href = `add-employee.html?categ_id=${theInfo.payer_id}`
+      addAStaff.classList.remove("hidden")
+    }
   }
 
 }
@@ -68,11 +77,7 @@ async function getStaffLists() {
           </tr>
       `)
     });
-
-
-
   }
-
 }
 
 getStaffLists().then(tt => {

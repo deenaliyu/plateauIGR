@@ -1,6 +1,7 @@
 const urlParams = new URLSearchParams(window.location.search);
 const category = urlParams.get('type');
 
+$("#pageName").html(category === "private" ? 'Private PAYE (PIT)' : 'Public PAYE')
 async function fetchPayeUsers() {
 
   const response = await fetch(`${HOST}/?getSpecialUsers`)
@@ -32,7 +33,7 @@ async function fetchPayeUsers() {
           <td>&#8358; ${monthly.toLocaleString("en-US")}</td>
           <td>&#8358; 24,000,000</td>
           <td><span class="badge bg-danger rounded-pill">Defaulter</span></td>
-          <td><a href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}" class="btn btn-sm button-3">View</a></td>
+          <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>
       `
 

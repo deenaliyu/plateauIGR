@@ -75,13 +75,13 @@
           <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
             <div class="">
               <p class="text-sm text-black datei" id="datei">-</p>
-              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Private PAYE (PIT)</h1>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2" id="pageName">-</h1>
             </div>
 
             <div class="mt-4 flex gap-x-5">
               <div class="flex items-center gap-3" id="theCms">
 
-                <a href="add-employee.html" class="button">Add a Staff</a>
+                <a href="#" class="button hidden" id="addAStaff">Add a Staff</a>
               </div>
 
 
@@ -119,7 +119,7 @@
                       <img src="#" alt="img" />
                       <div>
                         <h1 class="text-lg text-black fontBold" id="payeName">-</h1>
-                        <p class="text-xs"><span class="fontBold" id="payeID">Payer ID: </span> -</p>
+                        <p class="text-xs"><span class="fontBold">Payer ID: </span> <span id="payeID">-</span></p>
                       </div>
                     </div>
 
