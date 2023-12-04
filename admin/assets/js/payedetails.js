@@ -81,6 +81,6 @@ async function getStaffLists() {
 }
 
 getStaffLists().then(tt => {
-  // $('#dataTable').DataTable();
+  $('#dataTable').DataTable();
 })
 

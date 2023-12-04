@@ -394,6 +394,14 @@ a:hover {
   visibility: visible  !important;
 }
 
+.payeTable tr th {
+  font-size: 10px;
+}
+
+.payeTable tr td {
+  font-size: 13px;
+}
+
 
 .formTabs {
   display: none;
