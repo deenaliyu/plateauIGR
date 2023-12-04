@@ -22,7 +22,7 @@
     href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
     rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="./assets/bootstrap/css/bootstrap.css" />
   <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
 
@@ -102,29 +102,31 @@
 
           <div class="form-group mb-3">
             <label for="">Name of Organization*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="name_of_org" required>
+            <input type="text" class="form-control w-full enumInput" data-name="fullname" required>
           </div>
 
           <div class="form-group mb-3">
             <label for="">Select your Industry*</label>
-            <select class="form-control w-full enumInput" data-name="select_industry" required>
-              <option value=""></option>
+            <select class="form-select w-full enumInput" data-name="industry" required>
+              <option value="">Select ---</option>
+              <option value="Industry A">Industry A</option>
+              <option value="Industry B">Industry B</option>
+              <option value="Industry C">Industry C</option>
             </select>
           </div>
 
           <div class="form-group mb-3">
             <label for="">No. Of Staff*</label>
-            <select class="form-control w-full enumInput" data-name="no_of_staff" required>
-              <option value=""></option>
-            </select>
+            <input type="text" class="form-control w-full enumInput" data-name="staff" required>
+
           </div>
 
           <div class="form-group mb-3">
-            <label for="">Tax Identification Number(NIN) (Optional)</label>
-            <input type="text" class="form-control w-full enumInput" data-name="name_of_org" required>
+            <label for="">Tax Identification Number(TIN) (Optional)</label>
+            <input type="text" class="form-control w-full enumInput" data-name="tin" required>
           </div>
 
-          <button class="button w-full mb-4" type="button" onclick="nextPrev(1)">Continue</button>
+          <button class="button w-full mb-4" type="button" onclick="continueReg()">Continue</button>
 
         </form>
 
@@ -146,35 +148,36 @@
 
           <div class="form-group mb-3">
             <label for="">Email*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="email" required>
+            <input type="text" class="form-control w-full enumInputB" data-name="email" required>
           </div>
 
           <div class="form-group mb-3">
             <label for="">Phone number*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="phone" required>
+            <input type="text" class="form-control w-full enumInputB" data-name="phone" required>
           </div>
 
           <div class="form-group mb-3">
             <label for="">State*</label>
-            <select class="form-control w-full enumInput" data-name="state" required>
+            <select class="form-select w-full enumInputB" data-name="state" required>
               <option value="Plateau">Plateau</option>
             </select>
           </div>
 
           <div class="form-group mb-3">
             <label for="">Local Government Area*</label>
-            <select class="form-control w-full enumInput" data-name="lga" required>
+            <select class="form-select w-full enumInputB" data-name="lga" required>
               <option value="">Select ----</option>
+              <option value="Plateau">Plateau</option>
             </select>
           </div>
 
 
           <div class="form-group mb-3">
             <label for="">Address*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="address" required>
+            <input type="text" class="form-control w-full enumInputB" data-name="address" required>
           </div>
 
-          <button class="button w-full mb-4" type="button" onclick="nextPrev(1)">Continue</button>
+          <button class="button w-full mb-4" type="button" onclick="continueReg2()">Continue</button>
 
         </form>
 
@@ -200,7 +203,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Name of Organisation</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="name_of_org" readonly>
+                <input type="text" class="form-control w-full enumInput2" data-name="fullname" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
@@ -214,7 +217,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">No of Staff</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="no_of_staff" readonly>
+                <input type="text" class="form-control w-full enumInput2" data-name="staff" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
@@ -245,20 +248,17 @@
                 <input type="text" class="form-control w-full enumInput2" data-name="lga" readonly>
               </div>
 
-              <div class="form-group md:w-6/12">
-                <label for="">Area</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="area" readonly>
+              <div class="form-group mb-3">
+                <label for="">Address</label>
+                <input type="text" class="form-control w-full enumInput2" data-name="address" readonly>
               </div>
 
             </div>
 
-            <div class="form-group mb-3">
-              <label for="">Address</label>
-              <input type="text" class="form-control w-full enumInput2" data-name="address" readonly>
-            </div>
 
 
-            <p class="fontBold text-black">Account Credentials</p>
+
+            <!-- <p class="fontBold text-black">Account Credentials</p>
 
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
@@ -272,11 +272,13 @@
                 <input type="text" class="form-control w-full" id="password" required>
               </div>
 
-            </div>
+            </div> -->
 
 
 
-            <button class="button w-full mb-4" type="button" onclick="window.open('privatepaye.html', '_self')">Verify</button>
+            <button class="button w-full mb-4" id="theButton" type="button" onclick="registerUser()">Verify</button>
+
+            <div id="msg_box"></div>
           </form>
 
         </div>
@@ -316,15 +318,7 @@
   <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/main.js"></script>
   <script src="./assets/js/tabHandler.js"></script>
-
-  <script>
-    $('#dataTable').DataTable();
-    $('#dataTable2').DataTable();
-
-    let theAtivo = document.querySelector(".mdoo")
-    theAtivo.parentElement.classList.add("active")
-
-  </script>
+  <script src="./assets/js/body-reg.js"></script>
 </body>
 
 </html>

@@ -108,13 +108,13 @@ $(".aside").html(`
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
-            <a href="privatepaye.html" class="menu-link">
+            <a href="paye-management.html?type=private" class="menu-link">
               <div data-i18n="Basic Inputs">Private</div>
             </a>
           </li>
 
           <li class="menu-item">
-            <a href="publicpaye.html" class="menu-link">
+            <a href="paye-management.html?type=public" class="menu-link">
               <div data-i18n="Input groups">Public</div>
             </a>
           </li>
