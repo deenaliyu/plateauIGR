@@ -6,6 +6,10 @@ var remita_script = document.createElement('script')
 remita_script.setAttribute('src', 'https://remitademo.net/payment/v1/remita-pay-inline.bundle.js')
 document.head.appendChild(remita_script)
 
+var flutter_script = document.createElement('script')
+flutter_script.setAttribute('src', 'https://js.paystack.co/v1/inline.js')
+document.head.appendChild(flutter_script)
+
 // var html2pdff = document.createElement('script')
 // html2pdff.setAttribute('src', 'https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js')
 // document.head.appendChild(html2pdff)
@@ -311,58 +315,104 @@ function makePayment() {
 
         let invoiceDetails = userInvoices.message[0]
 
-        const modal = FlutterwaveCheckout({
-          public_key: "FLWPUBK_TEST-b75c6102b14be3e6292bc9eca05a3497-X",
-          tx_ref: "titanic" + Math.floor(Math.random() * 1101233),
-          amount: parseFloat(invoiceDetails.amount_paid),
-          currency: "NGN",
-          payment_options: "card, banktransfer, ussd",
-          customer: {
-            email: invoiceDetails.email,
-            phone_number: invoiceDetails.phone,
-            name: invoiceDetails.first_name + " " + invoiceDetails.surname,
-          },
-          customizations: {
-            title: "PlateauIGR",
-            description: "Payment of tax",
-            logo: "https://plateaugr.useibs.com/assets/img/logo.png",
-          },
-          callback: function (payment) {
-            let dataToPush = {
-              "endpoint": "createInvidualPayment",
-              "data": {
-                "invoice_number": invoicenum,
-                "payment_channel": "FlutterWave",
-                "payment_reference_number": payment.tx_ref,
-                "receipt_number": payment.tx_ref, 
-                "amount_paid" : invoiceDetails.amount_paid
+        var handler = PaystackPop.setup({
+          //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
+            key: 'pk_test_f26de719a48fdedcf6788a6b8bba2d9bd2c3c0a4', // Replace with your public key
+            
+            email: 'ali@gmail.com',
+            amount: thePay * 100,
+            currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+  
+            callback: function (response) {
+              //this happens after the payment is completed successfully
+              var reference = response.reference;
+              alert('Payment complete! Reference: ' + reference);
+              // Make an AJAX call to your server with the reference to verify the transaction
+              let dataToPush = {
+                "endpoint": "createInvidualPayment",
+                "data": {
+                  "invoice_number": invoicenum,
+                  "payment_channel": "paystack",
+                  "payment_reference_number": reference,
+                  "receipt_number": reference,
+                  "amount_paid": thePay
+                }
               }
-            }
-            $.ajax({
-              type: "POST",
-              url: HOST,
-              dataType: 'json',
-              data: JSON.stringify(dataToPush),
-              success: function (data) {
-                console.log(data)
-                alert("payment success")
-                modal.close();
-                nextPrev(1)
-                openReceipt(invoicenum)
-              },
-              error: function (request, error) {
-                console.log(error)
-              }
-            });
+              $.ajax({
+                type: "POST",
+                url: HOST,
+                dataType: 'json',
+                data: JSON.stringify(dataToPush),
+                success: function (data) {
+                  console.log(data)
+                  alert("payment success")
+                  nextPrev(1)
+                  openReceipt(invoicenum)
+                },
+                error: function (request, error) {
+                  console.log(error)
+                }
+              });
+  
+            },
+            onClose: function () {
+              alert('Transaction was not completed, window closed.');
+            },
+          });
+          handler.openIframe();
 
-          },
-          onclose: function (incomplete) {
-            if (incomplete === true) {
-              // Record event in analytics
-              console.log("Not completed")
-            }
-          }
-        });
+        // const modal = FlutterwaveCheckout({
+        //   public_key: "FLWPUBK_TEST-b75c6102b14be3e6292bc9eca05a3497-X",
+        //   tx_ref: "titanic" + Math.floor(Math.random() * 1101233),
+        //   amount: parseFloat(invoiceDetails.amount_paid),
+        //   currency: "NGN",
+        //   payment_options: "card, banktransfer, ussd",
+        //   customer: {
+        //     email: invoiceDetails.email,
+        //     phone_number: invoiceDetails.phone,
+        //     name: invoiceDetails.first_name + " " + invoiceDetails.surname,
+        //   },
+        //   customizations: {
+        //     title: "PlateauIGR",
+        //     description: "Payment of tax",
+        //     logo: "https://plateaugr.useibs.com/assets/img/logo.png",
+        //   },
+        //   callback: function (payment) {
+        //     let dataToPush = {
+        //       "endpoint": "createInvidualPayment",
+        //       "data": {
+        //         "invoice_number": invoicenum,
+        //         "payment_channel": "FlutterWave",
+        //         "payment_reference_number": payment.tx_ref,
+        //         "receipt_number": payment.tx_ref, 
+        //         "amount_paid" : invoiceDetails.amount_paid
+        //       }
+        //     }
+        //     $.ajax({
+        //       type: "POST",
+        //       url: HOST,
+        //       dataType: 'json',
+        //       data: JSON.stringify(dataToPush),
+        //       success: function (data) {
+        //         console.log(data)
+        //         alert("payment success")
+        //         modal.close();
+        //         nextPrev(1)
+        //         openReceipt(invoicenum)
+        //       },
+        //       error: function (request, error) {
+        //         console.log(error)
+        //       }
+        //     });
+
+        //   },
+        //   onclose: function (incomplete) {
+        //     if (incomplete === true) {
+        //       // Record event in analytics
+        //       console.log("Not completed")
+        //     }
+        //   }
+        // });
 
         // var handler = PaystackPop.setup({
         //   key: 'pk_test_f26de719a48fdedcf6788a6b8bba2d9bd2c3c0a4', // Replace with your public key
