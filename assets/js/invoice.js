@@ -230,7 +230,7 @@ async function openInvoice(invoicenum, price) {
               <tr>
                 <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
                 <td class="text-[#000] text-xl fontBold">${sumArray(formatMoney(parseInt(theTotal)))}</td>
-                <span class="d-none" id="theBal">${formatMoney(parseInt(theTotal))}</span>
+                <span class="d-none" id="theBal" data-money="${parseInt(theTotal)}">${formatMoney(parseInt(theTotal))}</span>
               </tr>
 
             
@@ -277,7 +277,7 @@ async function openInvoice(invoicenum, price) {
             <tr>
               <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
               <td class="text-[#000] text-xl fontBold"><span id="actualPrice">${formatMoney(parseInt(invoice_info.amount_paid))}</span></td>
-              <span class="d-none" id="theBal">${formatMoney(parseInt(invoice_info.amount_paid))}</span>
+              <span class="d-none" id="theBal" data-money="${parseInt(invoice_info.amount_paid)}">${formatMoney(parseInt(invoice_info.amount_paid))}</span>
             </tr>
 
             <tr>

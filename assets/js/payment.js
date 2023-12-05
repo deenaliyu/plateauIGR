@@ -298,7 +298,7 @@ function makePaymentRemita() {
 function makePayment() {
   let thePay = document.querySelector("#theBal")
   let finalPay = thePay.dataset.money
-
+  console.log(finalPay)
   async function openInvoice(invoicenum) {
     const response = await fetch(
       // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
@@ -317,49 +317,49 @@ function makePayment() {
 
         var handler = PaystackPop.setup({
           //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
-            key: 'pk_test_f26de719a48fdedcf6788a6b8bba2d9bd2c3c0a4', // Replace with your public key
-            
-            email: 'ali@gmail.com',
-            amount: finalPay * 100,
-            currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
-  
-            callback: function (response) {
-              //this happens after the payment is completed successfully
-              var reference = response.reference;
-              alert('Payment complete! Reference: ' + reference);
-              // Make an AJAX call to your server with the reference to verify the transaction
-              let dataToPush = {
-                "endpoint": "createInvidualPayment",
-                "data": {
-                  "invoice_number": invoicenum,
-                  "payment_channel": "paystack",
-                  "payment_reference_number": reference,
-                  "receipt_number": reference,
-                  "amount_paid": finalPay
-                }
+          key: 'pk_test_b9fedc4d3ccdc4c926a7cf5a112856ef45b84c2a', // Replace with your public key
+
+          email: 'ali@gmail.com',
+          amount: finalPay * 100,
+          currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+
+          callback: function (response) {
+            //this happens after the payment is completed successfully
+            var reference = response.reference;
+            alert('Payment complete! Reference: ' + reference);
+            // Make an AJAX call to your server with the reference to verify the transaction
+            let dataToPush = {
+              "endpoint": "createInvidualPayment",
+              "data": {
+                "invoice_number": invoicenum,
+                "payment_channel": "paystack",
+                "payment_reference_number": reference,
+                "receipt_number": reference,
+                "amount_paid": finalPay
               }
-              $.ajax({
-                type: "POST",
-                url: HOST,
-                dataType: 'json',
-                data: JSON.stringify(dataToPush),
-                success: function (data) {
-                  console.log(data)
-                  alert("payment success")
-                  nextPrev(1)
-                  openReceipt(invoicenum)
-                },
-                error: function (request, error) {
-                  console.log(error)
-                }
-              });
-  
-            },
-            onClose: function () {
-              alert('Transaction was not completed, window closed.');
-            },
-          });
-          handler.openIframe();
+            }
+            $.ajax({
+              type: "POST",
+              url: HOST,
+              dataType: 'json',
+              data: JSON.stringify(dataToPush),
+              success: function (data) {
+                console.log(data)
+                alert("payment success")
+                nextPrev(1)
+                openReceipt(invoicenum)
+              },
+              error: function (request, error) {
+                console.log(error)
+              }
+            });
+
+          },
+          onClose: function () {
+            alert('Transaction was not completed, window closed.');
+          },
+        });
+        handler.openIframe();
 
         // const modal = FlutterwaveCheckout({
         //   public_key: "FLWPUBK_TEST-b75c6102b14be3e6292bc9eca05a3497-X",
@@ -495,142 +495,130 @@ async function openReceipt(invoicenum) {
       //   address = "Akwa Ibom, Nigeria"
       // }
       $("#receiptCard").html(`
-            <div class="invoicetop"></div>
-  
-            <div class="flex px-6 pt-3 items-center justify-between">
-  
-              <h1 class="fontBold text-2xl">RECEIPT</h1>
-  
-              <div class="flex items-center gap-1">
-                <img src="./assets/img/vector.png" alt="">
-                <p class="text-2xl fontBold">${invoice_info.invoice_number}</p>
-              </div>
-  
-            </div>
-            <div class="mt-2 px-2 ">
-            <img src="./assets/img/akwaimage.png" alt="" class="w-[100px] h-[70px]">
-            </div>
-            <div class="flex  justify-between px-6 mt-4">
-              <div class="w-full">
-                <p class="text-[#555555]">FROM :</p>
-                <p class="fontBold">${invoice_info.COL_3}</p>
-                <p class="text-[#222234] w-[60%] text-sm">Plateau</p>
-              </div>
-  
-              <div class="w-full md:mr-[-10%]">
-                <p class="text-[#555555]">TO :</p>
-                <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
-                <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}, Plateau</p>
-              </div>
-  
-            </div>
-  
-            <div class="px-6 mt-4">
-              <p class="text-[#555555]">INFO :</p>
-  
-              <table class="table table-borderless invTa md:w-[70%] w-full">
-                <tr>
-                  <td>
-                    <p class="fontBold">Payer ID: ${invoice_info.tax_number}</p>
-                  </td>
-                  <td>Due Date: ${invoice_info.due_date}</td>
-                </tr>
-                <tr>
-                  <td>Invoice Date: ${invoice_info.date_created}</td>
-                  <td>Expiry Date: ${invoice_info.due_date}</td>
-                </tr>
-              </table>
-            </div>
-  
-            <div class="flex justify-end">
-              <div class="md:w-[70%] w-[90%]">
-                <table class="table table-borderless">
-                  <tr>
-                    <td class="text-[#555555] text-sm">ITEM DESCRIPTION</td>
-                    <td class="text-[#555555] text-sm">QTY</td>
-                    <td class="text-[#555555] text-sm">RATE</td>
-                    <td class="text-[#555555] text-sm">AMOUNT</td>
-                  </tr>
-                  <tr class="border-b border-b border-[#6F6F84]">
-                    <td class="text-sm">${invoice_info.COL_4}</td>
-                    <td class="text-sm">01</td>
-                    <td class="text-sm"></td>
-                    <td class="text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
-                  </tr>
-                  <tr>
-                    <td class="text-[#555555] text-sm">Sub Total</td>
-                    <td></td>
-                    <td></td>
-                    <td class="text-[#000] text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
-                  </tr>
-                  <tr class="border-b border-b border-[#6F6F84]">
-                    <td class="text-[#555555] text-sm">Discount</td>
-                    <td></td>
-                    <td></td>
-                    <td class="text-[#000] text-sm">NGN0.00</td>
-                  </tr>
-  
-                  <tr>
-                    <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-                    <td class="text-[#000] text-xl fontBold"${formatMoney(parseInt(invoice_info.amount_paid))}</td>
-                  </tr>
-  
-                  <tr>
-                    <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
-                  </tr>
-                  <tr>
-                    <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize">${convertNumberToWords(invoice_info.amount_paid)} Naira Only</td>
-                  </tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>
-                  <div class="border-b border-b border-[#6F6F84] mb-2">
-                  <img src="./assets/img/sign.png" alt="" class="pb-2">
-                  </div>
-                  <h4 class="fontBold">
-                  Jim Pam Wayas
-                  </h4>
-                  <h4 class="fontBold">
-                  Executive Chairman PSIRS
-                  </h4>
-                  </td>
-                </tr>
-                </table>
-  
-                <table class="table table-borderless bg-[#FFF3E9]">
-                  <tr>
-                    <td colspan="3" class="text-[#6F6F84] pb-0">Payment Details</td>
-                    <td class="text-right text-uppercase text-[#6F6F84] text-sm pb-0">Online payment </td>
-                  </tr>
-                  <tr>
-                    <td colspan="3"></td>
-                    <td class="text-right pt-0">Flutterwave </td>
-                  </tr>
-                </table>
-              </div>
-            </div>
-  
-  
-            <hr class="my-4 md:mx-10 mx-4">
-  
-            <div class="md:px-10 px-2 pb-6">
-            <div class="flex items-center justify-center gap-2">
-              <img src="./assets/img/akwaimage.png" alt="">
-              <div>
-                <p class="text-xl fontBold pb-0">Plateau State Internal Revenue Service</p>
-                <div class="flex items-center gap-x-3 flex-wrap">
-                  <p class="text-sm text-[#6F6F84]">www.payplateau.com</p>
-                  <p class="text-sm text-[#6F6F84]">Info@payplateau.com</p>
-                  <p class="text-sm text-[#6F6F84]">0800 101 5555</p>
-                  <img src="./assets/img/logo1.png" class="h-[30px] w-[70px]" alt="">
-                </div>
-              </div>
-            </div>
-    
+        
+
+        <div class="flex px-6 pt-3 items-center justify-between">
+          <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
+
+          <img src="./assets/img/akwaimage.png" alt="" class="">
+
+          <div class="flex items-center gap-1">
+            <p class="text-base">Date: ${formatDate(invoice_info.date_created)}</p>
           </div>
-        `)
+
+        </div>
+
+        <div class="flex items-center gap-x-3 flex-wrap justify-center mt-4">
+          <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="ic:outline-email"></iconify-icon> <span>Info@psirs.gov.ng</span></p>
+          <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="ic:round-phone"></iconify-icon> <span>08031230301, 07056990777</span></p>
+          <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="streamline:web"></iconify-icon> <span>www.plateauigr.com</span></p>
+        </div>
+
+        <p class="fontBold text-black text-2xl text-center mt-3">PLATEAU STATE GOVERNMENT</p>
+        <p class="fontBold text-black text-lg text-center mt-1">INTERNAL REVENUE SERVICE</p>
+
+        <div class="flex justify-center mt-3">
+          <button class="button" type="button">PAYMENT RECEIPT</button>
+        </div>
+
+        <div class="flex justify-end -mt-20">
+          <img src="./assets/img/Qr_Code.png" class="w-[150px]" alt='' />
+        </div>
+
+        <div class="flex  justify-between px-6 mt-4 mb-2">
+          <div class="w-full">
+            <p class="text-[#555555]">This is from : <span class="fontBold text-black">${invoice_info.COL_3}</span></p>
+          </div>
+
+          <div class="w-full flex justify-end">
+           <p class="text-[#555555]">This is to : <span class="fontBold text-black capitalize">${invoice_info.surname} ${invoice_info.first_name}</span></p>
+          </div>
+        </div>
+
+        <div class="border-b border-[4px] border-gray-700 mx-6"></div>
+
+        <div class="px-6 mt-4 mb-4">
+          <table class="table table-borderless">
+            <thead>
+              <tr>
+                <th scope="col">ITEM DESCRIPTION</th>
+                <th scope="col">QTY</th>
+                <th scope="col">PRICE</th>
+                <th scope="col">AMOUNT</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-b border-b border-[#6F6F84]">
+                <td class="text-sm">${invoice_info.COL_4}</td>
+                <td class="text-sm">01</td>
+                <td class="text-sm"></td>
+                <td class="text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
+              </tr>
+              <tr>
+                <td class="text-[#555555] text-sm">Sub Total</td>
+                <td></td>
+                <td></td>
+                <td class="text-[#000] text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
+              </tr>
+              <tr class="border-b border-b border-[#6F6F84]">
+                <td class="text-[#555555] text-sm">Discount</td>
+                <td></td>
+                <td></td>
+                <td class="text-[#000] text-sm">NGN0.00</td>
+              </tr>
+
+              <tr>
+                <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
+                <td class="text-[#000] text-xl fontBold">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
+              </tr>
+
+              <tr>
+                <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
+              </tr>
+              <tr>
+                <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize">${convertNumberToWords(invoice_info.amount_paid)} Naira Only</td>
+              </tr>
+
+             
+            </tbody>  
+          </table>
+
+        </div>
+
+        <div class="border-b border-[4px] border-gray-700 mx-6"></div>
+
+        <div class="px-6 mt-4">
+
+          <div class="flex justify-between">
+            <div>
+              <p class="mb-2 fontBold">Payer ID: ${(invoice_info.tax_number === true) ? invoice_info.tax_number : invoice_info.payer_id}</p>
+              <p class="mb-2">Due Date: ${invoice_info.due_date}</p>
+            </div>
+            <div>
+              <p class="mb-2">Invoice Date: ${invoice_info.date_created}</p>
+              <p class="mb-2">Expiry Date: ${invoice_info.due_date}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex justify-end px-6 mt-4">
+          <div>
+            <div class="border-b border-b border-[#6F6F84] mb-2">
+              <img src="./assets/img/sign.png" alt="" class="pb-2">
+            </div>
+          
+            <h4 class="fontBold">Jim Pam Wayas</h4>
+            <h4 class="fontBold">Executive Chairman PSIRS</h4>
+          </div>
+        </div>
+
+        <div class="px-6 mb-6">
+          <img src="./assets/img/logo11.png" width="100" alt="" />
+        </div>
+
+        <div class="invoicetop"></div>
+      </div>
+    `)
 
     })
 
@@ -641,6 +629,15 @@ async function openReceipt(invoicenum) {
     $("#invoiceCard").html(`Invalid Invoice, or expired invoice`)
   }
 }
+
+let urlParams22 = new URLSearchParams(window.location.search);
+const load2 = urlParams22.get('load')
+const invoicenumber2 = urlParams22.get('invnumber')
+
+if (load2) {
+  openReceipt(invoicenumber2)
+}
+
 
 function downloadInvoice(thecard) {
   const element = document.getElementById(thecard);
@@ -688,4 +685,96 @@ function generateRandomString() {
   const randomNum = Math.random().toString(36).substr(2, 8); // Generate a random alphanumeric string
   const randomString = timestamp + randomNum; // Combine timestamp and random string
   return randomString;
+}
+
+function convertNumberToWords(number) {
+  const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+  const teens = ['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+
+  if (number === 0) {
+    return 'zero';
+  }
+
+  if (number < 0) {
+    return 'minus ' + convertNumberToWords(Math.abs(number));
+  }
+
+  let words = '';
+
+  if (Math.floor(number / 1000000) > 0) {
+    words += convertNumberToWords(Math.floor(number / 1000000)) + ' million ';
+    number %= 1000000;
+  }
+
+  if (Math.floor(number / 1000) > 0) {
+    words += convertNumberToWords(Math.floor(number / 1000)) + ' thousand ';
+    number %= 1000;
+  }
+
+  if (Math.floor(number / 100) > 0) {
+    words += convertNumberToWords(Math.floor(number / 100)) + ' hundred ';
+    number %= 100;
+  }
+
+  if (number > 0) {
+    if (words !== '') {
+      words += 'and ';
+    }
+
+    if (number < 10) {
+      words += ones[number];
+    } else if (number < 20) {
+      words += teens[number - 11];
+    } else {
+      words += tens[Math.floor(number / 10)];
+      if (number % 10 > 0) {
+        words += '-' + ones[number % 10];
+      }
+    }
+  }
+
+  return words.trim();
+
+}
+
+
+function formatDate(inputDate) {
+  // Parse the input date string
+  const parsedDate = new Date(inputDate.replace(/-/g, '/'));
+
+  // Options for formatting the date
+  const options = {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  };
+
+  // Format the date using the options
+  const formattedDate = parsedDate.toLocaleDateString('en-US', options);
+
+  // Extract the day and add the appropriate suffix
+  const dayWithSuffix = addSuffix(parsedDate.getDate());
+
+  // Construct the final formatted date string
+  const finalFormattedDate = `${formattedDate}`;
+
+  return finalFormattedDate;
+}
+
+// Function to add suffix to day
+function addSuffix(day) {
+  if (day >= 11 && day <= 13) {
+    return `${day}th`;
+  }
+  switch (day % 10) {
+    case 1:
+      return `${day}st`;
+    case 2:
+      return `${day}nd`;
+    case 3:
+      return `${day}rd`;
+    default:
+      return `${day}th`;
+  }
 }
