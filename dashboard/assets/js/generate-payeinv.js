@@ -1,5 +1,13 @@
 
+function selectAll(eee) {
 
+  const checkboxes = document.querySelectorAll('.taxChecks');
+
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = eee.checked;
+  });
+
+}
 
 async function generatePayeinv() {
 
