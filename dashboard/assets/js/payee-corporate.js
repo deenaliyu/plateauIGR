@@ -97,3 +97,56 @@ $('#selYear').on('change', function () {
   getSpecialUsersDashAnnualEstimate(value)
 
 })
+
+
+async function getPaymentHistory() {
+
+  const response = await fetch(`${HOST}/?getSpecialUsersPayments&offset=0&payer_id=PL-PAYE-3978265401`)
+  const specialUsers = await response.json()
+
+  $("#loader").css("display", "none")
+
+  if (specialUsers.status === 0) {
+    $('#dataTable').DataTable();
+
+  } else {
+    specialUsers.message.reverse().forEach((rhUser, i) => {
+
+      $("#paymentHistoryTable").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>${rhUser.payment_reference_number}</td>
+            <td>Pay as you Earn(PAYE)</td>
+            <td>${getMonthInWordFromDate(rhUser.timeIn)}</td>
+            <td>&#8358; ${rhUser.amount_paid}</td>
+            <td>${rhUser.payment_channel}</td>
+            <td>${rhUser.timeIn}</td>
+            <td><span class="badge bg-success rounded-pill">paid</span></td>
+            <td><a href="./viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-primary btn-sm">receipt</a></td>
+          </tr>
+
+      `)
+    });
+  }
+}
+
+getPaymentHistory().then(tt => {
+  $('#dataTable2').DataTable();
+})
+function getMonthInWordFromDate(dateString) {
+  const months = [
+    "January", "February", "March", "April", "May", "June",
+    "July", "August", "September", "October", "November", "December"
+  ];
+
+  // Create a Date object from the input string
+  const dateObject = new Date(dateString);
+
+  // Get the month (returns a number from 0 to 11)
+  const monthNumber = dateObject.getMonth();
+
+  // Get the month name from the array using the month number
+  const monthInWord = months[monthNumber];
+
+  return monthInWord;
+}
