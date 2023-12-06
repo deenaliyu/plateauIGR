@@ -749,7 +749,7 @@ function createUser($data)
             $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
             // Define your API key
-            $apiKey = "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";
+            
             
             // Create an array with the email data
             $emailData = [
@@ -872,7 +872,7 @@ function createMDA($data)
             $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
             // Define your API key
-            $apiKey = "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";
+            
             
             // Create an array with the email data
             $emailData = [
@@ -1531,7 +1531,7 @@ function generateSignleInvoice($data)
             $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
             // Define your API key
-            $apiKey = "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";
+            
             
             // Create an array with the email data
             $emailData = [
@@ -2422,7 +2422,7 @@ function verifyEmail($id)
             $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
             // Define your API key
-            $apiKey = "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";
+            
             
             // Create an array with the email data
             $emailData = [
@@ -2505,7 +2505,7 @@ function verifyEmailEnum($id)
             $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
             // Define your API key
-            $apiKey = "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";
+            
             
             // Create an array with the email data
             $emailData = [
@@ -3556,7 +3556,7 @@ function resetPassword()
             $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
             // Define your API key
-            $apiKey = "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";
+            
             
             // Create an array with the email data
             $emailData = [
@@ -4264,7 +4264,7 @@ function createEnumerator($data)
             $apiUrl = "https://api.brevo.com/v3/smtp/email";
             
             // Define your API key
-            $apiKey = "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";
+            
             
             // Create an array with the email data
             $emailData = [
