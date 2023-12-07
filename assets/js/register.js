@@ -203,7 +203,7 @@ $("#CreateAccountBtn").on("click", (e) => {
       }
     }
     allInputs.forEach(allInput => {
-      if(allInput.dataset.name === "email") {
+      if(allInput.dataset.name === "email" || allInput.dataset.name === "phone") {
         obj.data[allInput.dataset.name] = allInput.value.trim()
       } else {
         obj.data[allInput.dataset.name] = allInput.value
