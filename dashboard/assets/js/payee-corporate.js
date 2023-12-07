@@ -122,7 +122,7 @@ async function getPaymentHistory() {
             <td>${rhUser.payment_channel}</td>
             <td>${rhUser.timeIn}</td>
             <td><span class="badge bg-success rounded-pill">paid</span></td>
-            <td><a href="./viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-primary btn-sm">receipt</a></td>
+            <td><a href="../viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-primary btn-sm">view receipt</a></td>
           </tr>
 
       `)

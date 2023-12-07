@@ -114,8 +114,8 @@ async function openInvoice(invoicenum, price) {
   if (userInvoices.status === 1) {
     let invoice_info = userInvoices.message[0]
     let TotalInvoice = ""
-// console.log(invoice_info)
- TotalInvoice += `
+    // console.log(invoice_info)
+    TotalInvoice += `
       <div class="invoicetop"></div>
 
       <div class="flex px-6 pt-3 items-center justify-between">
@@ -144,7 +144,7 @@ async function openInvoice(invoicenum, price) {
         <div class="w-full md:mr-[-10%]">
           <p class="text-[#555555]">TO :</p>
           <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
-          <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}, Plateau</p>
+          <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}</p>
         </div>
 
       </div>
@@ -161,7 +161,7 @@ async function openInvoice(invoicenum, price) {
     <div class="w-full md:mr-[-10%]">
       <p class="text-[#555555]">TO :</p>
       <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
-      <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}, Plateau</p>
+      <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}</p>
     </div>
 
   </div>
@@ -174,12 +174,12 @@ async function openInvoice(invoicenum, price) {
         <table class="table table-borderless invTa md:w-[70%] w-full">
           <tr>
             <td>
-              <p class="fontBold">Payer ID: ${invoice_info.tax_number}</p>
+              <p class="fontBold">Payer ID: ${invoice_info.tax_number ? invoice_info.tax_number : invoice_info.payer_id}</p>
             </td>
             <td>Due Date: ${invoice_info.due_date}</td>
           </tr>
           <tr>
-            <td>Invoice Date: ${invoice_info.date_created}</td>
+            <td>Invoice Date: ${invoice_info.date_created.split(" ")[0]}</td>
             <td>Expiry Date: ${invoice_info.due_date}</td>
           </tr>
         </table>

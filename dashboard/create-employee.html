@@ -120,10 +120,15 @@
             </div>
 
             <div class="form-group md:w-6/12">
-              <label for="">Payer ID*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="payer_id" required>
+              <label for="">TIN</label>
+              <input type="text" class="form-control w-full enumInput" data-name="payer_id">
             </div>
 
+          </div>
+
+          <div class="form-group w-full mb-3">
+            <label for="">Annual Gross Income*</label>
+            <input type="text" class="form-control w-full enumInput" data-name="annual_gross_income" required>
           </div>
 
           <div class="flex gap-3 md:flex-row flex-col mb-3">
@@ -143,27 +148,13 @@
           <div class="flex gap-3 md:flex-row flex-col mb-3">
 
             <div class="form-group md:w-6/12">
-              <label for="">Housing*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="housing" required>
+              <label for="">Housing</label>
+              <input type="text" class="form-control w-full enumInput" data-name="housing">
             </div>
 
             <div class="form-group md:w-6/12">
-              <label for="">Transport*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="transport" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Utility*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="utility" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Medical*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="medical" required>
+              <label for="">Transport</label>
+              <input type="text" class="form-control w-full enumInput" data-name="transport">
             </div>
 
           </div>
@@ -171,30 +162,32 @@
           <div class="flex gap-3 md:flex-row flex-col mb-3">
 
             <div class="form-group md:w-6/12">
-              <label for="">Entertainment*</label>
+              <label for="">Utility</label>
+              <input type="text" class="form-control w-full enumInput" data-name="utility">
+            </div>
+
+            <div class="form-group md:w-6/12">
+              <label for="">Medical</label>
+              <input type="text" class="form-control w-full enumInput" data-name="medical">
+            </div>
+
+          </div>
+
+          <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+            <div class="form-group md:w-6/12">
+              <label for="">Entertainment</label>
               <input type="text" class="form-control w-full enumInput" data-name="entertainment" required>
             </div>
 
             <div class="form-group md:w-6/12">
-              <label for="">Leave*</label>
+              <label for="">Leave</label>
               <input type="text" class="form-control w-full enumInput" data-name="leaves" required>
             </div>
 
           </div>
 
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
 
-            <div class="form-group md:w-6/12">
-              <label for="">Annual Gross Income*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="annual_gross_income" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">New Gross*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="new_gross" required>
-            </div>
-
-          </div>
 
 
           <button class="button w-full mb-4" type="button" id="theButton" onclick="continueReg()">Continue</button>

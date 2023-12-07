@@ -78,7 +78,7 @@ function generateInv(amount) {
         confirmButtonText: "Open Invoice",
       }).then((result3) => {
         if (result.isConfirmed) {
-          window.location.href = `../viewinvoice2.html?invnumber=${result.value.invoice_number}&load=true`;
+          window.location.href = `../viewinvoice.html?invnumber=${result.value.invoice_number}&load=true`;
         }
       });
     }

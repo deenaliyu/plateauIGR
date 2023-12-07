@@ -33,7 +33,8 @@ function registerUser() {
   let EnumData = {
     "endpoint": "createSpecialUserEmployee",
     "data": {
-      "category_id": category
+      "category_id": category,
+      "new_gross": ''
     }
   }
 
