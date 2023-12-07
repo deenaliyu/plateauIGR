@@ -203,9 +203,15 @@ $("#CreateAccountBtn").on("click", (e) => {
       }
     }
     allInputs.forEach(allInput => {
-      obj.data[allInput.dataset.name] = allInput.value
+      if(allInput.dataset.name === "email") {
+        obj.data[allInput.dataset.name] = allInput.value.trim()
+      } else {
+        obj.data[allInput.dataset.name] = allInput.value
+      }
     })
 
+    
+    // console.log(obj)
     let StringedData = JSON.stringify(obj)
     $.ajax({
       type: "POST",
