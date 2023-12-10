@@ -251,6 +251,10 @@ ul {
   text-align: center;
 }
 
+.button-sm {
+  padding: 5px 10px;
+}
+
 .button-secondary {
   background: #000 !important;
   color: #CDA545 !important;

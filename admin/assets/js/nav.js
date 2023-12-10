@@ -122,6 +122,27 @@ $(".aside").html(`
         </ul>
       </li>
 
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle mdoetcc">
+          <iconify-icon icon="tabler:world-dollar" class="menu-icon"></iconify-icon>
+          <div data-i18n="Form Elements">eTCC Management</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="etcc-management.html?type=private" class="menu-link">
+              <div data-i18n="Basic Inputs">Private</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="etcc-management.html?type=public" class="menu-link">
+              <div data-i18n="Input groups">Public</div>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
 
       <li class="menu-item">
       <a href="service.html" class="menu-link mdol">
