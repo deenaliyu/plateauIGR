@@ -7,6 +7,9 @@
   text-align: center;
 }
 
+.button-sm {
+  padding: 5px 10px;
+}
 
 .message-container {
   display: flex;
@@ -156,7 +159,9 @@
   color: #697a8d;
 }
 
-.bg-menu-theme .menu-link, .bg-menu-theme .menu-horizontal-prev, .bg-menu-theme .menu-horizontal-next {
+.bg-menu-theme .menu-link,
+.bg-menu-theme .menu-horizontal-prev,
+.bg-menu-theme .menu-horizontal-next {
   color: #1E1E1E;
 }
 
@@ -212,7 +217,9 @@ a:hover {
   border-radius: 100px !important;
 }
 
-.post .nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .nav-link.active:focus {
+.post .nav-pills .nav-link.active,
+.nav-pills .nav-link.active:hover,
+.nav-pills .nav-link.active:focus {
   background-color: #f5f5f9 !important;
   color: #1E1E1E !important;
   box-shadow: none;
@@ -223,7 +230,10 @@ a:hover {
   color: #8E8E8E;
 }
 
-.post .nav-align-top>.tab-content, .nav-align-right>.tab-content, .nav-align-bottom>.tab-content, .nav-align-left>.tab-content {
+.post .nav-align-top>.tab-content,
+.nav-align-right>.tab-content,
+.nav-align-bottom>.tab-content,
+.nav-align-left>.tab-content {
   flex-shrink: 1;
   border: 0 solid #d9dee3;
   box-shadow: none;
@@ -231,7 +241,9 @@ a:hover {
   background: none;
 }
 
-.billing .nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .nav-link.active:focus {
+.billing .nav-pills .nav-link.active,
+.nav-pills .nav-link.active:hover,
+.nav-pills .nav-link.active:focus {
   background-color: #fff !important;
   color: #1E1E1E !important;
   box-shadow: none;
@@ -244,7 +256,10 @@ a:hover {
   color: #8E8E8E;
 }
 
-.billing .nav-align-top>.tab-content, .nav-align-right>.tab-content, .nav-align-bottom>.tab-content, .nav-align-left>.tab-content {
+.billing .nav-align-top>.tab-content,
+.nav-align-right>.tab-content,
+.nav-align-bottom>.tab-content,
+.nav-align-left>.tab-content {
   flex-shrink: 1;
   border: 0 solid #d9dee3;
   box-shadow: none;
@@ -353,7 +368,8 @@ ul {
 
 }
 
-.taxes .nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.taxes .nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
   color: #CDA545;
   background-color: none;
   border-bottom: 2px solid #CDA545;
@@ -366,7 +382,8 @@ ul {
   font-size: 14px;
 }
 
-.taxes .nav-pills .nav-link, .nav-pills .show>.nav-link {
+.taxes .nav-pills .nav-link,
+.nav-pills .show>.nav-link {
   color: #CDA545;
   background-color: none;
   border-radius: 0%;
@@ -378,7 +395,9 @@ a:hover {
 }
 
 
-.taxes .nav-pills .nav-link.active, .nav-pills .nav-link.active:hover, .nav-pills .nav-link.active:focus {
+.taxes .nav-pills .nav-link.active,
+.nav-pills .nav-link.active:hover,
+.nav-pills .nav-link.active:focus {
   background-color: #fff;
   color: black;
   box-shadow: none !important;
@@ -390,8 +409,8 @@ a:hover {
 
 }
 
-.collapse{
-  visibility: visible  !important;
+.collapse {
+  visibility: visible !important;
 }
 
 .payeTable tr th {

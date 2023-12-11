@@ -25,6 +25,7 @@
   <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
 
   <!-- Core CSS -->
+  <link rel="stylesheet" href="./assets/css/dataTable.css">
   <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="./assets/css/demo.css" />
@@ -62,17 +63,12 @@
           <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
             <div class="">
               <p class="text-sm text-black" id="datei">-</p>
-              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">E-Services</h1>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">eTCC Management</h1>
             </div>
 
             <div class="mt-4 flex gap-x-5">
-              <!-- <div class="input-group input-group-merge md:w-72 hidden md:flex">
-                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                <input type="text" class="form-control" placeholder="Search..." aria-label="Search..."
-                  aria-describedby="basic-addon-search31">
-              </div> -->
-              <a href="taxes.html" class="button ">
-                <iconify-icon icon="ic:baseline-plus"></iconify-icon>Tax Filling</a>
+
+              <a href="etcc-initiate.html" class="button">New eTCC Request</a>
 
               <iconify-icon icon="mdi:bell-notification" data-bs-toggle="modal" data-bs-target="#notiModal"
                 class="hidden md:flex cursor-pointer text-[#CDA545]" width="32" height="32"></iconify-icon>
@@ -92,8 +88,14 @@
 
           <div class="container-xxl flex-grow-1 container-p-y service">
             <div class="card p-4">
-              <h4 class="text-[#101828] text-[20px]">Check application status</h4>
-              <p class="text-[16px] mt-2">Input your reference number to check your application status</p>
+              <button class="text-[#CDA545] flex items-center gap-2 w-fit mb-4" onclick="history.go(-1)">
+                <iconify-icon class="text-xl" icon="ion:return-up-back"></iconify-icon>
+                <span>Go Back</span>
+              </button>
+
+              <h4 class="text-[#101828] text-[20px]">Payment Invoice/ Check application status</h4>
+              <p class="text-[16px] mt-2">Input your invoice or reference number to check your payment or application
+                status</p>
 
               <div class="flex gap-x-3 mt-4">
                 <div class="input-group input-group-merge md:w-72">
@@ -105,89 +107,71 @@
               </div>
 
               <div class="mt-4">
-                <h4 class="text-[#101828] font-bold text-[20px]">E-Services</h4>
-                <div class="grid grid-cols-3 mt-3 w-[610px]">
+                <h4 class="text-[#101828] font-bold text-[20px] mb-3">Application History</h4>
 
-                  <a class="cardoo w-[180px] p-4  text-center" href="taxfilling.html">
-                    <div class="flex justify-center">
-                      <iconify-icon icon="ic:round-file-present" class="text-[#CDA545]" width="32"
-                        height="32"></iconify-icon>
+                <div class="table-responsive">
+                  <table class="table payeTable" id="dataTable">
+                    <thead>
+                      <tr>
+                        <th></th>
+                        <th>Date Sent</th>
+                        <th>Reference Number</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                        <th>TCC</th>
+                      </tr>
+                    </thead>
+                    <tbody id="payeMTabAll">
+                      <tr>
+                        <td>1</td>
+                        <td>08/03/2023</td>
+                        <td>52303403043</td>
+                        <td><span class="badge bg-success">Approved</span></td>
+                        <td>
+                          <a href="./etcc-details.html" class="button button-sm">View</a>
+                        </td>
+                        <td><a href="./etcc-preview.html" class="textPrimary fontBold">Preview</a></td>
+                      </tr>
+
+                      <tr>
+                        <td>2</td>
+                        <td>08/03/2023</td>
+                        <td>232398403</td>
+                        <td><span class="badge bg-danger">pending</span></td>
+                        <td>
+                          <a href="./etcc-details.html" class="button button-sm">View</a>
+                        </td>
+                        <td><a href="./etcc-preview.html" class="textPrimary fontBold">Preview</a></td>
+                      </tr>
+
+                      <tr>
+                        <td>3</td>
+                        <td>08/03/2023</td>
+                        <td>7593439934</td>
+                        <td><span class="badge bg-danger">Returned</span></td>
+                        <td>
+                          <a href="./etcc-details.html" class="button button-sm">View</a>
+                        </td>
+                        <td><a href="./etcc-preview.html" class="textPrimary fontBold">Preview</a></td>
+                      </tr>
+
+
+                    </tbody>
+                  </table>
+
+
+                  <!-- <div class="flex justify-center items-center mt-4" id="loader">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900">
                     </div>
-                    <p class="text-[16px] mt-2">Tax Filing</p>
-                  </a>
-
-                  <a class="cardoo w-[180px] text-center p-4" href="../tinrequest.html">
-                    <div class="flex justify-center">
-                      <iconify-icon icon="mdi:contact" class="text-[#CDA545]" width="32" height="32"></iconify-icon>
-                    </div>
-                    <p class="text-[16px] mt-2">TIN Request</p>
-                  </a>
-
-                  <a class="cardoo w-[180px] text-center p-4" href="./etcc-page.html">
-                    <div class="flex justify-center">
-                      <iconify-icon icon="icon-park-twotone:certificate" class="text-[#CDA545]" width="32"
-                        height="32"></iconify-icon>
-                    </div>
-                    <p class="text-[16px] mt-2">Electronic Tax Clearance Certificate</p>
-                  </a>
-
+                  </div> -->
                 </div>
-              </div>
-
-              <div class="table-responsive p-3 mt-4">
-
-                <table class="table theTable" id="dataTable">
-                  <thead>
-                    <th class="fontBold text-sm text-gray-500">Date sent</th>
-                    <th class="fontBold text-gray-500">Next due date</th>
-                    <th class="fontBold text-gray-500">Refence number</th>
-                    <th class="fontBold text-gray-500">Tax filed</th>
-                    <th class="fontBold text-gray-500">Status</th>
-                    <!-- <th class="fontBold text-gray-500"></th> -->
-
-                  </thead>
-                  <tbody id="eservicesTable">
-
-
-                  </tbody>
-                </table>
 
               </div>
-              <div class="flex justify-center items-center mt-4" id="loader">
-                <!-- <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div> -->
-              </div>
+
             </div>
           </div>
 
 
-          <div class="modal fade" id="confirmationModal" data-bs-backdrop="static" data-bs-keyboard="false">
-            <div class="modal-dialog modal-dialog-centered">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <h5 class="modal-title" id="exampleModalLabel"></h5>
-                  <button data-bs-dismiss="modal">
-                    <iconify-icon icon="ph:x"></iconify-icon>
-                  </button>
-
-                </div>
-                <div class="modal-body">
-
-
-                  <div id="modalBody">
-
-                    <div class="flex justify-center">
-                      <img src="./assets/img/verified.png" alt="">
-                    </div>
-
-                    <p class="text-lg fontBold text-center mb-3">Your tax filling application has been approved </p>
-                    <p>Please proceed to generate invoice and pay your tax</p>
-
-                  </div>
-                  <div id="msg_boxx"></div>
-                </div>
-              </div>
-            </div>
-          </div>
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">
 
           </section>
@@ -211,11 +195,15 @@
   <script src="./assets/vendor/libs/popper/popper.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="./assets/vendor/js/bootstrap.js"></script>
+  <script src="./assets/js/jquery.datatables.min.js"></script>
+  <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
   <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="./assets/js/nav.js"></script>
   <script>
     let theAtivo = document.querySelector(".mdd")
     theAtivo.parentElement.classList.add("active")
+
+    $("#dataTable").dataTable()
   </script>
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="./assets/js/session.js"></script>
