@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="./assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>Prime Gauge</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="./assets/css/dataTable.css">
+  <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" href="./assets/css/style.css" />
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+
+  <!-- Page CSS -->
+
+  <!-- Helpers -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <script src="./assets/vendor/js/helpers.js"></script>
+
+  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
+  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
+  <script src="./assets/js/config.js"></script>
+  <script src="https://cdn.tiny.cloud/1/a2nnryhuz1r1qtqf4ap5nkr1msakmeqobebopr1d2o3nfx1h/tinymce/6/tinymce.min.js"
+    referrerpolicy="origin"></script>
+</head>
+
+<body>
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside id="layout-menu" class="aside layout-menu menu-vertical menu bg-menu-theme"></aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav
+          class="layout-navbar navi container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          id="layout-navbar">
+
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+              <i class="bx bx-menu bx-sm"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
+            <div class="">
+              <p class="text-sm text-black datei" id="datei">-</p>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">eTCC Management</h1>
+            </div>
+
+            <div class="mt-4 flex gap-x-5">
+              <div class="flex items-center gap-3">
+
+                <a href="etcc-initiate.html" class="button" type="button">Initiate eTCC</a>
+
+              </div>
+
+
+              <div class="avatar avatar-online">
+                <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
+
+              </div>
+              <h4 class="text-mm text-black self-center hidden md:flex adminName">System Admin</h4>
+            </div>
+
+          </div>
+
+        </nav>
+
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <section class="content-wrapper">
+
+          <div class="container-xxl flex-grow-1 container-p-y">
+            <section class="w-full main_section">
+
+              <button class="textPrimary flex items-center gap-2" onclick="history.go(-1)">
+                <iconify-icon class="text-xl" icon="ion:return-up-back"></iconify-icon>
+                <span>Go Back</span>
+              </button>
+
+
+              <div class="previewCard bg-white w-[80%]">
+                <div class="invoicetop"></div>
+
+                <div class="flex items-center px-6 gap-2 mt-3">
+                  <img src="./assets/img/akwaimage.png" alt="">
+                  <div>
+                    <p class="text-xl fontBold pb-0">Plateau State Internal Revenue Service</p>
+                  </div>
+                </div>
+
+                <div class="flex items-center gap-x-3 flex-wrap mt-4 px-6">
+                  <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon
+                      icon="mdi:address-marker-outline"></iconify-icon><span>No.6 Ban Road P.M.B 2001, Jos, Plateau
+                      State
+                      Nigeria.</span></p>
+                  <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon
+                      icon="ic:outline-email"></iconify-icon> <span>Info@psirs.gov.ng</span></p>
+                  <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon
+                      icon="ic:round-phone"></iconify-icon> <span>08031230301, 07056990777</span></p>
+                  <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon
+                      icon="streamline:web"></iconify-icon> <span>www.plateauigr.com</span></p>
+                </div>
+
+                <div class="flex justify-between px-6 mt-4">
+                  <h1 class="text-xl fontBold text-black">TAX CLEARANCE CERTIFICATE</h1>
+
+                  <p><span class="text-lg fontBold text-black">Certificate Number:</span> 730</p>
+                </div>
+
+                <div class="px-6 mt-4">
+                  <table>
+                    <tr>
+                      <th class="fontBold text-black pr-4">Name:</th>
+                      <td>Mr GUKAS ELVIS EDWARDS</td>
+                    </tr>
+                    <tr>
+                      <th class="fontBold text-black pr-4">Email:</th>
+                      <td>gukus@gmail.com</td>
+                    </tr>
+                    <tr>
+                      <th class="fontBold text-black pr-4">Address:</th>
+                      <td>Office: BW OFFSHORE NIGERIA LIMITED, HOUSE ADDRESS NO 34 STATE LOW COST
+                        RANTYA JOS SOUTH</td>
+                    </tr>
+                    <tr>
+                      <th class="fontBold text-black pr-4">TIN:</th>
+                      <td>123456789</td>
+                    </tr>
+                    <tr>
+                      <th class="fontBold text-black pr-4">Sector:</th>
+                      <td>Formal</td>
+                    </tr>
+                  </table>
+                </div>
+
+                <p class="px-6">This is to certify that Taxpayer with Tax Identification Number <span
+                    class="text-lg fontBold text-black">123456789</span> has settled his/her tax
+                  assessment for the following 2 year(s) for the specified source of income.</p>
+
+                <div class="px-6 mt-4">
+                  <p class="fontBold text-xl text-black mb-2">Details of Assessment</p>
+
+                  <table class="table table-borderless table-sm">
+                    <thead>
+                      <tr class="bg-[#CDA545]">
+                        <td class="text-[#fff] text-sm">Year</td>
+                        <td class="text-[#fff] text-sm">Total Income</td>
+                        <td class="text-[#fff] text-sm">Taxable Income </td>
+                        <td class="text-[#fff] text-sm">Tax Paid</td>
+                        <td class="text-[#fff] text-sm">Receipt</td>
+                      </tr>
+                    </thead>
+                    <tbody>
+
+                      <tr>
+                        <td class="text-sm">2022</td>
+                        <td class="text-sm">N26,183,367.52</td>
+                        <td class="text-sm">N20,031,439.42</td>
+                        <td class="text-sm">N4,102,945.59</td>
+                        <td class="text-sm">PAYE</td>
+                      </tr>
+                      <tr>
+                        <td class="text-sm">2022</td>
+                        <td class="text-sm">N26,183,367.52</td>
+                        <td class="text-sm">N20,031,439.42</td>
+                        <td class="text-sm">N4,102,945.59</td>
+                        <td class="text-sm">PAYE</td>
+                      </tr>
+
+                    </tbody>
+                  </table>
+
+                  <table>
+                    <tr>
+                      <th class="text-black fontBold pr-4">Source of Income:</th>
+                      <td>SALARY</td>
+                    </tr>
+                    <tr>
+                      <th class="text-black fontBold pr-4">Expiry Date:</th>
+                      <td>Dec 31, 2023</td>
+                    </tr>
+                  </table>
+                </div>
+
+
+                <div class="flex justify-around items-center px-6 mt-5">
+
+                  <div class="sig1 w-4/12">
+                    <div class="border-b-2"></div>
+                    <p class="fontBold text-black text-center mt-1">Official stamp Impression</p>
+                  </div>
+
+                  <div class="w-4/12 flex justify-center">
+                    <img src="./assets/img/QR_Code.png" alt="">
+                  </div>
+
+                  <div class="sig2 w-4/12">
+                    <div class="border-b-2"></div>
+                    <p class="fontBold text-black text-center mt-1">Official date and stamp</p>
+                  </div>
+
+                </div>
+
+                <p class="text-center">Two yeas(s) copies of Official receipts MUST be attached  to this certificate to make it valid</p>
+
+
+
+                <hr class="my-4 md:mx-10 mx-4">
+
+                <div class="md:px-10 px-2 pb-6">
+                  <div class="flex items-center justify-center gap-2">
+                    <img src="./assets/img/akwaimage.png" alt="">
+                    <div>
+                      <p class="text-md fontBold pb-0">Plateau State Internal Revenue Service</p>
+                      <div class="flex items-center gap-x-3 flex-wrap">
+                        <p class="text-sm text-[#6F6F84]">www.payplateau.com</p>
+                        <p class="text-sm text-[#6F6F84]">Info@payplateau.com</p>
+                        <p class="text-sm text-[#6F6F84]">0800 101 5555</p>
+                        <img src="./assets/img/logo1.png" class="h-[30px] w-[70px]" alt="">
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+
+              </div>
+
+            </section>
+          </div>
+
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
+          <div class="content-backdrop fade"></div>
+        </section>
+
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
+  <!-- Core JS -->
+  <!-- build:js assets/vendor/js/core.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="./assets/vendor/libs/popper/popper.js"></script>
+  <script src="./assets/vendor/js/bootstrap.js"></script>
+  <script src="./assets/js/jquery.datatables.min.js"></script>
+  <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
+  <script src="./assets/vendor/libs/echarts/echarts.js"></script>
+  <script src="./assets/vendor/libs/chartjs/dist/chart.js"></script>
+  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="./assets/js/nav.js"></script>
+  <!-- <script src="./assets/js/session.js"></script> -->
+  <script src="./assets/vendor/js/menu.js"></script>
+  <script src="./assets/js/accessLevel.js"></script>
+  <script src="./assets/js/main.js"></script>
+
+  <script src="./assets/js/etcc-management.js"></script>
+
+  <script>
+    $("#dataTable").dataTable()
+
+    let theAtivo = document.querySelector(".mdoetcc")
+    theAtivo.parentElement.classList.add("active")
+
+  </script>
+</body>
+
+</html>
