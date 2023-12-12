@@ -206,7 +206,7 @@ async function openInvoice(invoicenum, price) {
       userInvoices.message.forEach(element => {
         TotalInvoice += `
                 <tr>
-                  <td class="text-sm">${element.COL_6}</td>
+                  <td class="text-sm">${element.COL_4}</td>
                   <td class="text-sm">01</td>
                   <td class="text-sm">${element.COL_6}</td>
                   <td class="text-sm">${formatMoney(parseInt(element.COL_6))}</td>
@@ -229,7 +229,7 @@ async function openInvoice(invoicenum, price) {
               </tr>
               <tr>
                 <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-                <td class="text-[#000] text-xl fontBold">NGN ${sumArray(theTotal)}</td>
+                <td class="text-[#000] text-xl fontBold">NGN ${formatMoney(sumArray(theTotal))}</td>
                 <span class="d-none" id="theBal" data-money="${sumArray(theTotal)}">${formatMoney(parseInt(theTotal))}</span>
               </tr>
 
@@ -239,7 +239,7 @@ async function openInvoice(invoicenum, price) {
                 <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
               </tr>
               <tr>
-                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(sumArray(theTotal))}</span> Naira Only</td>
+                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(formatMoney(sumArray(theTotal)))}</span> Naira Only</td>
               </tr>
             </tbody>
           </table>  

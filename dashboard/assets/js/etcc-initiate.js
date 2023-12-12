@@ -168,6 +168,9 @@ function registerUser() {
       })
       const data = await response.json()
 
+
+      $("#refNumber").html(data.ref)
+
       if (data.status === 1) {
 
         $("#msg_box").html(`
