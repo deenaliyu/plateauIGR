@@ -63,7 +63,7 @@
           <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
             <div class="">
               <p class="text-sm text-black" id="datei">-</p>
-              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">eTCC Management</h1>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">eTCC Manager</h1>
             </div>
 
             <div class="mt-4 flex gap-x-5">
@@ -121,49 +121,21 @@
                         <th>TCC</th>
                       </tr>
                     </thead>
-                    <tbody id="payeMTabAll">
-                      <tr>
-                        <td>1</td>
-                        <td>08/03/2023</td>
-                        <td>52303403043</td>
-                        <td><span class="badge bg-success">Approved</span></td>
-                        <td>
-                          <a href="./etcc-details.html" class="button button-sm">View</a>
-                        </td>
-                        <td><a href="./etcc-preview.html" class="textPrimary fontBold">Preview</a></td>
-                      </tr>
+                    <tbody id="etccTable">
+                     
 
-                      <tr>
-                        <td>2</td>
-                        <td>08/03/2023</td>
-                        <td>232398403</td>
-                        <td><span class="badge bg-danger">pending</span></td>
-                        <td>
-                          <a href="./etcc-details.html" class="button button-sm">View</a>
-                        </td>
-                        <td><a href="./etcc-preview.html" class="textPrimary fontBold">Preview</a></td>
-                      </tr>
 
-                      <tr>
-                        <td>3</td>
-                        <td>08/03/2023</td>
-                        <td>7593439934</td>
-                        <td><span class="badge bg-danger">Returned</span></td>
-                        <td>
-                          <a href="./etcc-details.html" class="button button-sm">View</a>
-                        </td>
-                        <td><a href="./etcc-preview.html" class="textPrimary fontBold">Preview</a></td>
-                      </tr>
+                    
 
 
                     </tbody>
                   </table>
 
 
-                  <!-- <div class="flex justify-center items-center mt-4" id="loader">
+                  <div class="flex justify-center items-center mt-4" id="loader">
                     <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900">
                     </div>
-                  </div> -->
+                  </div>
                 </div>
 
               </div>
@@ -203,7 +175,6 @@
     let theAtivo = document.querySelector(".mdd")
     theAtivo.parentElement.classList.add("active")
 
-    $("#dataTable").dataTable()
   </script>
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="./assets/js/session.js"></script>
@@ -214,6 +185,7 @@
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <!-- Main JS -->
   <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/etcc-page.js"></script>
   <!-- Page JS -->
 
   <!-- Place this tag in your head or just before your close body tag. -->

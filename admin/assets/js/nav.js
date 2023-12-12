@@ -106,7 +106,7 @@ $(".aside").html(`
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle mdoo">
           <iconify-icon icon="mdi:account-payment-outline" class="menu-icon"></iconify-icon>
-          <div data-i18n="Form Elements">PAYE Management</div>
+          <div data-i18n="Form Elements">PAYE Manager</div>
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
@@ -127,7 +127,7 @@ $(".aside").html(`
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle mdoetcc">
           <iconify-icon icon="tabler:world-dollar" class="menu-icon"></iconify-icon>
-          <div data-i18n="Form Elements">eTCC Management</div>
+          <div data-i18n="Form Elements">eTCC Manager</div>
         </a>
         <ul class="menu-sub">
           <li class="menu-item">

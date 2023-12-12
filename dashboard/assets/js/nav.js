@@ -49,7 +49,7 @@ $(".aside").html(`
       <li class="menu-item">
       <a href="payee-corporate.html" class="menu-link paye">
       <iconify-icon icon="fluent-mdl2:edit-contact" class="menu-icon"></iconify-icon>
-        <div data-i18n="Basic">PAYE Management</div>
+        <div data-i18n="Basic">PAYE Manager</div>
       </a>
     </li>
       <li class="menu-item">
