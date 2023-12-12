@@ -26,7 +26,7 @@ async function fetchPayeUsers() {
     let theRightUSers = specialUsers.message.reverse().filter(rihuser => rihuser.category.toLowerCase() === category)
 
     theRightUSers.forEach((rhUser, i) => {
-      let annual = parseFloat(rhUser.annual_estimate)
+      let annual = parseFloat(rhUser.monthly_estimate * 12)
       let monthly = parseFloat(rhUser.monthly_estimate)
 
       let htmlData = ""

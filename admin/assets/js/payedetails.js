@@ -69,7 +69,7 @@ async function getStaffLists() {
             <td>${rhUser.payer_id}</td>
             <td>${rhUser.fullname}</td>
             <td>${rhUser.annual_gross_income}</td>
-            <td>&#8358; ${formatMoney(parseInt(rhUser.basic_salary))}</td>
+            <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
             <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
             <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
             <td>${rhUser.timeIn}</td>
