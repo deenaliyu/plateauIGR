@@ -9,6 +9,14 @@ function selectAll(eee) {
 
 }
 
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 0,
+  });
+}
+
 async function generatePayeinv() {
 
   const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=PL-PAYE-3978265401`)
@@ -29,9 +37,9 @@ async function generatePayeinv() {
           <td>${i + 1}</td>
           <td>${rhUser.payer_id}</td>
           <td>${rhUser.fullname}</td>
-          <td>${rhUser.annual_gross_income}</td>
-          <td>&#8358; ${rhUser.basic_salary}</td>
-          <td>&#8358; 24,000,000</td>
+          <td>${formatMoney(parseInt(rhUser.annual_gross_income))}</td>
+          <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
+          <td>${formatMoney(parseInt(rhUser.monthly))}</td>
 
         </tr>
         `)
