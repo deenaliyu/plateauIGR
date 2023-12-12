@@ -20,9 +20,9 @@ async function getEtccRequests() {
           <td>${etcReq.refe}</td>
           <td>${etcReq.app_status === "Declined" ? '<span class="badge bg-warning">pending</span>' : '<span class="badge bg-success">Approved</span>'} </td>
           <td>
-            <a href="./etcc-details.html?theid=${etcReq.id}" class="button button-sm">View</a>
+            <a href="./etcc-details.html?theid=${etcReq.refe}" class="button button-sm">View</a>
           </td>
-          <td><a href="./etcc-preview.html?theid=${etcReq.id}" class="textPrimary fontBold">Preview</a></td>
+          <td><a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a></td>
         </tr>
       `)
 
@@ -33,9 +33,9 @@ async function getEtccRequests() {
           <td>${etcReq.refe}</td>
           <td>${etcReq.app_status === "Declined" ? '<span class="badge bg-warning">pending</span>' : '<span class="badge bg-success">Approved</span>'} </td>
           <td>
-            <a href="./etcc-details.html?theid=${etcReq.id}" class="button button-sm">View</a>
+            <a href="./etcc-details.html?theid=${etcReq.refe}" class="button button-sm">View</a>
           </td>
-          <td><a href="./etcc-preview.html?theid=${etcReq.id}" class="textPrimary fontBold">Preview</a></td>
+          <td><a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a></td>
         </tr>
       `)
 
