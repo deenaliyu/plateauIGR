@@ -1,4 +1,6 @@
 let HOST = "https://plateaugr.useibs.com/php/index.php"
+let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
+let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
 let userInfo2 = JSON.parse(window.localStorage.getItem("adminDataPrime"));
 

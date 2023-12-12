@@ -444,3 +444,56 @@ a:hover {
 .imgTabs {
   display: none;
 }
+
+/* MAKE PAYMENT
+ */
+
+.payCards {
+  background: #FFFFFF;
+  border: 1px solid #D7D7D7;
+  box-shadow: 1.71429px 1.71429px 1.71429px rgba(0, 0, 0, 0.12);
+  border-radius: 8px;
+  padding: 20px 30px;
+  width: 130px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.payCards:hover {
+  transform: scale(1.02);
+}
+
+.payCards.active {
+  border: 2px solid #CDA545;
+}
+
+.payCards iconify-icon {
+  font-size: 30px;
+}
+
+.payCards p {
+  margin-top: 10px;
+}
+
+.tab_steps {
+  display: none;
+}
+
+.tab_steps.active {
+  display: block;
+}
+
+.disabled {
+
+  pointer-events: none;
+  cursor: default;
+  opacity: 0.5;
+}
+
+.selectedcat {
+  border: 2px solid var(--primaryCol);
+}
+
+.cardi {
+  cursor: pointer;
+}

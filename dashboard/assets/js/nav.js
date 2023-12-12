@@ -1,4 +1,6 @@
 let HOST = "https://plateaugr.useibs.com/php/index.php"
+let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
+let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
 $(".aside").html(`
 <div class="app-brand demo">
@@ -215,10 +217,10 @@ async function getNotifications() {
     </div>
   `)
   try {
-    console.log(userInfo2.tax_number)
+    // console.log(userInfo2.tax_number)
     const response = await fetch(`${HOST}?inAppNotification&user_id=${userInfo2.tax_number}`)
     const data = await response.json()
-    console.log(data)
+    // console.log(data)
 
     if (data.status === 0) {
       $("#notiModal .modal-body").html(`

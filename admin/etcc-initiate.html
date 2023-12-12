@@ -86,7 +86,6 @@
     </div>
 
     </div>
-
     <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
 
       <section class="formTabs h-full">
@@ -113,26 +112,26 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Name of Organisation*</label>
-              <input type="email" class="form-control w-full enumInput" data-name="email" required>
+              <input type="email" class="form-control w-full enumInput" data-name="organisation" required>
             </div>
 
           </div>
 
           <div class="form-group w-full mb-3">
             <label for="">Office Address*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="address">
+            <input type="text" class="form-control w-full enumInput" data-name="address" required>
           </div>
 
           <div class="flex gap-3 md:flex-row flex-col mb-3">
 
             <div class="form-group md:w-6/12">
               <label for="">Organization TIN*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="tin">
+              <input type="text" class="form-control w-full enumInput" data-name="org_tin" required>
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">Staff/Applicant TIN*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="tin2">
+              <input type="text" class="form-control w-full enumInput" data-name="applicant_tin" required>
             </div>
 
           </div>
@@ -141,12 +140,12 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Date Employed*</label>
-              <input type="date" class="form-control w-full enumInput" data-name="date_employed">
+              <input type="date" class="form-control w-full enumInput" data-name="date_of_employment" required>
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">Occupation or Kind of work done*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="occupation">
+              <input type="text" class="form-control w-full enumInput" data-name="occupation" required>
             </div>
 
           </div>
@@ -155,15 +154,15 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Reason for Obtaining TCC*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="reason">
+              <input type="text" class="form-control w-full enumInput" data-name="reason" required>
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">Private or Public Organization*</label>
-              <select class="form-select enumInput w-full" data-name="privateOrPublic">
+              <select class="form-select enumInput w-full" data-name="sector" required>
                 <option value="">Select --</option>
-                <option value="private">private</option>
-                <option value="public">public</option>
+                <option value="1">private</option>
+                <option value="2">public</option>
               </select>
             </div>
 
@@ -172,8 +171,7 @@
 
 
 
-          <button class="button w-full mb-4 mt-4" type="button" id="theButton" onclick="nextPrev(1)">Continue</button>
-          <div id="msg_box"></div>
+          <button class="button w-full mb-4 mt-4" type="button" id="theButton" onclick="continueReg()">Continue</button>
 
         </form>
 
@@ -199,58 +197,58 @@
 
             <div class="form-group mb-3">
               <label for="">File Number</label>
-              <input type="text" class="form-control w-full enumInput" data-name="file_num">
+              <input type="text" class="form-control w-full enumInputB" data-name="filename">
             </div>
           </div>
 
           <div class="flex gap-3 mb-3">
             <div class="form-group w-4/12">
               <label for="">Year*</label>
-              <input type="text" value="2022" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="year1" required>
             </div>
 
             <div class="form-group w-4/12">
               <label for="">Income*</label>
-              <input type="text" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="income1" required>
             </div>
 
             <div class="form-group w-4/12">
               <label for="">Amount of Tax Paid*</label>
-              <input type="text" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="tax_paid_1" required>
             </div>
           </div>
 
           <div class="flex gap-3 mb-3">
             <div class="form-group w-4/12">
               <label for="">Year*</label>
-              <input type="text" value="2021" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="year2" required>
             </div>
 
             <div class="form-group w-4/12">
               <label for="">Income*</label>
-              <input type="text" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="income2" required>
             </div>
 
             <div class="form-group w-4/12">
               <label for="">Amount of Tax Paid*</label>
-              <input type="text" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="tax_paid_2" required>
             </div>
           </div>
 
           <div class="flex gap-3 mb-3">
             <div class="form-group w-4/12">
               <label for="">Year*</label>
-              <input type="text" value="2020" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="year3" required>
             </div>
 
             <div class="form-group w-4/12">
               <label for="">Income*</label>
-              <input type="text" value="N26,393,00" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="income3" required>
             </div>
 
             <div class="form-group w-4/12">
               <label for="">Amount of Tax Paid*</label>
-              <input type="text" class="form-control w-full enumInput">
+              <input type="text" class="form-control w-full enumInputB" data-name="tax_paid_3" required>
             </div>
           </div>
 
@@ -262,12 +260,12 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Title of the Tax</label>
-              <input type="text" class="form-control w-full enumInput" data-name="title">
+              <input type="text" class="form-control w-full enumInputB" data-name="title_of_tax_own">
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">Amount owed</label>
-              <input type="text" class="form-control w-full enumInput" data-name="amount">
+              <input type="text" class="form-control w-full enumInputB" data-name="amount_owed">
             </div>
 
           </div>
@@ -281,12 +279,12 @@
 
           <div class="form-group w-full mb-3">
             <label for="">Name of Husband</label>
-            <input type="text" class="form-control w-full enumInput" data-name="husband_name">
+            <input type="text" class="form-control w-full enumInputB" data-name="name_hus">
           </div>
 
           <div class="form-group w-full mb-3">
             <label for="">Husband Address</label>
-            <input type="text" class="form-control w-full enumInput" data-name="husband_address">
+            <input type="text" class="form-control w-full enumInputB" data-name="hus_address">
           </div>
 
           <ul class="pl-4 list-disc mb-3">
@@ -295,7 +293,7 @@
 
           <div class="form-group w-full mb-3">
             <label for="">Name of Institution</label>
-            <input type="text" class="form-control w-full enumInput" data-name="instituition_name">
+            <input type="text" class="form-control w-full enumInputB" data-name="name_institution">
           </div>
 
           <div class="flex gap-3 md:flex-row flex-col mb-3">
@@ -303,38 +301,28 @@
             <div class="form-group md:w-6/12">
               <label for="">Identification of I.D Card*</label>
               <p class="text-xs text-gray-600">Allowed formats: (png, pdf, docx, doc, jpeg, jpg)Max size: 10mb</p>
-              <input type="file" class="form-control w-full enumInput mt-2" data-name="fullname" required>
+              <input type="file" class="form-control w-full enumInputB mt-2 uploadInputs" data-name="id_card" required>
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">School Leaving Certificate (if any)</label>
               <p class="text-xs text-gray-600">Allowed formats: (png, pdf, docx, doc, jpeg, jpg)Max size: 10mb</p>
-              <input type="file" class="form-control w-full enumInput mt-2" data-name="email" required>
+              <input type="file" class="form-control w-full enumInputB mt-2 uploadInputs"
+                data-name="leaving_school_cert">
             </div>
 
           </div>
 
           <p class="text-lg fontBold text-black my-3">Other Document Uploads</p>
 
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-4/12">
-              <label for="">Document Name</label>
-              <input type="text" class="form-control w-full enumInput mt-2" data-name="document_name">
-            </div>
-
-            <div class="form-group md:w-8/12">
-              <label class="text-xs" for="">Allowed formats: (png, pdf, docx, doc, jpeg, jpg)Max size: 10mb</label>
-              <input type="file" class="form-control w-full enumInput mt-2" data-name="document1">
-            </div>
-
+          <div class="form-group w-full mb-3">
+            <label class="text-xs" for="">Allowed formats: (png, pdf, docx, doc, jpeg, jpg)Max size: 10mb</label>
+            <input type="file" class="form-control w-full enumInputB mt-2 uploadInputs" data-name="other_doc">
           </div>
 
-          <button class="button">Add New Document</button>
 
-          <button class="button w-full mb-4 mt-4" type="button" id="theButton" onclick="nextPrev(1)">Continue</button>
-          <div id="msg_box"></div>
 
+          <button class="button w-full mb-4 mt-4" type="button" onclick="continueReg2()">Continue</button>
         </form>
 
       </section>
@@ -358,16 +346,18 @@
 
           <div class="form-group mb-3">
             <label for="">Name*</label>
-            <input type="text" class="enumInput form-control w-full" placeholder="Enter your full name">
+            <input type="text" class="enumInputC form-control w-full" placeholder="Enter your full name">
           </div>
 
 
           <div class="form-group mb-3">
-            <label for="">Recommendation (for or against TAX Clearance Certificate) *</label>
-            <textarea type="text" rows="5" cols="5" class="enumInput form-control w-full"></textarea>
+            <label for="">Recommendation (for or against TAX Clearance Certificate)</label>
+            <textarea type="text" rows="5" cols="5" class="enumInput form-control w-full"
+              data-name="recommendation"></textarea>
           </div>
 
-          <button class="button w-full mb-4 mt-4" type="button" id="theButton" onclick="nextPrev(1)">Continue</button>
+          <button class="button w-full mb-4 mt-4" type="button" id="theButton"
+            onclick="continueReg3()">Continue</button>
           <div id="msg_box"></div>
 
         </form>
@@ -389,7 +379,6 @@
 
 
         <div class="invoiceContainer flex justify-center">
-
           <div class="invoice bg-white md:w-[70%] w-[90%] shadow-md md:-mt-12 mt-2" id="invoiceCard">
             <!-- COMING FROM JS invoice.js -->
           </div>
@@ -397,8 +386,10 @@
 
         </div>
 
+
+
         <div class="flex justify-center px-4">
-          <div class="flex justify-between flex-wrap mt-4 gap-3">
+          <div class="flex justify-between flex-wrap mt-4 mb-4 gap-3">
             <div class="flex gap-3 items-center">
               <button class="outline-btn flex gap-3 items-center px-10" onclick="printInvoice('invoiceCard')">
                 <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
@@ -406,14 +397,14 @@
               </button>
             </div>
 
-            <button class="button flex gap-3 items-center px-10" onclick="nextPrev(1)">
+            <a href="./etcc-management.html" class="button flex gap-3 items-center px-10">
               <span>Return to eTCC</span>
               <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
-            </button>
+            </a>
           </div>
         </div>
 
-      </section>
+
 
 
     </div>
@@ -439,8 +430,13 @@
   <!-- <script src="./assets/js/session.js"></script> -->
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="./assets/js/accessLevel.js"></script>
+  <script src="../assets/node_modules/publitio_js_sdk/build/publitio-api.min.js"></script>
   <script src="./assets/js/main.js"></script>
+  <script src="../assets/js/payment.js"></script>
   <script src="./assets/js/tabHandler.js"></script>
+
+  <script src="../assets/js/invoice.js"></script>
+  <script src="../dashboard/assets/js/etcc-initiate.js"></script>
 
   <!-- <script src="assets/js/create-employee.js"></script> -->
 
