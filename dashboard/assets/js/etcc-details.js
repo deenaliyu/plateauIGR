@@ -32,6 +32,20 @@ async function getEtccDetails() {
       inpt.value = theEtcDetail[inpt.dataset.name]
     })
 
+    if (theEtcDetail.app_status === "Declined") {
+      console.log("hi")
+      $("#decider").html(`
+        
+        <button class="button" id="theApprBtn" type="button" onclick="aprovethis()">Approve Request</button>
+      `)
+    } else {
+      $("#decider").html(`
+      <button class="button" id="theApprBtn" type="button" onclick="unapprove()">Un-pprove Request</button>
+    `)
+
+    }
+
+
   }
 }
 
@@ -77,3 +91,47 @@ async function fetchPayment() {
 fetchPayment().then(rr => {
   $("#dataTable").DataTable();
 })
+
+async function aprovethis() {
+  $("#theApprBtn").addClass("hidden")
+  $("#msg_boxx").html(`
+    <div class="flex justify-center items-center mb-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  try {
+    const response = await fetch(`${HOST}/?updateETCC&id=${theid}&set=2`)
+    const etccDetail = await response.json()
+
+    if (etccDetail.status === 1) {
+      alert("Approved successfully")
+      window.location.reload()
+
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+async function unapprove() {
+  $("#theApprBtn").addClass("hidden")
+  $("#msg_boxx").html(`
+    <div class="flex justify-center items-center mb-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  try {
+    const response = await fetch(`${HOST}/?updateETCC&id=${theid}&set=1`)
+    const etccDetail = await response.json()
+
+    if (etccDetail.status === 1) {
+      alert("success")
+      window.location.reload()
+
+    }
+  } catch (error) {
+    console.log(error)
+  }
+
+}

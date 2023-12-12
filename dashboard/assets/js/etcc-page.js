@@ -48,3 +48,70 @@ getEtccRequests().then(tt => {
   $('#dataTable').DataTable();
   $('#dataTable2').DataTable();
 })
+
+
+$("#checkStatus").on("click", function () {
+
+  $("#msg_box").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  $("#checkStatus").addClass("hidden")
+
+  let therefNumber = document.querySelector("#refNumber").value
+
+  if (therefNumber === "") {
+    alert("Field can't be empty.")
+    $("#msg_box").html(``)
+    $("#checkStatus").removeClass("hidden")
+    return
+  }
+
+  async function getStatus() {
+    try {
+      const response = await fetch(`${HOST}?getETCC&type=ref&id=${therefNumber}`)
+      const statusData = await response.json()
+
+      console.log(statusData)
+      if (statusData.status === 1) {
+        $("#msg_box").html(``)
+        $("#checkStatus").removeClass("hidden")
+        $("#confirmationModal").modal("show")
+
+        if (statusData.message[0].app_status === "Declined") {
+          $("#modalBody").html(`
+          <div class="flex justify-center">
+            <img src="./assets/img/notpaid.png" alt="">
+          </div>
+  
+          <p class="text-lg fontBold text-center mb-3 mt-5">Your application is under review.</p>
+        `)
+        } else {
+          $("#modalBody").html(`
+            <div class="flex justify-center">
+              <img src="./assets/img/verified.png" alt="">
+            </div>
+
+            <p class="text-lg fontBold text-center mb-3 mt-5">Your application has been approved.</p>
+          `)
+
+        }
+
+
+      } else {
+        alert('Invalid Ref Number')
+        $("#msg_box").html(``)
+        $("#checkStatus").removeClass("hidden")
+      }
+    } catch (error) {
+      alert('something went wrong')
+      $("#msg_box").html(``)
+      $("#checkStatus").removeClass("hidden")
+    }
+
+  }
+
+  getStatus()
+
+})
