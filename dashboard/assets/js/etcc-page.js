@@ -115,3 +115,25 @@ $("#checkStatus").on("click", function () {
   getStatus()
 
 })
+
+
+async function getSpecialUsersDash1() {
+
+  const response = await fetch(`${HOST}/?getETCCdash`)
+  const getDashData = await response.json()
+
+
+  if (getDashData.status === 0) {
+    // $('#dataTable').DataTable();
+
+  } else {
+    let dashData = getDashData.message[0]
+
+    $("#sub_num").html(dashData.total_count)
+    $("#pending_num").html(dashData.declined_count)
+    $("#appr_num").html(dashData.approved_count)
+  }
+
+}
+
+getSpecialUsersDash1()

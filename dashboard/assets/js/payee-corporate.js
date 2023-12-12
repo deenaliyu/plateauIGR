@@ -24,10 +24,10 @@ async function getStaffLists() {
           <td>${i + 1}</td>
           <td>${rhUser.payer_id}</td>
           <td>${rhUser.fullname}</td>
-          <td>${rhUser.annual_gross_income}</td>
-          <td>&#8358; ${rhUser.basic_salary}</td>
-          <td>&#8358; 2,400,000</td>
-          <td>&#8358; 24,000,000</td>
+          <td>${formatMoney(parseInt(rhUser.annual_gross_income))}</td>
+          <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
+          <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
+          <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
           <td>${rhUser.timeIn}</td>
           <td>&#8358; 24,000,000</td>
           <td>
@@ -42,6 +42,14 @@ async function getStaffLists() {
         `)
     });
   }
+}
+
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 0,
+  });
 }
 
 getStaffLists().then(tt => {
@@ -80,7 +88,7 @@ async function getSpecialUsersDashAnnualEstimate(year) {
 
   } else {
     let dashData = getDashData.message[0]
-    $("#annEstimate").html(dashData.Total_Annual_Estimate)
+    $("#annEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate)))
   }
 
 }

@@ -3,6 +3,14 @@ const category = urlParams.get('type');
 
 $("#pageName").html(category === "private" ? 'Private PAYE (PIT)' : 'Public PAYE')
 
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 0,
+  });
+}
+
 async function fetchPayeUsers() {
 
   const response = await fetch(`${HOST}/?getSpecialUsers`)
@@ -18,8 +26,8 @@ async function fetchPayeUsers() {
     let theRightUSers = specialUsers.message.reverse().filter(rihuser => rihuser.category.toLowerCase() === category)
 
     theRightUSers.forEach((rhUser, i) => {
-      let annual = rhUser.annual_estimate
-      let monthly = rhUser.monthly_estimate
+      let annual = parseFloat(rhUser.annual_estimate)
+      let monthly = parseFloat(rhUser.monthly_estimate)
 
       let htmlData = ""
 
@@ -30,8 +38,8 @@ async function fetchPayeUsers() {
           <td>${rhUser.name}</td>
           <td>${rhUser.category}</td>
           <td>${rhUser.staff_quota}</td>
-          <td>&#8358; ${annual.toLocaleString("en-US")}</td>
-          <td>&#8358; ${monthly.toLocaleString("en-US")}</td>
+          <td>${formatMoney(annual)}</td>
+          <td>${formatMoney(monthly)}</td>
           <td>&#8358; 24,000,000</td>
           <td><span class="badge bg-danger rounded-pill">Defaulter</span></td>
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
@@ -71,6 +79,7 @@ async function getSpecialUsersDash1() {
 
 getSpecialUsersDash1()
 
+
 async function getSpecialUsersDashAnnualEstimate(year) {
   $("#annEstimate").html('-')
 
@@ -82,7 +91,7 @@ async function getSpecialUsersDashAnnualEstimate(year) {
 
   } else {
     let dashData = getDashData.message[0]
-    $("#annEstimate").html(dashData.Total_Annual_Estimate)
+    $("#annEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate)))
   }
 
 }

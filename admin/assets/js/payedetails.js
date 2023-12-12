@@ -42,6 +42,14 @@ async function fetchPayeUser() {
 
 fetchPayeUser()
 
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 0,
+  });
+}
+
 async function getStaffLists() {
 
   const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=${payerID}`)
@@ -61,9 +69,9 @@ async function getStaffLists() {
             <td>${rhUser.payer_id}</td>
             <td>${rhUser.fullname}</td>
             <td>${rhUser.annual_gross_income}</td>
-            <td>&#8358; ${rhUser.basic_salary}</td>
-            <td>&#8358; 2,400,000</td>
-            <td>&#8358; 24,000,000</td>
+            <td>&#8358; ${formatMoney(parseInt(rhUser.basic_salary))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
             <td>${rhUser.timeIn}</td>
             <td>&#8358; 24,000,000</td>
             <td>
