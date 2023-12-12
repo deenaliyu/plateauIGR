@@ -11,6 +11,15 @@
   padding: 5px 10px;
 }
 
+.outline-btn {
+  background: #fff !important;
+  color: var(--primaryCol) !important;
+  border: 2px solid var(--primaryCol);
+  border-radius: 100px;
+  padding: 10px 20px;
+  text-align: center;
+}
+
 .message-container {
   display: flex;
   align-items: center;
