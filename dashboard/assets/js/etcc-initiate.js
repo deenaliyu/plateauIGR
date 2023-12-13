@@ -1,7 +1,7 @@
 // const urlParams = new URLSearchParams(window.location.search);
 // const category = urlParams.get('categ_id');
 let userDATA = JSON.parse(localStorage.getItem("userDataPrime"))
-const currentPageURL = window.location.href;
+let currentPageURL = window.location.href;
 
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")

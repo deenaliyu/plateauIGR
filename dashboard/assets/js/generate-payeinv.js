@@ -1,3 +1,4 @@
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 
 function selectAll(eee) {
 
@@ -19,7 +20,7 @@ function formatMoney(amount) {
 
 async function generatePayeinv() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=${userInfo.tax_number}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")
@@ -66,7 +67,7 @@ function generateInv(amount) {
     preConfirm: async () => {
       try {
         const response = await fetch(
-          `${HOST}?generateSingleInvoices&tax_number=PL-PAYE-3978265401&price=${amount}&revenue_head_id=1`
+          `${HOST}?generateSingleInvoices&tax_number=${userInfo.tax_number}&price=${amount}&revenue_head_id=1359`
         );
         if (!response.ok) {
           throw new Error(response.statusText);

@@ -1,8 +1,9 @@
-
-
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
+let currentPageURL = window.location.href;
+// userInfo
 async function getEtccRequests() {
 
-  const response = await fetch(`${HOST}/?getETCC&type=`)
+  const response = await fetch(`${HOST}/?${currentPageURL.includes('admin/etcc-initiate') ? 'getETCC&type=' : `getETCC&type=payer_user&id=${userInfo.tax_number}`}`)
   const etccReqs = await response.json()
 
   $("#loader").css("display", "none")

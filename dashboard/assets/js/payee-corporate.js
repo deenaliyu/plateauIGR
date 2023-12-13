@@ -1,8 +1,8 @@
-
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 
 async function getStaffLists() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=${userInfo.tax_number}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")
@@ -58,7 +58,7 @@ getStaffLists().then(tt => {
 
 async function getSpecialUsersDash1() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersDash1&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersDash1&payer_id=${userInfo.tax_number}`)
   const getDashData = await response.json()
 
 
@@ -80,7 +80,7 @@ getSpecialUsersDash1()
 async function getSpecialUsersDashAnnualEstimate(year) {
   $("#annEstimate").html('-')
 
-  const response = await fetch(`${HOST}/?getSpecialUsersDashAnnualEstimate&year=${year}&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersDashAnnualEstimate&year=${year}&payer_id=${userInfo.tax_number}`)
   const getDashData = await response.json()
 
   if (getDashData.status === 0) {
@@ -109,7 +109,7 @@ $('#selYear').on('change', function () {
 
 async function getPaymentHistory() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersPayments&offset=0&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersPayments&offset=0&payer_id=${userInfo.tax_number}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")

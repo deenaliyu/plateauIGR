@@ -1,6 +1,8 @@
 // const urlParams = new URLSearchParams(window.location.search);
 // const category = urlParams.get('categ_id');
 
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
+
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
   // check for empty fileds
@@ -34,7 +36,7 @@ function registerUser() {
     "endpoint": "createSpecialUserEmployee",
     "data": {
       // "category_id": category
-      "category_id": 'PL-PAYE-3978265401'
+      "category_id": userInfo.tax_number
     }
   }
 
