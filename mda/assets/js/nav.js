@@ -511,9 +511,9 @@ $(".footer").html(`
   <img src="../assets/img/logo1.png" width="50px" alt="">
 </div>
 <div class="flex items-center gap-x-3">
-  <p class="text-[#1E1E1E] text-[2vh] flex items-center gap-x-3"><iconify-icon icon="material-symbols:mail-outline-rounded" width="28" height="28"></iconify-icon> Info@primegauge.com</p>
+  <p class="text-[#1E1E1E] text-[2vh] flex items-center gap-x-3"><iconify-icon icon="material-symbols:mail-outline-rounded" width="28" height="28"></iconify-icon> info@psirs.gov.ng</p>
 <h4>|</h4>
-  <p class="text-[#1E1E1E] text-[2vh] flex items-center gap-x-3"><iconify-icon icon="ic:baseline-phone-android" width="28" height="28"></iconify-icon> 07007746348243 </p>
+  <p class="text-[#1E1E1E] text-[2vh] flex items-center gap-x-3"><iconify-icon icon="ic:baseline-phone-android" width="28" height="28"></iconify-icon> 07056990777 </p>
 </div>
 </div>
 `);
