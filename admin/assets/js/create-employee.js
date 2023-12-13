@@ -65,7 +65,7 @@ function registerUser() {
           showCancelButton: false,
           confirmButtonColor: '#CDA545',
           // cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Go to PAYE management'
+          confirmButtonText: 'Go to PAYE manager'
 
         }).then((result) => {
           window.location.href = `./payedetails.html?payerID=${category}`

@@ -251,7 +251,7 @@ let STATES = `
   <option disabled selected>--Select State--</option>
   <option value="Abia">Abia</option>
   <option value="Adamawa">Adamawa</option>
-  <option value="Akwa Ibom" selected>Akwa Ibom</option>
+  <option value="Akwa Ibom">Akwa Ibom</option>
   <option value="Anambra">Anambra</option>
   <option value="Bauchi">Bauchi</option>
   <option value="Bayelsa">Bayelsa</option>
@@ -280,7 +280,7 @@ let STATES = `
   <option value="Ondo">Ondo</option>
   <option value="Osun">Osun</option>
   <option value="Oyo">Oyo</option>
-  <option value="Plateau">Plateau</option>
+  <option value="Plateau" selected>Plateau</option>
   <option value="Rivers">Rivers</option>
   <option value="Sokoto">Sokoto</option>
   <option value="Taraba">Taraba</option>
@@ -1150,7 +1150,7 @@ let lgaSelect = document.querySelector('#selectLGA')
 if (stateSelect) {
 
   stateSelect.innerHTML = STATES
-  lgaList["AkwaIbom"].forEach(lga => {
+  lgaList["Plateau"].forEach(lga => {
     lgaSelect.innerHTML += `
       <option value="${lga}">${lga}</option>
     `
