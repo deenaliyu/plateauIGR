@@ -219,7 +219,7 @@ async function openInvoice(invoicenum, price) {
                 <td class="text-[#555555] text-sm">Sub Total</td>
                 <td></td>
                 <td></td>
-                <td class="text-[#000] text-sm">NGN ${sumArray(theTotal)}</td>
+                <td class="text-[#000] text-sm">NGN ${formatMoney(sumArray(theTotal))}</td>
               </tr>
               <tr>
                 <td class="text-[#555555] text-sm">Discount</td>
@@ -239,7 +239,7 @@ async function openInvoice(invoicenum, price) {
                 <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
               </tr>
               <tr>
-                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(formatMoney(sumArray(theTotal)))}</span> Naira Only</td>
+                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(sumArray(theTotal))}</span> Naira Only</td>
               </tr>
             </tbody>
           </table>  

@@ -92,6 +92,8 @@ async function getSpecialUsersDashAnnualEstimate(year) {
   } else {
     let dashData = getDashData.message[0]
     $("#annEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate)))
+
+    $("#monthlyEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate / 12)))
   }
 
 }
