@@ -26,7 +26,7 @@ async function fetchPayeUser() {
     `)
 
     $("#reg_staff").html(theInfo.staff_quota)
-    $("#month_remm").html(theInfo.monthly_estimate)
+    $("#month_remm").html(formatMoney(parseFloat(theInfo.monthly_estimate)))
     $("#payeName").html(theInfo.name)
 
     $("#pageName").html(theInfo.category === "Private" ? 'Private PAYE (PIT)' : 'Public PAYE')
@@ -46,7 +46,7 @@ function formatMoney(amount) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
     currency: 'NGN', // Change this to your desired currency code
-    minimumFractionDigits: 0,
+    minimumFractionDigits: 2,
   });
 }
 

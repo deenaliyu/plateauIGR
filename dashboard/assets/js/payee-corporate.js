@@ -77,6 +77,29 @@ async function getSpecialUsersDash1() {
 
 getSpecialUsersDash1()
 
+async function getSpecialUsersss() {
+
+  const response = await fetch(`${HOST}/?getSpecialUsers&id=${userInfo.tax_number}`)
+  const getDashData = await response.json()
+
+
+  if (getDashData.status === 0) {
+    // $('#dataTable').DataTable();
+
+  } else {
+    let dashData = getDashData.message[0]
+
+    $("#total_remitance").html(formatMoney(dashData.total_remittance))
+
+  }
+
+}
+
+getSpecialUsersss()
+
+
+
+
 async function getSpecialUsersDashAnnualEstimate(year) {
   $("#annEstimate").html('-')
 
@@ -105,6 +128,7 @@ $('#selYear').on('change', function () {
   getSpecialUsersDashAnnualEstimate(value)
 
 })
+
 
 
 async function getPaymentHistory() {

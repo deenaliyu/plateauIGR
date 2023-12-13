@@ -40,7 +40,7 @@ async function fetchPayeUsers() {
           <td>${rhUser.staff_quota}</td>
           <td>${formatMoney(annual)}</td>
           <td>${formatMoney(monthly)}</td>
-          <td>&#8358; 24,000,000</td>
+          <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
           <td><span class="badge bg-danger rounded-pill">Defaulter</span></td>
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>
@@ -93,7 +93,7 @@ async function getSpecialUsersDashAnnualEstimate(year) {
     let dashData = getDashData.message[0]
     $("#annEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate)))
 
-    $("#monthlyEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate / 12)))
+    // $("#monthlyEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate / 12)))
   }
 
 }
@@ -102,6 +102,7 @@ $(document).ready(function () {
   let yearr = new Date().getFullYear()
 
   getSpecialUsersDashAnnualEstimate(yearr)
+  getSpecialUsersDashMonthlyEstimate(yearr)
 });
 
 $('#selYear').on('change', function () {
@@ -111,4 +112,45 @@ $('#selYear').on('change', function () {
 
 })
 
+let finalJson = {}
 
+async function getSpecialUsersDashMonthlyEstimate(year) {
+  $("#annEstimate").html('-')
+
+  const response = await fetch(`${HOST}/?getSpecialUsersDashMonthlyEstimate&year=${year}`)
+  const getDashData = await response.json()
+
+  if (getDashData.status === 0) {
+    $("#monthlyEstimate").html(0)
+
+  } else {
+    populateSelect(getDashData.message)
+
+    finalJson = getDashData.message
+
+    setTimeout(() => {
+      displayEstimate()
+    }, 1000);
+
+  }
+
+}
+
+function getAbbreviatedMonthName(monthValue) {
+  var date = new Date(monthValue + "-01");
+  return date.toLocaleString('default', { month: 'short' });
+}
+
+function populateSelect(jsonData) {
+  var select = $("#monthSelect");
+  $.each(jsonData, function (index, item) {
+    var monthAbbreviation = getAbbreviatedMonthName(item.Year_Month);
+    select.append($("<option>").val(item.Year_Month).text(monthAbbreviation));
+  });
+}
+
+function displayEstimate() {
+  var selectedMonth = $("#monthSelect").val();
+  var selectedEstimate = finalJson.find(item => item.Year_Month === selectedMonth).Total_Monthly_Estimate;
+  $("#monthlyEstimate").text(formatMoney(parseFloat(selectedEstimate)));
+}
