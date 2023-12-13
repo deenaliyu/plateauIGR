@@ -29,7 +29,7 @@ async function getStaffLists() {
           <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
           <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
           <td>${rhUser.timeIn}</td>
-          <td>&#8358; 24,000,000</td>
+          <!-- <td>&#8358; 24,000,000</td> -->
           <td>
             <div class="flex items-center gap-2">
               <button><iconify-icon class="fontBold text-lg"

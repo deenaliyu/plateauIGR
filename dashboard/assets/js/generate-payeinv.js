@@ -33,13 +33,13 @@ async function generatePayeinv() {
 
       $("#stafflistTable").append(`
         <tr>
-          <td><input class="form-check-input taxChecks" data-amount="${rhUser.basic_salary}" type="checkbox" value="" onchange="checkTax(this)"></td>
+          <td><input class="form-check-input taxChecks" data-amount="${rhUser.monthly}" type="checkbox" value="" onchange="checkTax(this)"></td>
           <td>${i + 1}</td>
           <td>${rhUser.payer_id}</td>
           <td>${rhUser.fullname}</td>
           <td>${formatMoney(parseInt(rhUser.annual_gross_income))}</td>
           <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
-          <td>${formatMoney(parseInt(rhUser.monthly))}</td>
+          <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
 
         </tr>
         `)
