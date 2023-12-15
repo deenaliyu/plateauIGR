@@ -171,7 +171,12 @@ $("#footer").html(`
         <iconify-icon icon="bi:instagram" class="md:text-2xl border-l border-gray-600 pl-3"></iconify-icon>
       </div>
 
-      <div class="md:flex hidden items-center gap-5 text-[#555555] theNav">
+      <div class="md:flex hidden items-center gap-3 text-[#555555] theNav">
+        <a href="tax-calculator.html" class="text-center">
+            <iconify-icon icon="solar:calculator-bold"></iconify-icon>
+            <p class="text-sm m-0">Tax Calculator</p>
+        </a>
+
         <a href="faqs.html" class="text-center">
             <iconify-icon icon="wpf:faq"></iconify-icon>
             <p class="text-sm m-0">FAQ</p>
