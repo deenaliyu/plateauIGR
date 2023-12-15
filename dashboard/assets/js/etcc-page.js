@@ -83,10 +83,10 @@ $("#checkStatus").on("click", function () {
         if (statusData.message[0].app_status === "Declined") {
           $("#modalBody").html(`
           <div class="flex justify-center">
-            <img src="./assets/img/notpaid.png" alt="">
+            <img src="./assets/img/review.png" alt="">
           </div>
   
-          <p class="text-lg fontBold text-center mb-3 mt-5">Your application is under review.</p>
+          <p class="text-xl fontBold text-black text-center mb-3 mt-3">Your application is under review.</p>
         `)
         } else {
           $("#modalBody").html(`
@@ -94,7 +94,7 @@ $("#checkStatus").on("click", function () {
               <img src="./assets/img/verified.png" alt="">
             </div>
 
-            <p class="text-lg fontBold text-center mb-3 mt-5">Your application has been approved.</p>
+            <p class="text-xl fontBold text-black text-center mb-3 mt-3">Your application has been approved.</p>
           `)
 
         }
