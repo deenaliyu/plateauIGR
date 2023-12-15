@@ -316,9 +316,9 @@ async function openInvoice(invoicenum, price) {
           <div>
             <p class="text-xl fontBold pb-0">Plateau State Internal Revenue Service</p>
             <div class="flex items-center gap-x-3 flex-wrap">
-              <p class="text-sm text-[#6F6F84]">www.payplateau.com</p>
-              <p class="text-sm text-[#6F6F84]">Info@payplateau.com</p>
-              <p class="text-sm text-[#6F6F84]">0800 101 5555</p>
+              <p class="text-sm text-[#6F6F84]">www.plateaugr.com</p>
+              <p class="text-sm text-[#6F6F84]">info@psirs.gov.ng</p>
+              <p class="text-sm text-[#6F6F84]">07056990777, 08031230301</p>
               <img src="./assets/img/logo1.png" class="h-[30px] w-[70px]" alt="">
             </div>
           </div>

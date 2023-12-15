@@ -253,7 +253,7 @@ async function openInvoice(invoicenum) {
                   <div class="flex items-center gap-x-3 flex-wrap">
                     <p class="text-sm text-[#6F6F84]">www.akwaibompay.ng</p>
                     <p class="text-sm text-[#6F6F84]">Info@akwaibompay.com</p>
-                    <p class="text-sm text-[#6F6F84]">0800 101 5555</p>
+                    <p class="text-sm text-[#6F6F84]">07056990777, 08031230301</p>
                   </div>
                 </div>
                 <div>
