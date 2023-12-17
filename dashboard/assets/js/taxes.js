@@ -138,87 +138,88 @@ getTaxes().then((res) => {
   $("#dataTable2").DataTable();
 });
 
-// async function getPresumptiveTaxes() {
-//   const response = await fetch(
-//     `${HOST}?getPresumptiveTaxId&tax_number=${tax_numberP}`
-//   );
-//   const revenueHeads = await response.json();
 
-//   console.log(revenueHeads);
+async function getPresumptiveTaxes() {
+  const response = await fetch(
+    `${HOST}?getPresumptiveTaxId&tax_number=${tax_numberP}`
+  );
+  const revenueHeads = await response.json();
 
-//   $("#loaderr").remove();
-//   for (const item of revenueHeads) {
+  // console.log(revenueHeads);
 
-//     let aa = ""
+  $("#loaderr").remove();
+  for (const item of revenueHeads) {
 
-//     for(const key in item) {
-// console.log(item[key].id);
-//       if(item[key].id) {
-//         aa += `
+    let aa = ""
 
-//                       <tr>
-//          <td></td>
-//        <td>${item[key].id}</td>
-//       <td>${item[key].business_type}</td>
-//       <td>${item.category}</td>
-//       <td>${item[key].frequency}</td>
-//       <td>${item[key].minimum}</td>
-//       <td>
-//         <div class="dropdown">
-//           <button class="flex gap-1 align-items-center" type="button" id="filtermda"
-//             data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-//             <iconify-icon icon="iwwa:option-horizontal" style="font-size: 24px"></iconify-icon>
-//           </button>
-//           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="filtermda">
-//             <button class="dropdown-item" onclick="generateInv(${item[key].id})">Generate Invoice</button>
-//           </div>
-//         </div>
-//       </td>
-//       `
-//       }
+    for(const key in item) {
+console.log(item[key].id);
+      if(item[key].id) {
+        aa += `
+
+                      <tr>
+         <td></td>
+       <td>${item[key].id}</td>
+      <td>${item[key].business_type}</td>
+      <td>${item.category}</td>
+      <td>${item[key].frequency}</td>
+      <td>${item[key].minimum}</td>
+      <td>
+        <div class="dropdown">
+          <button class="flex gap-1 align-items-center" type="button" id="filtermda"
+            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <iconify-icon icon="iwwa:option-horizontal" style="font-size: 24px"></iconify-icon>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end" aria-labelledby="filtermda">
+            <button class="dropdown-item" onclick="generateInv(${item[key].id})">Generate Invoice</button>
+          </div>
+        </div>
+      </td>
+      `
+      }
       
-//     }
+    }
     
 
-//     $("#showPresumptiveTax").append(aa)
-//   }
-//   // if (revenueHeads.status === 1) {
-//   //   $("#showPresumptiveTax").append(`
-//   //   <tr>
-//   //     <td></td>
-//   //      <td>${revenueHeads.message.id}</td>
-//   //     <td>${revenueHeads.message.business_type}</td>
-//   //     <td>${revenueHeads.message.category}</td>
-//   //     <td>${revenueHeads.message.frequency}</td>
-//   //     <td>${revenueHeads.message.minimum}</td>
-//   //     <td>
-//   //       <div class="dropdown">
-//   //         <button class="flex gap-1 align-items-center" type="button" id="filtermda"
-//   //           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-//   //           <iconify-icon icon="iwwa:option-horizontal" style="font-size: 24px"></iconify-icon>
-//   //         </button>
-//   //         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="filtermda">
-//   //           <button class="dropdown-item" onclick="generateInv(${revenueHeads.message.id})">Generate Invoice</button>
-//   //         </div>
-//   //       </div>
-//   //     </td>
-//   //   </tr>
-//   // `);
-//   // } else {
-//   //   $("#showPresumptiveTax").append(`
-//   //   <td>No Presumtive Taxes</td>
-//   //   `);
-//   // }
-// }
+    $("#showPresumptiveTax").append(aa)
+  }
+  // if (revenueHeads.status === 1) {
+  //   $("#showPresumptiveTax").append(`
+  //   <tr>
+  //     <td></td>
+  //      <td>${revenueHeads.message.id}</td>
+  //     <td>${revenueHeads.message.business_type}</td>
+  //     <td>${revenueHeads.message.category}</td>
+  //     <td>${revenueHeads.message.frequency}</td>
+  //     <td>${revenueHeads.message.minimum}</td>
+  //     <td>
+  //       <div class="dropdown">
+  //         <button class="flex gap-1 align-items-center" type="button" id="filtermda"
+  //           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+  //           <iconify-icon icon="iwwa:option-horizontal" style="font-size: 24px"></iconify-icon>
+  //         </button>
+  //         <div class="dropdown-menu dropdown-menu-end" aria-labelledby="filtermda">
+  //           <button class="dropdown-item" onclick="generateInv(${revenueHeads.message.id})">Generate Invoice</button>
+  //         </div>
+  //       </div>
+  //     </td>
+  //   </tr>
+  // `);
+  // } else {
+  //   $("#showPresumptiveTax").append(`
+  //   <td>No Presumtive Taxes</td>
+  //   `);
+  // }
+}
 
-// getPresumptiveTaxes().then((res) => {
-//   $("#dataTable3").DataTable({
-//     processing: true,
-//     paging: false,
-//     serverSide: false,
-//   });
-//   $("#dataTable3").DataTable();
-// });
+getPresumptiveTaxes().then((res) => {
+  $("#dataTable3").DataTable({
+    processing: true,
+    paging: false,
+    serverSide: false,
+  });
+  $("#dataTable3").DataTable();
+});
 
 function generateInv(revid) {
   let taxNumber = userInfo.tax_number;
