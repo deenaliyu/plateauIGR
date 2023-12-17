@@ -76,21 +76,24 @@
             </a>
           </div>
 
-          <div class="navbar-nav-right flex items-center gap-x-10 mr-28" id="navbar-collapse">
+          <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
             <div class="">
-              <p class="text-sm text-black">Date: <span class="datei"> </span></p>
+              <p class="text-sm text-black">Date: <span class="datei" id="datei"> </span></p>
               <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Analytics</h1>
             </div>
 
-            <div class="mt-4 flex gap-x-5 absolute right-24">
-              <div class="">
-                
-              </div>
+            <div class="mt-4 flex gap-x-5 ms-auto">
+              <!-- <div class="input-group input-group-merge md:w-72 hidden md:flex">
+                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search..."
+                  aria-describedby="basic-addon-search31">
+              </div> -->
 
-              <div class="avatar avatar-online flex gap-x-5">
+              <div class="avatar avatar-online">
                 <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
-                <p class="adminName">-</p>
+
               </div>
+              <h4 class="text-mm text-black self-center hidden md:flex adminName">System Admin</h4>
             </div>
 
           </div>
