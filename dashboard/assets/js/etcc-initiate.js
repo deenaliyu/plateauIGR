@@ -76,7 +76,7 @@ function registerUser() {
     "endpoint": "createETCC",
     "data": {
       // "category_id": category
-      "payer_id": currentPageURL.includes("admin/etcc-initiate") ? "PLI-6028517439" : userDATA.tax_number,
+      "payer_id": currentPageURL.includes("admin/etcc-initiate") ? "PLI-6028517439" : userDATA?.tax_number,
       "declaration": "I declare...",
       "app_status": "2"
     }
@@ -184,7 +184,7 @@ function registerUser() {
 
         try {
           const response = await fetch(
-            `${HOST}?generateSingleInvoices&tax_number=${currentPageURL.includes("admin/etcc-initiate") ? "PLI-6028517439" : userDATA.tax_number}&revenue_head_id=1357,1358&price=1500`
+            `${HOST}?generateSingleInvoices&tax_number=${currentPageURL.includes("admin/etcc-initiate") ? "PLI-6028517439" : userDATA?.tax_number}&revenue_head_id=1357,1358&price=1500`
           );
 
           const theddata = await response.json()

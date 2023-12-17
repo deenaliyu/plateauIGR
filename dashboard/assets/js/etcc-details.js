@@ -61,7 +61,7 @@ $("#viewThis").on('click', function () {
 async function fetchPayment() {
 
   const response = await fetch(
-    `${HOST}/php/index.php?fetchPayment&user_id=${userInfo.tax_number}`
+    `${HOST}/php/index.php?fetchPayment&user_id=${userInfo?.tax_number}`
   );
   const userInvoices = await response.json();
 

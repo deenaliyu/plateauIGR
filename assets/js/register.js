@@ -48,11 +48,11 @@ selectcategory.forEach(selecti => {
     // console.log(dataId)
     if (dataId === "individual") {
       $(".bb").on("click", (e) => {
-        window.location.href = `register.html?category=${dataId}`;
+        window.location.href = `registerindv.html?category=${dataId}`;
       })
     } else {
       $(".bb").on("click", (e) => {
-        window.location.href = `registerform.html?category=${dataId}`;
+        window.location.href = `registercorp.html?category=${dataId}`;
       })
     }
   })

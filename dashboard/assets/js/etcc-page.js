@@ -3,7 +3,7 @@ let currentPageURL = window.location.href;
 // userInfo
 async function getEtccRequests() {
 
-  const response = await fetch(`${HOST}/?${currentPageURL.includes('admin/etcc-initiate') ? 'getETCC&type=' : `getETCC&type=payer_user&id=${userInfo.tax_number}`}`)
+  const response = await fetch(`${HOST}/?${currentPageURL.includes('admin/etcc-management') ? 'getETCC&type=' : `getETCC&type=payer_user&id=${userInfo?.tax_number}`}`)
   const etccReqs = await response.json()
 
   $("#loader").css("display", "none")
@@ -23,7 +23,7 @@ async function getEtccRequests() {
           <td>
             <a href="./etcc-details.html?theid=${etcReq.refe}" class="button button-sm">View</a>
           </td>
-          <td><a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a></td>
+          <td>${etcReq.app_status === "Declined" ? '-' : '<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>'}</td>
         </tr>
       `)
 

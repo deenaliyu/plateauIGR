@@ -82,6 +82,8 @@ $(".aside").html(`
         </a>
       </li>
 
+      
+
       <li class="menu-item">
         <a href="enumeration.html" class="menu-link enu">
         <i class='menu-icon tf-icons bx bxs-group' ></i>
@@ -89,11 +91,11 @@ $(".aside").html(`
         </a>
       </li>
       <li class="menu-item">
-      <a href="enduseraudit.html" class="menu-link auditt">
-      <i class='menu-icon tf-icons bx bxs-group' ></i>
-        <div data-i18n="Basic">Audit Trail</div>
-      </a>
-    </li>
+        <a href="enduseraudit.html" class="menu-link auditt">
+        <i class='menu-icon tf-icons bx bxs-group' ></i>
+          <div data-i18n="Basic">Audit Trail</div>
+        </a>
+      </li>
       <li class="menu-item">
         <a href="cms.html" class="menu-link mdo">
         <i class='menu-icon tf-icons bx bxs-group' ></i>
@@ -101,7 +103,20 @@ $(".aside").html(`
         </a>
       </li>
 
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle presump">
+          <iconify-icon icon="heroicons-outline:receipt-tax" class="menu-icon"></iconify-icon>
+          <div data-i18n="Form Elements">Informal Tax Manager</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="presumptive-tax.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Presumptive Tax</div>
+            </a>
+          </li>
 
+        </ul>
+      </li>
 
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle mdoo">
