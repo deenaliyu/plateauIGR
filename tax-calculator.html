@@ -16,6 +16,21 @@
   <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
   <link rel="stylesheet" href="assets/js/aos-master/dist/aos.css" />
 
+  <style>
+    .formTabs {
+      display: none;
+    }
+
+    .collapse {
+      visibility: visible !important;
+    }
+
+    .taxTablee tr th,
+    .taxTablee tr td {
+      font-size: 14px;
+    }
+  </style>
+
 </head>
 
 <body>
@@ -46,12 +61,12 @@
   <section class="mt-3 px-10">
 
 
-    <div class="card card-body w-[60%] m-auto">
+    <div class="card card-body w-[60%] m-auto formTabs">
 
       <form action="">
         <div class="form-group mb-3">
-          <label for="">What is your net income per month?</label>
-          <input type="number" class="form-control">
+          <label for="">What is your Annual Gross income?*</label>
+          <input type="number" class="form-control" id="annualGross">
         </div>
 
         <div class="flex gap-3 mb-3">
@@ -65,6 +80,17 @@
           </div>
         </div>
 
+        <button class="flex items-center button gap-2 m-auto" type="button" id="addAllowance">
+          <span>Add allowances/reliefs</span>
+        </button>
+
+      </form>
+
+    </div>
+
+    <div class="card card-body w-[60%] m-auto formTabs">
+
+      <form action="">
         <p class="fontBold mb-2">Allowances</p>
 
         <div class="flex gap-3 mb-3">
@@ -73,7 +99,7 @@
             <input type="number" class="form-control">
           </div>
           <div class="form-group w-6/12">
-            <label for="">Housing (&#8358;)</label>
+            <label for="">Leave (&#8358;)</label>
             <input type="number" class="form-control">
           </div>
         </div>
@@ -102,13 +128,54 @@
         </div>
 
 
-        <button class="flex items-center button gap-2 m-auto">
+        <button class="flex items-center button gap-2 m-auto" id="calculateTaxBtn" type="button">
           <iconify-icon icon="solar:calculator-outline" class="text-lg"></iconify-icon>
           <span>Calculate my Tax</span>
         </button>
-
       </form>
     </div>
+
+    <div class="card card-body w-[60%] m-auto formTabs">
+
+      <div class="monthly">
+        <div class="flex items-center justify-between">
+          <div>
+            <p>Tax due per Month</p>
+            <p class="text-xl fontBold text-black" id="monthAmount"></p>
+          </div>
+
+          <button class="textPrimary" data-bs-toggle="collapse" data-bs-target="#break1">See breakdown</button>
+        </div>
+      </div>
+
+      <div class="collapse" id="break1">
+        <div class="collapse1">
+
+        </div>
+      </div>
+
+
+      <div class="monthly mt-5">
+        <div class="flex items-center justify-between">
+          <div>
+            <p>Tax due per Year</p>
+            <p class="text-xl fontBold text-black" id="annualAmount"></p>
+          </div>
+
+          <button class="textPrimary" data-bs-toggle="collapse" data-bs-target="#break2">See breakdown</button>
+        </div>
+      </div>
+
+      <div class="collapse" id="break2">
+        <div class="collapse2">
+
+        </div>
+
+      </div>
+
+
+    </div>
+
 
 
   </section>
@@ -129,8 +196,7 @@
     AOS.init();
   </script>
   <script src="assets/js/nav.js"></script>
-  <script src="assets/js/landing.js"></script>
-  <script src="assets/js/landingcms.js"></script>
+  <script src="assets/js/tax-calculator.js"></script>
 </body>
 
 </html>

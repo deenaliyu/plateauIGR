@@ -436,13 +436,13 @@ async function generateInvoiceNon() {
           if (data.status === 2) {
 
             let taxNumber = data.data.tax_number
-            console.log(taxNumber)
+            // console.log(taxNumber)
             generateInvoiceNum(taxNumber)
 
-          } else if (data.status === 1) {
+          } else {
 
             let taxNumber = data.data.tax_number
-            console.log(data)
+            // console.log(data)
             generateInvoiceNum(taxNumber)
 
           }
