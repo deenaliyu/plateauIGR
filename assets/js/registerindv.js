@@ -1,13 +1,25 @@
 // let USERINFO = JSON.parse(window.localStorage.getItem("enumDataPrime"));
+const urlParams = new URLSearchParams(window.location.search);
 
+let myParam = urlParams.get('category');
+if (myParam == "individual") {
+  myParam = 2;
+} else if (myParam == "corporate") {
+  myParam = 1;
+} else if (myParam == "state") {
+  myParam = 3;
+} else {
+  myParam = 4;
+}
 
 let theIDD
+let selectedValue = "";
+
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
   let radioInputs = document.querySelectorAll(".radiInpu");
 
   // check for empty fileds
-  let selectedValue = "";
 
   for (var i = 0; i < radioInputs.length; i++) {
     if (radioInputs[i].checked) {
@@ -30,7 +42,8 @@ function continueReg() {
         if (selectedValue === "1") {
           nextPrev(1)
         } else {
-          nextPrev(2)
+          nextPrev(1)
+          previewPage()
         }
 
       }
@@ -92,18 +105,27 @@ function registerUser() {
   `)
 
   let EnumData = {
-    "endpoint": "createEnumTaxPayer",
-    "data": [{
-      // "password": generateRandomString(),
-      "account_type": "1",
-      "by_account": USERINFO.id,
+    "endpoint": "createPayerAccount",
+    "data": {
+      "img": "assets/img/userprofile.png",
       "business_type": "",
-      "img": "",
-      "revenue_return": "",
-      "valuation": "",
-      "staff_quota": "",
-      "business_status": "1"
-    }]
+      "annual_revenue": "",
+      "value_business": "",
+      "numberofstaff": "",
+      "password": "",
+      "rep_firstname": "",
+      "rep_surname": "",
+      "rep_email": "",
+      "rep_phone": "",
+      "rep_position": "",
+      "rep_state": "",
+      "rep_state": "",
+      "rep_lga": "",
+      "rep_address": "",
+      "category": myParam,
+
+      "business_own": selectedValue
+    }
   }
 
   let allInputs = document.querySelectorAll(".enumInput")
@@ -111,7 +133,7 @@ function registerUser() {
   let businessNums = document.querySelectorAll(".businessNums")
 
   allInputs.forEach((inputt, i) => {
-    EnumData.data[0][inputt.dataset.name] = inputt.value
+    EnumData.data[inputt.dataset.name] = inputt.value
   })
 
   businessNums.forEach((busines, ii) => {
@@ -121,44 +143,16 @@ function registerUser() {
 
       if (ii === businessNums.length - 1) {
 
-        EnumData.data[0][inputt.dataset.name] += inputt.value
+        EnumData.data[inputt.dataset.name] += inputt.value
       } else {
-        EnumData.data[0][inputt.dataset.name] += inputt.value + `~`
+        EnumData.data[inputt.dataset.name] += inputt.value + `~`
       }
 
     })
 
   })
 
-  console.log(EnumData)
-  // console.log(JSON.stringify(EnumData))
-  const publitio = new PublitioAPI('ksWdvJ3JjfV5JZnHyRqv', 'ruxLmts4NiupnoddqVi1Z70tnoMmf5yT')
-  let theImageSrc = document.querySelector("#theImageThing").src
-  let fileInput = document.querySelector(".imgUpl")
-
-  if (fileInput.value === "") {
-    EnumData.data[0]["img"] = theImageSrc
-    sendToDB()
-
-  } else {
-    let fileUrl = fileInput.files[0]
-    const reader = new FileReader()
-    reader.readAsBinaryString(fileUrl);
-
-    publitio.uploadFile(fileUrl, 'file', {
-      title: `ENUMTAXPAYER - ${EnumData.data[0].first_name} ${EnumData.data[0].last_name}`,
-      public_id: `${EnumData.data[0].email}`,
-
-    }).then((data) => {
-      EnumData.data[0]["img"] = data.url_preview
-      // console.log(data.url_preview)
-      sendToDB()
-    }).catch((error) => {
-      sendToDB()
-    })
-  }
-
-
+  // console.log(EnumData)
 
   async function sendToDB() {
     try {
@@ -171,19 +165,34 @@ function registerUser() {
       })
       const data = await response.json()
 
-      if (data.status === 1) {
-        // $("#theButton").addClass("hidden")
-        if (data.id) {
-          theIDD = data.id
-        }
-
-        nextPrev(1)
-      } else {
-        $("#theButton").removeClass("hidden")
+      if (data.status === 2) {
         $("#msg_box").html(`
-          <p class="text-warning text-center text-lg">${data.message}</p>
+          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
         `)
+        $("#CreateAccountBtn").removeClass("hidden")
+
+      } else {
+        $("#msg_box").html(`
+          <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+        `)
+        setTimeout(() => {
+          window.location.href = `verification.html?id=${data.id}&email=${EnumData.data.email}&phone=${EnumData.data.phone}`
+        }, 1000);
       }
+
+      // if (data.status === 1) {
+      //   // $("#theButton").addClass("hidden")
+      //   if (data.id) {
+      //     theIDD = data.id
+      //   }
+
+      //   nextPrev(1)
+      // } else {
+      //   $("#theButton").removeClass("hidden")
+      //   $("#msg_box").html(`
+      //     <p class="text-warning text-center text-lg">${data.message}</p>
+      //   `)
+      // }
 
 
     } catch (error) {
@@ -194,6 +203,7 @@ function registerUser() {
       `)
     }
   }
+  sendToDB()
 
 }
 
@@ -433,7 +443,7 @@ function addBusiness() {
 
         <div class="form-group md:w-6/12">
           <label for="">No of Employees*</label>
-          <select class="form-select enumInputB" data-name="staff_quota" required>
+          <select class="form-select enumInputB" data-name="numberofstaff" required>
             <option value=""></option>
             <option value="1-9">1-9</option>
             <option value="10-29">10-29</option>
@@ -479,3 +489,4 @@ function deleteBusiness(e) {
   parentss.remove()
 
 }
+
