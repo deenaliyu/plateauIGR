@@ -185,6 +185,14 @@ async function fetchUSER() {
           <th>Support Access</th>
           <td>${theUSER.support} Access</td>
         </tr>
+        <tr>
+          <th>ETCC Access</th>
+          <td>${theUSER.etcc_access} Access</td>
+        </tr>
+        <tr>
+          <th>Payee Access</th>
+          <td>${theUSER.payee_access} Access</td>
+        </tr>
       </table>
     `);
 
