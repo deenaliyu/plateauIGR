@@ -26,7 +26,7 @@ async function fetchPayeUser() {
     `)
 
     $("#reg_staff").html(theInfo.staff_quota)
-    $("#month_remm").html(theInfo.monthly_estimate)
+    $("#month_remm").html(formatMoney(parseFloat(theInfo.monthly_estimate)))
     $("#payeName").html(theInfo.name)
 
     $("#pageName").html(theInfo.category === "Private" ? 'Private PAYE (PIT)' : 'Public PAYE')
@@ -41,6 +41,14 @@ async function fetchPayeUser() {
 }
 
 fetchPayeUser()
+
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 2,
+  });
+}
 
 async function getStaffLists() {
 
@@ -61,9 +69,9 @@ async function getStaffLists() {
             <td>${rhUser.payer_id}</td>
             <td>${rhUser.fullname}</td>
             <td>${rhUser.annual_gross_income}</td>
-            <td>&#8358; ${rhUser.basic_salary}</td>
-            <td>&#8358; 2,400,000</td>
-            <td>&#8358; 24,000,000</td>
+            <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
             <td>${rhUser.timeIn}</td>
             <td>&#8358; 24,000,000</td>
             <td>

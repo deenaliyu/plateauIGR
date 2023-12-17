@@ -1,4 +1,6 @@
 let HOST = "https://plateaugr.useibs.com/php/index.php"
+let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
+let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
 $(".aside").html(`
 <div class="app-brand demo">
@@ -47,7 +49,7 @@ $(".aside").html(`
       <li class="menu-item">
       <a href="payee-corporate.html" class="menu-link paye">
       <iconify-icon icon="fluent-mdl2:edit-contact" class="menu-icon"></iconify-icon>
-        <div data-i18n="Basic">PAYE Management</div>
+        <div data-i18n="Basic">PAYE Manager</div>
       </a>
     </li>
       <li class="menu-item">
@@ -150,9 +152,9 @@ $(".footer").html(`
   <img src="../assets/img/logo1.png" width="50px" alt="">
 </div>
 <div class="flex items-center gap-x-3">
-  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="material-symbols:mail-outline-rounded" width="28" height="28"></iconify-icon> Info@primegauge.com</p>
+  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="material-symbols:mail-outline-rounded" width="28" height="28"></iconify-icon> info@psirs.gov.ng</p>
 <h4>|</h4>
-  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="ic:baseline-phone-android" width="28" height="28"></iconify-icon> 07007746348243 </p>
+  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="ic:baseline-phone-android" width="28" height="28"></iconify-icon> 07056990777 </p>
 </div>
 </div>
 `);
@@ -215,10 +217,10 @@ async function getNotifications() {
     </div>
   `)
   try {
-    console.log(userInfo2.tax_number)
+    // console.log(userInfo2.tax_number)
     const response = await fetch(`${HOST}?inAppNotification&user_id=${userInfo2.tax_number}`)
     const data = await response.json()
-    console.log(data)
+    // console.log(data)
 
     if (data.status === 0) {
       $("#notiModal .modal-body").html(`

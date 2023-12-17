@@ -1,4 +1,6 @@
 let HOST = "https://plateaugr.useibs.com/php/index.php"
+let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
+let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
 let userInfo2 = JSON.parse(window.localStorage.getItem("adminDataPrime"));
 
@@ -80,6 +82,8 @@ $(".aside").html(`
         </a>
       </li>
 
+      
+
       <li class="menu-item">
         <a href="enumeration.html" class="menu-link enu">
         <i class='menu-icon tf-icons bx bxs-group' ></i>
@@ -87,11 +91,11 @@ $(".aside").html(`
         </a>
       </li>
       <li class="menu-item">
-      <a href="enduseraudit.html" class="menu-link auditt">
-      <i class='menu-icon tf-icons bx bxs-group' ></i>
-        <div data-i18n="Basic">Audit Trail</div>
-      </a>
-    </li>
+        <a href="enduseraudit.html" class="menu-link auditt">
+        <i class='menu-icon tf-icons bx bxs-group' ></i>
+          <div data-i18n="Basic">Audit Trail</div>
+        </a>
+      </li>
       <li class="menu-item">
         <a href="cms.html" class="menu-link mdo">
         <i class='menu-icon tf-icons bx bxs-group' ></i>
@@ -99,12 +103,25 @@ $(".aside").html(`
         </a>
       </li>
 
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle presump">
+          <iconify-icon icon="heroicons-outline:receipt-tax" class="menu-icon"></iconify-icon>
+          <div data-i18n="Form Elements">Informal Tax Manager</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="presumptive-tax.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Presumptive Tax</div>
+            </a>
+          </li>
 
+        </ul>
+      </li>
 
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle mdoo">
           <iconify-icon icon="mdi:account-payment-outline" class="menu-icon"></iconify-icon>
-          <div data-i18n="Form Elements">PAYE Management</div>
+          <div data-i18n="Form Elements">PAYE Manager</div>
         </a>
         <ul class="menu-sub">
           <li class="menu-item">
@@ -115,6 +132,27 @@ $(".aside").html(`
 
           <li class="menu-item">
             <a href="paye-management.html?type=public" class="menu-link">
+              <div data-i18n="Input groups">Public</div>
+            </a>
+          </li>
+
+        </ul>
+      </li>
+
+      <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle mdoetcc">
+          <iconify-icon icon="tabler:world-dollar" class="menu-icon"></iconify-icon>
+          <div data-i18n="Form Elements">eTCC Manager</div>
+        </a>
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="etcc-management.html?type=private" class="menu-link">
+              <div data-i18n="Basic Inputs">Private</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="etcc-management.html?type=public" class="menu-link">
               <div data-i18n="Input groups">Public</div>
             </a>
           </li>
@@ -196,9 +234,9 @@ $(".footer").html(`
   <img src="../assets/img/logo1.png" width="50px" alt="">
 </div>
 <div class="flex items-center gap-x-3">
-  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="material-symbols:mail-outline-rounded" width="28" height="28"></iconify-icon> Info@primegauge.com</p>
+  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="material-symbols:mail-outline-rounded" width="28" height="28"></iconify-icon> info@psirs.gov.ng</p>
 <h4>|</h4>
-  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="ic:baseline-phone-android" width="28" height="28"></iconify-icon> 07007746348243 </p>
+  <p class="text-[#1E1E1E] text-[16px] flex items-center gap-x-3"><iconify-icon icon="ic:baseline-phone-android" width="28" height="28"></iconify-icon> 07056990777 </p>
 </div>
 </div>
 `);

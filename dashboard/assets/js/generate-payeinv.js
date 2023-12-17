@@ -1,3 +1,4 @@
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 
 function selectAll(eee) {
 
@@ -9,9 +10,17 @@ function selectAll(eee) {
 
 }
 
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 0,
+  });
+}
+
 async function generatePayeinv() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=${userInfo.tax_number}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")
@@ -25,13 +34,13 @@ async function generatePayeinv() {
 
       $("#stafflistTable").append(`
         <tr>
-          <td><input class="form-check-input taxChecks" data-amount="${rhUser.basic_salary}" type="checkbox" value="" onchange="checkTax(this)"></td>
+          <td><input class="form-check-input taxChecks" data-amount="${rhUser.monthly}" type="checkbox" value="" onchange="checkTax(this)"></td>
           <td>${i + 1}</td>
           <td>${rhUser.payer_id}</td>
           <td>${rhUser.fullname}</td>
-          <td>${rhUser.annual_gross_income}</td>
-          <td>&#8358; ${rhUser.basic_salary}</td>
-          <td>&#8358; 24,000,000</td>
+          <td>${formatMoney(parseInt(rhUser.annual_gross_income))}</td>
+          <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
+          <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
 
         </tr>
         `)
@@ -58,7 +67,7 @@ function generateInv(amount) {
     preConfirm: async () => {
       try {
         const response = await fetch(
-          `${HOST}?generateSingleInvoices&tax_number=PL-PAYE-3978265401&price=${amount}&revenue_head_id=1`
+          `${HOST}?generateSingleInvoices&tax_number=${userInfo.tax_number}&price=${amount}&revenue_head_id=1359`
         );
         if (!response.ok) {
           throw new Error(response.statusText);
@@ -78,7 +87,7 @@ function generateInv(amount) {
         confirmButtonText: "Open Invoice",
       }).then((result3) => {
         if (result.isConfirmed) {
-          window.location.href = `../viewinvoice2.html?invnumber=${result.value.invoice_number}&load=true`;
+          window.location.href = `../viewinvoice.html?invnumber=${result.value.invoice_number}&load=true`;
         }
       });
     }

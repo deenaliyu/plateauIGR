@@ -517,7 +517,7 @@ async function openReceipt(invoicenum) {
         <p class="fontBold text-black text-2xl text-center mt-3">PLATEAU STATE GOVERNMENT</p>
         <p class="fontBold text-black text-lg text-center mt-1">INTERNAL REVENUE SERVICE</p>
 
-        <div class="flex justify-center mt-3">
+        <div class="flex justify-center my-8">
           <button class="button" type="button">PAYMENT RECEIPT</button>
         </div>
 

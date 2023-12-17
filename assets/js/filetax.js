@@ -83,7 +83,7 @@ $("#generateReferenceNum").on("click", function () {
   let allInputs = document.querySelectorAll(".taxFInput")
   var fileInputs = document.querySelectorAll('.taxFInput2[type="file"]');
 
-  const publitio = new PublitioAPI('ksWdvJ3JjfV5JZnHyRqv', 'ruxLmts4NiupnoddqVi1Z70tnoMmf5yT')
+  const publitio = new PublitioAPI(publitioKey1, publitioKey2)
 
   let user_id = ""
   let userDATA = JSON.parse(localStorage.getItem("userDataPrime"))

@@ -1,8 +1,8 @@
-
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 
 async function getStaffLists() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=${userInfo.tax_number}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")
@@ -24,12 +24,12 @@ async function getStaffLists() {
           <td>${i + 1}</td>
           <td>${rhUser.payer_id}</td>
           <td>${rhUser.fullname}</td>
-          <td>${rhUser.annual_gross_income}</td>
-          <td>&#8358; ${rhUser.basic_salary}</td>
-          <td>&#8358; 2,400,000</td>
-          <td>&#8358; 24,000,000</td>
+          <td>${formatMoney(parseInt(rhUser.annual_gross_income))}</td>
+          <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
+          <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
+          <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
           <td>${rhUser.timeIn}</td>
-          <td>&#8358; 24,000,000</td>
+          <!-- <td>&#8358; 24,000,000</td> -->
           <td>
             <div class="flex items-center gap-2">
               <button><iconify-icon class="fontBold text-lg"
@@ -44,13 +44,21 @@ async function getStaffLists() {
   }
 }
 
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 0,
+  });
+}
+
 getStaffLists().then(tt => {
   $('#dataTable').DataTable();
 })
 
 async function getSpecialUsersDash1() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersDash1&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersDash1&payer_id=${userInfo.tax_number}`)
   const getDashData = await response.json()
 
 
@@ -69,10 +77,33 @@ async function getSpecialUsersDash1() {
 
 getSpecialUsersDash1()
 
+// async function getSpecialUsersss() {
+
+//   const response = await fetch(`${HOST}/?getSpecialUsers&id=${userInfo.tax_number}`)
+//   const getDashData = await response.json()
+
+
+//   if (getDashData.status === 0) {
+//     // $('#dataTable').DataTable();
+
+//   } else {
+//     let dashData = getDashData.message[0]
+
+//     $("#total_remitance").html(formatMoney(dashData.total_remittance))
+
+//   }
+
+// }
+
+// getSpecialUsersss()
+
+
+
+
 async function getSpecialUsersDashAnnualEstimate(year) {
   $("#annEstimate").html('-')
 
-  const response = await fetch(`${HOST}/?getSpecialUsersDashAnnualEstimate&year=${year}&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersDashAnnualEstimate&year=${year}&payer_id=${userInfo.tax_number}`)
   const getDashData = await response.json()
 
   if (getDashData.status === 0) {
@@ -80,7 +111,7 @@ async function getSpecialUsersDashAnnualEstimate(year) {
 
   } else {
     let dashData = getDashData.message[0]
-    $("#annEstimate").html(dashData.Total_Annual_Estimate)
+    $("#annEstimate").html(formatMoney(parseInt(dashData.Total_Annual_Estimate)))
   }
 
 }
@@ -99,9 +130,10 @@ $('#selYear').on('change', function () {
 })
 
 
+
 async function getPaymentHistory() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersPayments&offset=0&payer_id=PL-PAYE-3978265401`)
+  const response = await fetch(`${HOST}/?getSpecialUsersPayments&offset=0&payer_id=${userInfo.tax_number}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")
@@ -122,7 +154,7 @@ async function getPaymentHistory() {
             <td>${rhUser.payment_channel}</td>
             <td>${rhUser.timeIn}</td>
             <td><span class="badge bg-success rounded-pill">paid</span></td>
-            <td><a href="./viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-primary btn-sm">receipt</a></td>
+            <td><a href="../viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-primary btn-sm">view receipt</a></td>
           </tr>
 
       `)

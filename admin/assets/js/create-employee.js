@@ -33,7 +33,8 @@ function registerUser() {
   let EnumData = {
     "endpoint": "createSpecialUserEmployee",
     "data": {
-      "category_id": category
+      "category_id": category,
+      "new_gross": ''
     }
   }
 
@@ -64,7 +65,7 @@ function registerUser() {
           showCancelButton: false,
           confirmButtonColor: '#CDA545',
           // cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Go to PAYE management'
+          confirmButtonText: 'Go to PAYE manager'
 
         }).then((result) => {
           window.location.href = `./payedetails.html?payerID=${category}`
