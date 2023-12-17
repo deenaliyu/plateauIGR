@@ -81,7 +81,7 @@
 
           <div class="form-group mb-3">
             <label for="">Tax Category*</label>
-            <select class="form-select enumInput" data-name="category" id="theTxCateg" required>
+            <select class="form-select" data-name="category" id="theTxCateg">
               <option value="Formal">Formal</option>
               <option value="Informal">Informal</option>
               <option value="Presumptive tax">Presumptive tax</option>
@@ -97,7 +97,7 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Surname*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="last_name" required>
+              <input type="text" class="form-control w-full enumInput" data-name="surname" required>
             </div>
 
           </div>
@@ -106,7 +106,7 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Email*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="email" required>
+              <input type="email" class="form-control w-full enumInput" data-name="email" required>
             </div>
 
             <div class="form-group md:w-6/12">
@@ -120,7 +120,7 @@
 
             <div class="form-group md:w-6/12">
               <label for="">TIN (Optional)</label>
-              <input type="text" class="form-control w-full enumInput" data-name="TIN">
+              <input type="text" class="form-control w-full enumInput" data-name="tin">
             </div>
 
             <div class="form-group md:w-6/12">
@@ -162,7 +162,7 @@
             </div>
 
             <div class="form-check">
-              <input class="form-check-input radiInpu" type="radio" name="busi" id="no" value="1">
+              <input class="form-check-input radiInpu" type="radio" name="busi" id="no" value="2">
               <label class="form-check-label" for="no">No</label>
             </div>
           </div>
@@ -171,38 +171,25 @@
 
             <div class="form-group md:w-6/12">
               <label for="">State*</label>
-              <select class="form-select enumInput" data-name="state" required>
-                <option value="Plateau">Plateau</option>
+              <select class="form-select enumInput" id="selectState" data-name="state" required>
               </select>
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">LGA*</label>
-              <select class="form-select enumInput" id="LGAs" data-name="lga" required>
-                <option value="Abak">Abak</option>
+              <select class="form-select enumInput" id="selectLGA" data-name="lga" required>
+
               </select>
             </div>
 
           </div>
 
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
 
-            <div class="form-group md:w-6/12">
-              <label for="">Address*</label>
-              <input type="text" class="form-control enumInput" data-name="address" placeholder="Enter address here"
-                required>
-            </div>
-
-            <!-- <div class="form-group md:w-6/12">
-              <label for="">Cluster*</label>
-              <select class="form-select enumInput" data-name="area" required>
-                <option value="Cluster A">Cluster A</option>
-                <option value="Cluster B">Cluster B</option>
-              </select>
-            </div> -->
+          <div class="form-group mb-3 w-full">
+            <label for="">Address*</label>
+            <input type="text" class="form-control enumInput" data-name="address" placeholder="Enter address here"
+              required>
           </div>
-
-
 
           <button class="button w-full mb-4" type="button" onclick="continueReg()">Continue</button>
 
@@ -237,7 +224,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">No of Employees*</label>
-                <select class="form-select enumInputB" data-name="staff_quota" required>
+                <select class="form-select enumInputB" data-name="numberofstaff" required>
                   <option value=""></option>
                   <option value="1-9">1-9</option>
                   <option value="10-29">10-29</option>
@@ -251,7 +238,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Annual Revenue return in naira*</label>
-                <select class="form-select enumInputB" data-name="revenue_return" required>
+                <select class="form-select enumInputB" data-name="annual_revenue" required>
                   <option value=""></option>
                   <option value="1-100,000">1-100,000</option>
                   <option value="100,001 - 499,999">100,001 - 499,999</option>
@@ -261,7 +248,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Value of business/assets In naira*</label>
-                <select class="form-select enumInputB" data-name="valuation" required>
+                <select class="form-select enumInputB" data-name="value_business" required>
                   <option value=""></option>
                   <option value="1 - 500,000">1 - 500,000</option>
                   <option value="500,001 - 999,999">500,001 - 999,999</option>
@@ -313,10 +300,10 @@
 
           <form action="" class="mt-4 w-8/12" id="thePrForm">
 
-            <div class="form-group mb-3">
+            <!-- <div class="form-group mb-3">
               <label for="">Tax Category</label>
               <input type="text" class="enumInput2 form-control" data-name="category" readonly>
-            </div>
+            </div> -->
 
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
@@ -327,7 +314,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Surname</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="last_name" readonly>
+                <input type="text" class="form-control w-full enumInput2" data-name="surname" readonly>
               </div>
 
             </div>
@@ -350,7 +337,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">TIN (Optional)</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="TIN" readonly>
+                <input type="text" class="form-control w-full enumInput2" data-name="tin" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
@@ -388,19 +375,14 @@
 
             </div>
 
-            <div class="flex gap-3 md:flex-row flex-col mb-3">
 
-              <div class="form-group md:w-6/12">
-                <label for="">Address</label>
-                <input type="text" class="enumInput2 form-control" data-name="address" readonly>
-              </div>
-
-              <div class="form-group md:w-6/12">
-                <label for="">Cluster</label>
-                <input type="text" class="enumInput2 form-control" data-name="area" readonly>
-              </div>
-
+            <div class="form-group w-full mb-3">
+              <label for="">Address</label>
+              <input type="text" class="enumInput2 form-control" data-name="address" readonly>
             </div>
+
+
+
 
             <p class="mt-2 mb-4">Business Information</p>
 
@@ -413,7 +395,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">No of Employees*</label>
-                <input type="text" class="enumInputB2 form-control" data-name="staff_quota" readonly>
+                <input type="text" class="enumInputB2 form-control" data-name="numberofstaff" readonly>
               </div>
 
             </div>
@@ -422,12 +404,12 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Annual Revenue return in naira*</label>
-                <input type="text" class="enumInputB2 form-control" data-name="revenue_return" readonly>
+                <input type="text" class="enumInputB2 form-control" data-name="annual_revenue" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">Value of business/assets In naira*</label>
-                <input type="text" class="enumInputB2 form-control" data-name="valuation" readonly>
+                <input type="text" class="enumInputB2 form-control" data-name="value_business" readonly>
               </div>
 
             </div>
@@ -454,7 +436,7 @@
         </div>
 
         <button class="button w-8/12 mt-3 mb-4" id="theButton" onclick="registerUser()">Verify</button>
-        <div id="msg_box"></div>
+        <div class="mb-4" id="msg_box"></div>
 
       </section>
 

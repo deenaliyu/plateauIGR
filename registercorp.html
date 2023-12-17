@@ -86,7 +86,7 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Tax Category*</label>
-              <select class=" form-select enumInput" data-name="tax_category" id="theTxCateg" required>
+              <select class=" form-select" id="theTxCateg" required>
                 <option value="Formal">Formal</option>
                 <option value="Informal">Informal</option>
                 <option value="Presumptive tax">Presumptive tax</option>
@@ -95,7 +95,7 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Name of Organization*</label>
-              <input type=" text" class="form-control w-full enumInput" data-name="name"
+              <input type=" text" class="form-control w-full enumInput" data-name="first_name"
                 placeholder="Enter Organization name" required>
             </div>
 
@@ -103,7 +103,7 @@
 
           <div class="form-group mb-3">
             <label for="">Industry*</label>
-            <select class="form-select enumInput" data-name="industry" required>
+            <select class="form-select" data-name="industry" required>
               <option value="">Select</option>
               <option value="Fishing">Fishing</option>
             </select>
@@ -128,14 +128,14 @@
 
             <div class="form-group md:w-6/12">
               <label for="">State*</label>
-              <select class="form-select enumInput" data-name="state" required>
-                <option value="Akwa Ibom">Akwa Ibom</option>
+              <select class="form-select enumInput" id="selectState" data-name="state" required>
+                <option value="Plateau">Plateau</option>
               </select>
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">LGA*</label>
-              <select class="form-select enumInput" id="LGAs" data-name="lga" required>
+              <select class="form-select enumInput" id="selectLGA" data-name="lga" required>
                 <option value="Abak">Abak</option>
               </select>
             </div>
@@ -210,7 +210,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Annual Revenue return in naira*</label>
-                <select class="form-select enumInputB" data-name="revenue_return" required>
+                <select class="form-select enumInputB" data-name="annual_revenue" required>
                   <option value=""></option>
                   <option value="1-100,000">1-100,000</option>
                   <option value="100,001 - 499,999">100,001 - 499,999</option>
@@ -220,7 +220,7 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Value of business/assets In naira*</label>
-                <select class="form-select enumInputB" data-name="valuation" required>
+                <select class="form-select enumInputB" data-name="value_business" required>
                   <option value=""></option>
                   <option value="1 - 500,000">1 - 500,000</option>
                   <option value="500,001 - 999,999">500,001 - 999,999</option>
@@ -268,12 +268,12 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">First Name*</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="first_name" required>
+                <input type="text" class="form-control w-full enumInput2" data-name="rep_firstname" required>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">Surname*</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="last_name" required>
+                <input type="text" class="form-control w-full enumInput2" data-name="rep_surname" required>
               </div>
 
             </div>
@@ -282,12 +282,12 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Email*</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="email" required>
+                <input type="text" class="form-control w-full enumInput2" data-name="rep_email" required>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">Phone number*</label>
-                <input type="tel" class="form-control w-full enumInput2" data-name="phone" required>
+                <input type="tel" class="form-control w-full enumInput2" data-name="rep_phone" required>
               </div>
 
             </div>
@@ -317,7 +317,7 @@
             <div class="form-group mb-3 ">
 
               <label for="">Position*</label>
-              <select class="form-select enumInput2" data-name="position" required>
+              <select class="form-select enumInput2" data-name="rep_position" required>
                 <option value="1">CEO</option>
                 <option value="2">Director</option>
                 <option value="3">MD</option>
@@ -332,15 +332,15 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">State*</label>
-                <select class="form-select enumInput2" data-name="state" required>
-                  <option value="Akwa Ibom">Akwa Ibom</option>
+                <select class="form-select enumInput2" id="selectState" data-name="rep_state" required>
+                  <option value="Plateau">Plateau</option>
                 </select>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">LGA*</label>
-                <select class="form-select enumInput2" id="LGAs" data-name="lga" required>
-                  <option value="Abak">Abak</option>
+                <select class="form-select enumInput2" id="selectLGA" data-name="rep_lga" required>
+                  <option value="Bokko">Bokko</option>
                 </select>
               </div>
 
@@ -349,8 +349,8 @@
             <div class="form-group mb-3 ">
 
               <label for="">Address*</label>
-              <input type="text" class="form-control enumInput2" data-name="address" placeholder="Enter address here"
-                required>
+              <input type="text" class="form-control enumInput2" data-name="rep_address"
+                placeholder="Enter address here" required>
 
             </div>
 
@@ -362,7 +362,7 @@
 
       </section>
 
-         
+
 
 
       <section class="formTabs h-full">
@@ -390,25 +390,29 @@
 
           <form action="" class="mt-4 w-8/12" id="thePrForm">
 
-            <div class="flex gap-3 md:flex-row flex-col mb-3">
+            <!-- <div class="flex gap-3 md:flex-row flex-col mb-3"> -->
 
-              <div class="form-group md:w-6/12">
+            <!-- <div class="form-group md:w-6/12">
                 <label for="">Tax Category</label>
                 <input class="form-control enumPrev1" data-name="tax_category" readonly>
-              </div>
+              </div> -->
 
-              <div class="form-group md:w-6/12">
+            <!-- <div class="form-group md:w-6/12">
                 <label for="">Name of Organization</label>
                 <input type="text" class="form-control w-full enumPrev1" data-name="name" readonly>
-              </div>
+              </div> -->
 
+            <!-- </div> -->
+
+            <div class="form-group w-full mb-3">
+              <label for="">Name of Organization</label>
+              <input type="text" class="form-control w-full enumPrev1" data-name="first_name" readonly>
             </div>
 
-
-            <div class="form-group mb-3">
+            <!-- <div class="form-group mb-3">
               <label for="">Industry</label>
               <input class="form-control enumPrev1" data-name="industry" readonly>
-            </div>
+            </div> -->
 
 
 
@@ -441,19 +445,13 @@
 
             </div>
 
-            <div class="flex gap-3 md:flex-row flex-col mb-3">
 
-              <div class="form-group md:w-6/12">
-                <label for="">Address</label>
-                <input type="text" class="form-control w-full enumPrev1" data-name="address" readonly>
-              </div>
-
-              <div class="form-group md:w-6/12">
-                <label for="">Cluster</label>
-                <input type="text" class="form-control w-full enumPrev1" data-name="area" readonly>
-              </div>
-
+            <div class="form-group w-full mb-3">
+              <label for="">Address</label>
+              <input type="text" class="form-control w-full enumPrev1" data-name="address" readonly>
             </div>
+
+
 
             <p>Company Representative</p>
 
@@ -461,12 +459,12 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">First Name</label>
-                <input type="text" class="form-control w-full enumPrev2" data-name="first_name" readonly>
+                <input type="text" class="form-control w-full enumPrev2" data-name="rep_firstname" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">Surname</label>
-                <input type="text" class="form-control w-full enumPrev2" data-name="last_name" readonly>
+                <input type="text" class="form-control w-full enumPrev2" data-name="rep_surname" readonly>
               </div>
 
             </div>
@@ -475,12 +473,12 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">Email</label>
-                <input type="text" class="form-control w-full enumPrev2" data-name="email" readonly>
+                <input type="text" class="form-control w-full enumPrev2" data-name="rep_email" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">Phone number</label>
-                <input type="tel" class="form-control w-full enumPrev2" data-name="phone" readonly>
+                <input type="tel" class="form-control w-full enumPrev2" data-name="rep_phone" readonly>
               </div>
 
             </div>
@@ -502,7 +500,7 @@
             <div class="form-group mb-3 ">
 
               <label for="">Position</label>
-              <input type="text" class="form-control w-full enumPrev2" data-name="position" readonly>
+              <input type="text" class="form-control w-full enumPrev2" data-name="rep_position" readonly>
 
             </div>
 
@@ -510,12 +508,12 @@
 
               <div class="form-group md:w-6/12">
                 <label for="">State</label>
-                <input type="text" class="form-control w-full enumPrev2" data-name="state" readonly>
+                <input type="text" class="form-control w-full enumPrev2" data-name="rep_state" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">LGA</label>
-                <input type="text" class="form-control w-full enumPrev2" data-name="lga" readonly>
+                <input type="text" class="form-control w-full enumPrev2" data-name="rep_lga" readonly>
               </div>
 
             </div>
@@ -523,7 +521,7 @@
             <div class="form-group mb-3 ">
 
               <label for="">Address</label>
-              <input type="text" class="form-control w-full enumPrev2" data-name="address" readonly>
+              <input type="text" class="form-control w-full enumPrev2" data-name="rep_address" readonly>
 
             </div>
 
