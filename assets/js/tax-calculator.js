@@ -35,6 +35,17 @@ function formatMoney(amount) {
   });
 }
 
+function formatNumber(input) {
+  // Remove non-numeric characters
+  let value = input.value.replace(/\D/g, '');
+
+  // Format the number with commas
+  value = Number(value).toLocaleString('en-US');
+
+  // Update the input value
+  input.value = value;
+}
+
 $('#calculateTaxBtn').on('click', function () {
   // Annual gross income
   let incomeInput = document.querySelector("#annualGross")
@@ -42,7 +53,7 @@ $('#calculateTaxBtn').on('click', function () {
   if (incomeInput.value === "") {
     alert('Annual Gross field cannot be empty')
   } else {
-    const annualGrossIncome = incomeInput.value;
+    const annualGrossIncome = Number(incomeInput.value.replace(/,/g, ''));
 
     // Deduction rates
     const nhfRate = 0.025;           // 2.5%

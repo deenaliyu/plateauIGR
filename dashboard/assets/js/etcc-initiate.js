@@ -78,7 +78,7 @@ function registerUser() {
       // "category_id": category
       "payer_id": currentPageURL.includes("admin/etcc-initiate") ? "PLI-6028517439" : userDATA?.tax_number,
       "declaration": "I declare...",
-      "app_status": "2"
+      "app_status": "3"
     }
   }
 
