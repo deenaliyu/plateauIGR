@@ -8,22 +8,43 @@ async function getEtccRequests() {
 
   $("#loader").css("display", "none")
 
+  //   Accepted: 1
+  // Declined: 2
+  // First Review: 3
+  // Second Review: 4
+  // Third Review: 5
+
   if (etccReqs.status === 0) {
     $('#dataTable').DataTable();
 
   } else {
     etccReqs.message.reverse().forEach((etcReq, i) => {
+      let etccStatus = ""
+
+      if (etcReq.app_status === "Declined") {
+        etccStatus = `<span class="badge bg-danger">Declined</span>`
+      } else if (etcReq.app_status === "Accepted") {
+        etccStatus = `<span class="badge bg-success">Approved</span>`
+      } else if (etcReq.app_status === "First Review") {
+        etccStatus = `<span class="badge bg-warning">First Review</span>`
+      } else if (etcReq.app_status === "Second Review") {
+        etccStatus = `<span class="badge bg-warning">Second Review</span>`
+      } else if (etcReq.app_status === "Third Review") {
+        etccStatus = `<span class="badge bg-warning">Third Review</span>`
+      } else {
+        etccStatus = `<span class="badge bg-warning">Pending</span>`
+      }
 
       $("#etccTable").append(`
         <tr>
           <td>${i + 1}</td>
           <td>${etcReq.timeIn}</td>
           <td>${etcReq.refe}</td>
-          <td>${etcReq.app_status === "Declined" ? '<span class="badge bg-warning">pending</span>' : '<span class="badge bg-success">Approved</span>'} </td>
+          <td>${etccStatus}</td>
           <td>
-            <a href="./etcc-details.html?theid=${etcReq.refe}" class="button button-sm">View</a>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=3" class="button button-sm">View</a>
           </td>
-          <td>${etcReq.app_status === "Declined" ? '-' : '<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>'}</td>
+          <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
         </tr>
       `)
 
@@ -32,14 +53,26 @@ async function getEtccRequests() {
           <td>${i + 1}</td>
           <td>${etcReq.timeIn}</td>
           <td>${etcReq.refe}</td>
-          <td>${etcReq.app_status === "Declined" ? '<span class="badge bg-warning">pending</span>' : '<span class="badge bg-success">Approved</span>'} </td>
+          <td>${etccStatus}</td>
           <td>
-            <a href="./etcc-details.html?theid=${etcReq.refe}" class="button button-sm">View</a>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=4" class="button button-sm">View</a>
           </td>
-          <td><a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a></td>
+          <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
         </tr>
       `)
 
+      $("#etccTable3").append(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>${etcReq.timeIn}</td>
+          <td>${etcReq.refe}</td>
+          <td>${etccStatus}</td>
+          <td>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=5" class="button button-sm">View</a>
+          </td>
+          <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
+        </tr>
+      `)
 
     });
   }
@@ -48,6 +81,7 @@ async function getEtccRequests() {
 getEtccRequests().then(tt => {
   $('#dataTable').DataTable();
   $('#dataTable2').DataTable();
+  $('#dataTable3').DataTable();
 })
 
 

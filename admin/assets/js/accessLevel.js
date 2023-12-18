@@ -250,6 +250,29 @@ async function getRolesAdmin() {
       $(".message-container").addClass("hidden")
     }
 
+  } else if (currentPage.includes("etcc-management.html")) {
+    let etccRoles = userRoles.etcc_access
+    // console.log(etccRoles)
+    let first_reviewer = etccRoles.find(ff => ff === "first_reviewer")
+    let second_reviewer = etccRoles.find(ff => ff === "second_reviewer")
+    let third_reviewer = etccRoles.find(ff => ff === "third_reviewer")
+
+    if (third_reviewer) {
+
+    } else if (second_reviewer) {
+      $("#third_reviewer").remove()
+
+    } else {
+      if (second_reviewer === undefined) {
+        $("#second_reviewer").remove()
+      }
+
+      if (third_reviewer === undefined) {
+        $("#third_reviewer").remove()
+      }
+    }
+
+
   }
 }
 

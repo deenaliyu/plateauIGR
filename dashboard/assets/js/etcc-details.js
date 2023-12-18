@@ -1,5 +1,6 @@
 const urlParams = new URLSearchParams(window.location.search);
 const theid = urlParams.get('theid');
+const level = urlParams.get('level');
 
 let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 // userInfo.tax_number
@@ -12,6 +13,8 @@ function formatMoney(amount) {
     minimumFractionDigits: 2,
   });
 }
+
+
 
 async function getEtccDetails() {
   const response = await fetch(`${HOST}/?getETCC&type=ref&id=${theid}`)
@@ -32,18 +35,17 @@ async function getEtccDetails() {
       inpt.value = theEtcDetail[inpt.dataset.name]
     })
 
-    if (theEtcDetail.app_status === "Declined") {
-      console.log("hi")
-      $("#decider").html(`
+    // if (theEtcDetail.app_status === "Declined") {
+    //   $("#decider").html(`
         
-        <button class="button" id="theApprBtn" type="button" onclick="aprovethis()">Approve Request</button>
-      `)
-    } else {
-      $("#decider").html(`
-      <button class="button" id="theApprBtn" type="button" onclick="unapprove()">Un-pprove Request</button>
-    `)
+    //     <button class="button" id="theApprBtn" type="button" onclick="aprovethis()">Approve Request</button>
+    //   `)
+    // } else {
+    //   $("#decider").html(`
+    //   <button class="button" id="theApprBtn" type="button" onclick="unapprove()">Un-pprove Request</button>
+    // `)
 
-    }
+    // }
 
 
   }
@@ -92,15 +94,30 @@ fetchPayment().then(rr => {
   $("#dataTable").DataTable();
 })
 
-async function aprovethis() {
+function aprovethis() {
+  if (level == "3") {
+    theVerify(4)
+
+  } else if (level == "4") {
+    theVerify(5)
+  } else if (level == "5") {
+
+    theVerify(1)
+  }
+}
+
+
+
+async function theVerify(thelvl) {
   $("#theApprBtn").addClass("hidden")
   $("#msg_boxx").html(`
     <div class="flex justify-center items-center mb-4">
       <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
     </div>
   `)
+
   try {
-    const response = await fetch(`${HOST}/?updateETCC&id=${theid}&set=2`)
+    const response = await fetch(`${HOST}/?updateETCC&id=${theid}&set=${thelvl}`)
     const etccDetail = await response.json()
 
     if (etccDetail.status === 1) {
@@ -110,9 +127,35 @@ async function aprovethis() {
     }
   } catch (error) {
     console.log(error)
+    $("#theApprBtn").removeClass("hidden")
+    $("#msg_boxx").html('<p class="text-danger">Something went wrong</p>')
   }
-
 }
+async function declineThis() {
+  $("#theApprBtn2").addClass("hidden")
+  $("#msg_boxx").html(`
+    <div class="flex justify-center items-center mb-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+
+  try {
+    const response = await fetch(`${HOST}/?updateETCC&id=${theid}&set=2`)
+    const etccDetail = await response.json()
+
+    if (etccDetail.status === 1) {
+      alert("Declined successfully")
+      window.location.reload()
+
+    }
+  } catch (error) {
+    console.log(error)
+    $("#theApprBtn2").removeClass("hidden")
+    $("#msg_boxx").html('<p class="text-danger">Something went wrong</p>')
+  }
+}
+
+
 
 async function unapprove() {
   $("#theApprBtn").addClass("hidden")

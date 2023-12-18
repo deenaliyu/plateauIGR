@@ -51,6 +51,9 @@ let definition = {
   escalate_issues: "Escalate issues",
   export_support: "Export support data",
   generate_report: "Generate report",
+  first_reviewer: "First Reviewer",
+  second_reviewer: "Second Reviewer",
+  third_reviewer: "Third Reviewer"
 };
 
 
@@ -61,16 +64,16 @@ $("#createUser").on("click", function () {
   for (let i = 0; i < allInputs.length; i++) {
     if (allInputs[i].value === "") {
       $("#msg_box").html(`
-          <p class="text-[red] text-center mt-4 text-lg">All fields are required</p>
-        `);
+        <p class="text-[red] text-center mt-4 text-lg">All fields are required</p>
+      `);
       break;
     } else {
       // e.preventDefault()
       $("#msg_box").html(`
-          <div class="flex justify-center items-center mt-4">
+        <div class="flex justify-center items-center mt-4">
           <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
         </div>
-        `);
+      `);
       $("#createUser").addClass("hidden");
 
       let obj = {
@@ -139,11 +142,11 @@ $("#createUser").on("click", function () {
 });
 
 async function fetchUSER() {
-  const response = await fetch(`${HOST}/php/index.php?getAdminUser`);
+  const response = await fetch(`${HOST}/php/index.php?userProfileAdmin&id=${theUserID}`);
   const userInvoices = await response.json();
   // console.log(userInvoices)
   if (userInvoices.status === 1) {
-    let theUSER = userInvoices.message.filter((tt) => tt.id === theUserID)[0];
+    let theUSER = userInvoices.user;
 
     $("#accessLevelview").html(`
       <h1 class="text-lg fontBold mb-2">Access Level</h1>
@@ -213,6 +216,7 @@ async function fetchUSER() {
         const mainSelVal = selectedValue.split("~");
 
         checkboxes.forEach(checkbox => {
+
           if (mainSelVal.includes(checkbox.value)) {
             checkbox.checked = true;
           }
