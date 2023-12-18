@@ -222,7 +222,7 @@ function registerUser() {
           `)
           setTimeout(() => {
             window.location.href = `verification.html?id=${data.id}&email=${EnumData.data.email}&phone=${EnumData.data.phone}`
-          }, 1000);
+          }, 2000);
         }
 
 

@@ -166,7 +166,7 @@ function registerUser() {
         }
       })
       const data = await response.json()
-
+      // console.log(data)
       if (data.status === 2) {
         $("#msg_box").html(`
           <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
@@ -181,8 +181,9 @@ function registerUser() {
             <p class="text-success text-center mt-4 text-lg">${data.message}</p>
           `)
           setTimeout(() => {
+            // console.log(data.id)
             window.location.href = `verification.html?id=${data.id}&email=${EnumData.data.email}&phone=${EnumData.data.phone}`
-          }, 1000);
+          }, 2000);
         }
 
       }
