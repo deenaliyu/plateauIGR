@@ -25,12 +25,12 @@ async function getAllMda() {
   } else {
     theMda = revHeads.message
 
-    console.log(theMda)
+    // console.log(theMda)
     $("#mda").html(`
       <option disabled selected>Select--</option>
     `)
     revHeads.message.forEach((revHd, i) => {
-        $("#mda").append(`
+      $("#mda").append(`
         <option value="${revHd["fullname"]}">${revHd["fullname"]}</option>
       `)
 
@@ -66,8 +66,8 @@ async function getAllRevH(theVal) {
 
   if (revHeads.status === 0) {
   } else {
-     AllRevs = revHeads.message
-     console.log(revHeads.message)
+    AllRevs = revHeads.message
+    //  console.log(revHeads.message)
   }
 }
 
@@ -103,7 +103,7 @@ function removeInpt(theIpt) {
 
 $(".mda").on("change", function () {
   let theVal = $(this).val()
-console.log(theVal)
+  // console.log(theVal)
   fetchRevHeads(theVal)
   getAllRevH(theVal)
 
@@ -124,7 +124,7 @@ async function fetchRevHeads(theVal) {
       <option disabled selected>Select--</option>
     `)
     revHeads.message.forEach((revHd, i) => {
-        $("#rev_heads").append(`
+      $("#rev_heads").append(`
         <option value="${revHd["id"]}">${revHd["COL_4"]}</option>
       `)
 
@@ -139,7 +139,7 @@ function continuePage() {
   let genInv = document.querySelectorAll(".firstDiv .genInv")
 
   let theVal = document.querySelector(".selCateg").value
-  if(userInfo === null){
+  if (userInfo === null) {
     if (theVal === "2") {
       $("#theName").html(`
         <div class="form-group w-full">
@@ -183,9 +183,9 @@ function continuePage() {
       </div>
     `)
     } else {
-  
+
     }
-  
+
     $("#theEmail").html(`
     <div class="form-group w-full">
     <label for="">Email *</label>
@@ -199,18 +199,18 @@ function continuePage() {
       data-name="phone" placeholder="Your 11-digits phone number" value="">
   </div>
     `)
-  
+
     $("#theTin").html(`
     <label for="">TIN (Optional)</label>
     <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN" value="">
     `)
-  
+
     $("#theLga").html(`
     <label for="">Address</label>
     <input type="text" class="form-control payInputs" minlength="10" required data-name="address"
     placeholder=" Enter your address" value="">
     `)
-  }else{
+  } else {
     if (theVal === "2") {
 
       $("#theName").html(`
@@ -255,9 +255,9 @@ function continuePage() {
       </div>
     `)
     } else {
-  
+
     }
-  
+
     $("#theEmail").html(`
     <div class="form-group w-full">
     <label for="">Email *</label>
@@ -271,19 +271,19 @@ function continuePage() {
       data-name="phone" placeholder="Your 11-digits phone number" value="${userInfo.phone}">
   </div>
     `)
-  
+
     $("#theTin").html(`
     <label for="">TIN (Optional)</label>
     <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN" value="${userInfo.tin}">
     `)
-  
+
     $("#theLga").html(`
     <label for="">Address</label>
     <input type="text" class="form-control payInputs" minlength="10" required data-name="address"
     placeholder=" Enter your address" value="${userInfo.address}">
     `)
   }
-  
+
 
   for (let i = 0; i < genInv.length; i++) {
     const genn = genInv[i];
@@ -313,7 +313,7 @@ $("#rev_heads").on("change", function () {
 let aa = [];
 function setPrice(val) {
   let theRevenue = theRevs.filter(rr => rr.id === val)
-  console.log(val, theRevenue)
+  // console.log(val, theRevenue)
   $("#amountTopay").val()
   the_id = theRevenue[0].id
   aa["message"] = theRevenue;
@@ -321,9 +321,9 @@ function setPrice(val) {
 
 function goToPreviewPage() {
   let payInputs = document.querySelectorAll(".payInputs")
-  amountto =  $("#amountTopay").val()
-  aa.message.forEach((items, i)=> {
-   $("#bill").html(`
+  amountto = $("#amountTopay").val()
+  aa.message.forEach((items, i) => {
+    $("#bill").html(`
    <div class="flex space-x-4">
    <p>Category of Tax:</p>
    <p>Individual</p>
@@ -339,7 +339,7 @@ function goToPreviewPage() {
 
    `)
   })
-  console.log(aa)
+  // console.log(aa)
   for (let i = 0; i < payInputs.length; i++) {
     const payinput = payInputs[i];
 
@@ -410,13 +410,26 @@ async function generateInvoiceNon() {
           "employment_status": "",
           "business_type": "",
           "numberofstaff": "",
-          "business_type": "",
-          "img": "",
+          "id_type": "1",
+          "id_number": "",
+          "img": "assets/img/userprofile.png",
           "tin": tin,
           "lga": "",
           "address": "",
           "password": "12345",
-          "verification_status": "grfdses"
+          "verification_status": "grfdses",
+          "business_own": "2",
+          "annual_revenue": "",
+          "value_business": "",
+          "rep_firstname": "",
+          "rep_surname": "",
+          "rep_email": "",
+          "rep_phone": "",
+          "rep_position": "",
+          "rep_state": "",
+          "rep_state": "",
+          "rep_lga": "",
+          "rep_address": "",
         }
       }
       allInputs.forEach(allInput => {
@@ -462,7 +475,7 @@ async function generateInvoiceNon() {
 }
 
 async function generateInvoiceNum(taxNumber) {
-  amountto =  $("#amountTopay").val()
+  amountto = $("#amountTopay").val()
   console.log(taxNumber)
   $.ajax({
     type: "GET",

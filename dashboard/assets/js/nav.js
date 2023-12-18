@@ -2,10 +2,12 @@ let HOST = "https://plateaugr.useibs.com/php/index.php"
 let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
 let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
+let dataUser = JSON.parse(localStorage.getItem("userDataPrime"));
+
 $(".aside").html(`
 <div class="app-brand demo">
     <div class="flex items-center gap-x-1">
-      <a href="dashboard.html">
+      <a href="../index.html">
         <img src="./assets/img/logo.png" class="w-[70px] -ml-2" alt="" />
       </a>
       <div class="pt-2">
@@ -46,6 +48,7 @@ $(".aside").html(`
           <div data-i18n="Basic">Payment history</div>
         </a>
       </li>
+
       <li class="menu-item">
       <a href="payee-corporate.html" class="menu-link paye">
       <iconify-icon icon="fluent-mdl2:edit-contact" class="menu-icon"></iconify-icon>

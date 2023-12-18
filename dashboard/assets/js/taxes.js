@@ -8,7 +8,7 @@ async function getApplicableTaxes() {
   );
   const revenueHeads = await response.json();
 
-  console.log(revenueHeads);
+  // console.log(revenueHeads);
   $("#loaderr").remove();
   for (const item of revenueHeads) {
 
@@ -37,9 +37,9 @@ async function getApplicableTaxes() {
                     <tbody>
     `
 
-    for(const key in item) {
+    for (const key in item) {
 
-      if(item[key].id) {
+      if (item[key].id) {
         let i = key
         aa += `
 
@@ -51,17 +51,17 @@ async function getApplicableTaxes() {
                        <td><button class="button text-sm" onclick="generateInv(${item[key].id})">Generate Invoice</button></td>
                        </tr>
       `
-      }else{
+      } else {
         aa += `
 
        
 `
       }
-      
-    }
-    
 
-    aa +=`
+    }
+
+
+    aa += `
     </tbody>
     </table>
   </div>
@@ -90,7 +90,7 @@ async function getTaxes() {
   const revenueHeads = await response.json();
 
   // console.log(revenueHeads)
-  $("#loaderr").remove();
+  $("#loader3").remove();
   let ii = 0;
 
   {
@@ -118,9 +118,8 @@ async function getTaxes() {
               <iconify-icon icon="iwwa:option-horizontal" style="font-size: 24px"></iconify-icon>
             </button>
             <div class="dropdown-menu dropdown-menu-end" aria-labelledby="filtermda">
-              <button class="dropdown-item" onclick="generateInv(${
-                revenuehead.id
-              })">Generate Invoice</button>
+              <button class="dropdown-item" onclick="generateInv(${revenuehead.id
+      })">Generate Invoice</button>
             </div>
           </div>
         </td>
@@ -152,9 +151,9 @@ async function getPresumptiveTaxes() {
 
     let aa = ""
 
-    for(const key in item) {
-console.log(item[key].id);
-      if(item[key].id) {
+    for (const key in item) {
+      // console.log(item[key].id);
+      if (item[key].id) {
         aa += `
 
                       <tr>
@@ -177,9 +176,9 @@ console.log(item[key].id);
       </td>
       `
       }
-      
+
     }
-    
+
 
     $("#showPresumptiveTax").append(aa)
   }
@@ -231,7 +230,7 @@ function generateInv(revid) {
     showCancelButton: true,
     confirmButtonText: "Generate Invoice",
     html:
-    '<input id="swal-input1" class="swal2-input"  placeholder=" Amount to be paid ">',
+      '<input id="swal-input1" class="swal2-input"  placeholder=" Amount to be paid ">',
     showLoaderOnConfirm: true,
     preConfirm: async () => {
       let price = document.getElementById('swal-input1').value
