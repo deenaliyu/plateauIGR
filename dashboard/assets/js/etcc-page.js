@@ -42,7 +42,7 @@ async function getEtccRequests() {
           <td>${etcReq.refe}</td>
           <td>${etccStatus}</td>
           <td>
-            <a href="./etcc-details.html?theid=${etcReq.refe}&level=3" class="button button-sm">View</a>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
           </td>
           <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
         </tr>
@@ -55,7 +55,7 @@ async function getEtccRequests() {
           <td>${etcReq.refe}</td>
           <td>${etccStatus}</td>
           <td>
-            <a href="./etcc-details.html?theid=${etcReq.refe}&level=4" class="button button-sm">View</a>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=4&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
           </td>
           <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
         </tr>
@@ -68,7 +68,7 @@ async function getEtccRequests() {
           <td>${etcReq.refe}</td>
           <td>${etccStatus}</td>
           <td>
-            <a href="./etcc-details.html?theid=${etcReq.refe}&level=5" class="button button-sm">View</a>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=5&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
           </td>
           <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
         </tr>
