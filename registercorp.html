@@ -136,29 +136,25 @@
             <div class="form-group md:w-6/12">
               <label for="">LGA*</label>
               <select class="form-select enumInput" id="selectLGA" data-name="lga" required>
-                <option value="Abak">Abak</option>
               </select>
             </div>
 
           </div>
 
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Address*</label>
-              <input type="text" class="form-control enumInput" data-name="address" placeholder="Enter address here"
-                required>
-            </div>
-
-            <!-- <div class="form-group md:w-6/12">
-              <label for="">Cluster*</label>
-              <select class="form-select enumInput" data-name="area" required>
-                <option value="Cluster A">Cluster A</option>
-                <option value="Cluster B">Cluster B</option>
-              </select>
-            </div> -->
-
+          <div class="form-group mb-3 w-full">
+            <label for="">Password*</label>
+            <input type="password" class="form-control w-full enumInput" data-name="password" required>
           </div>
+
+
+          <div class="form-group w-full mb-3">
+            <label for="">Address*</label>
+            <input type="text" class="form-control enumInput" data-name="address" placeholder="Enter address here"
+              required>
+          </div>
+
+
+
 
           <button class="button w-full mb-4" onclick="continueReg()" type="button">Continue</button>
 
@@ -554,21 +550,21 @@
 
             </div>
 
-            <!-- <p>Account Credentials</p>
+            <p>Account Credentials</p>
 
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
               <div class="form-group md:w-6/12">
                 <label for="">Payer ID</label>
-                <input type="text" class="form-control w-full" value="AKWI-3430" required>
+                <input type="text" class="form-control w-full" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
                 <label for="">Password</label>
-                <input type="text" class="form-control w-full" id="password" readonly>
+                <input type="text" class="form-control w-full enumPrev1" data-name="password" readonly>
               </div>
 
-            </div> -->
+            </div>
 
 
 

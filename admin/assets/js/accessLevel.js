@@ -261,6 +261,7 @@ async function getRolesAdmin() {
 
     } else if (second_reviewer) {
       $("#third_reviewer").remove()
+      $("#first_reviewer").remove()
 
     } else {
       if (second_reviewer === undefined) {
