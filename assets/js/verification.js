@@ -23,7 +23,7 @@ $("#sendEmail").on("click", function (e) {
 
         $("#msg_boxx").html(`
           <p class="text-success text-center mt-5">Verification link has been sent to ${useremail}, check you mail.
-           Check your spam/junk folder if you can't mail.</p>
+           Check your spam/junk folder if you can't find the mail.</p>
         `)
         $("#theMsg").remove()
 

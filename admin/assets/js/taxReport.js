@@ -25,30 +25,16 @@ async function fetchTaxPayers() {
     $("#selfRegis").html(taxPayers.message.length)
     numberOfAll = taxPayers.message.length
     sessionStorage.setItem('numberOfAll', numberOfAll);
+
+
+
     taxPayers.message.reverse().forEach((taxPayer, i) => {
-      // let theimg = taxPayer.img
-      // if (theimg === "") {
-      //   theimg = "./assets/img/avatars/1.png"
-      // }
       let showRe = ""
 
       showRe += `
         <tr class="relative">
           <td>${i + 1}</td>
         `
-      // if (taxPayer.img === "") {
-      //   showRe += `   
-      //   <td>
-      //     <img src="./assets/img/avatars/1.png" class="w-[40px] rounded-full h-[40px] object-cover" alt="" />
-      //   </td>
-      //   `
-      // } else {
-      //   showRe += ` 
-      //   <td> 
-      //     <img src="${taxPayer.img}" class="w-[40px] rounded-full h-[40px] object-cover" alt="" />
-      //   </td>
-      //   `
-      // }
 
       showRe += `
         <td><a class="text-primary" href="./taxpayerlist.html?id=${taxPayer.id}">${taxPayer.tax_number}</a></td>
@@ -91,12 +77,70 @@ async function fetchTaxPayers() {
       }
     });
 
+    let numberrr = 0
+    taxPayers.message.reverse().forEach((taxPayer, i) => {
+      if (taxPayer.business_type === "") {
+
+      } else {
+        numberrr++
+
+        let showRe = ""
+
+        showRe += `
+          <tr class="relative">
+            <td>${i + 1}</td>
+          `
+
+        showRe += `
+          <td><a class="text-primary" href="./taxpayerlist.html?id=${taxPayer.id}">${taxPayer.tax_number}</a></td>
+          <td>${taxPayer.first_name} ${taxPayer.surname}</td>
+          <td>${taxPayer.category}</td>
+          <td>${taxPayer.tin}</td>
+          <td>${taxPayer.email}</td>
+        `
+        if (taxPayer.tin_status === "Unverified") {
+          showRe += `
+            <td class="text-danger">${taxPayer.tin_status}</td>
+          `
+        } else if (taxPayer.tin_status === "Verified") {
+          showRe += `
+            <td class="text-success">${taxPayer.tin_status}</td>
+          `
+        }
+
+
+        showRe += `
+            <td>${taxPayer.timeIn}</td>
+            <td>
+            <div class="flex items-center gap-3">
+         `
+        showRe += `
+          <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser txView"><iconify-icon
+          icon="material-symbols:edit-square-outline"></iconify-icon></button>
+        `
+        showRe += `
+        <a href="./presumptive-taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
+            </div>
+        
+          </tr>
+          `
+
+        $("#showreportP").append(showRe)
+      }
+
+
+      if (i === taxPayers.message.length - 1) {
+        $('#dataTableP').DataTable();
+        $("#selfRegisP").html(numberrr)
+      }
+    });
+
   }
 
 }
 
 fetchTaxPayers().then(ee => {
- 
+
 })
 
 async function fetchEnutaxP() {
@@ -114,7 +158,7 @@ async function fetchEnutaxP() {
     numberOfAll2 = 0
   } else {
     $("#enumRegs").html(taxPayers.message.length)
-  
+
     numberOfAll2 = taxPayers.message.length
     sessionStorage.setItem('numberOfAll2', numberOfAll2);
     taxPayers.message.reverse().forEach((txpayer, i) => {
@@ -156,9 +200,9 @@ async function fetchEnutaxP() {
   }
 
 }
- // <td>
-          //   <img src="${txpayer.img}" class="w-[40px] rounded-full h-[40px] object-cover" alt="" />
-          // </td>
+// <td>
+//   <img src="${txpayer.img}" class="w-[40px] rounded-full h-[40px] object-cover" alt="" />
+// </td>
 
 fetchEnutaxP().then(dd => {
   $('#dataTable2').DataTable();

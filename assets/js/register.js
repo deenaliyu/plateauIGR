@@ -1,3 +1,8 @@
+const urlParams = new URLSearchParams(window.location.search);
+let myParam = urlParams.get('category');
+
+let regType = urlParams.get('user');
+
 $(".checki").on("change", function () {
   let val = $(this).val()
 
@@ -35,6 +40,7 @@ $(".checki").on("change", function () {
 
   }
 })
+
 let selectcategory = document.querySelectorAll(".cardi")
 selectcategory.forEach(selecti => {
   selecti.addEventListener("click", () => {
@@ -48,11 +54,11 @@ selectcategory.forEach(selecti => {
     // console.log(dataId)
     if (dataId === "individual") {
       $(".bb").on("click", (e) => {
-        window.location.href = `registerindv.html?category=${dataId}`;
+        window.location.href = `registerindv.html?category=${dataId}&user=${regType}`;
       })
     } else {
       $(".bb").on("click", (e) => {
-        window.location.href = `registercorp.html?category=${dataId}`;
+        window.location.href = `registercorp.html?category=${dataId}&user=${regType}`;
       })
     }
   })
@@ -94,6 +100,7 @@ $("#tinInput").on("keydown", function () {
 })
 
 let allFirstNext = document.querySelectorAll(".firstNext")
+
 if (allFirstNext) {
 
   allFirstNext.forEach(allFirst => {
@@ -140,8 +147,8 @@ function checkTin() {
 
 }
 
-const urlParams = new URLSearchParams(window.location.search);
-let myParam = urlParams.get('category');
+
+
 if (myParam == "individual") {
   myParam = 2;
 } else if (myParam == "corporate") {
@@ -203,14 +210,14 @@ $("#CreateAccountBtn").on("click", (e) => {
       }
     }
     allInputs.forEach(allInput => {
-      if(allInput.dataset.name === "email") {
+      if (allInput.dataset.name === "email") {
         obj.data[allInput.dataset.name] = allInput.value.trim()
       } else {
         obj.data[allInput.dataset.name] = allInput.value
       }
     })
 
-    
+
     // console.log(obj)
     let StringedData = JSON.stringify(obj)
     $.ajax({

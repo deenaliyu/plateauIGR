@@ -189,7 +189,7 @@ async function generateInvoiceNum(taxNumber) {
         $("#msg_boxx").html(``)
         Swal.fire({
           title: 'Generated',
-          text: "Invoice has been generated successfully, Invoice details will be sent to your email and phone number! check your spam/junk folder if you can't mail.",
+          text: "Invoice has been generated successfully, Invoice details will be sent to your email and phone number! check your spam/junk folder if you can't find the mail.",
           icon: 'success',
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#3085d6',

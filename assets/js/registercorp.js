@@ -4,6 +4,8 @@ let theIDD
 const urlParams = new URLSearchParams(window.location.search);
 
 let myParam = urlParams.get('category');
+let userTypo = urlParams.get('user');
+
 if (myParam == "individual") {
   myParam = 2;
 } else if (myParam == "corporate") {
@@ -212,12 +214,18 @@ function registerUser() {
         $("#CreateAccountBtn").removeClass("hidden")
 
       } else {
-        $("#msg_box").html(`
-          <p class="text-success text-center mt-4 text-lg">${data.message}</p>
-        `)
-        setTimeout(() => {
-          window.location.href = `verification.html?id=${data.id}&email=${EnumData.data.email}&phone=${EnumData.data.phone}`
-        }, 1000);
+        if (userTypo === "admin") {
+          nextPrev(1)
+        } else {
+          $("#msg_box").html(`
+           <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+          `)
+          setTimeout(() => {
+            window.location.href = `verification.html?id=${data.id}&email=${EnumData.data.email}&phone=${EnumData.data.phone}`
+          }, 1000);
+        }
+
+
       }
 
       // if (data.status === 1) {
