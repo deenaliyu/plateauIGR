@@ -119,7 +119,7 @@ CREATE TABLE `contact_us` (
 --
 
 INSERT INTO `contact_us` (`id`, `address`, `email`, `phone_number`, `created_at`) VALUES
-(2, 'No. 37 Kwame Nkurumah Crescent, Asokoro, Abuja', 'info@primeguage.com', '08135719391', '2023-02-24 20:42:31');
+(2, 'No. 37 Kwame Nkurumah Crescent, Asokoro, Abuja', 'info@psirs.gov.ng', '08135719391', '2023-02-24 20:42:31');
 
 -- --------------------------------------------------------
 

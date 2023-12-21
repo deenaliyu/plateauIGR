@@ -211,7 +211,7 @@ function registerUser() {
         $("#msg_box").html(`
           <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
         `)
-        $("#CreateAccountBtn").removeClass("hidden")
+        $("#theButton").removeClass("hidden")
 
       } else {
         if (userTypo === "admin") {
@@ -220,6 +220,7 @@ function registerUser() {
           $("#msg_box").html(`
            <p class="text-success text-center mt-4 text-lg">${data.message}</p>
           `)
+          // $("#theButton").removeClass("hidden")
           setTimeout(() => {
             window.location.href = `verification.html?id=${data.id}&email=${EnumData.data.email}&phone=${EnumData.data.phone}`
           }, 2000);
