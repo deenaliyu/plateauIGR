@@ -234,7 +234,7 @@ async function getTaxFiling() {
             <td>${element.created_at.split(" ")[0]}</td>
             <td>${element.tax_filling_refrence}</td>
             <td>${element.tax_to_file}</td>
-            <td>${element.application_status}</td>
+            <td> ${element.application_status === "pending" ? '<span class="badge bg-warning">pending</span>' : '<span class="badge bg-success">Approved</span>'}</td>
           </tr>
         `)
         });
