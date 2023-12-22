@@ -41,6 +41,7 @@ async function getEtccRequests() {
           <td>${etcReq.timeIn}</td>
           <td>${etcReq.refe}</td>
           <td>${etccStatus}</td>
+          <td>${etcReq.dateApproved === "" ? '-' : etcReq.dateApproved}</td>
           <td>
             <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
           </td>
@@ -54,6 +55,7 @@ async function getEtccRequests() {
           <td>${etcReq.timeIn}</td>
           <td>${etcReq.refe}</td>
           <td>${etccStatus}</td>
+          <td>${etcReq.dateApproved === "" ? '-' : etcReq.dateApproved}</td>
           <td>
             <a href="./etcc-details.html?theid=${etcReq.refe}&level=4&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
           </td>
@@ -67,6 +69,7 @@ async function getEtccRequests() {
           <td>${etcReq.timeIn}</td>
           <td>${etcReq.refe}</td>
           <td>${etccStatus}</td>
+          <td>${etcReq.dateApproved === "" ? '-' : etcReq.dateApproved}</td>
           <td>
             <a href="./etcc-details.html?theid=${etcReq.refe}&level=5&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
           </td>
