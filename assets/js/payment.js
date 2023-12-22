@@ -317,7 +317,7 @@ function makePayment() {
 
         var handler = PaystackPop.setup({
           //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
-          key: 'pk_test_b9fedc4d3ccdc4c926a7cf5a112856ef45b84c2a', // Replace with your public key
+          key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
 
           email: 'ali@gmail.com',
           amount: finalPay * 100,

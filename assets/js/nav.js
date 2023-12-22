@@ -172,7 +172,7 @@ $("#footer").html(`
       </div>
 
       <div class="md:flex hidden items-center gap-3 text-[#555555] theNav">
-        <a href="tax-calculator.html" class="text-center">
+        <a type="button" class="text-center" data-bs-toggle="modal" data-bs-target="#tax_calc_modal">
             <iconify-icon icon="solar:calculator-bold"></iconify-icon>
             <p class="text-sm m-0">Tax Calculator</p>
         </a>
