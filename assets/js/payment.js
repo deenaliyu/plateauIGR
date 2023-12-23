@@ -20,155 +20,205 @@ $("#makePayment").html(`
 
 <div class="flex items-center flex-wrap justify-center mt-4 gap-3 px-5">
 
-  <div class="payCards active">
-    <div class="flex justify-center">
-      <iconify-icon icon="mdi:credit-card-fast" class="textPrimary"></iconify-icon>
+    <div class="payCards active">
+        <div class="flex justify-center">
+          <iconify-icon icon="ph:bank-fill" class="textPrimary"></iconify-icon>
+        </div>
+        <p class="text-center">Bank Branch</p>
     </div>
-    <p class="text-center">Online <br> Payment</p>
-  </div>
+        
+    <div class="payCards">
+        <div class="flex justify-center">
+          <img src="./assets/img/credo.png" alt="etransact" width="30" />
+        </div>
+        <p class="text-center">eTransanct</p>
+    </div>
+    
+    <div class="payCards">
+        <div class="flex justify-center">
+          <img src="./assets/img/interswitch.png" alt="paystack" width="30" />
+        </div>
+        <p class="text-center">Interswitch</p>
+    </div>
+  
+    <div class="payCards">
+        <div class="flex justify-center">
+          <img src="./assets/img/paystack.svg" alt="paystack" width="30" />
+        </div>
+        <p class="text-center">PayStack </p>
+    </div>
 
-  <div class="payCards">
-    <div class="flex justify-center">
-      <iconify-icon icon="mdi:instant-transfer" class="textPrimary"></iconify-icon>
-    </div>
-    <p class="text-center">Bank <br> Transfer</p>
-  </div>
 
-  <div class="payCards">
-    <div class="flex justify-center">
-      <iconify-icon icon="ph:bank-fill" class="textPrimary"></iconify-icon>
+    <div class="payCards">
+        <div class="flex justify-center">
+          <iconify-icon icon="mdi:naira" class="textPrimary"></iconify-icon>
+        </div>
+        <p class="text-center">e-Naira</p>
     </div>
-    <p class="text-center">Bank <br> Branch</p>
-  </div>
-
-  <div class="payCards">
-    <div class="flex justify-center">
-      <iconify-icon icon="fontisto:shopping-pos-machine" class="textPrimary"></iconify-icon>
-    </div>
-    <p class="text-center">POS <br> &nbsp;</p>
-  </div>
-
-  <div class="payCards">
-    <div class="flex justify-center">
-      <iconify-icon icon="material-symbols:phone-android" class="textPrimary"></iconify-icon>
-    </div>
-    <p class="text-center">USSD <br> &nbsp;</p>
-  </div>
-
-  <div class="payCards">
-    <div class="flex justify-center">
-      <iconify-icon icon="mdi:naira" class="textPrimary"></iconify-icon>
-    </div>
-    <p class="text-center">e-Naira <br> &nbsp;</p>
-  </div>
-
-  <div class="payCards">
-    <div class="flex justify-center">
-      <iconify-icon icon="mdi:credit-card-fast" class="textPrimary"></iconify-icon>
-    </div>
-    <p class="text-center">ATM <br> &nbsp;</p>
-  </div>
 
 </div>
 
 <div id="tabcontainer" class="mt-10 mb-10">
 
-  <div class="px-20 tab_steps active">
-    <p class="fontBold text-center text-lg">Follow the steps below to make online payments</p>
-    <div class="flex justify-center mt-2">
-      <img src="./assets/img/linebig.png" alt="">
-    </div>
-
-    <p class="text-[#555555] mt-3">You can make payment online with your ATM cards (MasterCard, Visa and
-      Verve). Click on the
-      <span class="fontBold text-[#000]">"Pay Now"</span> button below to proceed.
-    </p>
-
-    <div class="flex justify-center">
-      <button class="button w-[60%] mt-3" onclick="makePayment()">Pay Now</button>
-    </div>
-
-  </div>
-
-  <div class="px-20 tab_steps">
-    <p class="fontBold text-center text-lg">Follow the steps below to make payments on your bank's mobile
-      banking platform</p>
-    <div class="flex justify-center mt-2">
-      <img src="./assets/img/linebig.png" alt="">
-    </div>
-
-
-
+     <div class="px-20 tab_steps active">
+        <p class="fontBold text-center text-lg">Follow the steps below to make Bank Branch payments</p>
+        <div class="flex justify-center mt-2">
+          <img src="./assets/img/linebig.png" alt="">
+        </div>
     
-    <div class="mt-10">
-      <div class="mb-4">
-        <h1 class="text-xl fontBold">Step 1</h1>
-        <img src="./assets/img/curveline.png" class="-mt-5" alt="">
-        <p class="mt-2">log in to your bank mobile application and select transfer to bank.</p>
-      </div>
-
-
-      <div class="mb-4">
-        <h1 class="text-xl fontBold">Step 2</h1>
-        <img src="./assets/img/curveline.png" class="-mt-5" alt="">
-        <p class="mt-2">Select "************" as the receiving bank and input your Invoice number *******as
-          the receiving
-          bank account number.</p>
-      </div>
-
-      <div class="mb-4">
-        <h1 class="text-xl fontBold">Step 3</h1>
-        <img src="./assets/img/curveline.png" class="-mt-5" alt="">
-        <p class="mt-2">Enter the exact amount to pay in the "Amount to transfer" field that is (the system
-          will pull users
-          invoice
-          total and display here” and proceed.</p>
-      </div>
-
-    </div>
-  </div>
-
-  <div class="px-20 tab_steps">
-    <p class="fontBold text-center text-lg">Follow the steps below to make payments at a bank branch</p>
-    <div class="flex justify-center mt-2">
-      <img src="./assets/img/linebig.png" alt="">
-    </div>
-
-    <div class="mt-10">
-      <div class="flex justify-center">
-        <button class="button w-[60%] mt-3" onclick="makePaymentRemita()">Generate RRR</button>
+        <div class="mt-10">
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 1</h1>
+            <p class="mt-1">Choose 'Bank Branch' as your preferred method.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 2</h1>
+            <p class="mt-1">Visit the designated bank branch.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 3</h1>
+            <p class="mt-1">Go to your bank branch and present your invoice number or invoice.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 4</h1>
+            <p class="mt-1">Make the payment in person using the invoice number on the invoice.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 5</h1>
+            <p class="mt-1">Retain the receipt as proof of payment.</p>
+          </div>
+          
+        </div>
       </div>
       
-    </div>
-  </div>
+      <div class="px-20 tab_steps">
+        <p class="fontBold text-center text-lg">Follow the steps below to make payments using eTransact.</p>
+        <div class="flex justify-center mt-2">
+          <img src="./assets/img/linebig.png" alt="">
+        </div>
+    
+        <div class="mt-2">
 
-  <div class="px-20 tab_steps">
-    <p class="fontBold text-center text-lg">Follow the steps below to make payments through POS</p>
-    <div class="flex justify-center mt-2">
-      <img src="./assets/img/linebig.png" alt="">
-    </div>
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 1</h1>
+            <p>When you click on proceed, you'll be redirected to a secure payment gateway.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 2</h1>
+            <p>Select your preferred payment method from the options provided.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 3</h1>
+            <p>Follow the prompt and provide all necessary details as it relates to the payment method chosen.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 4</h1>
+            <p>Confirm the payment amount.</p>
+          </div>
+          
+          <div class="mb-2">
+            <h1 class="text-lg fontBold">Step 5</h1>
+            <p>Once the payment is processed successfully, you will receive a confirmation and and a receipt is generated.</p>
+          </div>
+        
+          <div class="flex justify-center">
+            <button class="button w-[60%] mt-3" id="makePBtn" onclick="makePaymentRemita2()">Proceed</button>
+          </div>
+          
+          <div id='msg_boxx'></div>
+          
+        </div>
+      </div>
+      
+      <div class="px-20 tab_steps">
+        <p class="fontBold text-center text-lg">Follow the steps below to make payment using Interswitch</p>
+        <div class="flex justify-center mt-2">
+          <img src="./assets/img/linebig.png" alt="">
+        </div>
+    
+        <div class="mt-2">
+            <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 1</h1>
+                <p>When you click on proceed, you'll be redirected to a secure payment gateway.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 2</h1>
+                <p>Select your preferred payment method from the options provided.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 3</h1>
+                <p>Follow the prompt and provide all necessary details as it relates to the payment method chosen.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 4</h1>
+                <p>Confirm the payment amount.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 5</h1>
+                <p>Once the payment is processed successfully, you will receive a confirmation and and a receipt is generated.</p>
+              </div>
+              
+              
+              
+        </div>
+      </div>
 
+    <div class="px-20 tab_steps">
+        <p class="fontBold text-center text-lg">Follow the steps below to make online payments with PayStack</p>
+        <div class="flex justify-center mt-2">
+          <img src="./assets/img/linebig.png" alt="">
+        </div>
+    
+        <div class="mt-2">
+            <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 1</h1>
+                <p>When you click on proceed, you'll be redirected to a secure payment gateway.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 2</h1>
+                <p>Select your preferred payment method from the options provided.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 3</h1>
+                <p>Follow the prompt and provide all necessary details as it relates to the payment method chosen.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 4</h1>
+                <p>Confirm the payment amount.</p>
+              </div>
+              
+              <div class="mb-2">
+                <h1 class="text-lg fontBold">Step 5</h1>
+                <p>Once the payment is processed successfully, you will receive a confirmation and and a receipt is generated.</p>
+              </div>
+              
+              
+              <div class="flex justify-center">
+              <button class="button w-[60%] mt-3" onclick="makePayment()">Proceed</button>
+            </div>
+        </div>
+    
+        
+
+    </div>
+  
     
 
-    <div class="mt-10">
-      <p>You can make payment at POS terminals in any of the offices of the Akwa Ibom State Board of Internal
-        Revenue
-        with your ATM cards (MasterCard, Visa and Verve). You will be required to present your Invoice Number
-        and
-        input your Pin to approve transaction.</p>
-    </div>
-  </div>
 
-  <div class="px-20 tab_steps">
-    <p class="fontBold text-center text-lg">Follow the steps below to make USSD payments </p>
-    <div class="flex justify-center mt-2">
-      <img src="./assets/img/linebig.png" alt="">
-    </div>
-
-    <div class="mt-10">
-      <p>Details coming soon</p>
-    </div>
-  </div>
 
   <div class="px-20 tab_steps">
     <p class="fontBold text-center text-lg">Follow the steps below to make e-Naira payments</p>
@@ -180,18 +230,6 @@ $("#makePayment").html(`
       <p>Details coming soon</p>
     </div>
   </div>
-
-  <div class="px-20 tab_steps">
-    <p class="fontBold text-center text-lg">Follow the steps below to make payment at the ATM</p>
-    <div class="flex justify-center mt-2">
-      <img src="./assets/img/linebig.png" alt="">
-    </div>
-
-    <div class="mt-10">
-      <p>Details coming soon</p>
-    </div>
-  </div>
-
 
 </div>
 `)
@@ -289,6 +327,98 @@ function makePaymentRemita() {
       alert("Wrong Invoice")
     }
   }
+  let invoicenn = sessionStorage.getItem("invoice_number")
+  openInvoice(invoicenn)
+
+
+}
+
+function makePaymentRemita2() {
+  let thePay = document.querySelector("#theBal")
+  let finalPay = thePay.dataset.money
+  
+  console.log(finalPay)
+  
+  $("#makePBtn").addClass("hidden")
+  $("#msg_boxx").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+
+  async function openInvoice(invoicenum) {
+      
+    const response = await fetch(
+      // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
+      `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
+    );
+    
+    const userInvoices = await response.json();
+    console.log(userInvoices);
+    
+    if (userInvoices.status === 1) {
+        
+      if (userInvoices.message[0].payment_status === "paid") {
+        alert("This Invoice has already been paid")
+          $("#makePBtn").removeClass("hidden")
+          $("#msg_boxx").html('')
+        
+      } else {
+        let invoiceDetails = userInvoices.message[0]
+        
+        let PaymentData = {
+            "amount": parseFloat(finalPay) * 100,
+            // "amount": 200.00,
+            "bearer": 0,
+            "callbackUrl": `https://payzamfara.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
+            "channels": ["card", "bank"],
+            "currency": "NGN",
+            "customerFirstName": invoiceDetails.first_name,
+            "customerLastName": invoiceDetails.surname,
+            "customerPhoneNumber": invoiceDetails.phone,
+            "email": invoiceDetails.email,
+        }
+        
+        $.ajax({
+          type: "POST",
+          url: 'https://api.credodemo.com/transaction/initialize',
+          headers: {
+            'Authorization':'0PUB0451RlgKYLO1E6KltnbJ3jgsh200',
+            'Accept':'application/json',
+            'Content-Type':'application/json'
+          },
+          dataType: 'json',
+          data: JSON.stringify(PaymentData),
+          success: function (data) {
+            console.log(data)
+            
+            if (data.status === 200) {
+                window.location.href = data.data.authorizationUrl
+            } else {
+                $("#makePBtn").removeClass("hidden")
+                $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
+            }
+            
+          },
+          error: function (request, error) {
+              console.log(error)
+              $("#makePBtn").removeClass("hidden")
+              $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+          }
+        });
+        
+       
+            
+
+      }
+    } else {
+      alert("Wrong Invoice")
+    }   
+
+ 
+
+  }
+  
   let invoicenn = sessionStorage.getItem("invoice_number")
   openInvoice(invoicenn)
 
