@@ -161,7 +161,7 @@ async function getAvgPayment() {
       categoryArr.push(monthsss[dta.month])
     });
 
-    console.log(theNumbers, categoryArr)
+    // console.log(theNumbers, categoryArr)
     const ctx2 = document.getElementById("avgpayment").getContext('2d');
     const avgPaymentChart = new Chart(ctx2, {
       // The type of chart we want to create
@@ -197,7 +197,6 @@ async function getAvgPayment() {
 
 getInvoicesData("invoicesPerCategory", "getInvoicesGeneratedBasedOnCategories", "invgenerated", "No. of invoice generated")
 getInvoicesData("paidInvoicesPerCategory", "getAnalyticPaidInvoiceBasedOnCategories", "invpaid", "No. of invoice paid")
-getInvoicesData("tinRequestsPerMonth", "getAnalyticsTINRequestPerMonth", "invpaid", "No. of invoice paid")
 getAvgPayment()
 
 InvoiceCategory(["Jan 2023", "Feb 2023", "Mar 2023", "Apr 2023"], [100, 50, 130, 70], "monthver", "Number of Invoices Verified")
@@ -303,7 +302,7 @@ async function getTINData() {
     lineChart(categoryArr, theNumbers, "tinReqNumber", "Number of TIN Requests")
 
   } else {
-
+    $('#tinReqNumber').html('No data available')
   }
 }
 getTINData()
@@ -656,3 +655,132 @@ function totalRegis(labelss2, numberrs2) {
   });
 
 }
+
+
+// TCC ISSSUED & DECLINED
+
+function tccIssuedDeclined() {
+  const ctx = document.getElementById("tccRequests").getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+      datasets: [
+        {
+          label: 'TCC issued',
+          data: [50, 78, 90, 65, 85, 88],
+          borderColor: "#CDA545",
+          backgroundColor: "#CDA545",
+        },
+        {
+          label: 'TCC Declined',
+          data: [30, 58, 3, 55, 35, 68],
+          borderColor: "#EA4335",
+          backgroundColor: "#EA4335",
+        }
+      ]
+
+    },
+
+    // Configuration options go here
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: ''
+        }
+      }
+    }
+  });
+}
+
+tccIssuedDeclined()
+
+function countOfPaye() {
+  const ctx = document.getElementById("countOfPaye").getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'bar',
+
+    // The data for our dataset
+    data: {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+      datasets: [
+        {
+          label: 'PAYE Org',
+          data: [50, 78, 90, 65, 85, 88],
+          borderColor: "#0B0AE4",
+          backgroundColor: "#0B0AE4",
+        }
+      ]
+
+    },
+
+    // Configuration options go here
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: ''
+        }
+      }
+    }
+  });
+}
+
+countOfPaye()
+
+function payeAndInformal() {
+  const ctx = document.getElementById("payeAndInformal").getContext('2d');
+  const chart = new Chart(ctx, {
+    type: 'line',
+
+    // The data for our dataset
+    data: {
+      labels: ["Jan", "Feb", "Mar", "Apr", "May"],
+      datasets: [
+        {
+          label: 'PAYE Remittance',
+          data: [50, 78, 90, 65, 85, 88],
+          borderColor: "#CDA545",
+          backgroundColor: "#CDA545",
+        },
+        {
+          label: 'Informal Sector Remittenace',
+          data: [30, 58, 3, 55, 35, 68],
+          borderColor: "#EA4335",
+          backgroundColor: "#EA4335",
+        }
+      ]
+
+    },
+
+    // Configuration options go here
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: ''
+        }
+      }
+    }
+  });
+}
+
+payeAndInformal()
