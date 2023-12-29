@@ -14,7 +14,7 @@ function createLineChart() {
   var chartDom = document.getElementById('Compliance');
   var myChart = echarts.init(chartDom);
   var option;
-  
+
   option = {
     xAxis: {
       type: 'category',
@@ -30,7 +30,7 @@ function createLineChart() {
       }
     ]
   };
-  
+
   option && myChart.setOption(option);
 
   // }
@@ -38,6 +38,101 @@ function createLineChart() {
 }
 createLineChart();
 
+let monthss = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+
+function formatMoney(amount) {
+  return parseFloat(amount).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 2,
+  });
+}
+
+function fillSelectOptions(selectId, start, end, selectedValue) {
+  var select = document.getElementById(selectId);
+
+  for (var i = start; i <= end; i++) {
+    var option = document.createElement("option");
+    option.value = i;
+    if (selectId === "selMonth") {
+      option.text = monthss[i - 1];
+    } else {
+      option.text = i;
+    }
+
+    if (i === selectedValue) {
+      option.selected = true;
+    }
+    select.add(option);
+  }
+}
+
+// Get current date
+var ThecurrentDate = new Date();
+var theCurrentYear = ThecurrentDate.getFullYear();
+var theCurrentMonth = ThecurrentDate.getMonth() + 1; // Months are zero-based
+
+fillSelectOptions("selMonth", 1, 12, theCurrentMonth);
+
+fillSelectOptions("selYear", theCurrentYear, theCurrentYear + 10, theCurrentYear);
+
+async function getMonthlyTCC() {
+  try {
+    const response = await fetch(`${HOST}?getMonthlyTCC&year=${theCurrentYear}&month=${theCurrentMonth}`)
+    const data = await response.json()
+
+    const response2 = await fetch(`${HOST}?getMonthlyTCC&year=${theCurrentYear}`)
+    const data2 = await response2.json()
+
+    // console.log(data)
+    $("#tccMonth").text(data.message[0].record_count)
+    $("#tccYearly").text(data2.message[0].record_count)
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function getMonthlyPAYE() {
+  try {
+    const response = await fetch(`${HOST}?getMonthlyPAYE&year=${theCurrentYear}&month=${theCurrentMonth}`)
+    const data = await response.json()
+
+    const response2 = await fetch(`${HOST}?getMonthlyPAYE&year=${theCurrentYear}`)
+    const data2 = await response2.json()
+
+    // console.log(data, data2)
+    $("#payeMonth").text(formatMoney(data.message[0].total_remittance))
+    $("#payeYearly").text(formatMoney(data2.message[0].total_remittance))
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+async function getMonthlyInformalCollection() {
+  try {
+    const response = await fetch(`${HOST}?getMonthlyInformalCollection&year=${theCurrentYear}&month=${theCurrentMonth}`)
+    const data = await response.json()
+
+    const response2 = await fetch(`${HOST}?getMonthlyInformalCollection&year=${theCurrentYear}`)
+    const data2 = await response2.json()
+
+    // console.log(data, data2)
+    $("#informalMonth").text(data.message[0].informal_collection_count)
+    $("#informalYearly").text(data2.message[0].informal_collection_count)
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+$(document).ready(function () {
+  getMonthlyTCC()
+  getMonthlyPAYE()
+  getMonthlyInformalCollection()
+
+});
 // Chart
 
 
@@ -230,10 +325,10 @@ async function fetchGraph() {
 
   const response = await fetch(`${HOST}/?invoicesPaidBeforeDue`)
   const MDAs = await response.json()
-// console.log(MDAs.message.on_time_percentage)
-let value2 = parseInt(MDAs.message.on_time_percentage)
-let valuei = value2/100
-console.log(valuei)
+  // console.log(MDAs.message.on_time_percentage)
+  let value2 = parseInt(MDAs.message.on_time_percentage)
+  let valuei = value2 / 100
+  console.log(valuei)
 
   var chartDom = document.getElementById('gauge-graph');
   var myChart = echarts.init(chartDom);
@@ -334,7 +429,7 @@ fetchGraph()
 
 function createGuageGraph() {
 
-  
+
 
 }
 
