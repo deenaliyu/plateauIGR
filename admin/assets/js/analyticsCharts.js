@@ -1,3 +1,5 @@
+let monthsss = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 function barCharts(dataDat, theValue, theElement) {
   var chartDom = document.getElementById(theElement);
   var myChart = echarts.init(chartDom);
@@ -145,7 +147,7 @@ function secondsToMinutes(seconds) {
 }
 
 async function getAvgPayment() {
-  let monthsss = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+
 
   try {
 
@@ -658,129 +660,274 @@ function totalRegis(labelss2, numberrs2) {
 
 
 // TCC ISSSUED & DECLINED
+function fillSelectOptions(selectId, start, end, selectedValue) {
+  var select = document.getElementById(selectId);
 
-function tccIssuedDeclined() {
-  const ctx = document.getElementById("tccRequests").getContext('2d');
-  const chart = new Chart(ctx, {
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-      datasets: [
-        {
-          label: 'TCC issued',
-          data: [50, 78, 90, 65, 85, 88],
-          borderColor: "#CDA545",
-          backgroundColor: "#CDA545",
-        },
-        {
-          label: 'TCC Declined',
-          data: [30, 58, 3, 55, 35, 68],
-          borderColor: "#EA4335",
-          backgroundColor: "#EA4335",
-        }
-      ]
-
-    },
-
-    // Configuration options go here
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: ''
-        }
-      }
+  for (var i = start; i <= end; i++) {
+    var option = document.createElement("option");
+    option.value = i;
+    if (selectId === "selMonth") {
+      option.text = monthss[i - 1];
+    } else {
+      option.text = i;
     }
-  });
+
+    if (i === selectedValue) {
+      option.selected = true;
+    }
+    select.add(option);
+  }
 }
 
-tccIssuedDeclined()
 
-function countOfPaye() {
-  const ctx = document.getElementById("countOfPaye").getContext('2d');
-  const chart = new Chart(ctx, {
-    type: 'bar',
+function processStatusData(data) {
+  const processedData = [];
 
-    // The data for our dataset
-    data: {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-      datasets: [
-        {
-          label: 'PAYE Org',
-          data: [50, 78, 90, 65, 85, 88],
-          borderColor: "#0B0AE4",
-          backgroundColor: "#0B0AE4",
-        }
-      ]
+  // Extract unique combinations of year and month
+  const uniqueCombinations = [...new Set(data.map(item => `${item.year}-${item.month}`))];
 
-    },
+  // Iterate over unique combinations
+  uniqueCombinations.forEach(combination => {
+    const acceptedEntry = data.find(item => item.app_status === "Accepted" && `${item.year}-${item.month}` === combination);
+    const declinedEntry = data.find(item => item.app_status === "Declined" && `${item.year}-${item.month}` === combination);
 
-    // Configuration options go here
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: ''
-        }
-      }
+    // Create an entry with count 0 if either Accepted or Declined entry is missing
+    const entry = {
+      "year": combination.split("-")[0],
+      "month": combination.split("-")[1],
+      "app_status": "Accepted",
+      "status_count": acceptedEntry ? acceptedEntry.status_count : "0"
+    };
+
+    processedData.push(entry);
+
+    if (declinedEntry) {
+      // Include Declined entry only if it exists
+      processedData.push(declinedEntry);
+    } else {
+      // Create a Declined entry with count 0 if it is missing
+      const declinedEntryZeroCount = {
+        "year": combination.split("-")[0],
+        "month": combination.split("-")[1],
+        "app_status": "Declined",
+        "status_count": "0"
+      };
+      processedData.push(declinedEntryZeroCount);
     }
   });
+
+  return processedData;
 }
 
-countOfPaye()
+var ThecurrentDate = new Date();
+var theCurrentYear = ThecurrentDate.getFullYear();
+var theCurrentMonth = ThecurrentDate.getMonth() + 1;
 
-function payeAndInformal() {
-  const ctx = document.getElementById("payeAndInformal").getContext('2d');
-  const chart = new Chart(ctx, {
-    type: 'line',
+fillSelectOptions("selYear", theCurrentYear - 2, theCurrentYear + 8, theCurrentYear);
 
-    // The data for our dataset
-    data: {
-      labels: ["Jan", "Feb", "Mar", "Apr", "May"],
-      datasets: [
-        {
-          label: 'PAYE Remittance',
-          data: [50, 78, 90, 65, 85, 88],
-          borderColor: "#CDA545",
-          backgroundColor: "#CDA545",
-        },
-        {
-          label: 'Informal Sector Remittenace',
-          data: [30, 58, 3, 55, 35, 68],
-          borderColor: "#EA4335",
-          backgroundColor: "#EA4335",
-        }
-      ]
+function refreshtheYear() {
+  let theYear = document.querySelector("#selYear").value
 
-    },
+  theCurrentYear = theYear
+  theCurrentMonth = theMonth
 
-    // Configuration options go here
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: 'top',
-        },
-        title: {
-          display: true,
-          text: ''
+  getETCCAnalytics()
+  getPAYECountAnalytics()
+  getMonthlyInformalCollection()
+}
+
+async function getETCCAnalytics() {
+  try {
+    const response = await fetch(`${HOST}?getETCCAnalytics&year=${theCurrentYear}`)
+    const data = await response.json()
+
+    let theLabels = []
+    let uniqueMonths = [...new Set(data.message.map(item => item.month))];
+    uniqueMonths.forEach(mmth => {
+      theLabels.push(monthsss[mmth - 1])
+    })
+
+    const analyticsResult = processStatusData(data.message)
+    let issuedData = []
+    let rejectedData = []
+
+    analyticsResult.forEach(anaresult => {
+      if (anaresult.app_status === "Declined") {
+        rejectedData.push(anaresult.status_count)
+      } else {
+        issuedData.push(anaresult.status_count)
+      }
+    })
+
+    const ctx = document.getElementById("tccRequests").getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+
+      // The data for our dataset
+      data: {
+        labels: theLabels,
+        datasets: [
+          {
+            label: 'TCC issued',
+            data: issuedData,
+            borderColor: "#CDA545",
+            backgroundColor: "#CDA545",
+          },
+          {
+            label: 'TCC Declined',
+            data: rejectedData,
+            borderColor: "#EA4335",
+            backgroundColor: "#EA4335",
+          }
+        ]
+
+      },
+
+      // Configuration options go here
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: ''
+          }
         }
       }
-    }
-  });
+    });
+
+
+  } catch (error) {
+    console.log(error)
+  }
 }
 
-payeAndInformal()
+getETCCAnalytics()
+
+async function getPAYECountAnalytics() {
+  try {
+    const response = await fetch(`${HOST}?getPAYECountAnalytics&year=${theCurrentYear}`)
+    const data = await response.json()
+
+    let theLabels = []
+    let uniqueMonths = [...new Set(data.message.map(item => item.month))];
+    uniqueMonths.forEach(mmth => {
+      theLabels.push(monthsss[mmth - 1])
+    })
+
+    let theDataOrg = []
+    data.message.forEach(dataorg => {
+      theDataOrg.push(dataorg.paye_remitting_organization_count)
+    })
+
+    const ctx = document.getElementById("countOfPaye").getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'bar',
+
+      // The data for our dataset
+      data: {
+        labels: theLabels,
+        datasets: [
+          {
+            label: 'PAYE Org',
+            data: theDataOrg,
+            borderColor: "#0B0AE4",
+            backgroundColor: "#0B0AE4",
+          }
+        ]
+
+      },
+
+      // Configuration options go here
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: ''
+          }
+        }
+      }
+    });
+
+
+
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+getPAYECountAnalytics()
+
+async function getMonthlyInformalCollection() {
+  try {
+    const response = await fetch(`${HOST}?getMonthlyInformalCollection&year=${theCurrentYear}&month=12`)
+    const data = await response.json()
+
+    let theLabels = []
+    let paye = []
+    let informaltax = []
+
+    data.message.forEach(dta => {
+      theLabels.push(monthsss[parseInt(dta.month) - 1])
+      informaltax.push(dta.informal_collection_count)
+      paye.push(0)
+    })
+    console.log(paye, informaltax, theLabels)
+    const ctx = document.getElementById("payeAndInformal").getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'line',
+
+      // The data for our dataset
+      data: {
+        labels: theLabels,
+        datasets: [
+          {
+            label: 'PAYE Remittance',
+            data: paye,
+            borderColor: "#CDA545",
+            backgroundColor: "#CDA545",
+          },
+          {
+            label: 'Informal Sector Remittenace',
+            data: informaltax,
+            borderColor: "#EA4335",
+            backgroundColor: "#EA4335",
+          }
+        ]
+
+      },
+
+      // Configuration options go here
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            position: 'top',
+          },
+          title: {
+            display: true,
+            text: ''
+          }
+        }
+      }
+    });
+
+
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+getMonthlyInformalCollection()
+

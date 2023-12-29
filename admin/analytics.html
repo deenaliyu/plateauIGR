@@ -337,10 +337,13 @@
                 <!-- E-Services -->
                 <div class="tab-pane fade" id="eservices" role="tabpanel">
 
-                  <select class="form-select w-3/12 mb-3">
+                  <!-- <select class="form-select w-3/12 mb-3">
                     <option value="monthly" selected>Monthly</option>
                     <option value="yearly">Yearly</option>
                     <option value="daily">Daily</option>
+                  </select> -->
+
+                  <select class="form-select w-3/12 mb-3" id="selYear" onchange="refreshtheYear()">
                   </select>
 
                   <div class="row gy-4">
