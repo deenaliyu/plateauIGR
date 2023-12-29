@@ -74,7 +74,19 @@ var theCurrentMonth = ThecurrentDate.getMonth() + 1; // Months are zero-based
 
 fillSelectOptions("selMonth", 1, 12, theCurrentMonth);
 
-fillSelectOptions("selYear", theCurrentYear, theCurrentYear + 10, theCurrentYear);
+fillSelectOptions("selYear", theCurrentYear - 2, theCurrentYear + 8, theCurrentYear);
+
+function refreshTheCards() {
+  let theMonth = document.querySelector("#selMonth").value
+  let theYear = document.querySelector("#selYear").value
+
+  theCurrentYear = theYear
+  theCurrentMonth = theMonth
+
+  getMonthlyTCC()
+  getMonthlyPAYE()
+  getMonthlyInformalCollection()
+}
 
 async function getMonthlyTCC() {
   try {
