@@ -813,13 +813,13 @@ async function getPAYECountAnalytics() {
     const data = await response.json()
 
     let theLabels = []
-    let uniqueMonths = [...new Set(data.message.map(item => item.month))];
+    let uniqueMonths = [...new Set(data["PAYE"].message.map(item => item.month))];
     uniqueMonths.forEach(mmth => {
       theLabels.push(monthsss[mmth - 1])
     })
 
     let theDataOrg = []
-    data.message.forEach(dataorg => {
+    data["PAYE"].message.forEach(dataorg => {
       theDataOrg.push(dataorg.paye_remitting_organization_count)
     })
 
