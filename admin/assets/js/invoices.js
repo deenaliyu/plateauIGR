@@ -1,3 +1,13 @@
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 2,
+  });
+}
+
+let AllInvoiceData = {}
+
 async function fetchInvoice() {
 
   $("#showThem").html("");
@@ -16,10 +26,26 @@ async function fetchInvoice() {
   );
   const userInvoices = await response.json();
   console.log(userInvoices);
+  if (userInvoices.status === 0){
+    let tt = 0;
+    $("#totalInv").html(tt)
+  }else{
+    $("#totalInv").html(userInvoices.message.length)
+  }
  
   $("#loader").css("display", "none");
   if (userInvoices.status === 1) {
-    userInvoices.message.reverse().forEach((userInvoice, i) => {
+    AllInvoiceData =  userInvoices.message
+    
+    displayData(userInvoices.message.reverse())
+  } else {
+    // $("#showInvoice").html("<tr></tr>");
+    $("#dataTable").DataTable();
+  }
+}
+
+function displayData(userInvoices) {
+    userInvoices.forEach((userInvoice, i) => {
       let addd = ""
       addd += `
         <tr class="relative">
@@ -29,7 +55,8 @@ async function fetchInvoice() {
         <td>${userInvoice.COL_4}</td>
         <td>${userInvoice.first_name} ${userInvoice.surname}</td>
         <td>${userInvoice.invoice_number}</td>
-        <td>&#8358; ${userInvoice.amount_paid}</td>
+        <td>&#8358; ${parseFloat(userInvoice.amount_paid).toLocaleString()}</td>
+        <td>${userInvoice.date_created.split(" ")[0]}</td>
         <td>${userInvoice.due_date}</td>
           `
       if (userInvoice.payment_status === "paid") {
@@ -54,18 +81,26 @@ async function fetchInvoice() {
         </tr>
         `
       $("#showThem").append(addd);
+      $("#showThem2").append(`
+        <tr>
+            <td>${i + 1}</td>
+            <td>${userInvoice.tax_number}</td>
+            <td>${userInvoice.COL_3.replace(/,/g, '')}</td>
+            <td>${userInvoice.COL_4}</td>
+            <td>${userInvoice.first_name.replace(/,/g, '')} ${userInvoice.surname.replace(/,/g, '')}</td>
+            <td>${userInvoice.invoice_number}</td>
+            <td>&#8358; ${userInvoice.amount_paid}</td>
+            <td>${userInvoice.date_created.split(" ")[0]}</td>
+            <td>${userInvoice.due_date}</td>
+            <td>${userInvoice.payment_status}</td>
+        </tr>
+      `)
     });
-  } else {
-    // $("#showInvoice").html("<tr></tr>");
-    $("#dataTable").DataTable();
-  }
 }
 
 fetchInvoice().then((uu) => {
   $("#dataTable").DataTable();
 });
-
-
 
 async function fetchAnalytics() {
 
@@ -87,7 +122,7 @@ async function fetchAnalytics() {
     $("#due_invoices").html(userAnalytics.due_invoices)
     $("#total_amount_invoiced").html(userAnalytics.total_amount_invoiced.toLocaleString())
     $("#total_amountP").html(userAnalytics.total_amount_paid.toLocaleString())
-    $("#totalInv").html(userAnalytics.total_invoice.toLocaleString())
+
     let total = (userAnalytics.total_amount_paid / userAnalytics.total_amount_invoiced) * 100
     $("#Compliance").html(total + "%")
     // console.log(userAnalytics)

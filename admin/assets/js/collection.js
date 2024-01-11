@@ -1,3 +1,13 @@
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 2,
+  });
+}
+
+let AllInvoiceData = {}
+
 async function fetchInvoice() {
 
   $("#showThem").html("");
@@ -18,10 +28,19 @@ async function fetchInvoice() {
   console.log(userInvoices);
   $("#loader").css("display", "none");
   if (userInvoices.status === 1) {
+    
+    AllInvoiceData =  userInvoices.message
+    
+    displayData(userInvoices.message.reverse())
+      
+  } else {
+    // $("#showInvoice").html("<tr></tr>");
+    $("#dataTable").DataTable();
+  }
+}
 
-   
-    $("#total_count").html( userInvoices.message.length.toLocaleString())
-    userInvoices.message.reverse().forEach((userInvoice, i) => {
+function displayData(userInvoices) {
+    userInvoices.forEach((userInvoice, i) => {
       let addd = ""
       addd += `
         <tr class="relative">
@@ -31,10 +50,10 @@ async function fetchInvoice() {
         <td>${userInvoice.first_name} ${userInvoice.surname}</td>
         <td>${userInvoice.tax_number}</td>
         <td>${userInvoice.invoice_number}</td>
-        <td>${userInvoice.amount_paid}</td>
+        <td>${formatMoney(parseFloat(userInvoice.amount_paid))}</td>
         <td>${userInvoice.payment_channel}</td>
         <td>${userInvoice.payment_reference_number}</td>
-        <td>${userInvoice.receipt_number}</td>
+        <td>${userInvoice.invoice_number}</td>
         <td>${userInvoice.timeIn}</td>
         
           `
@@ -45,57 +64,25 @@ async function fetchInvoice() {
         </tr>
         `
       $("#showThem").append(addd);
+      $("#showThem2").append(`
+        <tr class="relative">
+            <td>${i + 1}</td>
+            <td>${userInvoice.mda_id}</td>
+            <td>${userInvoice.COL_4}</td>
+            <td>${userInvoice.first_name?.replace(/,/g, '')} ${userInvoice.surname?.replace(/,/g, '')}</td>
+            <td>${userInvoice.tax_number}</td>
+            <td>${userInvoice.invoice_number}</td>
+            <td>&#8358; ${(parseFloat(userInvoice.amount_paid))}</td>
+            <td>${userInvoice.payment_channel}</td>
+            <td>${userInvoice.payment_reference_number}</td>
+            <td>${userInvoice.invoice_number}</td>
+            <td>${userInvoice.timeIn}</td>
+        </tr>
+      `)
     });
-  } else {
-    // $("#showInvoice").html("<tr></tr>");
-    $("#dataTable").DataTable();
-  }
 }
 
 fetchInvoice().then((uu) => {
   $("#dataTable").DataTable();
 });
-
-
-async function fetchAnalytics() {
-
-  let config = {
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  };
-  try {
-    const response = await fetch(
-      `${HOST}/php/index.php?getDashboardAnalyticsAdmin`
-    );
-
-    const userAnalytics = await response.json();
-
-    console.log(userAnalytics)
-
-    
-   
-    $("#due_invoices").html(userAnalytics.due_invoices.toLocaleString())
-    $("#total_amount_invoiced").html(userAnalytics.total_invoice_paid.toLocaleString())
-    $("#total_amount_invoiced2").html(userAnalytics.total_amount_invoiced.toLocaleString())
-    $("#total_amount_invoiced3").html(userAnalytics.total_amount_invoiced.toLocaleString())
-    $("#total_amountP").html(userAnalytics.total_amount_paid.toLocaleString())
-    $("#due_amount2").html(userAnalytics.due_amount.toLocaleString())
-    $("#total_invoice").html(userAnalytics.total_invoice.toLocaleString())
-    $("#total_amount").html(userAnalytics.total_invoice_paid.toLocaleString())
-    $("#reg_taxP").html(userAnalytics.total_user.toLocaleString())
-
-  //  console.log(userAnalytics.total_amount_invoiced)
-   
-  } catch (error) {
-    console.log(error)
-  }
-
-
-}
-
-fetchAnalytics()
 
