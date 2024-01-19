@@ -201,7 +201,7 @@ function continuePage() {
     `)
 
     $("#theTin").html(`
-    <label for="">TIN (Optional)</label>
+    <label for="">JTB TIN (Optional)</label>
     <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN" value="">
     `)
 
@@ -273,7 +273,7 @@ function continuePage() {
     `)
 
     $("#theTin").html(`
-    <label for="">TIN (Optional)</label>
+    <label for="">JTB TIN (Optional)</label>
     <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN" value="${userInfo.tin}">
     `)
 

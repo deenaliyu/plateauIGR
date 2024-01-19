@@ -112,7 +112,7 @@
           <div class="flex gap-3 md:flex-row flex-col mb-3">
 
             <div class="form-group md:w-6/12">
-              <label for="">TIN (Optional)</label>
+              <label for="">JTB TIN (Optional)</label>
               <input type="text" class="form-control w-full enumInput" data-name="tin">
             </div>
 
@@ -289,19 +289,15 @@
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
               <div class="form-group md:w-6/12">
-                <label for="">ID Type*</label>
-                <select class="form-select enumInput2" data-name="id_type" required>
-                  <option value="">Select ---</option>
-                  <option value="BVN">BVN</option>
-                  <option value="NIN">NIN</option>
-
-                </select>
+                <label for="">NIN*</label>
+                <input type="text" class="form-control w-full enumInput2" data-name="nin"
+                  placeholder="Input NIN number" required>
               </div>
 
               <div class="form-group md:w-6/12">
-                <label for="">ID Number*</label>
-                <input type="text" class="form-control w-full enumInput2" data-name="id_number"
-                  placeholder="Input ID number" required>
+                <label for="">BVN*</label>
+                <input type="text" class="form-control w-full enumInput2" data-name="bvn"
+                  placeholder="Input BVN number" required>
               </div>
 
             </div>
@@ -413,7 +409,7 @@
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
               <div class="form-group md:w-6/12">
-                <label for="">TIN (Optional)</label>
+                <label for="">JTB TIN (Optional)</label>
                 <input type="text" class="form-control w-full enumPrev1" data-name="tin" readonly>
               </div>
 
@@ -480,13 +476,13 @@
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
               <div class="form-group md:w-6/12">
-                <label for="">ID Type</label>
-                <input type="text" class="form-control w-full enumPrev2" data-name="id_type" readonly>
+                <label for="">NIN</label>
+                <input type="text" class="form-control w-full enumPrev2" data-name="nin" readonly>
               </div>
 
               <div class="form-group md:w-6/12">
-                <label for="">ID Number</label>
-                <input type="text" class="form-control w-full enumPrev2" data-name="id_number" readonly>
+                <label for="">BVN</label>
+                <input type="text" class="form-control w-full enumPrev2" data-name="bvn" readonly>
               </div>
 
             </div>
