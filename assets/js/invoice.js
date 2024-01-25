@@ -129,8 +129,9 @@ async function openInvoice(invoicenum, price) {
         </div>
 
       </div>
-      <div class="mt-2 px-4 ">
-      <img src="./assets/img/akwaimage.png" alt="" class="w-[80px] h-[70px]">
+      <div class="mt-2 px-4 flex item-center gap-3">
+      <img src="./assets/img/akwaimage.png" alt="" class="w-[80px]">
+      <img src="./assets/img/psirs.png" alt="" class="w-[80px]">
       </div>
 `
 

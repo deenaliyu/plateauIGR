@@ -10,6 +10,11 @@ var flutter_script = document.createElement('script')
 flutter_script.setAttribute('src', 'https://js.paystack.co/v1/inline.js')
 document.head.appendChild(flutter_script)
 
+var qr_codeScript = document.createElement('script')
+qr_codeScript.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js')
+document.head.appendChild(qr_codeScript)
+
+
 // var html2pdff = document.createElement('script')
 // html2pdff.setAttribute('src', 'https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js')
 // document.head.appendChild(html2pdff)
@@ -336,9 +341,9 @@ function makePaymentRemita() {
 function makePaymentRemita2() {
   let thePay = document.querySelector("#theBal")
   let finalPay = thePay.dataset.money
-  
+
   console.log(finalPay)
-  
+
   $("#makePBtn").addClass("hidden")
   $("#msg_boxx").html(`
     <div class="flex justify-center items-center mt-4">
@@ -347,78 +352,78 @@ function makePaymentRemita2() {
   `)
 
   async function openInvoice(invoicenum) {
-      
+
     const response = await fetch(
       // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
       `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
     );
-    
+
     const userInvoices = await response.json();
     console.log(userInvoices);
-    
+
     if (userInvoices.status === 1) {
-        
+
       if (userInvoices.message[0].payment_status === "paid") {
         alert("This Invoice has already been paid")
-          $("#makePBtn").removeClass("hidden")
-          $("#msg_boxx").html('')
-        
+        $("#makePBtn").removeClass("hidden")
+        $("#msg_boxx").html('')
+
       } else {
         let invoiceDetails = userInvoices.message[0]
-        
+
         let PaymentData = {
-            "amount": parseFloat(finalPay) * 100,
-            // "amount": 200.00,
-            "bearer": 0,
-            "callbackUrl": `https://payzamfara.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
-            "channels": ["card", "bank"],
-            "currency": "NGN",
-            "customerFirstName": invoiceDetails.first_name,
-            "customerLastName": invoiceDetails.surname,
-            "customerPhoneNumber": invoiceDetails.phone,
-            "email": invoiceDetails.email,
+          "amount": parseFloat(finalPay) * 100,
+          // "amount": 200.00,
+          "bearer": 0,
+          "callbackUrl": `https://payzamfara.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
+          "channels": ["card", "bank"],
+          "currency": "NGN",
+          "customerFirstName": invoiceDetails.first_name,
+          "customerLastName": invoiceDetails.surname,
+          "customerPhoneNumber": invoiceDetails.phone,
+          "email": invoiceDetails.email,
         }
-        
+
         $.ajax({
           type: "POST",
           url: 'https://api.credodemo.com/transaction/initialize',
           headers: {
-            'Authorization':'0PUB0451RlgKYLO1E6KltnbJ3jgsh200',
-            'Accept':'application/json',
-            'Content-Type':'application/json'
+            'Authorization': '0PUB0451RlgKYLO1E6KltnbJ3jgsh200',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
           },
           dataType: 'json',
           data: JSON.stringify(PaymentData),
           success: function (data) {
             console.log(data)
-            
+
             if (data.status === 200) {
-                window.location.href = data.data.authorizationUrl
+              window.location.href = data.data.authorizationUrl
             } else {
-                $("#makePBtn").removeClass("hidden")
-                $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
+              $("#makePBtn").removeClass("hidden")
+              $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
             }
-            
+
           },
           error: function (request, error) {
-              console.log(error)
-              $("#makePBtn").removeClass("hidden")
-              $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+            console.log(error)
+            $("#makePBtn").removeClass("hidden")
+            $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
           }
         });
-        
-       
-            
+
+
+
 
       }
     } else {
       alert("Wrong Invoice")
-    }   
+    }
 
- 
+
 
   }
-  
+
   let invoicenn = sessionStorage.getItem("invoice_number")
   openInvoice(invoicenn)
 
@@ -630,7 +635,10 @@ async function openReceipt(invoicenum) {
         <div class="flex px-6 pt-3 items-center justify-between">
           <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
 
-          <img src="./assets/img/akwaimage.png" alt="" class="">
+          <div class="flex items-center gap-2">
+            <img src="./assets/img/akwaimage.png" alt="" class="">
+            <img src="./assets/img/psirs.png" alt="" class="w-[80px]">
+          </div>
 
           <div class="flex items-center gap-1">
             <p class="text-base">Date: ${formatDate(invoice_info.date_created)}</p>
@@ -651,8 +659,9 @@ async function openReceipt(invoicenum) {
           <button class="button" type="button">PAYMENT RECEIPT</button>
         </div>
 
-        <div class="flex justify-end -mt-20">
-          <img src="./assets/img/Qr_Code.png" class="w-[150px]" alt='' />
+        <div class="flex justify-end -mt-20" >
+          <div class="w-[20%] pr-8" id="qrContainer"></div>
+
         </div>
 
         <div class="flex  justify-between px-6 mt-4 mb-2">
@@ -755,6 +764,20 @@ async function openReceipt(invoicenum) {
     $("#editBtn").on("click", function () {
       editoo();
     });
+
+    const qrCodeContainer = document.getElementById("qrContainer")
+
+    const qrCode = new QRCode(qrCodeContainer, {
+      text: `https://plateauigr.com/viewreceipt.html?invnumber=${invoicenum}&load=true`,
+      // width: 120,
+      // height: 120,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      version: 10,
+    });
+
+    qrCode.makeCode();
+
   } else {
     $("#invoiceCard").html(`Invalid Invoice, or expired invoice`)
   }
