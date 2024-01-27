@@ -635,9 +635,9 @@ async function openReceipt(invoicenum) {
         <div class="flex px-6 pt-3 items-center justify-between">
           <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
 
-          <div class="flex items-center gap-2">
+          <div>
             <img src="./assets/img/akwaimage.png" alt="" class="">
-            <img src="./assets/img/psirs.png" alt="" class="w-[80px]">
+            
           </div>
 
           <div class="flex items-center gap-1">

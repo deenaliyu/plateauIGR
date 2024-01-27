@@ -9,8 +9,9 @@ let THE_SESSION = localStorage.getItem("userDataPrime")
 let heeaderr = ""
 heeaderr += `
   <a href="index.html" class="flex gap-1 items-center">
-  <div class="">
+  <div class="flex items-center">
     <img src="./assets/img/logo.png" class="" />
+    <img src="./assets/img/psirs.png" class="w-[70px]" />
   </div>
   <p class="text-black fontBold">Plateau IGR Portal</p>
   </a>
