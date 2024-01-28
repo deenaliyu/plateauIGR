@@ -622,16 +622,10 @@ async function openReceipt(invoicenum) {
 
   if (userInvoices.status === 1) {
 
-    userInvoices.message.forEach((invoice_info, i) => {
-      // let address = ""
-      // if (user_session) {
-      //   address = `${user_session.lga}, ${user_session.state}, Nigeria`
-      // } else {
-      //   address = "Akwa Ibom, Nigeria"
-      // }
-      $("#receiptCard").html(`
-        
-
+    let invoice_info = userInvoices.message[0]
+    let allReceipt = ""
+    
+    allReceipt += `
         <div class="flex px-6 pt-3 items-center justify-between">
           <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
 
@@ -687,12 +681,20 @@ async function openReceipt(invoicenum) {
               </tr>
             </thead>
             <tbody>
-              <tr class="border-b border-b border-[#6F6F84]">
-                <td class="text-sm">${invoice_info.COL_4}</td>
-                <td class="text-sm">01</td>
-                <td class="text-sm"></td>
-                <td class="text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
-              </tr>
+            `
+            userInvoices.message.forEach(userInfo => {
+              allReceipt += `
+                <tr class="border-b border-b border-[#6F6F84]">
+                  <td class="text-sm">${userInfo.COL_4}</td>
+                  <td class="text-sm">1</td>
+                  <td class="text-sm">-</td>
+                  <td class="text-sm">-</td>
+                </tr>
+              `
+            })
+              
+
+              allReceipt +=`
               <tr>
                 <td class="text-[#555555] text-sm">Sub Total</td>
                 <td></td>
@@ -757,9 +759,9 @@ async function openReceipt(invoicenum) {
 
         <div class="invoicetop"></div>
       </div>
-    `)
+    `
 
-    })
+    $("#receiptCard").html(allReceipt)
 
     $("#editBtn").on("click", function () {
       editoo();

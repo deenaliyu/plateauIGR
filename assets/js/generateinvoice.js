@@ -95,7 +95,7 @@ function addInput() {
       </div>
 
       <div class="form-group w-4/12">
-        <label for="">Amount to be paid*</label>
+        <label for="">Amount*</label>
         <input type="number" class="form-control genInv thePaymentInput h-[40px]" id="amountTopay">
       </div>
 
