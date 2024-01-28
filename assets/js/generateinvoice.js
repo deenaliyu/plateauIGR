@@ -41,12 +41,20 @@ async function getAllMda() {
 
 getAllMda()
 
-function updateSelectedOption1() {
+function updateSelectedOption1(selCateg) {
   // Get the select element
   var select1 = document.getElementById("rev_heads");
 
   // Update the selected option text
   var selectedOption = select1.options[select1.selectedIndex];
+
+  if (selCateg.value === '') {
+    $("#otherSec").removeClass("flex")
+    $("#otherSec").addClass("hidden")
+  } else {
+    $("#otherSec").removeClass("hidden")
+    $("#otherSec").addClass("flex")
+  }
   // document.getElementById("select-search").value = selectedOption.text;
 }
 
@@ -79,13 +87,21 @@ function addInput() {
   let theStrng = generateRandomString()
 
   $("#moreInput").append(`
-    <div class="flex items-center gap-3 mb-4">
-      <select onchange="updateSelectedOption()" class="${theStrng} inputClass form-select genInv revHeadsss" required id="rev_heads">
+    <div class="flex items-center gap-3">
+      <div class="form-group w-8/12">
+        <label for="">What do you want to pay for?*</label>
+        <select onchange="updateSelectedOption()" class="${theStrng} h-[40px] inputClass form-select genInv revHeadsss" required id="rev_heads">
+        </select>
+      </div>
 
-      </select>
+      <div class="form-group w-4/12">
+        <label for="">Amount to be paid*</label>
+        <input type="number" class="form-control genInv thePaymentInput h-[40px]" id="amountTopay">
+      </div>
 
       <iconify-icon icon="zondicons:minus-outline" class="cursor-pointer" id="${theStrng}" onclick="removeInpt(this)"></iconify-icon>
     </div>
+ 
   `)
 
   AllRevs.forEach(dd => {
@@ -282,6 +298,8 @@ function continuePage() {
     <input type="text" class="form-control payInputs" minlength="10" required data-name="address"
     placeholder=" Enter your address" value="${userInfo.address}">
     `)
+
+
   }
 
 
@@ -400,8 +418,6 @@ async function generateInvoiceNon() {
 
       $("#generating_inv").addClass("hidden")
 
-
-
       let obj = {
         "endpoint": "createPayerAccount",
         "data": {
@@ -474,9 +490,17 @@ async function generateInvoiceNon() {
 
 }
 
+
+
 async function generateInvoiceNum(taxNumber) {
-  amountto = $("#amountTopay").val()
-  console.log(taxNumber)
+  let amountto = 0
+
+  let thePayInputs = document.querySelectorAll(".thePaymentInput")
+  
+  thePayInputs.forEach(payIn => {
+    amountto += parseFloat(payIn.value)
+  })
+
   $.ajax({
     type: "GET",
     url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amountto}`,

@@ -34,6 +34,10 @@
       padding-bottom: 0px;
       font-size: 14px;
     }
+
+    .select2.select2-container {
+      width: 100% !important;
+    }
   </style>
 </head>
 
@@ -90,39 +94,41 @@
 
             <div class="form-group mb-2">
               <label for="">Select MDA *</label>
-              <!-- <input type="text" class="form-control mb-1" id="select-search" onkeyup="filterOptions()"
-                placeholder="Search..."> -->
-              <select onchange="updateSelectedOption1()" class="revHeadInputSel form-select mda" required
-                name="" id="mda">
-                <!-- <option disabled selected>Select--</option> -->
-
-              </select>
-            </div>
-            
-            <div class="form-group mb-2">
-              <label for="">What do you want to pay for?*</label>
-              <!-- <input type="text" class="form-control mb-1" id="select-search" onkeyup="filterOptions()"
-                placeholder="Search..."> -->
-              <select onchange="updateSelectedOption()" class="revHeadInputSel form-select genInv revHeadsss" required
-                name="" id="rev_heads">
-                <!-- <option disabled selected>Select--</option> -->
+              <select onchange="updateSelectedOption1(this)" class="revHeadInputSel form-select mda" required name=""
+                id="mda">
 
               </select>
             </div>
 
-            <div id="moreInput">
+            <hr class="my-3" />
+
+            <div class="flex items-center gap-2">
+
+              <div class="form-group w-8/12">
+                <label for="">What do you want to pay for?*</label>
+                <select onchange="updateSelectedOption()" class="revHeadInputSel h-[40px] form-select genInv revHeadsss" required
+                  name="" id="rev_heads">
+
+                </select>
+              </div>
+
+              <div class="form-group w-4/12">
+                <label for="">Amount to be paid*</label>
+                <input type="number" class="form-control genInv h-[40px] thePaymentInput" id="amountTopay">
+              </div>
 
             </div>
 
-            <!-- <div class="flex justify-end mb-4">
+            <div class="hidden justify-end" id="otherSec">
               <button onclick="addInput()" type="button" class="textPrimary flex gap-2 items-center"><iconify-icon
-                  icon="ic:outline-plus"></iconify-icon> Add</button>
-            </div> -->
-
-            <div class="form-group mb-4">
-              <label for="">Amount to be paid*</label>
-              <input type="text" class="form-control genInv"  id="amountTopay">
+                  icon="ic:outline-plus"></iconify-icon> Add Item</button>
             </div>
+
+            <div id="moreInput" class="mb-4">
+
+            </div>
+
+
 
             <button class="button w-full" type="button" onclick="continuePage()">Continue</button>
 
@@ -173,7 +179,7 @@
               </div>
             </div>
 
-            <div class="flex items-center mb-4 gap-2" >
+            <div class="flex items-center mb-4 gap-2">
               <div class="form-group w-full" id="theTin">
                 <label for="">JTB TIN (Optional)</label>
                 <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN">
@@ -187,7 +193,7 @@
               </div>
             </div>
 
-            <div class="flex items-center mb-4 gap-2" >
+            <div class="flex items-center mb-4 gap-2">
               <div class="form-group w-full">
                 <label for="">LGA*</label>
                 <select name="" id="selectLGA" class="form-select payInputs" required data-name="lga">
@@ -223,7 +229,7 @@
           <form action="" class="md:w-[70%] secondForm">
             <!-- <h1 class="fontBold text-2xl">Generate Invoice</h1> -->
 
-             <h1 class="mb-3 mt-3">Billing Details</h1>
+            <h1 class="mb-3 mt-3">Billing Details</h1>
             <div class="shadow-md p-3 bg-[#E9ECEF]" id="bill">
               <div class="flex space-x-3">
                 <p></p>
