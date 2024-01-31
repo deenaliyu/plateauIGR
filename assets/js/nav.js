@@ -1,4 +1,4 @@
-let HOST = "https://plateaugr.useibs.com/php/index.php"
+let HOST = "https://plateauigr.com/php1/index.php"
 let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
 let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
@@ -158,10 +158,11 @@ if (hamburger) {
   });
 }
 
+const currentYear = new Date().getFullYear()
 $("#footer").html(`
     <footer class="bg-white flex justify-between items-center md:px-10 px-3 py-2 landingFooter border-t border-gray-200">
       <div class="flex items-center gap-2">
-          <p class="text-[#555555] md:text-sm text-xs">Copyright 2023 Primegauge LTD</p>
+          <p class="text-[#555555] md:text-sm text-xs">Copyright 2021 - ${currentYear} Primegauge LTD</p>
           <img src="./assets/img/logo1.png" class="w-[60px] h-[30px]" alt="">
       </div>
 

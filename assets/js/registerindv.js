@@ -14,8 +14,15 @@ if (myParam == "individual") {
   myParam = 4;
 }
 
+
 let theIDD
 let selectedValue = "";
+
+function limitInputLength(inputElement) {
+  if (inputElement.value.length > 11) {
+      inputElement.value = inputElement.value.slice(0, 11);
+  }
+}
 
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
