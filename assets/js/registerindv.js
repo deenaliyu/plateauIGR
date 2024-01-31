@@ -413,7 +413,7 @@ let businessTypes = ``
 
 async function fetchBusiness() {
   try {
-    const response = await fetch(`${HOST}?getPresumptiveTax`)
+    const response = await fetch(`https://payzamfara.com/php?getPresumptiveTax`)
     const data = await response.json()
 
     // console.log(data)
