@@ -188,9 +188,6 @@ async function openReceipt(invoicenumber) {
                   <img src="./assets/img/sign.png" alt="" class="pb-2">
                   </div>
                   <h4 class="fontBold">
-                  Jim Pam Wayas
-                  </h4>
-                  <h4 class="fontBold">
                   Executive Chairman PSIRS
                   </h4>
                   </td>

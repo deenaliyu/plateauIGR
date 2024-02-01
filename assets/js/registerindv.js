@@ -19,10 +19,15 @@ let theIDD
 let selectedValue = "";
 
 function limitInputLength(inputElement) {
+  // Remove any non-digit characters
+  inputElement.value = inputElement.value.replace(/\D/g, '');
+
+  // Limit the input to 11 digits
   if (inputElement.value.length > 11) {
       inputElement.value = inputElement.value.slice(0, 11);
   }
 }
+
 
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
@@ -413,7 +418,7 @@ let businessTypes = ``
 
 async function fetchBusiness() {
   try {
-    const response = await fetch(`https://payzamfara.com/php?getPresumptiveTax`)
+    const response = await fetch(`https://payzamfara.com/php/index.php?getPresumptiveTax`)
     const data = await response.json()
 
     // console.log(data)

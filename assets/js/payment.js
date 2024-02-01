@@ -454,7 +454,7 @@ function makePayment() {
           //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
           key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
 
-          email: 'ali@gmail.com',
+          email: invoiceDetails.email,
           amount: finalPay * 100,
           currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
 
@@ -748,7 +748,7 @@ async function openReceipt(invoicenum) {
               <img src="./assets/img/sign.png" alt="" class="pb-2">
             </div>
           
-            <h4 class="fontBold">Jim Pam Wayas</h4>
+            
             <h4 class="fontBold">Executive Chairman PSIRS</h4>
           </div>
         </div>
