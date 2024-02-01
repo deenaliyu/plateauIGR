@@ -496,14 +496,14 @@ async function generateInvoiceNum(taxNumber) {
   let amountto = 0
 
   let thePayInputs = document.querySelectorAll(".thePaymentInput")
-  
+  let description = document.querySelector("#thedescripInput").value
   thePayInputs.forEach(payIn => {
     amountto += parseFloat(payIn.value)
   })
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amountto}`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amountto}&description=${description}`,
     dataType: 'json',
     success: function (data) {
       console.log(data)

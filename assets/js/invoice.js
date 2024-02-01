@@ -184,6 +184,9 @@ async function openInvoice(invoicenum, price) {
             <td>Invoice Date: ${invoice_info.date_created.split(" ")[0]}</td>
             <td>Expiry Date: ${invoice_info.due_date}</td>
           </tr>
+          <tr>
+            <td><span class="fontBold">Description:</span> ${invoice_info.description ? invoice_info.description : '-'}</td>
+          </tr>
         </table>
       </div>
     `
@@ -293,13 +296,13 @@ async function openInvoice(invoicenum, price) {
             <td></td>
             <td></td>
             <td></td>
-            <!-- <td>
+            <td>
                 <div class="border-b border-b border-[#6F6F84] mb-2">
                   <img src="./assets/img/sign.png" alt="" class="pb-2">
                 </div>
                 <h4 class="fontBold">Jim Pam Wayas</h4>
                 <h4 class="fontBold">Executive Chairman PSIRS</h4>
-              </td> -->
+              </td>
           </tr>
           </table>
 

@@ -114,8 +114,8 @@ async function openInvoice(invoicenum, price) {
   if (userInvoices.status === 1) {
     let invoice_info = userInvoices.message[0]
     let TotalInvoice = ""
-// console.log(invoice_info)
- TotalInvoice += `
+    // console.log(invoice_info)
+    TotalInvoice += `
       <div class="invoicetop"></div>
 
       <div class="flex px-6 pt-3 items-center justify-between">
@@ -128,8 +128,9 @@ async function openInvoice(invoicenum, price) {
         </div>
 
       </div>
-      <div class="mt-2 px-4 ">
-      <img src="./assets/img/akwaimage.png" alt="" class="w-[80px] h-[70px]">
+
+      <div class="mt-2 px-4 gap-3">
+        <img src="./assets/img/akwaimage.png" alt="" class="w-[80px]">
       </div>
 `
 
@@ -138,34 +139,34 @@ async function openInvoice(invoicenum, price) {
       <div class="flex  justify-between px-6 mt-4">
         <div class="w-full">
           <p class="text-[#555555]">FROM :</p>
-          <p class="fontBold">Plateau Sate</p>
+          <p class="fontBold">${invoice_info.COL_3}</p>
         </div>
 
         <div class="w-full md:mr-[-10%]">
           <p class="text-[#555555]">TO :</p>
           <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
-          <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}, Plateau</p>
+          <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}</p>
         </div>
 
       </div>
 `
     } else {
       TotalInvoice += `
-  <div class="flex  justify-between px-6 mt-4">
-    <div class="w-full">
-      <p class="text-[#555555]">FROM :</p>
-      <p class="fontBold">${invoice_info.COL_3}</p>
-      <p class="text-[#222234] w-[60%] text-sm">Plateau</p>
-    </div>
+      <div class="flex  justify-between px-6 mt-4">
+        <div class="w-full">
+          <p class="text-[#555555]">FROM :</p>
+          <p class="fontBold">${invoice_info.COL_3}</p>
+          <p class="text-[#222234] w-[60%] text-sm">Plateau</p>
+        </div>
 
-    <div class="w-full md:mr-[-10%]">
-      <p class="text-[#555555]">TO :</p>
-      <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
-      <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}, Plateau</p>
-    </div>
+        <div class="w-full md:mr-[-10%]">
+          <p class="text-[#555555]">TO :</p>
+          <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
+          <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}</p>
+        </div>
 
-  </div>
-`
+      </div>
+    `
     }
     TotalInvoice += `
       <div class="px-6 mt-4">
@@ -174,13 +175,16 @@ async function openInvoice(invoicenum, price) {
         <table class="table table-borderless invTa md:w-[70%] w-full">
           <tr>
             <td>
-              <p class="fontBold">Payer ID: ${invoice_info.tax_number}</p>
+              <p class="fontBold">Payer ID: ${invoice_info.tax_number ? invoice_info.tax_number : invoice_info.payer_id}</p>
             </td>
             <td>Due Date: ${invoice_info.due_date}</td>
           </tr>
           <tr>
-            <td>Invoice Date: ${invoice_info.date_created}</td>
+            <td>Invoice Date: ${invoice_info.date_created.split(" ")[0]}</td>
             <td>Expiry Date: ${invoice_info.due_date}</td>
+          </tr>
+          <tr>
+            <td><span class="fontBold">Description:</span> ${invoice_info.description ? invoice_info.description : '-'}</td>
           </tr>
         </table>
       </div>
@@ -188,6 +192,7 @@ async function openInvoice(invoicenum, price) {
 
     if (userInvoices.message.length > 1) {
       let theTotal = []
+      let totalAmount = parseFloat(userInvoices.message[0].amount_paid)
       TotalInvoice += `
         <div class="px-6">
           <table class="table table-borderless table-sm">
@@ -205,21 +210,20 @@ async function openInvoice(invoicenum, price) {
       userInvoices.message.forEach(element => {
         TotalInvoice += `
                 <tr>
-                  <td class="text-sm">${element.amount_paid}</td>
+                  <td class="text-sm">${element.COL_4}</td>
                   <td class="text-sm">01</td>
-                  <td class="text-sm">${element.amount_paid}</td>
-                  <td class="text-sm">${formatMoney(parseInt(element.amount_paid))}</td>
+                  <td class="text-sm">${element.COL_6}</td>
+                  <td class="text-sm">-</td>
                 </tr>
               `
-        theTotal.push(formatMoney(parseInt(element.amount_paid)))
+        theTotal.push(parseInt(element.COL_6))
       });
-
       TotalInvoice += `
               <tr class="border-t border-[#6F6F84]">
                 <td class="text-[#555555] text-sm">Sub Total</td>
                 <td></td>
                 <td></td>
-                <td class="text-[#000] text-sm">${sumArray(formatMoney(parseInt(theTotal)))}</td>
+                <td class="text-[#000] text-sm">NGN ${formatMoney(totalAmount)}</td>
               </tr>
               <tr>
                 <td class="text-[#555555] text-sm">Discount</td>
@@ -229,8 +233,8 @@ async function openInvoice(invoicenum, price) {
               </tr>
               <tr>
                 <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-                <td class="text-[#000] text-xl fontBold">${sumArray(formatMoney(parseInt(theTotal)))}</td>
-                <span class="d-none" id="theBal">${formatMoney(parseInt(theTotal))}</span>
+                <td class="text-[#000] text-xl fontBold">NGN ${formatMoney(totalAmount)}</td>
+                <span class="d-none" id="theBal" data-money="${totalAmount}">${formatMoney(totalAmount)}</span>
               </tr>
 
             
@@ -239,7 +243,7 @@ async function openInvoice(invoicenum, price) {
                 <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
               </tr>
               <tr>
-                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(sumArray(theTotal))}</span> Naira Only</td>
+                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(totalAmount)}</span> Naira Only</td>
               </tr>
             </tbody>
           </table>  
@@ -277,7 +281,7 @@ async function openInvoice(invoicenum, price) {
             <tr>
               <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
               <td class="text-[#000] text-xl fontBold"><span id="actualPrice">${formatMoney(parseInt(invoice_info.amount_paid))}</span></td>
-              <span class="d-none" id="theBal">${formatMoney(parseInt(invoice_info.amount_paid))}</span>
+              <span class="d-none" id="theBal" data-money="${parseInt(invoice_info.amount_paid)}">${formatMoney(parseInt(invoice_info.amount_paid))}</span>
             </tr>
 
             <tr>
@@ -291,17 +295,13 @@ async function openInvoice(invoicenum, price) {
             <td></td>
             <td></td>
             <td></td>
-            <td>
-            <div class="border-b border-b border-[#6F6F84] mb-2">
-            <img src="./assets/img/sign.png" alt="" class="pb-2">
-            </div>
-            <h4 class="fontBold">
-            Jim Pam Wayas
-            </h4>
-            <h4 class="fontBold">
-            Executive Chairman PSIRS
-            </h4>
-            </td>
+            <!-- <td>
+                <div class="border-b border-b border-[#6F6F84] mb-2">
+                  <img src="./assets/img/sign.png" alt="" class="pb-2">
+                </div>
+                <h4 class="fontBold">Jim Pam Wayas</h4>
+                <h4 class="fontBold">Executive Chairman PSIRS</h4>
+              </td> -->
           </tr>
           </table>
 
