@@ -740,6 +740,10 @@ async function openReceipt(invoicenum) {
               <p class="mb-2">Expiry Date: ${invoice_info.due_date}</p>
             </div>
           </div>
+
+          <tr>
+            <td><span class="fontBold">Description:</span> ${invoice_info.description ? invoice_info.description : '-'}</td>
+          </tr>
         </div>
 
         <div class="flex justify-end px-6 mt-4">
