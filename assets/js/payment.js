@@ -386,9 +386,9 @@ function makePaymentRemita2() {
 
         $.ajax({
           type: "POST",
-          url: 'https://api.credodemo.com/transaction/initialize',
+          url: 'https://api.credocentral.com/transaction/initialize',
           headers: {
-            'Authorization': '0PUB0451RlgKYLO1E6KltnbJ3jgsh200',
+            'Authorization': '1PUB1094T1lYkD5BDRhngk28DC4MMj4E5nyVA0',
             'Accept': 'application/json',
             'Content-Type': 'application/json'
           },
