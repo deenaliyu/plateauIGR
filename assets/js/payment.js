@@ -375,7 +375,7 @@ function makePaymentRemita2() {
           "amount": parseFloat(finalPay) * 100,
           // "amount": 200.00,
           "bearer": 0,
-          "callbackUrl": `https://payzamfara.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
+          "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
           "channels": ["card", "bank"],
           "currency": "NGN",
           "customerFirstName": invoiceDetails.first_name,
@@ -699,7 +699,7 @@ async function openReceipt(invoicenum) {
                 <td class="text-[#555555] text-sm">Sub Total</td>
                 <td></td>
                 <td></td>
-                <td class="text-[#000] text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
+                <td class="text-[#000] text-sm">${formatMoney(parseFloat(invoice_info.amount_paid))}</td>
               </tr>
               <tr class="border-b border-b border-[#6F6F84]">
                 <td class="text-[#555555] text-sm">Discount</td>
@@ -710,7 +710,7 @@ async function openReceipt(invoicenum) {
 
               <tr>
                 <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-                <td class="text-[#000] text-xl fontBold">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
+                <td class="text-[#000] text-xl fontBold">${formatMoney(parseFloat(invoice_info.amount_paid))}</td>
               </tr>
 
               <tr>
