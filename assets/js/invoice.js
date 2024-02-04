@@ -193,7 +193,7 @@ async function openInvoice(invoicenum, price) {
 
     if (userInvoices.message.length > 1) {
       let theTotal = []
-      let totalAmount = parseFloat(userInvoices.message[0].amount_paid)
+      // let totalAmount = parseFloat(userInvoices.message[0].amount_paid)
       TotalInvoice += `
         <div class="px-6">
           <table class="table table-borderless table-sm">
@@ -213,18 +213,18 @@ async function openInvoice(invoicenum, price) {
                 <tr>
                   <td class="text-sm">${element.COL_4}</td>
                   <td class="text-sm">01</td>
-                  <td class="text-sm">${element.COL_6}</td>
-                  <td class="text-sm">-</td>
+                  <td class="text-sm">${parseFloat(element.amount_paid).toLocaleString()}</td>
+                  <td class="text-sm">${parseFloat(element.amount_paid).toLocaleString()}</td>
                 </tr>
               `
-        theTotal.push(parseInt(element.COL_6))
+        theTotal.push(parseFloat(element.amount_paid))
       });
       TotalInvoice += `
               <tr class="border-t border-[#6F6F84]">
                 <td class="text-[#555555] text-sm">Sub Total</td>
                 <td></td>
                 <td></td>
-                <td class="text-[#000] text-sm">NGN ${formatMoney(totalAmount)}</td>
+                <td class="text-[#000] text-sm">NGN ${formatMoney(sumArray(theTotal))}</td>
               </tr>
               <tr>
                 <td class="text-[#555555] text-sm">Discount</td>
@@ -234,8 +234,8 @@ async function openInvoice(invoicenum, price) {
               </tr>
               <tr>
                 <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-                <td class="text-[#000] text-xl fontBold">NGN ${formatMoney(totalAmount)}</td>
-                <span class="d-none" id="theBal" data-money="${totalAmount}">${formatMoney(totalAmount)}</span>
+                <td class="text-[#000] text-xl fontBold">NGN ${formatMoney(sumArray(theTotal))}</td>
+                <span class="d-none" id="theBal" data-money="${sumArray(theTotal)}">${formatMoney(sumArray(theTotal))}</span>
               </tr>
 
             
@@ -244,13 +244,13 @@ async function openInvoice(invoicenum, price) {
                 <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
               </tr>
               <tr>
-                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(totalAmount)}</span> Naira Only</td>
+                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(sumArray(theTotal))}</span> Naira Only</td>
               </tr>
             </tbody>
           </table>  
         </div>
         `
-    } else {
+    }  else {
       TotalInvoice += `
         <div class="px-6">
           <table class="table table-borderless">

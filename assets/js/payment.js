@@ -611,6 +611,11 @@ function formatMoney(amount) {
   });
 }
 
+function sumArray(numbers) {
+  // console.log(numbers)
+  return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+}
+
 async function openReceipt(invoicenum) {
   console.log(invoicenum)
 
@@ -624,6 +629,8 @@ async function openReceipt(invoicenum) {
 
     let invoice_info = userInvoices.message[0]
     let allReceipt = ""
+
+    let theTotal = []
     
     allReceipt += `
         <div class="flex px-6 pt-3 items-center justify-between">
@@ -687,82 +694,84 @@ async function openReceipt(invoicenum) {
                 <tr class="border-b border-b border-[#6F6F84]">
                   <td class="text-sm">${userInfo.COL_4}</td>
                   <td class="text-sm">1</td>
-                  <td class="text-sm">-</td>
-                  <td class="text-sm">-</td>
+                  <td class="text-sm">${parseFloat(userInfo.amount_paid).toLocaleString()}</td>
+                  <td class="text-sm">${parseFloat(userInfo.amount_paid).toLocaleString()}</td>
                 </tr>
               `
+
+              theTotal.push(parseFloat(userInfo.amount_paid))
             })
               
 
               allReceipt +=`
-              <tr>
-                <td class="text-[#555555] text-sm">Sub Total</td>
-                <td></td>
-                <td></td>
-                <td class="text-[#000] text-sm">${formatMoney(parseFloat(invoice_info.amount_paid))}</td>
-              </tr>
-              <tr class="border-b border-b border-[#6F6F84]">
-                <td class="text-[#555555] text-sm">Discount</td>
-                <td></td>
-                <td></td>
-                <td class="text-[#000] text-sm">NGN0.00</td>
-              </tr>
+                <tr>
+                  <td class="text-[#555555] text-sm">Sub Total</td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-[#000] text-sm">${formatMoney(sumArray(theTotal))}</td>
+                </tr>
+                <tr class="border-b border-b border-[#6F6F84]">
+                  <td class="text-[#555555] text-sm">Discount</td>
+                  <td></td>
+                  <td></td>
+                  <td class="text-[#000] text-sm">NGN0.00</td>
+                </tr>
 
-              <tr>
-                <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-                <td class="text-[#000] text-xl fontBold">${formatMoney(parseFloat(invoice_info.amount_paid))}</td>
-              </tr>
+                <tr>
+                  <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
+                  <td class="text-[#000] text-xl fontBold">${formatMoney(sumArray(theTotal))}</td>
+                </tr>
 
-              <tr>
-                <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
-              </tr>
-              <tr>
-                <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize">${convertNumberToWords(invoice_info.amount_paid)} Naira Only</td>
-              </tr>
+                <tr>
+                  <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
+                </tr>
+                <tr>
+                  <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize">${convertNumberToWords(sumArray(theTotal))} Naira Only</td>
+                </tr>
 
-             
-            </tbody>  
-          </table>
+              
+              </tbody>  
+            </table>
 
-        </div>
-
-        <div class="border-b border-[4px] border-gray-700 mx-6"></div>
-
-        <div class="px-6 mt-4">
-
-          <div class="flex justify-between">
-            <div>
-              <p class="mb-2 fontBold">Payer ID: ${(invoice_info.tax_number === true) ? invoice_info.tax_number : invoice_info.payer_id}</p>
-              <p class="mb-2">Due Date: ${invoice_info.due_date}</p>
-            </div>
-            <div>
-              <p class="mb-2">Invoice Date: ${invoice_info.date_created}</p>
-              <p class="mb-2">Expiry Date: ${invoice_info.due_date}</p>
-            </div>
           </div>
 
-          <tr>
-            <td><span class="fontBold">Description:</span> ${invoice_info.description ? invoice_info.description : '-'}</td>
-          </tr>
-        </div>
+          <div class="border-b border-[4px] border-gray-700 mx-6"></div>
 
-        <div class="flex justify-end px-6 mt-4">
-          <div>
-            <div class="border-b border-b border-[#6F6F84] mb-2">
-              <img src="./assets/img/sign.png" alt="" class="pb-2">
+          <div class="px-6 mt-4">
+
+            <div class="flex justify-between">
+              <div>
+                <p class="mb-2 fontBold">Payer ID: ${(invoice_info.tax_number === true) ? invoice_info.tax_number : invoice_info.payer_id}</p>
+                <p class="mb-2">Due Date: ${invoice_info.due_date}</p>
+              </div>
+              <div>
+                <p class="mb-2">Invoice Date: ${invoice_info.date_created}</p>
+                <p class="mb-2">Expiry Date: ${invoice_info.due_date}</p>
+              </div>
             </div>
-          
+
+            <tr>
+              <td><span class="fontBold">Description:</span> ${invoice_info.description ? invoice_info.description : '-'}</td>
+            </tr>
+          </div>
+
+          <div class="flex justify-end px-6 mt-4">
+            <div>
+              <div class="border-b border-b border-[#6F6F84] mb-2">
+                <img src="./assets/img/sign.png" alt="" class="pb-2">
+              </div>
             
-            <h4 class="fontBold">Executive Chairman PSIRS</h4>
+              
+              <h4 class="fontBold">Executive Chairman PSIRS</h4>
+            </div>
           </div>
-        </div>
 
-        <div class="px-6 mb-6">
-          <img src="./assets/img/logo11.png" width="100" alt="" />
-        </div>
+          <div class="px-6 mb-6">
+            <img src="./assets/img/logo11.png" width="100" alt="" />
+          </div>
 
-        <div class="invoicetop"></div>
-      </div>
+          <div class="invoicetop"></div>
+        </div>
     `
 
     $("#receiptCard").html(allReceipt)

@@ -337,24 +337,44 @@ function setPrice(val) {
   aa["message"] = theRevenue;
 }
 
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 2,
+  });
+}
+
+function sumArray(numbers) {
+  // console.log(numbers)
+  return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+}
+
 function goToPreviewPage() {
   let payInputs = document.querySelectorAll(".payInputs")
-  amountto = $("#amountTopay").val()
+  let amountto = []
+
+  let thePayInputs = document.querySelectorAll(".thePaymentInput")
+
+  thePayInputs.forEach(payIn => {
+    amountto.push(parseFloat(payIn.value))
+  })
+  let categOfTax = document.querySelector(".selCateg option:checked").textContent
+
   aa.message.forEach((items, i) => {
     $("#bill").html(`
-   <div class="flex space-x-4">
-   <p>Category of Tax:</p>
-   <p>Individual</p>
- </div>
-   <div class="flex space-x-3">
-   <p>Name of Tax:</p>
-   <p>${items.COL_4}</p>
- </div>
- <div class="flex space-x-3">
-   <p>Amount to be Paid:</p>
-   <p>${amountto}</p>
- </div>
-
+      <div class="flex space-x-4">
+        <p>Category of Tax:</p>
+        <p>${categOfTax}</p>
+      </div>
+      <div class="flex space-x-3">
+        <p>Name of Tax:</p>
+        <p>${items.COL_4}</p>
+      </div>
+      <div class="flex space-x-3">
+        <p>Amount to be Paid:</p>
+        <p>${formatMoney(sumArray(amountto))}</p>
+      </div>
    `)
   })
   // console.log(aa)
@@ -435,6 +455,8 @@ async function generateInvoiceNon() {
           "password": "12345",
           "verification_status": "grfdses",
           "business_own": "2",
+          "bvn": "",
+          "nin": "",
           "annual_revenue": "",
           "value_business": "",
           "rep_firstname": "",
@@ -453,7 +475,7 @@ async function generateInvoiceNon() {
       })
 
       let StringedData = JSON.stringify(obj)
-      console.log(StringedData)
+      // console.log(StringedData)
 
       $.ajax({
         type: "POST",
@@ -493,17 +515,18 @@ async function generateInvoiceNon() {
 
 
 async function generateInvoiceNum(taxNumber) {
-  let amountto = 0
+  let amountto = []
 
   let thePayInputs = document.querySelectorAll(".thePaymentInput")
   let description = document.querySelector("#thedescripInput").value
+
   thePayInputs.forEach(payIn => {
-    amountto += parseFloat(payIn.value)
+    amountto.push(parseFloat(payIn.value))
   })
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amountto}&description=${description}`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amountto.join(',')}&description=${description}`,
     dataType: 'json',
     success: function (data) {
       console.log(data)
