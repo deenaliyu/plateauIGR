@@ -37,6 +37,8 @@
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
   <script src="./assets/vendor/js/helpers.js"></script>
   <script src="./assets/js/config.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
   <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/polyfills.umd.js"></script> -->
 
 </head>
@@ -72,7 +74,7 @@
             </div>
 
             <div class="mt-4 flex gap-x-5 absolute right-24">
-    
+
               <button class="flex gap-1 align-items-center" type="button" data-bs-toggle="modal"
                 data-bs-target="#filterInvoice">
                 <iconify-icon icon="mdi:filter-variant" style="font-size: 24px"></iconify-icon>
@@ -97,9 +99,9 @@
 
           <div class="container-xxl flex-grow-1 container-p-y taxes">
             <p class="font-bold text-2xl text-black">Collection report</p>
-            
+
             <div class="card px-2 py-4 mt-6 table-responsive">
-              
+
               <table class="table invoiceTable colet table-sm myTable collTab" id="dataTable">
                 <thead>
                   <tr class="text-center">
@@ -121,36 +123,36 @@
 
                 </tbody>
               </table>
-              
+
             </div>
-            
+
             <div class="flex justify-center items-center mt-4" id="loader">
               <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
             </div>
 
           </div>
-          
-           <table class="table invoiceTable hidden" id="invoiceTableFull">
-              <thead>
-                <tr class="text-center">
-                  <th></th>
-                    <th>MDAS</th>
-                    <th>Revenue Head</th>
-                    <th>Name</th>
-                    <th>TIN</th>
-                    <th>Invoice Number</th>
-                    <th>Amount Paid</th>
-                    <th>Payment Channel</th>
-                    <th>Payment Refrence Number</th>
-                    <th>Receipt Number</th>
-                    <th>Payment Date</th>
-                </tr>
-              </thead>
-              <tbody class="table-border-bottom-0" id="showThem2">
 
-              </tbody>
-            </table>
-          
+          <table class="table invoiceTable hidden" id="invoiceTableFull">
+            <thead>
+              <tr class="text-center">
+                <th></th>
+                <th>MDAS</th>
+                <th>Revenue Head</th>
+                <th>Name</th>
+                <th>TIN</th>
+                <th>Invoice Number</th>
+                <th>Amount Paid</th>
+                <th>Payment Channel</th>
+                <th>Payment Refrence Number</th>
+                <th>Receipt Number</th>
+                <th>Payment Date</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0" id="showThem2">
+
+            </tbody>
+          </table>
+
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">
 
           </section>
@@ -175,9 +177,9 @@
             aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
         </div>
         <div class="modal-body">
-            
-            <div class="flex justify-end">
-              <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
+
+          <div class="flex justify-end">
+            <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
           </div>
           <div class="row">
             <div class="col mb-3" id="mdass">
@@ -189,7 +191,7 @@
               </div>
             </div>
           </div>
-          
+
           <div class="row">
             <div class="col mb-0" id="the_rev">
               <label for="defaultSelect" class="form-label">Revenue Head</label>
@@ -199,10 +201,10 @@
                 </select>
               </div>
             </div>
-            
-            
+
+
           </div>
-          
+
           <div class="row g-2">
             <label for="" class="mt-3">Date</label>
             <div class="col mb-0">
@@ -214,7 +216,7 @@
               <input class="form-control" type="date" value="" id="toDateInput">
             </div>
           </div>
-          
+
         </div>
         <div class="modal-footer ">
           <button type="button" class="btn btn-prime w-full" id="filterMda2">Apply</button>
@@ -224,7 +226,7 @@
   </div>
 
   <!-- build:js assets/vendor/js/core.js -->
-  
+
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
   <script src="./assets/vendor/libs/popper/popper.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
@@ -239,39 +241,39 @@
     });
   </script>
 
-    <script>
+  <script>
 
 
     function exportData() {
-        var csv = [];
-        var table = document.getElementById("invoiceTableFull");
-        
-        // Add header to CSV
-        var header = [];
-        for (var h = 0; h < table.rows[0].cells.length; h++) {
-            header.push(table.rows[0].cells[h].innerText);
-        }
-        csv.push(header.join(','));
+      var csv = [];
+      var table = document.getElementById("invoiceTableFull");
 
-        // Add rows to CSV
-        for (var i = 1; i < table.rows.length; i++) {
-            var row = [], cols = table.rows[i].querySelectorAll('td, th');
+      // Add header to CSV
+      var header = [];
+      for (var h = 0; h < table.rows[0].cells.length; h++) {
+        header.push(table.rows[0].cells[h].innerText);
+      }
+      csv.push(header.join(','));
 
-            for (var j = 0; j < cols.length; j++) {
-                row.push(cols[j].innerText);
-            }
+      // Add rows to CSV
+      for (var i = 1; i < table.rows.length; i++) {
+        var row = [], cols = table.rows[i].querySelectorAll('td, th');
 
-            csv.push(row.join(','));
+        for (var j = 0; j < cols.length; j++) {
+          row.push(cols[j].innerText);
         }
 
-        // Download CSV file
-        var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement('a');
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'payment_report');
-        document.body.appendChild(link);
-        link.click();
+        csv.push(row.join(','));
+      }
+
+      // Download CSV file
+      var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'payment_report');
+      document.body.appendChild(link);
+      link.click();
     }
   </script>
   <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
@@ -289,6 +291,18 @@
 
   <!-- Vendors JS -->
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#getMDAs").select2({
+        dropdownParent: $("#filterInvoice")
+      })
+      $("#listOfpayable").select2({
+        dropdownParent: $("#filterInvoice")
+      })
+
+    })
+  </script>
   <!-- Main JS -->
   <script src="./assets/js/main.js"></script>
 

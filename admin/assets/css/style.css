@@ -786,3 +786,7 @@ a:hover {
 .invoicetop {
   border: 5px solid #CDA545;
 }
+
+.select2.select2-container {
+  width: 100% !important;
+}

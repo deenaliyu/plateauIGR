@@ -13,26 +13,18 @@ async function fetchInvoice() {
   $("#showThem").html("");
   $("#loader").css("display", "flex");
 
-  let config = {
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  };
-  const response = await fetch(
-    `${HOST}/php/index.php?fetchAllPayment`
-  );
+  const response = await fetch(`${HOST}?fetchAllPayment`);
   const userInvoices = await response.json();
+  
   console.log(userInvoices);
+
   $("#loader").css("display", "none");
   if (userInvoices.status === 1) {
-    
-    AllInvoiceData =  userInvoices.message
-    
+
+    AllInvoiceData = userInvoices.message
+
     displayData(userInvoices.message.reverse())
-      
+
   } else {
     // $("#showInvoice").html("<tr></tr>");
     $("#dataTable").DataTable();
@@ -40,9 +32,9 @@ async function fetchInvoice() {
 }
 
 function displayData(userInvoices) {
-    userInvoices.forEach((userInvoice, i) => {
-      let addd = ""
-      addd += `
+  userInvoices.forEach((userInvoice, i) => {
+    let addd = ""
+    addd += `
         <tr class="relative">
         <td>${i + 1}</td>
         <td>${userInvoice.mda_id}</td>
@@ -57,14 +49,14 @@ function displayData(userInvoices) {
         <td>${userInvoice.timeIn}</td>
         
           `
-      addd += `
+    addd += `
       <td>
       <a href="./viewreceipt.html?invnumber=${userInvoice.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Receipt</a>
     </td> 
         </tr>
         `
-      $("#showThem").append(addd);
-      $("#showThem2").append(`
+    $("#showThem").append(addd);
+    $("#showThem2").append(`
         <tr class="relative">
             <td>${i + 1}</td>
             <td>${userInvoice.mda_id}</td>
@@ -79,7 +71,7 @@ function displayData(userInvoices) {
             <td>${userInvoice.timeIn}</td>
         </tr>
       `)
-    });
+  });
 }
 
 fetchInvoice().then((uu) => {

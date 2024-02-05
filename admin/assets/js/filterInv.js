@@ -19,8 +19,10 @@ if (userDATA) {
       </div>
   `)
 
-} else {
  
+
+} else {
+
 }
 
 async function fetchMDAs() {
@@ -62,7 +64,7 @@ async function fetchRevHeads(mdn) {
   if (revHeads.status === 0) {
 
   } else {
-      $("#listOfpayable").html(`
+    $("#listOfpayable").html(`
         <option value=""></option>
       `)
     revHeads.message.forEach((revHd, i) => {
@@ -75,104 +77,104 @@ async function fetchRevHeads(mdn) {
 }
 
 function removeDoubleSpaces(inputText) {
-    return inputText.replace(/ {2,}/g, ' ');
+  return inputText.replace(/ {2,}/g, ' ');
 }
 
 
-$("#filterMda").on('click',  () => {
-    const selectedMda = document.getElementById('getMDAs').value;
-    const selRevv  = document.getElementById('listOfpayable');
-    const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
-    
-    const selectedPaymentStatus = document.getElementById('paymentStatusSelect').value;
-    const fromDate = document.getElementById('fromDateInput').value;
-    const toDate = document.getElementById('toDateInput').value;
-    
-    // console.log(selectedMda, selectedRevenueHead)
-    
-    const filteredData = AllInvoiceData.filter(item => 
+$("#filterMda").on('click', () => {
+  const selectedMda = document.getElementById('getMDAs').value;
+  const selRevv = document.getElementById('listOfpayable');
+  const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
+
+  const selectedPaymentStatus = document.getElementById('paymentStatusSelect').value;
+  const fromDate = document.getElementById('fromDateInput').value;
+  const toDate = document.getElementById('toDateInput').value;
+
+  // console.log(selectedMda, selectedRevenueHead)
+
+  const filteredData = AllInvoiceData.filter(item =>
     (!selectedMda || removeDoubleSpaces(item.COL_3.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
     (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
     (!selectedPaymentStatus || item.payment_status.toLowerCase() === selectedPaymentStatus.toLowerCase()) &&
     (!fromDate || item.date_created >= fromDate) &&
     (!toDate || item.date_created <= toDate)
-    );
-    
-    // console.log(selectedRevenueHead.toLowerCase() )
-    // console.log(filteredData)
-    
-    $("#dataTable").DataTable().clear().draw()
-    $("#dataTable").DataTable().destroy()
-    $("#showThem2").html('')
-    displayData(filteredData.reverse())
-    
-    $("#dataTable").DataTable()
-    $("#filterInvoice").modal("hide")
+  );
+
+  // console.log(selectedRevenueHead.toLowerCase() )
+  // console.log(filteredData)
+
+  $("#dataTable").DataTable().clear().draw()
+  $("#dataTable").DataTable().destroy()
+  $("#showThem2").html('')
+  displayData(filteredData.reverse())
+
+  $("#dataTable").DataTable()
+  $("#filterInvoice").modal("hide")
 })
 
 function clearfilter() {
-    $("#dataTable").DataTable().clear().draw()
-    $("#dataTable").DataTable().destroy()
-    $("#showThem2").html('')
-    
-    displayData(AllInvoiceData.reverse())
-    
-    $("#dataTable").DataTable()
-    $("#filterInvoice").modal("hide")
-    
-    const selectedMda = document.getElementById('getMDAs').value = "";
-    const selRevv  = document.getElementById('listOfpayable').value = "";
-    
-    const selectedPaymentStatus = document.getElementById('paymentStatusSelect').value = "";
-    const fromDate = document.getElementById('fromDateInput').value = "";
-    const toDate = document.getElementById('toDateInput').value = "";
-    
-    
+  $("#dataTable").DataTable().clear().draw()
+  $("#dataTable").DataTable().destroy()
+  $("#showThem2").html('')
+
+  displayData(AllInvoiceData.reverse())
+
+  $("#dataTable").DataTable()
+  $("#filterInvoice").modal("hide")
+
+  const selectedMda = document.getElementById('getMDAs').value = "";
+  const selRevv = document.getElementById('listOfpayable').value = "";
+
+  const selectedPaymentStatus = document.getElementById('paymentStatusSelect').value = "";
+  const fromDate = document.getElementById('fromDateInput').value = "";
+  const toDate = document.getElementById('toDateInput').value = "";
+
+
 }
 
-$("#filterMda2").on('click',  () => {
-    const selectedMda = document.getElementById('getMDAs').value;
-    const selRevv  = document.getElementById('listOfpayable');
-    const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
-    
-    const fromDate = document.getElementById('fromDateInput').value;
-    const toDate = document.getElementById('toDateInput').value;
-    
-    console.log(selectedMda, selectedRevenueHead)
-    
-    const filteredData = AllInvoiceData.filter(item => 
+$("#filterMda2").on('click', () => {
+  const selectedMda = document.getElementById('getMDAs').value;
+  const selRevv = document.getElementById('listOfpayable');
+  const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
+
+  const fromDate = document.getElementById('fromDateInput').value;
+  const toDate = document.getElementById('toDateInput').value;
+
+  console.log(selectedMda, selectedRevenueHead)
+
+  const filteredData = AllInvoiceData.filter(item =>
     (!selectedMda || removeDoubleSpaces(item.mda_id.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
     (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
     (!fromDate || item.timeIn >= fromDate) &&
     (!toDate || item.timeIn <= toDate)
-    );
-    
-    
-    $("#dataTable").DataTable().clear().draw()
-    $("#dataTable").DataTable().destroy()
-    $("#showThem2").html('')
-    displayData(filteredData.reverse())
-    
-    $("#dataTable").DataTable()
-    $("#filterInvoice").modal("hide")
+  );
+
+
+  $("#dataTable").DataTable().clear().draw()
+  $("#dataTable").DataTable().destroy()
+  $("#showThem2").html('')
+  displayData(filteredData.reverse())
+
+  $("#dataTable").DataTable()
+  $("#filterInvoice").modal("hide")
 })
 
 function clearfilter2() {
-    $("#dataTable").DataTable().clear().draw()
-    $("#dataTable").DataTable().destroy()
-    $("#showThem2").html('')
-    
-    displayData(AllInvoiceData.reverse())
-    
-    $("#dataTable").DataTable()
-    $("#filterInvoice").modal("hide")
-    
-    const selectedMda = document.getElementById('getMDAs').value = ""
-    const selRevv  = document.getElementById('listOfpayable').value = ""
-    
-    const fromDate = document.getElementById('fromDateInput').value = ""
-    const toDate = document.getElementById('toDateInput').value = ""
-    
+  $("#dataTable").DataTable().clear().draw()
+  $("#dataTable").DataTable().destroy()
+  $("#showThem2").html('')
+
+  displayData(AllInvoiceData.reverse())
+
+  $("#dataTable").DataTable()
+  $("#filterInvoice").modal("hide")
+
+  const selectedMda = document.getElementById('getMDAs').value = ""
+  const selRevv = document.getElementById('listOfpayable').value = ""
+
+  const fromDate = document.getElementById('fromDateInput').value = ""
+  const toDate = document.getElementById('toDateInput').value = ""
+
 }
 
 
