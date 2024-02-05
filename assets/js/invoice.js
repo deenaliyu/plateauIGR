@@ -264,13 +264,13 @@ async function openInvoice(invoicenum, price) {
               <td class="text-sm">${invoice_info.COL_4}</td>
               <td class="text-sm">01</td>
               <td class="text-sm"></td>
-              <td class="text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
+              <td class="text-sm">${formatMoney(parseFloat(invoice_info.amount_paid))}</td>
             </tr>
             <tr>
               <td class="text-[#555555] text-sm">Sub Total</td>
               <td></td>
               <td></td>
-              <td class="text-[#000] text-sm">${formatMoney(parseInt(invoice_info.amount_paid))}</td>
+              <td class="text-[#000] text-sm">${formatMoney(parseFloat(invoice_info.amount_paid))}</td>
             </tr>
             <tr class="border-b border-b border-[#6F6F84]">
               <td class="text-[#555555] text-sm">Discount</td>
@@ -281,8 +281,8 @@ async function openInvoice(invoicenum, price) {
 
             <tr>
               <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-              <td class="text-[#000] text-xl fontBold"><span id="actualPrice">${formatMoney(parseInt(invoice_info.amount_paid))}</span></td>
-              <span class="d-none" id="theBal" data-money="${parseInt(invoice_info.amount_paid)}">${formatMoney(parseInt(invoice_info.amount_paid))}</span>
+              <td class="text-[#000] text-xl fontBold"><span id="actualPrice">${formatMoney(parseFloat(invoice_info.amount_paid))}</span></td>
+              <span class="d-none" id="theBal" data-money="${parseFloat(invoice_info.amount_paid)}">${formatMoney(parseFloat(invoice_info.amount_paid))}</span>
             </tr>
 
             <tr>
