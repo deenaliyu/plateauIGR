@@ -63,11 +63,11 @@ $(".aside").html(`
 
           ${userInfo2.email === "primeguage@gmail.com" ?
     `
-            <li class="menu-item">
+            <!-- <li class="menu-item">
               <a href="settlement.html" class="menu-link">
                 <div data-i18n="Input groups">Settlement Report</div>
               </a>
-            </li>
+            </li> -->
           `
     : ''}
           

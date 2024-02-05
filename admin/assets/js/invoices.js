@@ -25,7 +25,7 @@ async function fetchInvoice() {
     `${HOST}?AllInvoices`
   );
   const userInvoices = await response.json();
-  console.log(userInvoices);
+  // console.log(userInvoices);
   if (userInvoices.status === 0){
     let tt = 0;
     $("#totalInv").html(tt)
