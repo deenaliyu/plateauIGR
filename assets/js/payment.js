@@ -855,59 +855,6 @@ function generateRandomString() {
   return randomString;
 }
 
-function convertNumberToWords(amount) {
-  const units = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
-
-    const convertThreeDigits = (num, sign) => {
-        const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-        const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-        const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-
-        let result = '';
-
-        if (num >= 100) {
-            result += ones[Math.floor(num / 100)] + ' Hundred ';
-            num %= 100;
-        }
-
-        if (num >= 11 && num <= 19) {
-            result += teens[num - 11] + ' ';
-        } else {
-            result += tens[Math.floor(num / 10)] + ' ';
-            num %= 10;
-
-            result += ones[num] + ' ';
-        }
-
-        return result.trim() + sign;
-    };
-
-    if (amount === 0) {
-        return 'Zero Naira';
-    }
-
-    const nairaAmount = Math.floor(amount);
-    const koboAmount = Math.round((amount - nairaAmount) * 100);
-
-    let words = convertThreeDigits(nairaAmount % 1000, " Naira");
-
-    if (koboAmount > 0) {
-        words += ' and ' + convertThreeDigits(koboAmount % 1000, " Kobo");
-    }
-
-    let i = 1;
-
-    while (nairaAmount >= 1000) {
-        nairaAmount = Math.floor(nairaAmount / 1000);
-        words = convertThreeDigits(nairaAmount % 1000) + ' ' + units[i] + ' ' + words;
-        i++;
-    }
-
-    return words.trim();
-
-}
-
-
 function formatDate(inputDate) {
   // Parse the input date string
   const parsedDate = new Date(inputDate.replace(/-/g, '/'));

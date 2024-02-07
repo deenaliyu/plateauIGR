@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 function convertNumberToWords(number) {
   const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
   const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
@@ -46,6 +47,57 @@ function convertNumberToWords(number) {
   }
 
   return words.trim();
+=======
+function convertNumberToWords(amount) {
+  const units = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
+
+    const convertThreeDigits = (num, sign) => {
+        const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+        const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+        const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
+
+        let result = '';
+
+        if (num >= 100) {
+            result += ones[Math.floor(num / 100)] + ' Hundred ';
+            num %= 100;
+        }
+
+        if (num >= 11 && num <= 19) {
+            result += teens[num - 11] + ' ';
+        } else {
+            result += tens[Math.floor(num / 10)] + ' ';
+            num %= 10;
+
+            result += ones[num] + ' ';
+        }
+
+        return result.trim() + sign;
+    };
+
+    if (amount === 0) {
+        return 'Zero Naira';
+    }
+
+    let nairaAmount = Math.floor(amount);
+    let koboAmount = Math.round((amount - nairaAmount) * 100);
+
+    let words = convertThreeDigits(nairaAmount % 1000, " Naira");
+
+    if (koboAmount > 0) {
+        words += ' and ' + convertThreeDigits(koboAmount % 1000, " Kobo");
+    }
+
+    let i = 1;
+
+    while (nairaAmount >= 1000) {
+        nairaAmount = Math.floor(nairaAmount / 1000);
+        words = convertThreeDigits(nairaAmount % 1000) + ' ' + units[i] + ' ' + words;
+        i++;
+    }
+
+    return words.trim();
+>>>>>>> 28c0775 (fix issue of numberToWords)
 
 }
 
@@ -212,11 +264,18 @@ async function openInvoice(invoicenum, price) {
                 <tr>
                   <td class="text-sm">${element.COL_4}</td>
                   <td class="text-sm">01</td>
+<<<<<<< HEAD
                   <td class="text-sm">${element.amount_paid}</td>
                   <td class="text-sm">${element.amount_paid}</td>
                 </tr>
               `
               console.log(element.amount_paid)
+=======
+                  <td class="text-sm">${parseFloat(element.amount_paid).toLocaleString()}</td>
+                  <td class="text-sm">${parseFloat(element.amount_paid).toLocaleString()}</td>
+                </tr>
+              `
+>>>>>>> 28c0775 (fix issue of numberToWords)
         theTotal.push(parseFloat(element.amount_paid))
       });
       TotalInvoice += `
@@ -244,13 +303,21 @@ async function openInvoice(invoicenum, price) {
                 <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
               </tr>
               <tr>
+<<<<<<< HEAD
                 <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(sumArray(theTotal))}</span> Naira Only</td>
+=======
+                <td colspan="4" class="text-sm text-gray-500 pt-0 text-capitalize"><span id="amword">${convertNumberToWords(sumArray(theTotal))}</span> Only</td>
+>>>>>>> 28c0775 (fix issue of numberToWords)
               </tr>
             </tbody>
           </table>  
         </div>
         `
+<<<<<<< HEAD
     } else {
+=======
+    }  else {
+>>>>>>> 28c0775 (fix issue of numberToWords)
       TotalInvoice += `
         <div class="px-6">
           <table class="table table-borderless">
@@ -289,20 +356,32 @@ async function openInvoice(invoicenum, price) {
               <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
             </tr>
             <tr>
+<<<<<<< HEAD
               <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize"><span id="amword">${convertNumberToWords(invoice_info.amount_paid)}</span> Naira Only</td>
+=======
+              <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize"><span id="amword">${convertNumberToWords(invoice_info.amount_paid)}</span> Only</td>
+>>>>>>> 28c0775 (fix issue of numberToWords)
             </tr>
             <tr 
             <td></td>
             <td></td>
             <td></td>
             <td></td>
+<<<<<<< HEAD
             <!-- <td>
+=======
+            <td>
+>>>>>>> 28c0775 (fix issue of numberToWords)
                 <div class="border-b border-b border-[#6F6F84] mb-2">
                   <img src="./assets/img/sign.png" alt="" class="pb-2">
                 </div>
                 <h4 class="fontBold">Jim Pam Wayas</h4>
                 <h4 class="fontBold">Executive Chairman PSIRS</h4>
+<<<<<<< HEAD
               </td> -->
+=======
+              </td>
+>>>>>>> 28c0775 (fix issue of numberToWords)
           </tr>
           </table>
 
