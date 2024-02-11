@@ -631,7 +631,7 @@ async function openReceipt(invoicenum) {
     let allReceipt = ""
 
     let theTotal = []
-    
+
     allReceipt += `
         <div class="flex px-6 pt-3 items-center justify-between">
           <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
@@ -689,8 +689,8 @@ async function openReceipt(invoicenum) {
             </thead>
             <tbody>
             `
-            userInvoices.message.forEach(userInfo => {
-              allReceipt += `
+    userInvoices.message.forEach(userInfo => {
+      allReceipt += `
                 <tr class="border-b border-b border-[#6F6F84]">
                   <td class="text-sm">${userInfo.COL_4}</td>
                   <td class="text-sm">1</td>
@@ -699,11 +699,11 @@ async function openReceipt(invoicenum) {
                 </tr>
               `
 
-              theTotal.push(parseFloat(userInfo.amount_paid))
-            })
-              
+      theTotal.push(parseFloat(userInfo.amount_paid))
+    })
 
-              allReceipt +=`
+
+    allReceipt += `
                 <tr>
                   <td class="text-[#555555] text-sm">Sub Total</td>
                   <td></td>
@@ -766,11 +766,11 @@ async function openReceipt(invoicenum) {
             </div>
           </div>
 
-          <div class="px-6 mb-6">
+          <div class="px-6 mb-6" id='logo11'>
             <img src="./assets/img/logo11.png" width="100" alt="" />
           </div>
 
-          <div class="invoicetop"></div>
+          <div class="invoicetop" id='invtopp'></div>
         </div>
     `
 
@@ -838,6 +838,21 @@ function downloadInvoice(thecard) {
 
 function printInvoice(thecard) {
   var originalContent = document.body.innerHTML;
+  var printContent = document.getElementById(thecard).innerHTML;
+
+
+  document.body.innerHTML = printContent;
+  window.print();
+  document.body.innerHTML = originalContent;
+
+}
+
+function printInvoiceHard(thecard) {
+  var originalContent = document.body.innerHTML;
+
+  document.querySelector("#logo11").remove()
+  document.querySelector("#invtopp").remove()
+  
   var printContent = document.getElementById(thecard).innerHTML;
 
 
