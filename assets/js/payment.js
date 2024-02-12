@@ -374,7 +374,7 @@ function makePaymentRemita2() {
         let PaymentData = {
           "amount": parseFloat(finalPay) * 100,
           // "amount": 200.00,
-          "bearer": 0,
+          "bearer": 1,
           "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
           "channels": ["card", "bank"],
           "currency": "NGN",
