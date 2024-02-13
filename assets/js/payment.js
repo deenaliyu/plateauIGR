@@ -630,6 +630,7 @@ async function openReceipt(invoicenum) {
     let invoice_info = userInvoices.message[0]
     let allReceipt = ""
 
+    let hardCopyReceipt = ""
     let theTotal = []
 
     allReceipt += `
@@ -691,53 +692,53 @@ async function openReceipt(invoicenum) {
             `
     userInvoices.message.forEach(userInfo => {
       allReceipt += `
-                <tr class="border-b border-b border-[#6F6F84]">
-                  <td class="text-sm">${userInfo.COL_4}</td>
-                  <td class="text-sm">1</td>
-                  <td class="text-sm">${parseFloat(userInfo.amount_paid).toLocaleString()}</td>
-                  <td class="text-sm">${parseFloat(userInfo.amount_paid).toLocaleString()}</td>
-                </tr>
-              `
+        <tr class="border-b border-b border-[#6F6F84]">
+          <td class="text-sm">${userInfo.COL_4}</td>
+          <td class="text-sm">1</td>
+          <td class="text-sm">${parseFloat(userInfo.amount_paid).toLocaleString()}</td>
+          <td class="text-sm">${parseFloat(userInfo.amount_paid).toLocaleString()}</td>
+        </tr>
+      `
 
       theTotal.push(parseFloat(userInfo.amount_paid))
     })
 
 
     allReceipt += `
-                <tr>
-                  <td class="text-[#555555] text-sm">Sub Total</td>
-                  <td></td>
-                  <td></td>
-                  <td class="text-[#000] text-sm">${formatMoney(sumArray(theTotal))}</td>
-                </tr>
-                <tr class="border-b border-b border-[#6F6F84]">
-                  <td class="text-[#555555] text-sm">Discount</td>
-                  <td></td>
-                  <td></td>
-                  <td class="text-[#000] text-sm">NGN0.00</td>
-                </tr>
+      <tr>
+        <td class="text-[#555555] text-sm">Sub Total</td>
+        <td></td>
+        <td></td>
+        <td class="text-[#000] text-sm">${formatMoney(sumArray(theTotal))}</td>
+      </tr>
+      <tr class="border-b border-b border-[#6F6F84]">
+        <td class="text-[#555555] text-sm">Discount</td>
+        <td></td>
+        <td></td>
+        <td class="text-[#000] text-sm">NGN0.00</td>
+      </tr>
 
-                <tr>
-                  <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
-                  <td class="text-[#000] text-xl fontBold">${formatMoney(sumArray(theTotal))}</td>
-                </tr>
+      <tr>
+        <td colspan="3" class="text-[#000]">Grand Total<span class="text-[#555555]"> (NGN)</span></td>
+          <td class="text-[#000] text-xl fontBold">${formatMoney(sumArray(theTotal))}</td>
+        </tr>
 
-                <tr>
-                  <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
-                </tr>
-                <tr>
-                  <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize">${convertNumberToWords(sumArray(theTotal))} Only</td>
-                </tr>
+        <tr>
+          <td colspan="4" class="text-sm text-[#000] pb-0">Amount in words</td>
+        </tr>
+        <tr>
+          <td colspan="4" class="text-sm text-[#555555] pt-0 text-capitalize">${convertNumberToWords(sumArray(theTotal))} Only</td>
+        </tr>
 
-              
-              </tbody>  
-            </table>
+      
+       </tbody>  
+       </table>
 
-          </div>
+      </div>
 
-          <div class="border-b border-[4px] border-gray-700 mx-6"></div>
+        <div class="border-b border-[4px] border-gray-700 mx-6"></div>
 
-          <div class="px-6 mt-4">
+           <div class="px-6 mt-4"> 
 
             <div class="flex justify-between">
               <div>
@@ -775,23 +776,96 @@ async function openReceipt(invoicenum) {
     `
 
     $("#receiptCard").html(allReceipt)
+    let theItems = []
+    userInvoices.message.forEach(userInfo => {
+      theItems.push(userInfo.COL_4)
+    })
+    hardCopyReceipt += `
+      <div class="flex px-6 pt-3 items-center justify-between">
+        <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
 
-    $("#editBtn").on("click", function () {
-      editoo();
-    });
+        <div>
+          <img src="./assets/img/akwaimage.png" alt="" class="">
+          
+        </div>
+
+        <div class="flex items-center gap-1">
+          <p class="text-base">Date: ${formatDate(invoice_info.date_created)}</p>
+        </div>
+
+      </div>
+
+      <div class="flex items-center gap-x-3 flex-wrap justify-center mt-4">
+        <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="ic:outline-email"></iconify-icon> <span>Info@psirs.gov.ng</span></p>
+        <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="ic:round-phone"></iconify-icon> <span>08031230301, 07056990777</span></p>
+        <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="streamline:web"></iconify-icon> <span>www.plateauigr.com</span></p>
+      </div>
+
+      <p class="fontBold text-black text-2xl text-center mt-3">PLATEAU STATE GOVERNMENT</p>
+      <p class="fontBold text-black text-lg text-center mt-1">INTERNAL REVENUE SERVICE</p>
+
+      <div class="flex justify-center my-8">
+        <button class="button" type="button">PAYMENT RECEIPT</button>
+      </div>
+
+      <div class="flex justify-end -mt-20" >
+        <div class="w-[20%] pr-8" id="qrContainer2"></div>
+
+      </div>
+
+      <div class="border-b border-[4px] border-gray-700 mx-6 my-4"></div>
+
+      <table class="table table-borderless mx-6">
+        <tr>
+          <td>MDA</td>
+          <td>${invoice_info['COL_3']}</td>
+        </tr>
+        <tr>
+          <td>STATUS</td>
+          <td>${invoice_info.payment_status.toUpperCase()}</td>
+        </tr>
+        <tr>
+          <td>TAX ITEM</td>
+          <td>${theItems.join(', ')}</td>
+        </tr>
+        <tr>
+          <td>PAYER NAME</td>
+          <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+        </tr>
+        <tr>
+          <td>TIN</td>
+          <td>${invoice_info.tin}</td>
+        </tr>
+        
+        <tr>
+          <td>Period</td>
+          <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+        </tr>
+
+      </table>
+    `
+
+    $("#receiptHardCopy").html(hardCopyReceipt)
 
     const qrCodeContainer = document.getElementById("qrContainer")
+    const qrCodeContainer2 = document.getElementById("qrContainer2")
 
     const qrCode = new QRCode(qrCodeContainer, {
       text: `https://plateauigr.com/viewreceipt.html?invnumber=${invoicenum}&load=true`,
-      // width: 120,
-      // height: 120,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      version: 10,
+    });
+
+    const qrCode2 = new QRCode(qrCodeContainer2, {
+      text: `https://plateauigr.com/viewreceipt.html?invnumber=${invoicenum}&load=true`,
       colorDark: '#000000',
       colorLight: '#ffffff',
       version: 10,
     });
 
     qrCode.makeCode();
+    qrCode2.makeCode();
 
   } else {
     $("#invoiceCard").html(`Invalid Invoice, or expired invoice`)
@@ -850,11 +924,7 @@ function printInvoice(thecard) {
 function printInvoiceHard(thecard) {
   var originalContent = document.body.innerHTML;
 
-  document.querySelector("#logo11").remove()
-  document.querySelector("#invtopp").remove()
-  
   var printContent = document.getElementById(thecard).innerHTML;
-
 
   document.body.innerHTML = printContent;
   window.print();
