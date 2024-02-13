@@ -57,20 +57,20 @@ function displayData(userInvoices) {
         `
     $("#showThem").append(addd);
     $("#showThem2").append(`
-        <tr class="relative">
-            <td>${i + 1}</td>
-            <td>${userInvoice.mda_id}</td>
-            <td>${userInvoice.COL_4}</td>
-            <td>${userInvoice.first_name?.replace(/,/g, '')} ${userInvoice.surname?.replace(/,/g, '')}</td>
-            <td>${userInvoice.tax_number}</td>
-            <td>${userInvoice.invoice_number}</td>
-            <td>&#8358; ${(parseFloat(userInvoice.amount_paid))}</td>
-            <td>${userInvoice.payment_channel}</td>
-            <td>${userInvoice.payment_reference_number}</td>
-            <td>${userInvoice.invoice_number}</td>
-            <td>${userInvoice.timeIn}</td>
-        </tr>
-      `)
+      <tr class="relative">
+          <td>${i + 1}</td>
+          <td>${userInvoice.mda_id.replace(/,/g, '')}</td>
+          <td>${userInvoice.COL_4.replace(/,/g, '')}</td>
+          <td>${userInvoice.first_name?.replace(/,/g, '')} ${userInvoice.surname?.replace(/,/g, '')}</td>
+          <td>${userInvoice.tax_number}</td>
+          <td>${userInvoice.invoice_number}</td>
+          <td>&#8358; ${(parseFloat(userInvoice.amount_paid))}</td>
+          <td>${userInvoice.payment_channel}</td>
+          <td>${userInvoice.payment_reference_number}</td>
+          <td>${userInvoice.invoice_number}</td>
+          <td>${userInvoice.timeIn}</td>
+      </tr>
+    `)
   });
 }
 

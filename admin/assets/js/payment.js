@@ -1,48 +1,49 @@
-function convertNumberToWords(number) {
-  const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-  const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-  const teens = ['eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+function convertNumberToWords(amount) {
+  const units = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
 
-  if (number === 0) {
-    return 'zero';
-  }
+  const convertThreeDigits = (num, sign) => {
+    const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
+    const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
+    const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
 
-  if (number < 0) {
-    return 'minus ' + convertNumberToWords(Math.abs(number));
-  }
+    let result = '';
 
-  let words = '';
-
-  if (Math.floor(number / 1000000) > 0) {
-    words += convertNumberToWords(Math.floor(number / 1000000)) + ' million ';
-    number %= 1000000;
-  }
-
-  if (Math.floor(number / 1000) > 0) {
-    words += convertNumberToWords(Math.floor(number / 1000)) + ' thousand ';
-    number %= 1000;
-  }
-
-  if (Math.floor(number / 100) > 0) {
-    words += convertNumberToWords(Math.floor(number / 100)) + ' hundred ';
-    number %= 100;
-  }
-
-  if (number > 0) {
-    if (words !== '') {
-      words += 'and ';
+    if (num >= 100) {
+      result += ones[Math.floor(num / 100)] + ' Hundred ';
+      num %= 100;
     }
 
-    if (number < 10) {
-      words += ones[number];
-    } else if (number < 20) {
-      words += teens[number - 11];
+    if (num >= 11 && num <= 19) {
+      result += teens[num - 11] + ' ';
     } else {
-      words += tens[Math.floor(number / 10)];
-      if (number % 10 > 0) {
-        words += '-' + ones[number % 10];
-      }
+      result += tens[Math.floor(num / 10)] + ' ';
+      num %= 10;
+
+      result += ones[num] + ' ';
     }
+
+    return result.trim() + sign;
+  };
+
+  if (amount === 0) {
+    return 'Zero Naira';
+  }
+
+  let nairaAmount = Math.floor(amount);
+  let koboAmount = Math.round((amount - nairaAmount) * 100);
+
+  let words = convertThreeDigits(nairaAmount % 1000, " Naira");
+
+  if (koboAmount > 0) {
+    words += ' and ' + convertThreeDigits(koboAmount % 1000, " Kobo");
+  }
+
+  let i = 0;
+
+  while (nairaAmount >= 1000) {
+    nairaAmount = Math.floor(nairaAmount / 1000);
+    words = convertThreeDigits(nairaAmount % 1000) + ' ' + units[i] + ' ' + words;
+    i++;
   }
 
   return words.trim();
@@ -241,7 +242,7 @@ let urlParams = new URLSearchParams(window.location.search);
 const load = urlParams.get('load')
 const invoicenumber = urlParams.get('invnumber')
 
-openReceipt(invoicenumber) 
+openReceipt(invoicenumber)
 
 function downloadInvoice(thecard) {
   const element = document.getElementById(thecard);

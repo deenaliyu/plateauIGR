@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 let HOST = "https://plateauigr.com/php1/index.php"
+=======
+let HOST = "https://plateauigr.com/php/index.php"
+>>>>>>> 28c0775 (fix issue of numberToWords)
 let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
 let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 

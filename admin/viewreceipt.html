@@ -39,13 +39,19 @@
 
 <body>
 
+  <div class="invoice bg-white w-[800px] shadow-md" id="receiptHardCopy">
+
+
+  </div>
+
   <section class="flex h-[100vh] overflow-y-scroll flex justify-center ">
 
 
     <section class="pb-5">
 
       <div class="flex align-items-center gap-1 my-4 pb-8">
-        <a type="button" style='color: #CDA545; font-weight: 500;' href="#" onclick="history.go(-1)" class="text-[18px]">Go Back</a>
+        <a type="button" style='color: #CDA545; font-weight: 500;' href="#" onclick="history.go(-1)"
+          class="text-[18px]">Go Back</a>
       </div>
 
       <div class="invoiceContainer flex justify-center mt-5 pr-10">
@@ -64,19 +70,24 @@
       </div>
 
       <div class="flex justify-center pr-10">
-        <div class="w-[100%]">
+        <div class="w-[100%] mb-4">
           <!-- <div class="mt-4">
               <p class="text-xl">Note: You can make part payment by editing amount you are to pay</p>
             </div> -->
           <div class="flex justify-between mt-4 space-x-3">
             <button class="outline-btn flex gap-3 items-center px-10" onclick="downloadInvoice('receiptCard')">
-              <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
+              <iconify-icon icon="fa6-solid:download" class="text-xl"></iconify-icon>
               <span>Download Receipt</span>
             </button>
 
             <button class="outline-btn flex gap-3 items-center px-10" onclick="printInvoice('receiptCard')">
               <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
-              <span>Print Receipt</span>
+              <span>Print E-receipt</span>
+            </button>
+
+            <button class="outline-btn flex gap-3 items-center px-10" onclick="printInvoiceHard('receiptHardCopy')">
+              <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
+              <span>Print Hard Copy</span>
             </button>
           </div>
         </div>
@@ -103,7 +114,6 @@
     AOS.init();
   </script>
   <script src="../assets/js/payment.js"></script>
-  <script src="assets/js/viewinvoice.js"></script>
 </body>
 
 </html>
