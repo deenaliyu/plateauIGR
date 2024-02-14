@@ -5,6 +5,8 @@ const mdn = urlParams.get('name');
 let ALLREV = ""
 let adminInfo2 = JSON.parse(localStorage.getItem("adminDataPrime"))
 
+// console.log(mdn)
+
 async function fetchRevHeads() {
   $("#revHeadsShow").html("")
   $("#loader").css("display", "flex")
@@ -12,6 +14,8 @@ async function fetchRevHeads() {
   const response = await fetch(`${HOST}/?getRevenueHeadByStatus&mdaName=${mdn}&status=${status}`)
   const revHeads = await response.json()
   ALLREV = revHeads
+
+  console.log(ALLREV)
 
   $("#loader").css("display", "none")
 
@@ -30,7 +34,7 @@ async function fetchRevHeads() {
           <td>${revHd["frequency"]}</td>
           <td>&#8358; ${revHd["COL_6"]}</td>
           
-          <td>&#8358; ${(revHd.total_gen_revenue === "" ? 0 : revHd.total_gen_revenue.toLocaleString())}</td>
+          <td>&#8358; ${(revHd.total_gen_revenue === null ? 0 : revHd.total_gen_revenue.toLocaleString())}</td>
           <td>
             <div class="flex items-center gap-3" id="updtCont">
             `
@@ -65,7 +69,7 @@ async function fetchRevHeadsPending() {
   const response = await fetch(`${HOST}/?getRevenueHeadByStatus&mdaName=${mdn}&status=${status}`)
   const revHeads = await response.json()
   ALLREV = revHeads
-  console.log(revHeads)
+  // console.log(ALLREV)
 
   $("#loader").css("display", "none")
 
@@ -84,7 +88,7 @@ async function fetchRevHeadsPending() {
           <td>${revHd["frequency"]}</td>
           <td>&#8358; ${revHd["COL_6"]}</td>
           
-          <td>&#8358; ${(revHd.total_gen_revenue === "" ? 0 : revHd.total_gen_revenue.toLocaleString())}</td>
+          <td>&#8358; ${(revHd.total_gen_revenue === null ? 0 : revHd.total_gen_revenue.toLocaleString())}</td>
           <td>
             <div class="flex items-center gap-3">
             `
@@ -256,6 +260,7 @@ async function fetchMDAs() {
   }
 
 }
+
 fetchMDAs()
 
 

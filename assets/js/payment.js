@@ -839,7 +839,7 @@ async function openReceipt(invoicenum) {
         
         <tr>
           <td>Period</td>
-          <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+          <td>${invoice_info.date_created} - ${invoice_info.due_date}</td>
         </tr>
 
       </table>
