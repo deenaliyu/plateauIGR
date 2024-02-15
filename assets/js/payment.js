@@ -453,7 +453,7 @@ function makePayment() {
         var handler = PaystackPop.setup({
           //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
           key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
-
+          "subaccount": "ACCT_govno1idl9hxudv",
           email: invoiceDetails.email,
           amount: finalPay * 100,
           currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
@@ -777,56 +777,34 @@ async function openReceipt(invoicenum) {
 
     $("#receiptCard").html(allReceipt)
     let theItems = []
+    let theAmount = 0
     userInvoices.message.forEach(userInfo => {
       theItems.push(userInfo.COL_4)
+      theAmount += parseFloat(userInfo.amount_paid)
     })
+
     hardCopyReceipt += `
-      <div class="flex px-6 pt-3 items-center justify-between">
+      <div class="flex justify-end mx-6">
         <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
-
-        <div>
-          <img src="./assets/img/akwaimage.png" alt="" class="">
-          
-        </div>
-
-        <div class="flex items-center gap-1">
-          <p class="text-base">Date: ${formatDate(invoice_info.date_created)}</p>
-        </div>
-
       </div>
 
-      <div class="flex items-center gap-x-3 flex-wrap justify-center mt-4">
-        <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="ic:outline-email"></iconify-icon> <span>Info@psirs.gov.ng</span></p>
-        <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="ic:round-phone"></iconify-icon> <span>08031230301, 07056990777</span></p>
-        <p class="text-base flex items-center gap-1 text-[#000]"><iconify-icon icon="streamline:web"></iconify-icon> <span>www.plateauigr.com</span></p>
-      </div>
 
-      <p class="fontBold text-black text-2xl text-center mt-3">PLATEAU STATE GOVERNMENT</p>
-      <p class="fontBold text-black text-lg text-center mt-1">INTERNAL REVENUE SERVICE</p>
-
-      <div class="flex justify-center my-8">
-        <button class="button" type="button">PAYMENT RECEIPT</button>
-      </div>
-
-      <div class="flex justify-end -mt-20" >
-        <div class="w-[20%] pr-8" id="qrContainer2"></div>
-
-      </div>
-
-      <div class="border-b border-[4px] border-gray-700 mx-6 my-4"></div>
-
-      <table class="table table-borderless mx-6">
+      <table class="table table-borderless mx-6 mt-4">
         <tr>
           <td>MDA</td>
           <td>${invoice_info['COL_3']}</td>
         </tr>
         <tr>
-          <td>STATUS</td>
+          <td>Status</td>
           <td>${invoice_info.payment_status.toUpperCase()}</td>
         </tr>
         <tr>
-          <td>TAX ITEM</td>
+          <td>Tax Item</td>
           <td>${theItems.join(', ')}</td>
+        </tr>
+        <tr>
+          <td>Amount</td>
+          <td>${formatMoney(theAmount)}</td>
         </tr>
         <tr>
           <td>PAYER NAME</td>
@@ -834,15 +812,41 @@ async function openReceipt(invoicenum) {
         </tr>
         <tr>
           <td>TIN</td>
-          <td>${invoice_info.tin}</td>
+          <td>${invoice_info.tin ?invoice_info.tin : '-'}</td>
         </tr>
         
         <tr>
           <td>Period</td>
-          <td>${invoice_info.date_created} - ${invoice_info.due_date}</td>
+          <td>${formatDateRange(invoice_info.date_created)}</td>
+        </tr>
+        <tr>
+          <td>Billing Ref</td>
+          <td>${invoice_info.invoice_number}</td>
+        </tr>
+        <tr>
+          <td>Created By</td>
+          <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+        </tr>
+        <tr>
+          <td>Date Paid</td>
+          <td>${formatDate(invoice_info.date_created)}</td>
         </tr>
 
       </table>
+
+      <div class='mx-6 flex justify-between mt-5'>
+        <div>
+          <div class="border-b border-b border-[#6F6F84] mb-2">
+            <img src="./assets/img/sign.png" alt="" class="pb-2">
+          </div>
+        
+          
+          <h4 class="fontBold">Executive Chairman PSIRS</h4>
+        </div>
+
+        <div class="w-[18%] pr-8" id="qrContainer2"></div>
+      </div>
+      
     `
 
     $("#receiptHardCopy").html(hardCopyReceipt)
@@ -924,6 +928,8 @@ function printInvoice(thecard) {
 function printInvoiceHard(thecard) {
   var originalContent = document.body.innerHTML;
 
+  document.querySelector("#receiptHardCopy").classList.remove('hidden')
+
   var printContent = document.getElementById(thecard).innerHTML;
 
   document.body.innerHTML = printContent;
@@ -938,6 +944,23 @@ function generateRandomString() {
   const randomNum = Math.random().toString(36).substr(2, 8); // Generate a random alphanumeric string
   const randomString = timestamp + randomNum; // Combine timestamp and random string
   return randomString;
+}
+
+function formatDateRange(originalDate) {
+  // Convert string to date object
+  let dateObj = new Date(originalDate);
+
+  // Get the year, month, and day
+  let year = dateObj.getFullYear();
+  let month = dateObj.getMonth() + 1; // Adding 1 because getMonth() returns 0-indexed month
+  let day = dateObj.getDate();
+
+  // Create a new date object for the next year
+  let nextYear = new Date(year + 1, month - 1, day); // Month is 0-indexed in Date constructor
+
+  // Format the output
+  let formattedDate = `${year}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')} - ${nextYear.getFullYear()}-${month.toString().padStart(2, '0')}-${day.toString().padStart(2, '0')}`;
+  return formattedDate;
 }
 
 function formatDate(inputDate) {
