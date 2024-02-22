@@ -818,7 +818,7 @@ async function openReceipt(invoicenum) {
               <td>${invoice_info.tax_number}</td>
             </tr>
             <tr>
-              <td>IJTB TIN</td>
+              <td>JTB TIN</td>
               <td>${invoice_info.tin ? invoice_info.tin : '-'}</td>
             </tr>
             <tr>
