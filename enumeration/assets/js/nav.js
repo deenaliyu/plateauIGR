@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-let HOST = "https://plateauigr.com/php1/index.php"
-=======
 let HOST = "https://plateauigr.com/php/index.php"
->>>>>>> 28c0775 (fix issue of numberToWords)
 
 $(".aside").html(`
 <div class="app-brand demo">

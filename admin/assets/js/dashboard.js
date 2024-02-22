@@ -114,8 +114,20 @@ async function getMonthlyPAYE() {
     const data2 = await response2.json()
 
     // console.log(data, data2)
-    $("#payeMonth").text(formatMoney(data.message[0].total_remittance))
-    $("#payeYearly").text(formatMoney(data2.message[0].total_remittance))
+    // console.log(data2.message[0].total_remittance)
+    if(data.message[0].total_remittance === null){
+      $("#payeMonth").text(0)
+    }else{
+      $("#payeMonth").text(formatMoney(data.message[0].total_remittance))
+    }
+   
+    if(data2.message[0].total_remittance === null){
+      $("#payeYearly").text(0)
+    }else{
+      $("#payeYearly").text(formatMoney(data2.message[0].total_remittance))
+    }
+
+   
 
   } catch (error) {
     console.log(error)

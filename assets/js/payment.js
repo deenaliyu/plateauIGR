@@ -788,12 +788,12 @@ async function openReceipt(invoicenum) {
         
         </div>
 
-        <div class="flex justify-end mx-6">
+        <div class="flex justify-end mx-6 mt-6">
           <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
         </div>
 
 
-        <table class="table table-borderless mx-6 mt-4">
+        <table class="table table-borderless mx-6 mt-4 font-bold">
           <tr>
             <td>MDA</td>
             <td>${invoice_info['COL_3']}</td>
@@ -819,7 +819,7 @@ async function openReceipt(invoicenum) {
             <td>${invoice_info.tax_number}</td>
           </tr>
           <tr>
-            <td>IJTB TIN</td>
+            <td>JTB TIN</td>
             <td>${invoice_info.tin ?invoice_info.tin : '-'}</td>
           </tr>
           <tr>

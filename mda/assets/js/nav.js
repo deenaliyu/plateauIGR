@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-let HOST = "https://plateauigr.com/php1/index.php"
-=======
 let HOST = "https://plateauigr.com/php/index.php"
->>>>>>> 28c0775 (fix issue of numberToWords)
 let userInfo2 = JSON.parse(window.localStorage.getItem("mdaDataPrime"));
 
 let MDAINFO = ""
@@ -512,7 +508,7 @@ const currentYear = new Date().getFullYear()
 $(".footer").html(`
 <div class="flex justify-between">
 <div class="flex items-center gap-x-3">
-  <p class="text-[#1E1E1E] text-[2vh]">Copyright 2021 - ${currentYear} Primegauge</p>
+  <p class="text-[#1E1E1E] text-[2vh]">Copyright 2021 - ${currentYear} Primeguage Solutions Limited</p>
   <img src="../assets/img/logo1.png" width="50px" alt="">
 </div>
 <div class="flex items-center gap-x-3">
