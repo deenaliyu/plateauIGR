@@ -451,13 +451,11 @@ function makePayment() {
         let invoiceDetails = userInvoices.message[0]
 
         var handler = PaystackPop.setup({
-          //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
-          key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
+          key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790',
           "subaccount": "ACCT_govno1idl9hxudv",
           email: invoiceDetails.email,
           amount: finalPay * 100,
-          currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
-
+          currency: 'NGN',
           callback: function (response) {
             //this happens after the payment is completed successfully
             var reference = response.reference;
@@ -784,78 +782,80 @@ async function openReceipt(invoicenum) {
     })
 
     hardCopyReceipt += `
-        <div class="h-[185px]">
-        
-        </div>
-
-        <div class="flex justify-end mx-6">
-          <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
-        </div>
-
-
-        <table class="table table-borderless mx-6 mt-4">
-          <tr>
-            <td>MDA</td>
-            <td>${invoice_info['COL_3']}</td>
-          </tr>
-          <tr>
-            <td>Status</td>
-            <td>${invoice_info.payment_status.toUpperCase()}</td>
-          </tr>
-          <tr>
-            <td>Tax Item</td>
-            <td>${theItems.join(', ')}</td>
-          </tr>
-          <tr>
-            <td>Amount</td>
-            <td>${formatMoney(theAmount)}</td>
-          </tr>
-          <tr>
-            <td>PAYER NAME</td>
-            <td>${invoice_info.first_name} ${invoice_info.surname}</td>
-          </tr>
-          <tr>
-            <td>Payer ID</td>
-            <td>${invoice_info.tax_number}</td>
-          </tr>
-          <tr>
-            <td>IJTB TIN</td>
-            <td>${invoice_info.tin ?invoice_info.tin : '-'}</td>
-          </tr>
-          <tr>
-            <td>Description</td>
-            <td>${invoice_info.description}</td>
-          </tr>
-          <tr>
-            <td>Period</td>
-            <td>${formatDateRange(invoice_info.date_created)}</td>
-          </tr>
-          <tr>
-            <td>Billing Ref</td>
-            <td>${invoice_info.invoice_number}</td>
-          </tr>
-          <tr>
-            <td>Created By</td>
-            <td>${invoice_info.first_name} ${invoice_info.surname}</td>
-          </tr>
-          <tr>
-            <td>Date Paid</td>
-            <td>${formatDate(invoice_info.date_created)}</td>
-          </tr>
-
-        </table>
-
-        <div class='mx-6 flex justify-between mt-5'>
-          <div>
-            <div class="border-b border-b border-[#6F6F84] mb-2">
-              <img src="./assets/img/sign.png" alt="" class="pb-2">
-            </div>
+        <div class="hardReceiptCopy">
+          <div class="h-[185px]">
           
-            
-            <h4 class="fontBold">Executive Chairman PSIRS</h4>
           </div>
 
-          <div class="w-[18%] pr-8" id="qrContainer2"></div>
+          <div class="flex justify-end mx-6">
+            <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
+          </div>
+
+
+          <table class="table table-borderless mx-6 mt-4">
+            <tr>
+              <td>MDA</td>
+              <td>${invoice_info['COL_3']}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>${invoice_info.payment_status.toUpperCase()}</td>
+            </tr>
+            <tr>
+              <td>Tax Item</td>
+              <td>${theItems.join(', ')}</td>
+            </tr>
+            <tr>
+              <td>Amount</td>
+              <td>${formatMoney(theAmount)}</td>
+            </tr>
+            <tr>
+              <td>PAYER NAME</td>
+              <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+            </tr>
+            <tr>
+              <td>Payer ID</td>
+              <td>${invoice_info.tax_number}</td>
+            </tr>
+            <tr>
+              <td>IJTB TIN</td>
+              <td>${invoice_info.tin ? invoice_info.tin : '-'}</td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td>${invoice_info.description}</td>
+            </tr>
+            <tr>
+              <td>Period</td>
+              <td>${formatDateRange(invoice_info.date_created)}</td>
+            </tr>
+            <tr>
+              <td>Billing Ref</td>
+              <td>${invoice_info.invoice_number}</td>
+            </tr>
+            <tr>
+              <td>Created By</td>
+              <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+            </tr>
+            <tr>
+              <td>Date Paid</td>
+              <td>${formatDate(invoice_info.date_created)}</td>
+            </tr>
+
+          </table>
+
+          <div class='mx-6 flex justify-between mt-5'>
+            <div>
+              <div class="border-b border-b border-[#6F6F84] mb-2">
+                <img src="./assets/img/sign.png" alt="" class="pb-2">
+              </div>
+            
+              
+              <h4 class="fontBold">Executive Chairman PSIRS</h4>
+            </div>
+
+            <div class="w-[18%] pr-8" id="qrContainer2"></div>
+          </div>
         </div>
     `
 
