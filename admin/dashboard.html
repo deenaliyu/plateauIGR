@@ -105,79 +105,69 @@
             <section class="w-12/12 main_section">
               <div class="p-2">
                 <div class="w-full">
-                  <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
+                 <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
                       <div class="flex items-center  justify-start">
-                        <div class="icoCont bg-[#1c315c1f] mr-auto">
-                          <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                        <div class="icoCont bg-[#d7a1271f] mr-auto">
+                          <iconify-icon class="text-[#D7A127]" icon="clarity:employee-group-solid"></iconify-icon>
                         </div>
-                        <p class=" text-gray-500 text-xs impMetrics ">TOTAL MONTHLY REVENUE</p>
+                        <p class=" text-gray-500 text-xs impMetrics">TOTAL MONTHLY REVENUE</p>
                       </div>
 
 
-                      <!-- <div class="form-group w-1/2 ml-auto">
-                        <select class="form-select " required name="" id="">
-                          <option value="October">October</option>
-                          <option value="February">February</option>
-                          <option value="March">March</option>
-                          <option value="April">April</option>
-                          <option value="April">May</option>
-                        </select>
-                      </div> -->
+                       <div class="form-group  ml-auto" style="margin-top: 52px;">
+                            <select class="form-select" id="monthlyYear" onchange="refreshTheCards2()">
+                            </select>
+                        </div>
 
-                      <p class="zanumbers text-end" style="margin-top: 52px;">
-                        &#8358;<span id="total_amount_invoiced">-</span>
+                      <p class="zanumbers text-end">
+                        <span id="total_amount_invoiced">-</span>
                       </p>
                     </div>
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
                       <div class="flex items-center  justify-start">
-                        <div class="icoCont bg-[#1c315c1f] mr-auto">
-                          <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                        <div class="icoCont bg-[#d7a1271f] mr-auto">
+                          <iconify-icon class="text-[#D7A127]" icon="clarity:employee-group-solid"></iconify-icon>
                         </div>
-                        <p class=" text-gray-500 text-xs impMetrics ">TOTAL ANNUAL REVENUE</p>
+                        <p class=" text-gray-500 text-xs impMetrics">TOTAL ANNUAL REVENUE</p>
                       </div>
 
 
-                      <!-- <div class="form-group w-1/2 ml-auto">
-                        <select class="form-select " required name="" id="">
-                          <option value="2023">2023</option>
+                       <div class="form-group w-1/2 ml-auto" style="margin-top: 52px;">
+                        <select class="form-select" id="annualYear" onchange="refreshTheCards()">
                         </select>
-                      </div> -->
+                      </div>
 
-                      <p class="zanumbers text-end" style="margin-top: 52px;">
-                        &#8358; <span id="total_amount_invoiced2">-</span>
+                      <p class="zanumbers text-end" >
+                        <span id="total_amount_invoiced2">-</span>
                       </p>
                     </div>
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
                       <div class="flex items-center  justify-start">
-                        <div class="icoCont bg-[#f890301f] mr-auto">
-                          <iconify-icon class="text-[#CDA545]" icon="solar:wallet-bold"></iconify-icon>
+                        <div class="icoCont bg-[#d7a1271f] mr-auto">
+                          <iconify-icon class="text-[#D7A127]" icon="solar:wallet-bold"></iconify-icon>
                         </div>
                         <p class="text-gray-500 text-xs impMetrics">EXPECTED MONTHLY REVENUE</p>
                       </div>
 
 
-                      <!-- <div class="form-group w-1/2 ml-auto">
-                        <select class="form-select " required name="" id="">
-                          <option value="October">October</option>
-                          <option value="February">February</option>
-                          <option value="March">March</option>
-                          <option value="April">April</option>
-                        </select>
-                      </div> -->
+                        <div class="form-group  ml-auto" style="margin-top: 52px;">
+                            <select class="form-select" id="monthlyYear2" onchange="refreshTheCards3()">
+                            </select>
+                        </div>
 
-                      <p class="zanumbers text-end" style="margin-top: 52px;">
-                        &#8358;<span id="due_amount">-</span>
+                      <p class="zanumbers text-end">
+                        <span id="due_amount">-</span>
                       </p>
                     </div>
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
                       <div class="flex items-center  justify-start">
-                        <div class="icoCont bg-[#1c315c1f] mr-auto">
-                          <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                        <div class="icoCont bg-[#d7a1271f] mr-auto">
+                          <iconify-icon class="text-[#D7A127]" icon="clarity:employee-group-solid"></iconify-icon>
                         </div>
                         <p class=" text-gray-500 text-xs impMetrics">REGISTERED TAX PAYER</p>
                       </div>

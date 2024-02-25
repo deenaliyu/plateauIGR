@@ -52,10 +52,10 @@ async function getTaxPayer2() {
   try {
     const response = await fetch(`${HOST}/?getEnumerationTaxPayer`)
     const data = await response.json()
-
-    let taxPayerData = data.message.find(dd => dd.id === userIdo)
+console.log(data)
+    let taxPayerData = data.message.find(dd => dd.tax_number === userIdo)
     userrrData = taxPayerData
-    // console.log(taxPayerData)
+    console.log(taxPayerData)
     let theimg = taxPayerData.img
     if (theimg === "") {
       theimg = "./assets/img/avatars/1.png"
@@ -70,13 +70,13 @@ async function getTaxPayer2() {
         </div>
            
             <div class="flex flex-wrap gap-x-5 gap-y-3 mt-2">
-              <p><span class="font-bold">Category:</span> ${taxPayerData.tax_category}</p>
+              <p><span class="font-bold">Category:</span> ${taxPayerData.category}</p>
               <p><span class="font-bold">State:</span> ${taxPayerData.state}</p>
               <p><span class="font-bold">LGA:</span> ${taxPayerData.lga}</p>
               <p><span class="font-bold">Address:</span> ${taxPayerData.address}</p>
               <p><span class="font-bold">Email address:</span> ${taxPayerData.email}</p>
               <p><span class="font-bold">Contact:</span> ${taxPayerData.phone}</p>
-              <p><span class="font-bold">Tax Number:</span> ${taxPayerData.tin}</p>
+              <p><span class="font-bold">Tax Number:</span> ${taxPayerData.tax_number}</p>
               <p><span class="font-bold">Business Type:</span> ${taxPayerData.business_type}</p>
             </div>
 
@@ -117,10 +117,8 @@ function exportTablee(element, thetable) {
 
 
 async function getApplicableTaxes() {
-  let userInfo = JSON.parse(localStorage.getItem("singleUser"))
-  const userTax = userInfo.tax_number;
   const response = await fetch(
-    `${HOST}?getApplicableTaxes&tax_number=${userTax}`
+    `${HOST}?getApplicableTaxes&tax_number=${userIdo}`
   );
   const revenueHeads = await response.json();
 
@@ -233,10 +231,8 @@ async function getTaxesCateg() {
 
 async function getAnalytics() {
   try {
-    let userInfo = JSON.parse(localStorage.getItem("singleUser"))
-    const userTax = userInfo.tax_number;
-    console.log(userTax)
-    const response = await fetch(`${HOST}?inAppNotification&user_id=${userTax}`)
+
+    const response = await fetch(`${HOST}?inAppNotification&user_id=${userIdo}`)
     const data = await response.json()
 console.log(data)
     if (data.status === 0) {

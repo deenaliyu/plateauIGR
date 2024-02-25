@@ -6,7 +6,7 @@ if (userDATA) {
     <div class="form-group">
     <label for="defaultSelect" class="form-label">MDA</label>
       <select name="" id="getMDAs" class="form-select">
-        <option selected value="">--- Select MDA ---</option>
+        <option selected value="">All</option>
       </select>
       </div>
   `)
@@ -14,7 +14,7 @@ if (userDATA) {
     <div class="form-group">
     <label for="defaultSelect" class="form-label">Revenue Head</label>
       <select name="" id="listOfpayable" class="form-select">
-        <option selected value=""></option>
+        <option selected value="">All</option>
       </select>
       </div>
   `)
@@ -65,7 +65,7 @@ async function fetchRevHeads(mdn) {
 
   } else {
     $("#listOfpayable").html(`
-        <option value=""></option>
+        <option value="">All</option>
       `)
     revHeads.message.forEach((revHd, i) => {
       $("#listOfpayable").append(`
@@ -117,6 +117,7 @@ function clearfilter() {
   $("#dataTable").DataTable().destroy()
   $("#showThem2").html('')
 
+
   displayData(AllInvoiceData.reverse())
 
   $("#dataTable").DataTable()
@@ -129,6 +130,12 @@ function clearfilter() {
   const fromDate = document.getElementById('fromDateInput').value = "";
   const toDate = document.getElementById('toDateInput').value = "";
 
+  $("#getMDAs").append(`
+  <option selected value="">All</option>
+`)
+  $("#listOfpayable").append(`
+  <option selected value="">All</option>
+  `)
 
 }
 

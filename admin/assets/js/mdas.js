@@ -137,7 +137,7 @@ getAllRevH()
 
 function arroveRev(e) {
   let theRevId = e.dataset.revid
-  // console.log(theRevId)
+  console.log(theRevId)
   Swal.fire({
     title: 'Request Approval',
     text: "Do you want to approve this request",

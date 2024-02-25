@@ -37,7 +37,7 @@ async function fetchTaxPayers() {
         `
 
       showRe += `
-        <td><a class="text-primary" href="./taxpayerlist.html?id=${taxPayer.id}">${taxPayer.tax_number}</a></td>
+        <td><a class="text-primary" href="./taxpayerlist.html?id=${taxPayer.tax_number}">${taxPayer.tax_number}</a></td>
         <td>${taxPayer.first_name} ${taxPayer.surname}</td>
         <td>${taxPayer.category}</td>
         <td>${taxPayer.tin}</td>

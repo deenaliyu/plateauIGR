@@ -618,7 +618,7 @@ async function openReceipt(invoicenum) {
   console.log(invoicenum)
 
   const response = await fetch(
-    `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
+    `${HOST}/php/index.php?getSinglePayment&invoiceNumber=${invoicenum}`
   );
   const userInvoices = await response.json();
   console.log(userInvoices);
@@ -641,7 +641,7 @@ async function openReceipt(invoicenum) {
           </div>
 
           <div class="flex items-center gap-1">
-            <p class="text-base">Date: ${formatDate(invoice_info.date_created)}</p>
+            <p class="text-base">Date: ${formatDate(invoice_info.timeIn)}</p>
           </div>
 
         </div>
@@ -839,7 +839,7 @@ async function openReceipt(invoicenum) {
           </tr>
           <tr>
             <td>Date Paid</td>
-            <td>${formatDate(invoice_info.date_created)}</td>
+            <td>${formatDate(invoice_info.timeIn)}</td>
           </tr>
 
         </table>

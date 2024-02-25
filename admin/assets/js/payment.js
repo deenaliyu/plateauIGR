@@ -68,7 +68,7 @@ async function openReceipt(invoicenumber) {
   console.log(invoicenumber)
 
   const response = await fetch(
-    `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenumber}`
+    `${HOST}/php/index.php?getSinglePayment&invoiceNumber=${invoicenumber}`
   );
   const userInvoices = await response.json();
   console.log(userInvoices);
