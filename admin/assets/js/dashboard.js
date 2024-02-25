@@ -114,20 +114,8 @@ async function getMonthlyPAYE() {
     const data2 = await response2.json()
 
     // console.log(data, data2)
-    // console.log(data2.message[0].total_remittance)
-    if(data.message[0].total_remittance === null){
-      $("#payeMonth").text(0)
-    }else{
-      $("#payeMonth").text(formatMoney(data.message[0].total_remittance))
-    }
-   
-    if(data2.message[0].total_remittance === null){
-      $("#payeYearly").text(0)
-    }else{
-      $("#payeYearly").text(formatMoney(data2.message[0].total_remittance))
-    }
-
-   
+    $("#payeMonth").text(data.message[0].total_remittance ? formatMoney(data.message[0].total_remittance) : formatMoney(0))
+    $("#payeYearly").text(data2.message[0].total_remittance? formatMoney(data2.message[0].total_remittance) : formatMoney(0))
 
   } catch (error) {
     console.log(error)
@@ -143,8 +131,8 @@ async function getMonthlyInformalCollection() {
     const data2 = await response2.json()
 
     // console.log(data, data2)
-    $("#informalMonth").text(data.message[0].informal_collection_count)
-    $("#informalYearly").text(data2.message[0].informal_collection_count)
+    $("#informalMonth").text(data.message[0].informal_collection_count ? data.message[0].informal_collection_count : 0)
+    $("#informalYearly").text(data2.message[0].informal_collection_count? data2.message[0].informal_collection_count : 0)
 
   } catch (error) {
     console.log(error)
