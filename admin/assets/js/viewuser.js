@@ -54,6 +54,14 @@ async function fetchUSER() {
           <th>Support Access</th>
           <td>${theUSER.support} Access</td>
         </tr>
+        <tr>
+          <th>PAYE Access</th>
+          <td>${theUSER.payee_access} Access</td>
+        </tr>
+        <tr>
+          <th>Tax Manager Access</th>
+          <td>${theUSER.tax_manager} Access</td>
+        </tr>
       </table>
     `)
 

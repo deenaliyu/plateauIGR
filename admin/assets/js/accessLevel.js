@@ -12,7 +12,10 @@ async function getRolesAdmin() {
 
   if (currentPage === "dashboard.html") {
     if (userRoles.dashboard_access[0] === "no_access") {
+      $(".main_section").removeClass("hidden")
       $(".main_section").html(`<p class="text-center text-xl fontBold">No Access</p>`)
+    } else {
+      $(".main_section").removeClass("hidden")
     }
   } else if (currentPage === "analytics.html") {
     let analyticsRoles = userRoles.analytics_access
@@ -35,18 +38,21 @@ async function getRolesAdmin() {
     let viewMda = analyticsRoles.find(ff => ff === "view_mda")
     let create_mda = analyticsRoles.find(ff => ff === "create_mda")
 
-    console.log(analyticsRoles, viewMda)
+    $('#mdaContainer').removeClass('hidden')
+    $('#theLoader').remove()
+    // console.log(analyticsRoles, viewMda)
 
     if (viewMda === undefined) {
       $(".theTable").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
       `)
+      $("#theTable").removeAttr('id')
     }
 
     if (create_mda === undefined) {
       let creareMdaCont = document.querySelectorAll("#creareMdaCont button")
       creareMdaCont.forEach(creCon => {
-        creCon.classList.add("disabled")
+        creCon.remove()
       });
     }
 
@@ -155,7 +161,7 @@ async function getRolesAdmin() {
     let access_enum = enumPayers.find(ff => ff === "access_enum")
 
     if (reg_user === undefined) {
-      $("#crFieldAg").addClass("disabled")
+      $(".crFieldAg").remove()
     }
 
     if (view_enum_list === undefined) {
@@ -167,12 +173,12 @@ async function getRolesAdmin() {
     if (updt_taxpayer === undefined) {
       let updtFF = document.querySelectorAll(".updtFF")
       updtFF.forEach(updt => {
-        updt.classList.add("disabled")
+        updt.remove()
       });
     }
     if (access_enum === undefined) {
       document.querySelector("#listtEnum").click()
-      $("#theEnumDas").addClass("disabled")
+      $("#theEnumDas").remove()
     }
 
 
@@ -184,6 +190,9 @@ async function getRolesAdmin() {
     let update_user = userorles.find(ff => ff === "update_user")
     let activate_users = userorles.find(ff => ff === "activate_users")
 
+    $('#userDisplay').removeClass('hidden')
+    $('#theLoader').remove()
+
     if (view_admin === undefined) {
       $(".userTable").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
@@ -191,13 +200,13 @@ async function getRolesAdmin() {
     }
 
     if (create_new_user === undefined) {
-      $("#userAccessor").addClass("disabled")
+      $("#userAccessor").remove()
     }
 
     if (update_user === undefined) {
       let updateSec = document.querySelectorAll(".updateSec")
       updateSec.forEach(updateS => {
-        updateS.classList.add("disabled")
+        updateS.remove()
       });
     }
   } else if (currentPage.includes("cms.html") || currentPage.includes("newpost.html")) {
@@ -227,7 +236,7 @@ async function getRolesAdmin() {
     if ((manage_publication_gallery === undefined) || (manage_publication_news === undefined)) {
       let cmsBtns = document.querySelectorAll(".cmsBtns")
       cmsBtns.forEach(cmsBtn => {
-        cmsBtn.classList.add('disabled')
+        cmsBtn.remove()
       })
     }
 
@@ -240,9 +249,11 @@ async function getRolesAdmin() {
     let export_support = supportRoles.find(ff => ff === "export_support")
     let generate_report = supportRoles.find(ff => ff === "generate_report")
 
+    $('#supportDisplay').removeClass('hidden')
+    $('#theLoader').remove()
 
     if (view_support === undefined) {
-      $(".main_section").html(`<p class="text-center text-xl fontBold">No Access</p>`)
+      $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access</p>`)
     }
 
     if ((respond_ticket === undefined) || escalate_issues === undefined) {
@@ -274,6 +285,51 @@ async function getRolesAdmin() {
     }
 
 
+  } else if (currentPage.includes("paye-management.html") || currentPage.includes("paye-details.html")) {
+    let payeRoles = userRoles.payee_access
+    // console.log(etccRoles)
+    let view_payee = payeRoles.find(ff => ff === "view_payee")
+    let edit_payee = payeRoles.find(ff => ff === "edit_payee")
+
+    $('#payeDisplay').removeClass('hidden')
+    $('#theLoader').remove()
+
+    if (view_payee === undefined) {
+      $(".main_section").html(`
+        <p class="text-2xl m-5 text-center">No Access !!</p>
+      `)
+    }
+
+    if (edit_payee === undefined) {
+      $('#thePayes').remove()
+    }
+  } else if (currentPage.includes("presumptive-tax.html")) {
+
+    $('#preDisplay').removeClass('hidden')
+    $('#theLoader').remove()
+
+    let payeRoles = userRoles.tax_manager
+    // console.log(etccRoles)
+    let no_access = payeRoles?.find(ff => ff === "no_access")
+    let full_access = payeRoles?.find(ff => ff === "full_access")
+
+
+
+    if (full_access === undefined && no_access === undefined) {
+      $("#preDisplay").html(`
+        <p class="text-2xl m-5 text-center">No Access !!</p>
+      `)
+
+      $('#newTxPyer').remove()
+    } else if (full_access) {
+
+    } else if (no_access) {
+      $("#preDisplay").html(`
+        <p class="text-2xl m-5 text-center">No Access !!</p>
+      `)
+
+      $('#newTxPyer').remove()
+    }
   }
 }
 

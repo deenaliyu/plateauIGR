@@ -73,7 +73,7 @@
 
 
               <div class="flex items-center gap-2">
-                <a href="../regcategory.html?user=admin" target="_blank" class="button flex gap-x-1 items-center">
+                <a href="../regcategory.html?user=admin" target="_blank" class="button flex gap-x-1 items-center" id="newTxPyer">
                   <iconify-icon icon="ph:plus-bold"></iconify-icon>
                   <span>New Tax Payer</span>
                 </a>
@@ -93,7 +93,12 @@
         <!-- Content wrapper -->
         <section class="content-wrapper">
 
-          <div class="container-xxl flex-grow-1 container-p-y taxes">
+          <div class="flex justify-center items-center mt-4" id="theLoader">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div>
+
+          
+          <div class="container-xxl flex-grow-1 container-p-y taxes" id="preDisplay">
 
             <div>
               <h2 class="text-xl fontBold mb-4">Summary</h2>
