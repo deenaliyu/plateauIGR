@@ -74,7 +74,7 @@
               <iconify-icon icon="mdi:filter-variant" style="font-size: 3vh"></iconify-icon>
               Filter
             </button>
-
+            
             <div class="mt-4 flex gap-x-5 ms-auto">
 
               <div class="avatar avatar-online flex gap-x-2 items-center">
@@ -90,8 +90,12 @@
 
         <!-- Content wrapper -->
         <section class="content-wrapper">
+          <div class="flex justify-center items-center mt-4" id="theLoader">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div>
+
           <div class="container-xxl flex-grow-1 container-p-y">
-            <section class="w-12/12 main_section">
+            <section class="w-12/12 main_section hidden">
 
 
               <h1 class="text-xl fontBold text-[#000]">Summary</h1>
@@ -322,6 +326,7 @@
   <script src="./assets/js/main.js"></script>
   <script src="./assets/js/enduseraudit.js"></script>
   <script src="./assets/js/auditcards.js"></script>
+  <script src="./assets/js/accessLevel.js"></script>
   <!-- <script src="../assets/js/invoicess.js"></script> -->
   <!-- <script src="../assets/js/chartjs.min.js" async></script> -->
 

@@ -330,6 +330,25 @@ async function getRolesAdmin() {
 
       $('#newTxPyer').remove()
     }
+  } else if (currentPage.includes("enduseraudit.html")) {
+
+    $('.main_section').removeClass('hidden')
+    $('#theLoader').remove()
+
+    let auditRoles = userRoles.audit_trail_access
+    // console.log(etccRoles)
+    let view_audit = auditRoles?.find(ff => ff === "view_audit")
+    let analyze_audit = auditRoles?.find(ff => ff === "analyze_audit")
+    let generate_reports = auditRoles?.find(ff => ff === "generate_reports")
+    let manage_logs = auditRoles?.find(ff => ff === "manage_logs")
+
+
+    if (view_audit === undefined) {
+      $(".main_section").html(`
+        <p class="m-5 text-2xl fontBold text-center">No Access !!</p>
+      `)
+    }
+
   }
 }
 
