@@ -101,11 +101,15 @@
 
         <!-- Content wrapper -->
         <section class="content-wrapper">
+          <div class="flex justify-center items-center mt-4" id="theLoader">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div>
+
           <div class="container-xxl flex-grow-1 container-p-y">
             <section class="w-12/12 main_section hidden">
               <div class="p-2">
                 <div class="w-full">
-                 <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
+                  <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
                       <div class="flex items-center  justify-start">
@@ -116,10 +120,10 @@
                       </div>
 
 
-                       <div class="form-group  ml-auto" style="margin-top: 52px;">
-                            <select class="form-select" id="monthlyYear" onchange="refreshTheCards2()">
-                            </select>
-                        </div>
+                      <div class="form-group  ml-auto" style="margin-top: 52px;">
+                        <select class="form-select" id="monthlyYear" onchange="refreshTheCards2()">
+                        </select>
+                      </div>
 
                       <p class="zanumbers text-end" style="margin-top: 52px;">
                         <span id="total_amount_invoiced">-</span>
@@ -135,7 +139,7 @@
                       </div>
 
 
-                       <div class="form-group w-1/2 ml-auto" style="margin-top: 52px;">
+                      <div class="form-group w-1/2 ml-auto" style="margin-top: 52px;">
                         <select class="form-select" id="annualYear" onchange="refreshTheCards()">
                         </select>
                       </div>
@@ -154,10 +158,10 @@
                       </div>
 
 
-                        <div class="form-group  ml-auto" style="margin-top: 52px;">
-                            <select class="form-select" id="monthlyYear2" onchange="refreshTheCards3()">
-                            </select>
-                        </div>
+                      <div class="form-group  ml-auto" style="margin-top: 52px;">
+                        <select class="form-select" id="monthlyYear2" onchange="refreshTheCards3()">
+                        </select>
+                      </div>
 
                       <p class="zanumbers text-end" style="margin-top: 52px;">
                         <span id="due_amount">-</span>

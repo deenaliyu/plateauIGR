@@ -210,6 +210,8 @@ async function getExpectedMonthlyRevenue() {
 
 getExpectedMonthlyRevenue()
 
+var myCharter
+
 async function fetchAnalytics() {
 
   let config = {
@@ -253,7 +255,7 @@ async function fetchAnalytics() {
 
 
     var chartDom = document.getElementById('Compliance');
-    var myChart = echarts.init(chartDom);
+    myCharter = echarts.init(chartDom);
     var option;
 
     option = {
@@ -272,7 +274,7 @@ async function fetchAnalytics() {
       ]
     };
 
-    option && myChart.setOption(option);
+    option && myCharter.setOption(option);
 
     // }
 
