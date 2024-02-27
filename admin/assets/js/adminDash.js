@@ -212,6 +212,14 @@ getExpectedMonthlyRevenue()
 
 async function fetchAnalytics() {
 
+  let config = {
+    mode: "cors",
+    headers: {
+      "Content-Type": "application/json",
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*",
+    },
+  };
   try {
     const response = await fetch(
       `${HOST}/php/index.php?getDashboardAnalyticsAdmin`
