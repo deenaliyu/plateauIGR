@@ -11,11 +11,15 @@ async function getRolesAdmin() {
   let currentPage = splitted_url[splitted_url.length - 1]
 
   if (currentPage === "dashboard.html") {
+
+    $('#theLoader').remove()
+    $(".main_section").removeClass("hidden")
     if (userRoles.dashboard_access[0] === "no_access") {
-      $(".main_section").removeClass("hidden")
       $(".main_section").html(`<p class="text-center text-xl fontBold">No Access</p>`)
     } else {
-      $(".main_section").removeClass("hidden")
+
+      myCharter.resize();
+
     }
   } else if (currentPage === "analytics.html") {
     let analyticsRoles = userRoles.analytics_access
