@@ -439,10 +439,4 @@ async function fetchGraph() {
 
 fetchGraph()
 
-function createGuageGraph() {
 
-
-
-}
-
-createGuageGraph();

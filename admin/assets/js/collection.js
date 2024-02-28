@@ -23,7 +23,7 @@ async function fetchInvoice() {
 
     AllInvoiceData = userInvoices.message
 
-    displayData(userInvoices.message.reverse())
+    displayData(userInvoices.message)
 
   } else {
     // $("#showInvoice").html("<tr></tr>");

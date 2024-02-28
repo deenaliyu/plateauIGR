@@ -19,7 +19,7 @@ async function fetchInvoices() {
     `${HOST}/php/index.php?userInvoices&payer_id=${userIdo}`
   );
   const userInvoices = await response.json();
-  // console.log(userInvoices);
+  console.log(userInvoices);
   $("#loader").css("display", "none");
   if (userInvoices.status === 1) {
     userInvoices.message.reverse().forEach((userInvoice, i) => {
@@ -30,7 +30,7 @@ async function fetchInvoices() {
           <td>${userInvoice.tax_number}</td>
           <td>${userInvoice.invoice_number}</td>
           <td>${userInvoice.COL_4}</td>
-          <td>${userInvoice.COL_6}</td>
+          <td>${userInvoice.amount_paid}</td>
           <td>${userInvoice["due_date"]}</td>
           `
       if (userInvoice.payment_status === "paid") {
@@ -40,7 +40,7 @@ async function fetchInvoices() {
             </td>
             <td>
             <div class="flex gap-2 check-bt" id="">
-              <a class="px-3 py-1 rounded-lg bg-success text-white diasbled">view</a>
+            <a href="./viewreceipt.html?invnumber=${userInvoice.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Receipt</a>
             </div>
             </td>
             `
@@ -56,7 +56,7 @@ async function fetchInvoices() {
             </td>
             <td>
             <div class="flex gap-2 check-bt" id="">
-              <a class="px-3 py-1 rounded-lg bg-success text-white diasbled">view</a>
+            <a href="./viewreceipt.html?invnumber=${userInvoice.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Receipt</a>
             </div>
             </td>
             </tr>
