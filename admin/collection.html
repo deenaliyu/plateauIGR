@@ -179,7 +179,7 @@
         <div class="modal-body">
 
           <div class="flex justify-end">
-            <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
+            <button class="btn btn-primary btn-sm" onclick="clearfilter2()">clear filter</button>
           </div>
           <div class="row">
             <div class="col mb-3" id="mdass">
@@ -197,6 +197,15 @@
               <label for="defaultSelect" class="form-label">Revenue Head</label>
               <div class="form-group">
                 <select name="" id="getMDAs" class="form-select">
+                  <option  selected>--- All---</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col mb-0" id="payment_channel">
+              <label for="defaultSelect" class="form-label">Payment Channel</label>
+              <div class="form-group">
+                <select name="" id="getPayment" class="form-select ">
                   <option  selected>--- All---</option>
                 </select>
               </div>
@@ -300,7 +309,9 @@
       $("#listOfpayable").select2({
         dropdownParent: $("#filterInvoice")
       })
-
+      $("#listOfchannel").select2({
+        dropdownParent: $("#filterInvoice")
+      })
     })
   </script>
   <!-- Main JS -->

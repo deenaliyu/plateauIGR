@@ -1,4 +1,4 @@
-let HOST = "https://plateauigr.com/php/index.php"
+let HOST = "https://plateauigr.com/php1/index.php"
 let userInfo2 = JSON.parse(window.localStorage.getItem("mdaDataPrime"));
 
 let MDAINFO = ""

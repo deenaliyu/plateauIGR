@@ -19,8 +19,17 @@ if (userDATA) {
       </div>
   `)
 
- 
+  $("#payment_channel").html(`
+    <div class="form-group">
+    <label for="defaultSelect" class="form-label">Payment Channel</label>
+      <select name="" id="listOfchannel" class="form-select">
+        <option selected value="">All</option>
+      </select>
+      </div>
+  `)
 
+
+  
 } else {
 
 }
@@ -75,6 +84,33 @@ async function fetchRevHeads(mdn) {
 
   }
 }
+
+
+async function fetchPayment() {
+  let config = {
+    mode: 'cors',
+    headers: {
+      'Content-Type': 'application/json',
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Methods": "*"
+    }
+  }
+  const response = await fetch(`${HOST}/?getPaymentChannel`)
+  const MDAs = await response.json()
+
+
+  if (MDAs.status === 0) {
+  } else {
+    MDAs.message.forEach((MDA, i) => {
+      $("#listOfchannel").append(`
+        <option value="${MDA.payment_channel}">${MDA.payment_channel}</option>
+      `)
+    });
+
+  }
+}
+
+fetchPayment()
 
 function removeDoubleSpaces(inputText) {
   return inputText.replace(/ {2,}/g, ' ');
@@ -136,14 +172,16 @@ function clearfilter() {
   $("#listOfpayable").append(`
   <option selected value="">All</option>
   `)
-
+  $("#listOfchannel").append(`
+  <option selected value="">All</option>
+  `)
 }
 
 $("#filterMda2").on('click', () => {
   const selectedMda = document.getElementById('getMDAs').value;
   const selRevv = document.getElementById('listOfpayable');
   const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
-
+  const payment = document.getElementById('listOfchannel').value;
   const fromDate = document.getElementById('fromDateInput').value;
   const toDate = document.getElementById('toDateInput').value;
 
@@ -152,6 +190,7 @@ $("#filterMda2").on('click', () => {
   const filteredData = AllInvoiceData.filter(item =>
     (!selectedMda || removeDoubleSpaces(item.mda_id.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
     (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
+    (!payment || removeDoubleSpaces(item.payment_channel.toLowerCase()).includes(removeDoubleSpaces(payment.toLowerCase()))) &&
     (!fromDate || item.timeIn >= fromDate) &&
     (!toDate || item.timeIn <= toDate)
   );
@@ -166,6 +205,7 @@ $("#filterMda2").on('click', () => {
   $("#filterInvoice").modal("hide")
 })
 
+
 function clearfilter2() {
   $("#dataTable").DataTable().clear().draw()
   $("#dataTable").DataTable().destroy()
@@ -178,9 +218,19 @@ function clearfilter2() {
 
   const selectedMda = document.getElementById('getMDAs').value = ""
   const selRevv = document.getElementById('listOfpayable').value = ""
-
+  const payment = document.getElementById('listOfchannel').value = ""
   const fromDate = document.getElementById('fromDateInput').value = ""
   const toDate = document.getElementById('toDateInput').value = ""
+
+  $("#getMDAs").append(`
+  <option selected value="">All</option>
+`)
+  $("#listOfpayable").append(`
+  <option selected value="">All</option>
+  `)
+  $("#listOfchannel").append(`
+  <option selected value="">All</option>
+  `)
 
 }
 

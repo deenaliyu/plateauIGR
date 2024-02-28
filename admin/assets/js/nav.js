@@ -1,4 +1,4 @@
-let HOST = "https://plateauigr.com/php/index.php"
+let HOST = "https://plateauigr.com/php1/index.php"
 let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
 let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
@@ -230,7 +230,7 @@ const currentYear = new Date().getFullYear()
 $(".footer").html(`
 <div class="flex justify-between">
 <div class="flex items-center gap-x-3">
-  <p class="text-[#1E1E1E] text-[16px]">Copyright 2021 - ${currentYear} Primegauge</p>
+  <p class="text-[#1E1E1E] text-[16px]">Copyright 2021 - ${currentYear} Primeguage Solutions Limited </p>
   <img src="../assets/img/logo1.png" width="50px" alt="">
 </div>
 <div class="flex items-center gap-x-3">
