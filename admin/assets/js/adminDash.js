@@ -7,8 +7,12 @@ function formatMoney(amount) {
 }
 
 function convertToTwoDigits(number) {
-    // Using padStart to add a leading zero if needed
-    return String(number).padStart(2, '0');
+  // Using padStart to add a leading zero if needed
+  return String(number).padStart(2, '0');
+}
+
+function sortByDateDescending(data) {
+  return data.sort((a, b) => new Date(b.month) - new Date(a.month));
 }
 
 function fillSelectOptions(selectId, start, end, selectedValue) {
@@ -37,116 +41,118 @@ var theCurrentMonth = ThecurrentDate.getMonth() + 1;
 fillSelectOptions("annualYear", 2023, theCurrentYear + 8, theCurrentYear);
 
 function refreshTheCards() {
-//   let theMonth = document.querySelector("#selMonth").value
+  //   let theMonth = document.querySelector("#selMonth").value
   let theYear = document.querySelector("#annualYear").value
 
   theCurrentYear = theYear
-//   theCurrentMonth = theMonth
+  //   theCurrentMonth = theMonth
   getYearlyRevenue()
- 
+
 }
 
 // let theAmountGen = "";
 
 async function getYearlyRevenue() {
-    $("#total_amount_invoiced2").html(`
+  $("#total_amount_invoiced2").html(`
         <div class="flex mb-4">
           <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
         </div>
     `)
-    
-    try {
-        const response = await fetch(`${HOST}?getYearlyRevenue&&year=${theCurrentYear}`);
-        const userAnalytics = await response.json();
-        
-        // console.log(userAnalytics)
-        if(userAnalytics.status === 0) {
-            $("#total_amount_invoiced2").html(0)
-        } else {
-            let theAmountGen = userAnalytics.message[0].total_annual_revenue
-            $("#total_amount_invoiced2").html(formatMoney(theAmountGen))
-        }
-        
 
-   
-    } catch (error) {
-        console.log(error)
-        $("#total_amount_invoiced2").html(0)
+  try {
+    const response = await fetch(`${HOST}?getYearlyRevenue&&year=${theCurrentYear}`);
+    const userAnalytics = await response.json();
+
+    // console.log(userAnalytics)
+    if (userAnalytics.status === 0) {
+      $("#total_amount_invoiced2").html(0)
+    } else {
+      let theAmountGen = userAnalytics.message[0].total_annual_revenue
+      $("#total_amount_invoiced2").html(formatMoney(theAmountGen))
     }
+
+
+
+  } catch (error) {
+    console.log(error)
+    $("#total_amount_invoiced2").html(0)
+  }
 }
 
 getYearlyRevenue()
 
 function getMonthName(monthValue) {
-    const [year, month] = monthValue.split('-');
-    const date = new Date(year, month - 1, 1);
-    const monthName = date.toLocaleString('default', { month: 'long' });
-    return monthName;
+  const [year, month] = monthValue.split('-');
+  const date = new Date(year, month - 1, 1);
+  const monthName = date.toLocaleString('default', { month: 'long' });
+  return monthName;
 }
 
 
 function getYear(monthValue) {
-    return monthValue.split('-')[0];
+  return monthValue.split('-')[0];
 }
 
 function filterByMonth(monthsArray, targetMonth) {
-    const result = monthsArray.find(monthData => monthData.month === targetMonth);
-    return result ? result.total_monthly_revenue : 0;
+  const result = monthsArray.find(monthData => monthData.month === targetMonth);
+  return result ? result.total_monthly_revenue : 0;
 }
 let allRevenueData = []
 
 function refreshTheCards2() {
-    let theMonth = document.querySelector("#monthlyYear").value
-    
-    let genAmount = filterByMonth(allRevenueData, theMonth)
-    $("#total_amount_invoiced").html(formatMoney(genAmount))
+  let theMonth = document.querySelector("#monthlyYear").value
+
+  let genAmount = filterByMonth(allRevenueData, theMonth)
+  $("#total_amount_invoiced").html(formatMoney(genAmount))
 }
 async function getMonthlyRevenue() {
-    $("#total_amount_invoiced").html(`
+  $("#total_amount_invoiced").html(`
         <div class="flex mb-4">
           <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
         </div>
     `)
-    
-    try {
-        const response = await fetch(`${HOST}?getMonthlyRevenue`);
-        const userAnalytics = await response.json();
-        
-        // console.log(userAnalytics)
-        if(userAnalytics.status === 0) {
-            $("#total_amount_invoiced").html(0)
-        } else {
-            allRevenueData = userAnalytics.message
-            const monthSelector = document.getElementById('monthlyYear');
 
-            for (const monthData of userAnalytics.message) {
-                const option = document.createElement('option');
-                const monthValue = monthData.month;
-                const displayText = `${getMonthName(monthValue)} ${getYear(monthValue)}`;
-    
-                option.value = monthValue;
-                option.text = displayText;
-    
-                // Set the default selected option to the current month and year
-                if (monthValue === `${theCurrentYear}-${theCurrentMonth}`) {
-                    option.selected = true;
-                }
-    
-                monthSelector.add(option);
-            }
-            
-            
-            let theAmountGen = filterByMonth(userAnalytics.message, `${theCurrentYear}-${convertToTwoDigits(theCurrentMonth)}`)
-            // console.log(theCurrentMonth)
-            $("#total_amount_invoiced").html(formatMoney(theAmountGen))
+  try {
+    const response = await fetch(`${HOST}?getMonthlyRevenue`);
+    const userAnalytics = await response.json();
+
+    // console.log(userAnalytics)
+    if (userAnalytics.status === 0) {
+      $("#total_amount_invoiced").html(0)
+    } else {
+      allRevenueData = userAnalytics.message
+      const monthSelector = document.getElementById('monthlyYear');
+
+      let theSortedData = sortByDateDescending(userAnalytics.message)
+
+      for (const monthData of theSortedData) {
+        const option = document.createElement('option');
+        const monthValue = monthData.month;
+        const displayText = `${getMonthName(monthValue)} ${getYear(monthValue)}`;
+
+        option.value = monthValue;
+        option.text = displayText;
+
+        // Set the default selected option to the current month and year
+        if (monthValue === `${theCurrentYear}-${theCurrentMonth}`) {
+          option.selected = true;
         }
-        
 
-   
-    } catch (error) {
-        console.log(error)
-        $("#total_amount_invoiced").html(0)
+        monthSelector.add(option);
+      }
+
+
+      let theAmountGen = filterByMonth(theSortedData, `${theCurrentYear}-${convertToTwoDigits(theCurrentMonth)}`)
+      // console.log(theCurrentMonth)
+      $("#total_amount_invoiced").html(formatMoney(theAmountGen))
     }
+
+
+
+  } catch (error) {
+    console.log(error)
+    $("#total_amount_invoiced").html(0)
+  }
 }
 
 getMonthlyRevenue()
@@ -155,57 +161,59 @@ getMonthlyRevenue()
 let allExpectedRevenueData = []
 
 function refreshTheCards3() {
-    let theMonth = document.querySelector("#monthlyYear2").value
-    
-    let genAmount = filterByMonth(allExpectedRevenueData, theMonth)
-    $("#due_amount").html(formatMoney(genAmount))
+  let theMonth = document.querySelector("#monthlyYear2").value
+
+  let genAmount = filterByMonth(allExpectedRevenueData, theMonth)
+  $("#due_amount").html(formatMoney(genAmount))
 }
 
 async function getExpectedMonthlyRevenue() {
-    $("#due_amount").html(`
+  $("#due_amount").html(`
         <div class="flex mb-4">
           <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
         </div>
     `)
-    
-    try {
-        const response = await fetch(`${HOST}?getMonthlyRevenue&sort=expected`);
-        const userAnalytics = await response.json();
-        
-        // console.log(userAnalytics)
-        if(userAnalytics.status === 0) {
-            $("#due_amount").html(0)
-        } else {
-            allExpectedRevenueData = userAnalytics.message
-            const monthSelector = document.getElementById('monthlyYear2');
 
-            for (const monthData of userAnalytics.message) {
-                const option = document.createElement('option');
-                const monthValue = monthData.month;
-                const displayText = `${getMonthName(monthValue)} ${getYear(monthValue)}`;
-    
-                option.value = monthValue;
-                option.text = displayText;
-    
-                // Set the default selected option to the current month and year
-                if (monthValue === `${theCurrentYear}-${theCurrentMonth}`) {
-                    option.selected = true;
-                }
-    
-                monthSelector.add(option);
-            }
-            
-            
-            let theAmountGen = filterByMonth(userAnalytics.message, `${theCurrentYear}-${convertToTwoDigits(theCurrentMonth)}`)
-            $("#due_amount").html(formatMoney(theAmountGen))
+  try {
+    const response = await fetch(`${HOST}?getMonthlyRevenue&sort=expected`);
+    const userAnalytics = await response.json();
+
+    // console.log(userAnalytics)
+    if (userAnalytics.status === 0) {
+      $("#due_amount").html(0)
+    } else {
+      allExpectedRevenueData = userAnalytics.message
+      const monthSelector = document.getElementById('monthlyYear2');
+
+      let theSortedData = sortByDateDescending(userAnalytics.message)
+
+      for (const monthData of theSortedData) {
+        const option = document.createElement('option');
+        const monthValue = monthData.month;
+        const displayText = `${getMonthName(monthValue)} ${getYear(monthValue)}`;
+
+        option.value = monthValue;
+        option.text = displayText;
+
+        // Set the default selected option to the current month and year
+        if (monthValue === `${theCurrentYear}-${theCurrentMonth}`) {
+          option.selected = true;
         }
-        
 
-   
-    } catch (error) {
-        console.log(error)
-        $("#due_amount").html(0)
+        monthSelector.add(option);
+      }
+
+
+      let theAmountGen = filterByMonth(theSortedData, `${theCurrentYear}-${convertToTwoDigits(theCurrentMonth)}`)
+      $("#due_amount").html(formatMoney(theAmountGen))
     }
+
+
+
+  } catch (error) {
+    console.log(error)
+    $("#due_amount").html(0)
+  }
 }
 
 getExpectedMonthlyRevenue()
