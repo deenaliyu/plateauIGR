@@ -1239,22 +1239,22 @@ if (stateSelect2) {
       <option value="${lga}">${lga}</option>
     `
   })
-  stateSelect2.addEventListener('change', function () {
-    let selectedState = $(this).val()
+  // stateSelect2.addEventListener('change', function () {
+  //   let selectedState = $(this).val()
 
-    let arrStates = Object.values(lgaList)
-    let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
+  //   let arrStates = Object.values(lgaList)
+  //   let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
 
-    lgaSelect2.innerHTML = ''
+  //   lgaSelect2.innerHTML = ''
 
-    finalarrState.forEach((opt, ii) => {
-      lgaSelect2.innerHTML += `
-        <option value="${opt}">${opt}</option>
-      `
-    })
+  //   finalarrState.forEach((opt, ii) => {
+  //     lgaSelect2.innerHTML += `
+  //       <option value="${opt}">${opt}</option>
+  //     `
+  //   })
 
 
-  })
+  // })
 
 }
 
