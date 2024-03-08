@@ -57,7 +57,9 @@ $("#createUser").on("click", function () {
           }
 
           if (selectedValues.length > 0) {
-            obj.data[checkboxes[0].dataset.name] = selectedValues.join('~');
+            obj[checkboxes[0].dataset.name] = selectedValues.join('~');
+          } else {
+            obj[checkboxes[0].dataset.name] = "";
           }
         }
 

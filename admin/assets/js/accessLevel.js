@@ -14,13 +14,20 @@ async function getRolesAdmin() {
 
     $('#theLoader').remove()
     $(".main_section").removeClass("hidden")
-    if (userRoles.dashboard_access[0] === "no_access") {
+    let adminRoles = userRoles.dashboard_access
+
+    let full_access = adminRoles.find(ff => ff === "full")
+    let no_access = adminRoles.find(ff => ff === "no_access")
+
+    if (no_access === undefined && full_access === undefined) {
       $(".main_section").html(`<p class="text-center text-xl fontBold">No Access</p>`)
-    } else {
 
+    } else if (full_access) {
       myCharter.resize();
-
+    } else if (no_access) {
+      $(".main_section").html(`<p class="text-center text-xl fontBold">No Access</p>`)
     }
+
   } else if (currentPage === "analytics.html") {
     let analyticsRoles = userRoles.analytics_access
 
@@ -98,6 +105,8 @@ async function getRolesAdmin() {
       $(".invoiceTable").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
       `)
+
+      $("#cardsForSummaray").remove()
     }
 
     if (generate_inv_report === undefined) {
@@ -238,10 +247,15 @@ async function getRolesAdmin() {
 
 
     if ((manage_publication_gallery === undefined) || (manage_publication_news === undefined)) {
-      let cmsBtns = document.querySelectorAll(".cmsBtns")
-      cmsBtns.forEach(cmsBtn => {
-        cmsBtn.remove()
-      })
+      
+      // console.log(cmsBtns)
+      setTimeout(() => {
+        let cmsBtns = document.querySelectorAll(".cmsBtns")
+        cmsBtns.forEach(cmsBtn => {
+          cmsBtn.remove()
+        })
+      }, 1000);
+
     }
 
   } else if (currentPage.includes("support.html") || currentPage.includes("complain.html")) {
