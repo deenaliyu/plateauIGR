@@ -155,6 +155,8 @@ async function getRolesAdmin() {
       $(".txTable2").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
       `)
+
+      $("#createTaxP").remove()
     }
 
     if (view_tax_detail === undefined) {
@@ -206,6 +208,7 @@ async function getRolesAdmin() {
     $('#userDisplay').removeClass('hidden')
     $('#theLoader').remove()
 
+    $("#userAccessor a").removeClass('hidden')
     if (view_admin === undefined) {
       $(".userTable").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
@@ -230,14 +233,16 @@ async function getRolesAdmin() {
     let manage_publication_gallery = cmsrles.find(ff => ff === "manage_publication_gallery")
     let manage_publication_news = cmsrles.find(ff => ff === "manage_publication_news")
 
-    if (create_gallery === undefined) {
+    if (create_gallery === undefined && create_news === undefined) {
+      $("#theCms").remove()
+    } else if (create_gallery === undefined) {
       // $("#theCms").addClass("disabled")
       $(".selPage").html(`
         <option value="" disabled selected>Select --</option>
         <option value="news">News</option>
         
       `)
-    } else if (create_gallery === undefined) {
+    } else if (create_news === undefined) {
       $(".selPage").html(`
         <option value="" disabled selected>Select --</option>
         <option value="gallery">Gallery</option>
@@ -246,16 +251,10 @@ async function getRolesAdmin() {
     }
 
 
-    if ((manage_publication_gallery === undefined) || (manage_publication_news === undefined)) {
-      
-      // console.log(cmsBtns)
-      setTimeout(() => {
-        let cmsBtns = document.querySelectorAll(".cmsBtns")
-        cmsBtns.forEach(cmsBtn => {
-          cmsBtn.remove()
-        })
-      }, 1000);
-
+    if ((manage_publication_gallery === undefined) && (manage_publication_news === undefined)) {
+      $(".main_section").html(`
+        <p class="text-xl fontBold text-center">No Access !</p>
+      `)
     }
 
   } else if (currentPage.includes("support.html") || currentPage.includes("complain.html")) {
@@ -282,11 +281,19 @@ async function getRolesAdmin() {
   } else if (currentPage.includes("etcc-management.html")) {
     let etccRoles = userRoles.etcc_access
     // console.log(etccRoles)
+
+    $(".main_section").removeClass('hidden')
+    $("#theLoader").remove()
+
     let first_reviewer = etccRoles.find(ff => ff === "first_reviewer")
     let second_reviewer = etccRoles.find(ff => ff === "second_reviewer")
     let third_reviewer = etccRoles.find(ff => ff === "third_reviewer")
 
-    if (third_reviewer) {
+    if (first_reviewer === undefined && second_reviewer === undefined && third_reviewer === undefined) {
+      $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access !</p>`)
+      $("#initiateEtcc").remove()
+
+    } else if (third_reviewer) {
 
     } else if (second_reviewer) {
       $("#third_reviewer").remove()
@@ -302,7 +309,12 @@ async function getRolesAdmin() {
       }
     }
 
+  } else if (currentPage.includes("service.html")) {
+    if (adminInfo.email === "primeguage@gmail.com") {
 
+    } else {
+      $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access !</p>`)
+    }
   } else if (currentPage.includes("paye-management.html") || currentPage.includes("paye-details.html")) {
     let payeRoles = userRoles.payee_access
     // console.log(etccRoles)

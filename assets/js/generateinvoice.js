@@ -422,6 +422,7 @@ async function generateInvoiceNon() {
         revHeadsss.forEach(reaa => {
           theArrr.push(reaa.value)
         })
+
         the_id = theArrr.join(",")
         // window.location.href = "./multipleinvoice.html?invnumber=7426359108&load=true"
       }
