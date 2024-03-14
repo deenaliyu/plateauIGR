@@ -242,7 +242,7 @@ async function fetchAnalytics() {
 
     $("#due_amount").html(formatMoney(userAnalytics.due_amount))
     $("#due_invoices").html(userAnalytics.due_invoices.toLocaleString())
-    $("#total_amount_invoiced").html(formatMoney(userAnalytics.total_amount_invoiced))
+    // $("#total_amount_invoiced").html(formatMoney(userAnalytics.total_amount_invoiced))
     $("#total_amount_invoiced2").html(formatMoney(userAnalytics.total_amount_invoiced))
     $("#total_amount_invoiced3").html(formatMoney(userAnalytics.total_amount_invoiced))
     $("#total_amountP").html(formatMoney(userAnalytics.total_amount_paid))
