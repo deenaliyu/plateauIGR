@@ -40,15 +40,22 @@ var theCurrentMonth = ThecurrentDate.getMonth() + 1;
 
 fillSelectOptions("annualYear", 2023, theCurrentYear + 8, theCurrentYear);
 
-function refreshTheCards() {
-  //   let theMonth = document.querySelector("#selMonth").value
+// function refreshTheCards() {
+//   //   let theMonth = document.querySelector("#selMonth").value
+//   let theYear = document.querySelector("#annualYear").value
+
+//   theCurrentYear = theYear
+//   //   theCurrentMonth = theMonth
+//   getYearlyRevenue()
+// }
+
+$("#annualYear").on('change', function () {
   let theYear = document.querySelector("#annualYear").value
 
   theCurrentYear = theYear
   //   theCurrentMonth = theMonth
   getYearlyRevenue()
-
-}
+})
 
 // let theAmountGen = "";
 
@@ -60,7 +67,7 @@ async function getYearlyRevenue() {
     `)
 
   try {
-    const response = await fetch(`${HOST}?getYearlyRevenue&&year=${theCurrentYear}`);
+    const response = await fetch(`${HOST}?getYearlyRevenue&year=${theCurrentYear}`);
     const userAnalytics = await response.json();
 
     // console.log(userAnalytics)
@@ -243,7 +250,7 @@ async function fetchAnalytics() {
     $("#due_amount").html(formatMoney(userAnalytics.due_amount))
     $("#due_invoices").html(userAnalytics.due_invoices.toLocaleString())
     // $("#total_amount_invoiced").html(formatMoney(userAnalytics.total_amount_invoiced))
-    $("#total_amount_invoiced2").html(formatMoney(userAnalytics.total_amount_invoiced))
+    // $("#total_amount_invoiced2").html(formatMoney(userAnalytics.total_amount_invoiced))
     $("#total_amount_invoiced3").html(formatMoney(userAnalytics.total_amount_invoiced))
     $("#total_amountP").html(formatMoney(userAnalytics.total_amount_paid))
     $("#due_amount2").html(formatMoney(userAnalytics.due_amount))

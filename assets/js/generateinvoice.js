@@ -355,28 +355,53 @@ function goToPreviewPage() {
   let amountto = []
 
   let thePayInputs = document.querySelectorAll(".thePaymentInput")
+  let revHeadsss = document.querySelectorAll(".revHeadsss")
+  let mdaSelected = document.querySelector("#mda").value
 
   thePayInputs.forEach(payIn => {
     amountto.push(parseFloat(payIn.value))
   })
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
 
-  aa.message.forEach((items, i) => {
-    $("#bill").html(`
-      <div class="flex space-x-4">
-        <p>Category of Tax:</p>
-        <p>${categOfTax}</p>
-      </div>
+  let theSpace = `
+    <div class="flex space-x-4">
+      <p>Category of Tax:</p>
+      <p>${categOfTax}</p>
+    </div>
+  `
+  if (revHeadsss.length === 1) {
+    theSpace += `
       <div class="flex space-x-3">
         <p>Name of Tax:</p>
-        <p>${items.COL_4}</p>
-      </div>
-      <div class="flex space-x-3">
-        <p>Amount to be Paid:</p>
-        <p>${formatMoney(sumArray(amountto))}</p>
-      </div>
-   `)
-  })
+        <p>${mdaSelected}</p>
+      </div>  
+    `
+  } else {
+    revHeadsss.forEach((revHd, i) => {
+      theSpace += `
+        <div class="flex space-x-3">
+          <p>Item ${i + 1}:</p>
+          <p>${revHd.options[revHd.selectedIndex].text}</p>
+        </div>  
+        <div class="flex space-x-3">
+          <p>Amount:</p>
+          <p>${formatMoney(parseFloat(thePayInputs[i].value))}</p>
+        </div>  
+      `
+    })
+  }
+
+
+
+  // revHeadInputSel
+
+  theSpace += `
+    <div class="flex space-x-3">
+      <p>Total Amount to be Paid:</p>
+      <p>${formatMoney(sumArray(amountto))}</p>
+    </div>
+  `
+  $("#bill").html(theSpace)
   // console.log(aa)
   for (let i = 0; i < payInputs.length; i++) {
     const payinput = payInputs[i];
