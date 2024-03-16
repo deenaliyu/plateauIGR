@@ -65,39 +65,39 @@ $("#createUser").on("click", function () {
 
 
 
-        console.log(obj)
+        // console.log(obj)
         let StringedData = JSON.stringify(obj)
-        // $.ajax({
-        //   type: "POST",
-        //   url: HOST,
-        //   dataType: 'json',
-        //   data: StringedData,
-        //   success: function (data) {
-        //     console.log(data)
-        //     if (data.status === 2) {
-        //       $("#msg_box").html(`
-        //           <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
-        //         `)
-        //       $("#createUser").removeClass("hidden")
+        $.ajax({
+          type: "POST",
+          url: HOST,
+          dataType: 'json',
+          data: StringedData,
+          success: function (data) {
+            console.log(data)
+            if (data.status === 2) {
+              $("#msg_box").html(`
+                  <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
+                `)
+              $("#createUser").removeClass("hidden")
 
-        //     } else if (data.status === 1) {
-        //       $("#msg_box").html(`
-        //               <p class="text-success text-center mt-4 text-lg">${data.message}</p>
-        //             `)
+            } else if (data.status === 1) {
+              $("#msg_box").html(`
+                      <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+                    `)
 
-        //       setTimeout(() => {
-        //         window.location.href = "user.html"
-        //       }, 1000);
-        //     }
-        //   },
-        //   error: function (request, error) {
-        //     console.log(error);
-        //     $("#msg_box").html(`
-        //           <p class="text-danger text-center mt-4 text-lg">An error occured !</p>
-        //         `)
-        //     $("#createUser").removeClass("hidden")
-        //   }
-        // });
+              setTimeout(() => {
+                window.location.href = "user.html"
+              }, 1000);
+            }
+          },
+          error: function (request, error) {
+            console.log(error);
+            $("#msg_box").html(`
+                  <p class="text-danger text-center mt-4 text-lg">An error occured !</p>
+                `)
+            $("#createUser").removeClass("hidden")
+          }
+        });
       }
       break;
     }
