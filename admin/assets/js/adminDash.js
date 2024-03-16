@@ -264,7 +264,7 @@ async function fetchAnalytics() {
 
     total = (tt / ti) * 100;
 
-    console.log(total)
+    // console.log(total)
 
 
 
