@@ -323,15 +323,16 @@ function continuePage() {
 
 
 let the_id
-$("#rev_heads").on("change", function () {
+$(".revHeadsss").on("change", function () {
   let val = $(this).val()
+  console.log(val)
   setPrice(val)
 })
 
 let aa = [];
 function setPrice(val) {
   let theRevenue = theRevs.filter(rr => rr.id === val)
-  // console.log(val, theRevenue)
+  console.log(val, theRevenue)
   $("#amountTopay").val()
   the_id = theRevenue[0].id
   aa["message"] = theRevenue;
@@ -361,6 +362,7 @@ function goToPreviewPage() {
   })
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
 
+  console.log(aa.message);
   aa.message.forEach((items, i) => {
     $("#bill").html(`
       <div class="flex space-x-4">

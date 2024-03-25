@@ -1,4 +1,4 @@
-let HOST = "https://plateauigr.com/php1/index.php"
+let HOST = "https://plateauigr.com/php/index.php"
 let userInfo2 = JSON.parse(window.localStorage.getItem("mdaDataPrime"));
 
 let MDAINFO = ""
@@ -98,13 +98,7 @@ if (payment === "yes") {
                   </li>
                 </ul>
       </li>
-      <li class="menu-item">
-      <a href="offices.html" class="menu-link mdn">
-      
-      <iconify-icon icon="mdi:users-group" class = "menu-icon tf-icons"></iconify-icon>
-        <div data-i18n="Basic"  class = "text-[2vh]">Offices</div>
-      </a>
-    </li>
+   
       <li class="menu-item">
         <a href="users.html" class="menu-link mdd">
         
@@ -194,13 +188,7 @@ if (payment === "yes") {
                 </li>
               </ul>
     </li>
-    <li class="menu-item">
-    <a href="offices.html" class="menu-link mdn">
-    
-    <iconify-icon icon="mdi:users-group" class = "menu-icon tf-icons"></iconify-icon>
-      <div data-i18n="Basic"  class = "text-[2vh]">Offices</div>
-    </a>
-  </li>
+   
     <li class="menu-item">
       <a href="users.html" class="menu-link mdd">
       
@@ -1496,3 +1484,201 @@ if (stateSelect2) {
   })
 
 }
+
+
+function convertNumberToWords(number) {
+  let [integer, fraction] = String(number).split('.');
+  let output = "";
+
+  if (integer[0] === "-") {
+    output = "negative ";
+    integer = integer.substring(1);
+  } else if (integer[0] === "+") {
+    output = "positive ";
+    integer = integer.substring(1);
+  }
+
+  if (integer[0] === "0") {
+    output += "zero";
+  } else {
+    integer = integer.padStart(36, "0");
+    let group = integer.match(/.{1,3}/g);
+    let groups2 = group.map(g => convertThreeDigit(g[0], g[1], g[2]));
+
+    for (let z = 0; z < groups2.length; z++) {
+      if (groups2[z] !== "") {
+        output += groups2[z] + convertGroup(11 - z) +
+          (z < 11 && !groups2.slice(z + 1, -1).includes('') &&
+            groups2[11] !== '' && group[11][0] === '0' ? " and " : ", ");
+      }
+    }
+
+    output = output.replace(/, $/, "");
+  }
+
+  if (fraction > 0) {
+    output += " naira and";
+    for (let i = 0; i < fraction.length; i++) {
+      output += " " + convertDigit(fraction[i]);
+    }
+    output += " Kobo"
+  }
+
+  return output;
+}
+
+function convertGroup(index) {
+  switch (index) {
+    case 11:
+      return " decillion";
+    case 10:
+      return " nonillion";
+    case 9:
+      return " octillion";
+    case 8:
+      return " septillion";
+    case 7:
+      return " sextillion";
+    case 6:
+      return " quintrillion";
+    case 5:
+      return " quadrillion";
+    case 4:
+      return " trillion";
+    case 3:
+      return " billion";
+    case 2:
+      return " million";
+    case 1:
+      return " thousand";
+    case 0:
+      return "";
+  }
+}
+
+function convertThreeDigit(digit1, digit2, digit3) {
+  let buffer = "";
+
+  if (digit1 === "0" && digit2 === "0" && digit3 === "0") {
+    return "";
+  }
+
+  if (digit1 !== "0") {
+    buffer += convertDigit(digit1) + " hundred";
+    if (digit2 !== "0" || digit3 !== "0") {
+      buffer += " and ";
+    }
+  }
+
+  if (digit2 !== "0") {
+    buffer += convertTwoDigit(digit2, digit3);
+  } else {
+    if (digit3 !== "0") {
+      buffer += convertDigit(digit3);
+    }
+  }
+
+  return buffer;
+}
+
+function convertTwoDigit(digit1, digit2) {
+  if (digit2 === "0") {
+    switch (digit1) {
+      case "1":
+        return "ten";
+      case "2":
+        return "twenty";
+      case "3":
+        return "thirty";
+      case "4":
+        return "forty";
+      case "5":
+        return "fifty";
+      case "6":
+        return "sixty";
+      case "7":
+        return "seventy";
+      case "8":
+        return "eighty";
+      case "9":
+        return "ninety";
+    }
+  } else {
+    if (digit1 === "1") {
+      switch (digit2) {
+        case "1":
+          return "eleven";
+        case "2":
+          return "twelve";
+        case "3":
+          return "thirteen";
+        case "4":
+          return "fourteen";
+        case "5":
+          return "fifteen";
+        case "6":
+          return "sixteen";
+        case "7":
+          return "seventeen";
+        case "8":
+          return "eighteen";
+        case "9":
+          return "nineteen";
+      }
+    } else {
+      let temp = convertDigit(digit2);
+      switch (digit1) {
+        case "2":
+          return "twenty-" + temp;
+        case "3":
+          return "thirty-" + temp;
+        case "4":
+          return "forty-" + temp;
+        case "5":
+          return "fifty-" + temp;
+        case "6":
+          return "sixty-" + temp;
+        case "7":
+          return "seventy-" + temp;
+        case "8":
+          return "eighty-" + temp;
+        case "9":
+          return "ninety-" + temp;
+      }
+    }
+  }
+}
+
+function convertDigit(digit) {
+  switch (digit) {
+    case "0":
+      return "zero";
+    case "1":
+      return "one";
+    case "2":
+      return "two";
+    case "3":
+      return "three";
+    case "4":
+      return "four";
+    case "5":
+      return "five";
+    case "6":
+      return "six";
+    case "7":
+      return "seven";
+    case "8":
+      return "eight";
+    case "9":
+      return "nine";
+  }
+}
+
+
+ //   <li class="menu-item">
+    //   <a href="offices.html" class="menu-link mdn">
+      
+    //   <iconify-icon icon="mdi:users-group" class = "menu-icon tf-icons"></iconify-icon>
+    //     <div data-i18n="Basic"  class = "text-[2vh]">Offices</div>
+    //   </a>
+    // </li>

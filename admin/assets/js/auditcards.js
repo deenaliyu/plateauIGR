@@ -71,8 +71,8 @@ async function getAnalytics1() {
     try {
       const response = await fetch(`${HOST}?getTotalUserError`)
       const data = await response.json()
-    //   console.log(data)
-      // getTotalUserActivity
+      console.log(data)
+      getTotalUserActivity
   
       monthData2 = data[1]
   

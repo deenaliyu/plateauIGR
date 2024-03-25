@@ -74,6 +74,7 @@ async function fetchInvoice() {
 
   const Offices1 = await response.json();
   const Offices2 = await response2.json();
+  console.log(Offices1)
 
   if (Offices1.status === 1) {
     $("#showOffice1").html("")
@@ -82,7 +83,6 @@ async function fetchInvoice() {
         <tr>
           <td>${i + 1}</td>
           <td>${office1.office_name}</td>
-          <td>${office1.state}</td>
           <td>${office1.lga}</td>
           <td>${office1.no_of_users}</td>
         </tr>

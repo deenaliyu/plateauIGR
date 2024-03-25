@@ -129,8 +129,8 @@ async function fetchUsers() {
       }
 
     } else if (txpayers.user_category === "Mda User") {
-      // console.log(mdaUserss)
-      let userDetail = mdaUserss?.find(tt => tt.id === txpayers.user_id)
+      console.log(mdaUserss)
+      let userDetail = mdaUserss?.find(tt => tt.fullname === txpayers.user_id)
 
       if (userDetail) {
         iiii++

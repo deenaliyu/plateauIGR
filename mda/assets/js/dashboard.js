@@ -27,7 +27,7 @@ async function fetchPayment() {
           <tr>
           <td>${payment.first_name} ${payment.surname} </td>
           <td>${payment.COL_4} </td>
-          <td>&#8358;${payment.COL_6} </td>
+          <td>&#8358;${payment.amount_paid} </td>
           <td>${formattedDate}</td>
           </tr>
           `);
@@ -53,9 +53,10 @@ async function getDashboardAnalyticsAdmin() {
 
   const tttt = document.getElementById("dashboardPie")
 
+  $("#totalInv").html(dashboardAnalytics.total_invoice.toLocaleString())
+  $("#totalRem").html("₦" + dashboardAnalytics.total_amount_paid.toLocaleString())
 
-  $("#totalRem").html("₦" + dashboardAnalytics.total_amount.toLocaleString())
-  ttRem = dashboardAnalytics.total_amount
+ 
 
   var chartDom = document.getElementById('dashboardPie');
   var myChart = echarts.init(chartDom);
@@ -89,21 +90,24 @@ async function getDashboardAnalyticsAdmin() {
           show: false
         },
         data: [
-          { value: dashboardAnalytics.total_amount, name: 'Total Amount Invoiced' },
-          { value: dashboardAnalytics.total_amount, name: 'Total Amount Paid' },
-          { value: dashboardAnalytics.due_invoices, name: 'Due Invoices' },
-          { value: dashboardAnalytics.due_amount, name: 'Due Amount' },
+          { value: dashboardAnalytics.total_amount_invoiced, name: 'Total Amount Invoiced' },
+          { value: dashboardAnalytics.total_amount_paid, name: 'Total Amount Paid' },
+          { value: dashboardAnalytics.due_invoices, },
+          { value: dashboardAnalytics.due_amount,},
         ]
       }
     ]
   };
 
+  
   option && myChart.setOption(option);
+
+  fetchInvoicess(dashboardAnalytics.total_amount_paid)
 }
 
 getDashboardAnalyticsAdmin();
 
-async function fetchInvoicess() {
+async function fetchInvoicess(dash) {
   const response = await fetch(
     `${HOST}/php/index.php?AllInvoices`
   );
@@ -111,7 +115,7 @@ async function fetchInvoicess() {
 
   if (userInvoices.status === 1) {
     let theMDAInv = userInvoices.message.filter(inv => inv.COL_3 === mdaID)
-    $("#totalInv").html(theMDAInv.length)
+    // $("#totalInv").html(theMDAInv.length)
     // totalInv = theMDAInv.length
 
     var chartDom = document.getElementById('dashboardPi');
@@ -147,7 +151,7 @@ async function fetchInvoicess() {
           },
           data: [
             { value: theMDAInv.length, name: 'Total Invoices' },
-            { value: ttRem, name: 'Total Remittance' }
+            { value: dash, name: 'Total Remittance' }
           ]
         }
       ]
@@ -159,7 +163,7 @@ async function fetchInvoicess() {
 
   }
 }
-fetchInvoicess()
+
 
 
 

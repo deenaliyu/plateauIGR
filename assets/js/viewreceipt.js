@@ -127,13 +127,13 @@ async function openReceipt(invoicenumber) {
               <div class="w-full">
                 <p class="text-[#555555]">FROM :</p>
                 <p class="fontBold">${invoice_info.COL_3}</p>
-                <p class="text-[#222234] w-[60%] text-sm">Zamfara</p>
+                <p class="text-[#222234] w-[60%] text-sm">Plateau</p>
               </div>
   
               <div class="w-full md:mr-[-10%]">
                 <p class="text-[#555555]">TO :</p>
                 <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
-                <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}, Zamfara</p>
+                <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}, Plateau</p>
               </div>
   
             </div>
@@ -229,11 +229,11 @@ async function openReceipt(invoicenumber) {
               <div class="flex items-center justify-center">
                 <img src="./assets/img/logo.png" alt="" class="w-[100px] h-[70px]">
                 <div>
-                  <p class="text-xl fontBold pb-0">PayZamfara</p>
+                  <p class="text-xl fontBold pb-0">Plateau State Internal Revenue Service</p>
                   <div class="flex items-center gap-x-3 flex-wrap">
-                    <p class="text-sm text-[#6F6F84]">www.payzamfara.com</p>
-                    <p class="text-sm text-[#6F6F84]">Info@payzamfara.com</p>
-                    <p class="text-sm text-[#6F6F84]">0800 101 5555</p>
+                    <p class="text-sm text-[#6F6F84]">www.plateauigr.com</p>
+                    <p class="text-sm text-[#6F6F84]">info@psirs.gov.ng</p>
+                    <p class="text-sm text-[#6F6F84]">07056990777, 08031230301</p>
                     <img src="./assets/img/logo1.png" class="h-[30px] w-[50px]" alt="">
                   </div>
                 </div>

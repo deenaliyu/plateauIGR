@@ -141,7 +141,7 @@
                       Name of citizen
                     </th>
                     <th class="fontBold text-sm text-gray-500">
-                      Primepay Invoice number
+                      Invoice number
                     </th>
 
                     <th class="fontBold text-sm text-gray-500">Amount</th>
@@ -176,7 +176,58 @@
 
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
+
+    <div class="modal fade" id="filterInvoice" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+          <div class="modal-header ">
+            <h5 class="modal-title text-center text-2xl font-bold" id="exampleModalLabel3">Filter</h5>
+            <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+              aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+          </div>
+          <div class="modal-body" style="overflow:hidden;">
+            <div class="flex justify-end">
+              <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
+            </div>
+            <div class="row">
+              <div class="col mb-0" id="the_rev">
+                <label for="defaultSelect" class="form-label">Revenue Head</label>
+                <div class="form-group">
+                  <select name="" id="getRevs" class="form-select">
+                    <option selected value="">All</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col mb-0">
+                <label for="paymentStatusSelect" class="form-label">Payment status</label>
+                <select id="paymentStatusSelect" class="form-select">
+                  <option value="">All</option>
+                  <option value="paid">Paid</option>
+                  <option value="unpaid">Un-paid</option>
+                </select>
+              </div>
+            </div>
+            <div class="row g-2">
+              <label for="" class="mt-3">Date</label>
+              <div class="col mb-0">
+                <label for="emailLarge" class="form-label">From</label>
+                <input class="form-control" type="date" value="" id="fromDateInput">
+              </div>
+              <div class="col mb-0">
+                <label for="dobLarge" class="form-label">To</label>
+                <input class="form-control" type="date" value="" id="toDateInput">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer ">
+            <button type="button" class="btn btn-prime w-full" id="filterMda">Apply</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
+
+  
 
   <!-- / Layout wrapper -->
   <!-- Core JS -->
@@ -192,8 +243,10 @@
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="./assets/js/session.js"></script>
+
   <!-- endbuild -->
   <script src="./assets/js/reports.js"></script>
+  <script src="./assets/js/filterInv.js"></script>
   <script>
     let theAtivo = document.querySelector(`.dggg`);
     theAtivo.parentElement.classList.add("active");
