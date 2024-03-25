@@ -261,7 +261,7 @@ function makePaymentRemita() {
   async function openInvoice(invoicenum) {
     const response = await fetch(
       // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-      `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
+      `${HOST}?getSingleInvoice&invoiceNumber=${invoicenum}`
     );
     const userInvoices = await response.json();
     console.log(userInvoices);
@@ -618,7 +618,7 @@ async function openReceipt(invoicenum) {
   console.log(invoicenum)
 
   const response = await fetch(
-    `${HOST}/php/index.php?getSinglePayment&invoiceNumber=${invoicenum}`
+    `${HOST}?getSinglePayment&invoiceNumber=${invoicenum}`
   );
   const userInvoices = await response.json();
   console.log(userInvoices);

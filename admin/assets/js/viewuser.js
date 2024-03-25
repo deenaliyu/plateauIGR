@@ -14,69 +14,30 @@ async function fetchUSER() {
 
     let theUSER = userInvoices.message.filter(tt => tt.id === theUserID)[0]
 
-    $("#accessLevelview").html(`
-      <h1 class="text-lg fontBold mb-2">Access Level</h1>
-
-      <table class="table w-[50%]">
-        <tr>
-          <th>Dashboard Access</th>
-          <td>${theUSER.dashboard_access} Access</td>
-        </tr>
-        <tr>
-          <th>Analytics Access</th>
-          <td>${theUSER.analytics_access} Access</td>
-        </tr>
-        <tr>
-          <th>Enumeration Access</th>
-          <td>${theUSER.enumeration_access} Access</td>
-        </tr>
-        <tr>
-          <th>Audit Trail Access</th>
-          <td>${theUSER.audit_trail_access} Access</td>
-        </tr>
-        <tr>
-          <th>Mda Access</th>
-          <td>${theUSER.mda_access} Access</td>
-        </tr>
-        <tr>
-          <th>Report Access</th>
-          <td>${theUSER.reports_access} Access</td>
-        </tr>
-        <tr>
-          <th>Users Access</th>
-          <td>${theUSER.users_access} Access</td>
-        </tr>
-        <tr>
-          <th>Cms Access</th>
-          <td>${theUSER.cms_access} Access</td>
-        </tr>
-        <tr>
-          <th>Support Access</th>
-          <td>${theUSER.support} Access</td>
-        </tr>
-        <tr>
-          <th>PAYE Access</th>
-          <td>${theUSER.payee_access} Access</td>
-        </tr>
-        <tr>
-          <th>Tax Manager Access</th>
-          <td>${theUSER.tax_manager} Access</td>
-        </tr>
-      </table>
-    `)
-
     let alluserInputs = document.querySelectorAll(".userInputs")
     alluserInputs.forEach(uu => {
       uu.value = theUSER[uu.dataset.name]
     })
 
-    let allRadioBoxs = document.querySelectorAll(".form-check-input")
+    
+    const checkboxGroups = document.querySelectorAll('.checkbox-group');
 
-    allRadioBoxs.forEach(uu => {
-      // uu.checked = theUSER[uu.dataset.name]
-      // uu.checked = true;
-      // console.log(theUSER[uu.name])
-    })
+    checkboxGroups.forEach(checkboxGroup => {
+      const checkboxes = checkboxGroup.querySelectorAll('.acclvl');
+      const dataName = checkboxes[0].dataset.name;
+      const selectedValue = theUSER[dataName];
+
+      if (selectedValue) {
+        const mainSelVal = selectedValue.split("~");
+
+        checkboxes.forEach(checkbox => {
+
+          if (mainSelVal.includes(checkbox.value)) {
+            checkbox.checked = true;
+          }
+        });
+      }
+    });
   } else {
 
   }

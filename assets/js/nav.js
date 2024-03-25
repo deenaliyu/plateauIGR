@@ -1165,9 +1165,8 @@ function convertNumberToWords(number) {
 
   if (fraction > 0) {
     output += " naira and";
-    for (let i = 0; i < fraction.length; i++) {
-      output += " " + convertDigit(fraction[i]);
-    }
+    output += " " + numberToWords(fraction);
+    
     output += " Kobo"
   }
 
@@ -1319,6 +1318,55 @@ function convertDigit(digit) {
     case "9":
       return "nine";
   }
+}
+
+function numberToWords(num) {
+  const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const teens = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
+  const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
+
+  function convertLessThanOneThousand(n) {
+      let word = '';
+      if (n >= 100) {
+          word += ones[Math.floor(n / 100)] + ' hundred ';
+          n %= 100;
+      }
+      if (n >= 20) {
+          word += tens[Math.floor(n / 10)] + ' ';
+          n %= 10;
+      }
+      if (n > 0) {
+          if (n < 10) word += ones[n] + ' ';
+          else word += teens[n - 10] + ' ';
+      }
+      return word.trim();
+  }
+
+  if (num === 0) return 'zero';
+
+  let words = '';
+  if (num < 0) {
+      words += 'negative ';
+      num = Math.abs(num);
+  }
+
+  if (num >= 1000000000) {
+      words += convertLessThanOneThousand(Math.floor(num / 1000000000)) + ' billion ';
+      num %= 1000000000;
+  }
+  if (num >= 1000000) {
+      words += convertLessThanOneThousand(Math.floor(num / 1000000)) + ' million ';
+      num %= 1000000;
+  }
+  if (num >= 1000) {
+      words += convertLessThanOneThousand(Math.floor(num / 1000)) + ' thousand ';
+      num %= 1000;
+  }
+  if (num > 0) {
+      words += convertLessThanOneThousand(num);
+  }
+
+  return words.trim();
 }
 
 window.$crisp = []; window.CRISP_WEBSITE_ID = "c669b149-3ed9-4ff4-b7f2-2c76a219eee3"; (function () {

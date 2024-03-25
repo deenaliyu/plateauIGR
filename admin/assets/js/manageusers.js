@@ -4,6 +4,7 @@ const theUserID = urlParams.get("id");
 
 let definition = {
   full: "Full Access",
+  full_access: "Full Access",
   no_access: "No Access",
   view_revenue: "View Revenue Performance",
   view_invoice: "View Invoice Manager",
@@ -53,7 +54,9 @@ let definition = {
   generate_report: "Generate report",
   first_reviewer: "First Reviewer",
   second_reviewer: "Second Reviewer",
-  third_reviewer: "Third Reviewer"
+  third_reviewer: "Third Reviewer",
+  view_payee: "View Payee",
+  edit_payee: "Edit Payee",
 };
 
 
@@ -100,6 +103,8 @@ $("#createUser").on("click", function () {
 
         if (selectedValues.length > 0) {
           obj[checkboxes[0].dataset.name] = selectedValues.join('~');
+        } else {
+          obj[checkboxes[0].dataset.name] = "";
         }
       }
 
