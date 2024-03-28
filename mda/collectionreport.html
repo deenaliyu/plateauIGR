@@ -65,7 +65,7 @@
               <label for="defaultSelect" class="form-label">Revenue Head</label>
               <div class="form-group">
                 <select name="" id="getMDAs" class="form-select">
-                  <option  selected>--- All---</option>
+                  <option selected>--- All---</option>
                 </select>
               </div>
             </div>
@@ -74,7 +74,7 @@
               <label for="defaultSelect" class="form-label">Payment Channel</label>
               <div class="form-group">
                 <select name="" id="getPayment" class="form-select ">
-                  <option  selected>--- All---</option>
+                  <option selected>--- All---</option>
                 </select>
               </div>
             </div>
@@ -138,34 +138,31 @@
                   aria-describedby="basic-addon-search31" />
               </div> -->
 
-            <button class="flex gap-1 align-items-center mt-4" type="button" data-bs-toggle="modal"
-              data-bs-target="#filterInvoice">
-              <iconify-icon icon="mdi:filter-variant" style="font-size: 3vh"></iconify-icon>
-              Filter
-            </button>
+              <button class="flex gap-1 align-items-center mt-4" type="button" data-bs-toggle="modal"
+                data-bs-target="#filterInvoice">
+                <iconify-icon icon="mdi:filter-variant" style="font-size: 3vh"></iconify-icon>
+                Filter
+              </button>
 
-            <!-- modals for filtering invoice -->
+              <!-- modals for filtering invoice -->
 
 
-            <button data-bs-target="#generateInvModal" onclick="tableToCSV()"
-              class="button mt-[3.2vh] md:py-0 py-2 w-[30vh] mx-3 md:w-[37vh] md:text-[2.2vh] text-[2vh] hover:text-white flex justify-content-center align-items-center">
-              <iconify-icon icon="material-symbols:cloud-download-rounded"
-                style="font-size: 3vh; padding-right: 1.5vh"></iconify-icon>
-              Download Report
-            </button>
-            
+              <button data-bs-target="#generateInvModal" onclick="exportData()"
+                class="button mt-[3.2vh] md:py-0 py-2 w-[30vh] mx-3 md:w-[37vh] md:text-[2.2vh] text-[2vh] hover:text-white flex justify-content-center align-items-center">
+                <iconify-icon icon="material-symbols:cloud-download-rounded"
+                  style="font-size: 3vh; padding-right: 1.5vh"></iconify-icon>
+                Download Report
+              </button>
 
-            <a class="mt-4 flex flex-row gap-2" href = "./profile.html">
-              <div class="">
-              <img src="./assets/img/userprofile.png"
-                  alt
-                  class="md:w-[5vh] w-10 h-auto rounded-circle"
-                  id="theProfImg1"
-                />
-              </div>
+
+              <a class="mt-4 flex flex-row gap-2" href="./profile.html">
+                <div class="">
+                  <img src="./assets/img/userprofile.png" alt class="md:w-[5vh] w-10 h-auto rounded-circle"
+                    id="theProfImg1" />
+                </div>
                 <p id="mdName"></p>
-            </a>
-          </div>
+              </a>
+            </div>
         </nav>
 
         <!-- / Navbar -->
@@ -255,65 +252,37 @@
 
 
   <script>
-    function tableToCSV() {
-      /* Get the HTML data using Element by Id */
-      var table = document.querySelector(".table");
+    function exportData() {
+      var csv = [];
+      var table = document.getElementById("showCollections");
 
-      /* Declaring array variable */
-      var rows = [];
-
-      //iterate through rows of table
-      for (var i = 0, row; row = table.rows[i]; i++) {
-        //rows would be accessed using the "row" variable assigned in the for loop
-        //Get each cell value/column from the row
-        column1 = row.cells[0].innerText;
-        column2 = row.cells[1].innerText;
-        column3 = row.cells[2].innerText;
-        column4 = row.cells[3].innerText;
-        column5 = row.cells[4].innerText;
-        column6 = row.cells[5].innerText;
-        column7 = row.cells[6].innerText;
-        column8 = row.cells[7].innerText;
-        column9 = row.cells[8].innerText;
-        column10 = row.cells[9].innerText;
-        column11 = row.cells[10].innerText;
-
-
-        /* add a new records in the array */
-        rows.push(
-          [
-            column1,
-            column2,
-            column3,
-            column4,
-            column5,
-            column6,
-            column7,
-            column8,
-            column9,
-            column10,
-            column11
-          ]
-        );
-
+      // Add header to CSV
+      var header = [];
+      for (var h = 0; h < table.rows[0].cells.length; h++) {
+        header.push(table.rows[0].cells[h].innerText);
       }
-      csvContent = "data:text/csv;charset=utf-8,";
-      /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
-      rows.forEach(function (rowArray) {
-        row = rowArray.join(",");
-        csvContent += row + "\r\n";
-      });
+      csv.push(header.join(','));
 
-      /* create a hidden <a> DOM node and set its download attribute */
+      // Add rows to CSV
+      for (var i = 1; i < table.rows.length; i++) {
+        var row = [], cols = table.rows[i].querySelectorAll('td, th');
+
+        for (var j = 0; j < cols.length; j++) {
+          row.push(cols[j].innerText);
+        }
+
+        csv.push(row.join(','));
+      }
+
+      // Download CSV file
+      var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
       var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "Invoice_Report.csv");
+      var link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'invoice_report');
       document.body.appendChild(link);
-      /* download the data file named "Stock_Price_Report.csv" */
       link.click();
     }
-
   </script>
 
   <!-- Vendors JS -->
