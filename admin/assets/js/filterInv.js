@@ -29,7 +29,7 @@ if (userDATA) {
   `)
 
 
-  
+
 } else {
 
 }
@@ -120,13 +120,17 @@ function removeDoubleSpaces(inputText) {
 $("#filterMda").on('click', () => {
   const selectedMda = document.getElementById('getMDAs').value;
   const selRevv = document.getElementById('listOfpayable');
-  const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
+  let selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
 
   const selectedPaymentStatus = document.getElementById('paymentStatusSelect').value;
   const fromDate = document.getElementById('fromDateInput').value;
   const toDate = document.getElementById('toDateInput').value;
 
-  // console.log(selectedMda, selectedRevenueHead)
+  // console.log(fromDate, toDate, selectedMda, selectedRevenueHead)
+
+  if (selectedRevenueHead === "All") {
+    selectedRevenueHead = ""
+  }
 
   const filteredData = AllInvoiceData.filter(item =>
     (!selectedMda || removeDoubleSpaces(item.COL_3.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
@@ -137,7 +141,7 @@ $("#filterMda").on('click', () => {
   );
 
   // console.log(selectedRevenueHead.toLowerCase() )
-  // console.log(filteredData)
+  console.log(filteredData)
 
   $("#dataTable").DataTable().clear().draw()
   $("#dataTable").DataTable().destroy()
