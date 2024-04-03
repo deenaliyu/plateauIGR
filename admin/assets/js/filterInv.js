@@ -184,12 +184,16 @@ function clearfilter() {
 $("#filterMda2").on('click', () => {
   const selectedMda = document.getElementById('getMDAs').value;
   const selRevv = document.getElementById('listOfpayable');
-  const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
+  let selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
   const payment = document.getElementById('listOfchannel').value;
   const fromDate = document.getElementById('fromDateInput').value;
   const toDate = document.getElementById('toDateInput').value;
 
-  console.log(selectedMda, selectedRevenueHead)
+  // console.log(selectedMda, selectedRevenueHead)
+
+  if (selectedRevenueHead === "All") {
+    selectedRevenueHead = ""
+  }
 
   const filteredData = AllInvoiceData.filter(item =>
     (!selectedMda || removeDoubleSpaces(item.mda_id.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
