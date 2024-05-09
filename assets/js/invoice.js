@@ -65,6 +65,38 @@ async function openInvoice(invoicenum, price) {
     let invoice_info = userInvoices.message[0]
     let TotalInvoice = ""
     // console.log(invoice_info)
+    let currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+    let specificDate = new Date(invoice_info.due_date);
+    if( specificDate < currentDate){
+// console.log(invoice_info)
+      $("#invoiceCard").html(`
+      <div class="invoicetop"></div>
+      <div class="flex justify-center items-center h-[60vh]">
+        <p class="fontBold text-xl">Invalid Invoice, or expired invoice</p>
+      </div>
+    `)
+
+    let thePP = document.querySelector('.invoiceContainer')
+
+    let thSiblings = thePP.nextElementSibling
+    let sesinID = JSON.parse(localStorage.getItem("userDataPrime"))
+    if (sesinID) {
+      thSiblings.innerHTML = `
+        <a href="./dashboard/taxes.html" class="button flex gap-3 items-center px-10 mt-6">
+          <span>Regenerate Invoice</span>
+          <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
+        </a>
+      `
+    } else {
+      thSiblings.innerHTML = `
+        <a href="./generateinvoice.html" class="button flex gap-3 items-center px-10 mt-6">
+          <span>Regenerate Invoice</span>
+          <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
+        </a>
+      `
+    }
+    }else{
     TotalInvoice += `
       <div class="invoicetop"></div>
 
@@ -286,6 +318,8 @@ async function openInvoice(invoicenum, price) {
     $("#editBtn").on("click", function () {
       editoo();
     });
+  }
+  
   } else {
     $("#invoiceCard").html(`
       <div class="invoicetop"></div>

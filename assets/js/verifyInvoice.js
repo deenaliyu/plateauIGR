@@ -27,11 +27,46 @@ $("#verifyInvoice").on("click", () => {
     fetch(`${HOST}/index.php?verifyInvoice&invoice_number=${invoiceNumber}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data)
+        // console.log(data)
+        
+        
         if (data.status === 1) {
+            let currentDate = new Date();
+            currentDate.setHours(0, 0, 0, 0);
+            let specificDate = new Date(data.message.due_date);
+            // console.log(specificDate)
+            // console.log(currentDate)
           $(".verifiyer").html("")
           nextPrev(1)
-          if (data.message.payment_status == "unpaid") {
+          
+          if( specificDate < currentDate){
+              $("#verifyInvoice").removeClass("hidden")
+               $("#verInvv").html(`
+              <h1 class="fontBold text-2xl text-center">Verify Invoice</h1>
+
+              <div class="flex justify-center mt-5">
+                <img src="./assets/img/notPaid.png" alt="">
+              </div>
+
+              <p class="text-center mt-2 text-xl">This invoice has Expired!!</p>
+
+
+              <div class="flex justify-center">
+                <div class="flex justify-between mt-4 gap-3">
+                  <a href="index.html" class="outline-btn flex gap-3 items-center px-10" type="button">
+                    <span>Return to the homepage</span>
+                  </a>
+
+                  <a type="button"  href="generateinvoice.html" class="button flex gap-3 items-center px-10">
+                    <span>Generate new Invoice</span>
+                  </a>
+                </div>
+              </div>
+            `)
+              
+          }else{
+              
+              if (data.message.payment_status == "unpaid") {
 
             $("#verifyInvoice").removeClass("hidden")
 
@@ -39,7 +74,7 @@ $("#verifyInvoice").on("click", () => {
               <h1 class="fontBold text-2xl text-center">Verify Invoice</h1>
 
               <div class="flex justify-center mt-5">
-                <img src="./assets/img/notpaid.png" alt="">
+                <img src="./assets/img/notPaid.png" alt="">
               </div>
 
               <p class="text-center mt-2 text-xl">This invoice has not been paid!!</p>
@@ -102,6 +137,8 @@ $("#verifyInvoice").on("click", () => {
               // openInvoice()
             })
           }
+          }
+          
         } else if (data.status === 0) {
           $(".verifiyer").html(`<p class='text-[#ff0000] text-sm'>invoice number "<span class="fontBold textPrimary">${invoiceNumber}"</span> was not found</p>`)
           $("#verifyInvoice").removeClass("hidden")
