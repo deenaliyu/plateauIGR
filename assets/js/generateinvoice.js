@@ -96,13 +96,32 @@ function addInput() {
 
       <div class="form-group w-4/12">
         <label for="">Amount*</label>
-        <input type="number" class="form-control genInv thePaymentInput h-[40px]" id="amountTopay">
+        <input type="text" class="form-control genInv thePaymentInput h-[40px] amountTopay" id="amountTopay">
       </div>
 
       <iconify-icon icon="zondicons:minus-outline" class="cursor-pointer" id="${theStrng}" onclick="removeInpt(this)"></iconify-icon>
     </div>
  
   `)
+
+
+  const amountInput = document.querySelectorAll('.amountTopay');
+  amountInput.forEach(element => {
+    element.addEventListener('input', function (e) {
+    // Remove commas from the current input to avoid formatting issues
+    let value = e.target.value.replace(/,/g, '');
+    
+    // Convert to number and then back to string to remove leading zeros and non-numeric characters except dot
+    value = parseFloat(value.replace(/[^0-9.]/g, '')).toString();
+    
+    // Handle NaN case if the field becomes empty
+    if (!value) value = '';
+
+    // Format the number with commas
+    e.target.value = value
+      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  });
+});
 
   AllRevs.forEach(dd => {
     $(`.${theStrng}`).append(`
@@ -360,7 +379,9 @@ function goToPreviewPage() {
   let mdaSelected = document.querySelector("#mda").value
 
   thePayInputs.forEach(payIn => {
-    amountto.push(parseFloat(payIn.value))
+
+   let mm =  payIn.value.replace(/,/g, '');
+    amountto.push(parseFloat(mm))
   })
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
 
@@ -386,7 +407,7 @@ function goToPreviewPage() {
         </div>  
         <div class="flex space-x-3">
           <p>Amount:</p>
-          <p>${formatMoney(parseFloat(thePayInputs[i].value))}</p>
+          <p>${formatMoney(parseFloat(thePayInputs[i].value.replace(/,/g, '')))}</p>
         </div>  
       `
     })

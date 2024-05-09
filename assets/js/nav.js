@@ -162,7 +162,7 @@ const currentYear = new Date().getFullYear()
 $("#footer").html(`
     <footer class="bg-white flex justify-between items-center md:px-10 px-3 py-2 landingFooter border-t border-gray-200">
       <div class="flex items-center gap-2">
-          <p class="text-[#555555] md:text-sm text-xs">Copyright 2021 - ${currentYear} Primeguage Solutions Limited </p>
+          <p class="text-[#555555] md:text-sm text-xs">Copyright 2021 - ${currentYear} Primeguage Solutions Limited</p>
           <img src="./assets/img/logo1.png" class="w-[60px] h-[30px]" alt="">
       </div>
 
@@ -1095,8 +1095,12 @@ let STATES2 = `
   <option value="Sokoto">Sokoto</option>
   <option value="Taraba">Taraba</option>
   <option value="Yobe">Yobe</option>
-  <option value="Zamfara" >Zamfara</option>
+  <option value="Zamfara">Zamfara</option>
 `
+
+
+$(".stat").html(STATES2)
+
 let stateSelect2 = document.querySelector("#selectState")
 let lgaSelect2 = document.querySelector('#selectLGA')
 

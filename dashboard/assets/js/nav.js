@@ -1,10 +1,91 @@
-let HOST = "https://plateauigr.com/php1/index.php"
+let HOST = "https://plateauigr.com/php/index.php"
 let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
 let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
 let dataUser = JSON.parse(localStorage.getItem("userDataPrime"));
+console.log(dataUser.category);
+if(dataUser.category == "Individual"){
+    $(".aside").html(`
+<div class="app-brand demo">
+    <div class="flex items-center gap-x-1">
+      <a href="../index.html">
+        <img src="./assets/img/logo.png" class="w-[70px] -ml-2" alt="" />
+      </a>
+      <div class="pt-2">
+      <h5 class="text-[#1E1E1E] text-[15px] fontBold">Plateau IGR Portal</h5>
+      <p class="text-[#1E1E1E] text-[12px] pt-2">Future of tax payment</p>
+      </div>
+      </div>
+      <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
+        <i class="bx bx-chevron-left bx-sm align-middle"></i>
+      </a>
+    </div>
 
-$(".aside").html(`
+
+    <ul class="menu-inner">
+      <!-- Dashboard -->
+      <h4 class="menu-link pl-8 pt-5">MENU</h4>
+      <li class="menu-item">
+        <a href="index.html"  class="menu-link dass">
+          <i class="menu-icon tf-icons bx bx-home-circle"></i>
+          <div data-i18n="Analytics">Dashboard</div>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="taxes.html" class="menu-link das">
+          <i class='menu-icon tf-icons bx bx-buildings' ></i>
+          <div data-i18n="Basic">My taxes</div>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="invoice.html" class="menu-link dae">
+          <i class='menu-icon tf-icons bx bxs-credit-card'></i>
+          <div data-i18n="Basic">Invoice</div>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="paymenthistory.html" class="menu-link mdp">
+        <iconify-icon icon="bx:history" class="menu-icon"></iconify-icon>
+          <div data-i18n="Basic">Payment history</div>
+        </a>
+      </li>
+
+      <li class="menu-item">
+      <a href="payee-individual.html" class="menu-link paye">
+      <iconify-icon icon="fluent-mdl2:edit-contact" class="menu-icon"></iconify-icon>
+        <div data-i18n="Basic">PAYE Manager</div>
+      </a>
+    </li>
+      <li class="menu-item">
+        <a href="eservice.html" class="menu-link mdd">
+        <iconify-icon icon="carbon:dns-services" class="menu-icon"></iconify-icon>
+          <div data-i18n="Basic">E-Services</div>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="profile.html" class="menu-link mdo">
+        <i class='menu-icon tf-icons bx bxs-group' ></i>
+          <div data-i18n="Basic">Profile</div>
+        </a>
+      </li>
+      <h4 class="menu-link pl-8 mt-5">YOUR ACCOUNT</h4>
+      <li class="menu-item">
+        <a href="support.html"  class="menu-link daso">
+          <i class="menu-icon tf-icons bx bx-home-circle"></i>
+          <div data-i18n="Analytics">Help & Support</div>
+        </a>
+      </li>
+      <li class="menu-item">
+        <a href="" id="logout" class="menu-link">
+          <i class='menu-icon tf-icons bx bx-buildings' ></i>
+          <div data-i18n="Basic">Log Out</div>
+        </a>
+      </li>
+    </ul>
+
+`);
+}else{
+    $(".aside").html(`
 <div class="app-brand demo">
     <div class="flex items-center gap-x-1">
       <a href="../index.html">
@@ -83,6 +164,8 @@ $(".aside").html(`
     </ul>
 
 `);
+}
+
 let userInfo2 = JSON.parse(window.localStorage.getItem("userDataPrime"));
 
 $(".navi")
@@ -151,7 +234,7 @@ const currentYear = new Date().getFullYear()
 $(".footer").html(`
 <div class="flex justify-between">
 <div class="flex items-center gap-x-3">
-  <p class="text-[#1E1E1E] text-[16px]">Copyright 2021 - ${currentYear} Primeguage Solutions Limited </p>
+  <p class="text-[#1E1E1E] text-[16px]">Copyright 2021 - ${currentYear} Primegauge</p>
   <img src="../assets/img/logo1.png" width="50px" alt="">
 </div>
 <div class="flex items-center gap-x-3">
