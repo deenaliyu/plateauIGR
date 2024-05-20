@@ -40,15 +40,23 @@ var theCurrentMonth = ThecurrentDate.getMonth() + 1;
 
 fillSelectOptions("annualYear", 2023, theCurrentYear + 8, theCurrentYear);
 
-function refreshTheCards() {
-//   let theMonth = document.querySelector("#selMonth").value
+// function refreshTheCards() {
+// //   let theMonth = document.querySelector("#selMonth").value
+//   let theYear = document.querySelector("#annualYear").value
+
+//   theCurrentYear = theYear
+// //   theCurrentMonth = theMonth
+//   getYearlyRevenue()
+ 
+// }
+
+$("#annualYear").on('change', function () {
   let theYear = document.querySelector("#annualYear").value
 
   theCurrentYear = theYear
-//   theCurrentMonth = theMonth
+  //   theCurrentMonth = theMonth
   getYearlyRevenue()
- 
-}
+})
 
 async function getYearlyRevenue() {
     $("#total_amount_invoiced2").html(`
@@ -231,7 +239,7 @@ async function fetchAnalytics() {
   };
   try {
     const response = await fetch(
-      `${HOST}/php/index.php?getDashboardAnalyticsAdmin`
+      `${HOST}?getDashboardAnalyticsAdmin`
     );
 
     const userAnalytics = await response.json();
@@ -247,6 +255,9 @@ async function fetchAnalytics() {
     $("#total_invoice").html(userAnalytics.total_invoice.toLocaleString())
     $("#total_amount").html(userAnalytics.total_invoice_paid.toLocaleString())
     $("#reg_taxP").html(userAnalytics.total_user.toLocaleString())
+    
+    $("#total_numberE").html(userAnalytics.total_expired_invoice.toLocaleString())
+    $("#total_amountE").html(userAnalytics.total_expired_invoice_amount.toLocaleString())
 
     let tt = parseFloat(userAnalytics.total_amount_paid);
     let ti = parseFloat(userAnalytics.total_amount_invoiced);

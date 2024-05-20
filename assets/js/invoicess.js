@@ -1,5 +1,14 @@
 let userDATA = JSON.parse(localStorage.getItem("userDataPrime"))
 
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 2,
+  });
+}
+
+
 async function fetchMDAs() {
   let config = {
     mode: 'cors',
@@ -261,5 +270,44 @@ async function fetchInvoices() {
 
 fetchInvoices().then((uu) => {
   $(".dataTable").DataTable();
+});
+
+async function fetchExpiredInvoice() {
+
+  $("#showInvoiceExpired").html("");
+  $("#loader2").css("display", "flex");
+
+  const response = await fetch(`${HOST}?userDueInvoices&payer_id=${userDATA.tax_number}`);
+  const userInvoices = await response.json();
+
+  $("#loader2").css("display", "none");
+
+  if (userInvoices.status === 1) {
+
+    userInvoices.message.reverse().forEach((userInvoice, i) => {
+      $("#showInvoiceExpired").append(`
+        <tr class="relative">   
+          <td>${userInvoice.tax_number}</td>
+          <td>${userInvoice.invoice_number}</td>
+          <td>${userInvoice.office_name ? userInvoice.office_name : 'Not Assigned'}</td>
+          <td>${userInvoice.COL_4}</td>
+          <td>${formatMoney(parseFloat(userInvoice.amount_paid))}</td>
+          <td>${formatMoney(parseFloat(userInvoice.amount_paid))}</td>
+          <td>${userInvoice["date_created"]}</td>
+          <td>${userInvoice["due_date"]}</td>
+          <td id="" class="checking">
+            <p class='text-danger'>${userInvoice.payment_status}</p>
+          </td>
+        </tr>
+      `)
+    })
+
+  } else {
+    $("#dataTable4").DataTable();
+  }
+}
+
+fetchExpiredInvoice().then((uu) => {
+  $("#dataTable4").DataTable();
 });
 

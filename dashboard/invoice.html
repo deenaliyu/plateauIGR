@@ -114,6 +114,14 @@
                     Paid Invoice
                   </button>
                 </li>
+                <li class="nav-item text-center" role="presentation">
+                  <button class="nav-link" id="expired-invoice-tab" data-bs-toggle="pill"
+                    data-bs-target="#expired-invoice" type="button" role="tab" aria-controls="expired-invoice"
+                    aria-selected="false">
+                    Expired Invoice
+                  </button>
+                </li>
+                
               </ul>
               <div class="tab-content" id="pills-tabContent">
                 <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
@@ -184,6 +192,34 @@
                   </div>
                   <div class="flex justify-center items-center mt-4" id="loader">
                     <!-- <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div> -->
+                  </div>
+                </div>
+
+                <!-- EXPIRED INVOICE -->
+
+                <div class="tab-pane fade" id="expired-invoice" role="tabpanel" aria-labelledby="pills-home-tab">
+                  <div class="table-responsive">
+                    <table class="table theTable invoiceeTable" id="dataTable4">
+                      <thead>
+                        <th class="fontBold text-sm text-gray-500">Payer ID</th>
+                        <th class="fontBold text-sm text-gray-500">Invoice No.</th>
+                        <th class="fontBold text-sm text-gray-500">Office</th>
+                        <th class="fontBold text-sm text-gray-500">Description</th>
+                        <th class="fontBold text-sm text-gray-500">Invoice Amount</th>
+                        <th class="fontBold text-sm text-gray-500">Amount paid</th>
+                        <th class="fontBold text-sm text-gray-500">Invoice date</th>
+                        <th class="fontBold text-sm text-gray-500">Due date</th>
+                        <th class="fontBold text-sm text-gray-500">status</th>
+                      </thead>
+                      <tbody id="showInvoiceExpired">
+
+
+                      </tbody>
+                    </table>
+                  </div>
+
+                  <div class="flex justify-center items-center mt-4" id="loader2">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
                   </div>
                 </div>
               </div>

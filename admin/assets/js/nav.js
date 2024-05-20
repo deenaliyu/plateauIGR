@@ -1,4 +1,4 @@
-let HOST = "https://plateauigr.com/php/index.php"
+let HOST = "https://plateauigr.com/php1/index.php"
 let publitioKey1 = "ksWdvJ3JjfV5JZnHyRqv"
 let publitioKey2 = "ruxLmts4NiupnoddqVi1Z70tnoMmf5yT"
 
@@ -58,6 +58,12 @@ $(".aside").html(`
           <li class="menu-item">
             <a href="collection.html" class="menu-link">
               <div data-i18n="Input groups">Collection Report</div>
+            </a>
+          </li>
+          
+          <li class="menu-item">
+            <a href="expiredinvoice.html" class="menu-link">
+              <div data-i18n="Input groups">Expired Invoice</div>
             </a>
           </li>
 
@@ -1212,22 +1218,22 @@ if (stateSelect) {
       <option value="${lga}">${lga}</option>
     `
   })
-  stateSelect.addEventListener('change', function () {
-    let selectedState = $(this).val()
+//   stateSelect.addEventListener('change', function () {
+//     let selectedState = $(this).val()
 
-    let arrStates = Object.values(lgaList)
-    let finalarrState = arrStates[stateSelect.selectedIndex - 1]
+//     let arrStates = Object.values(lgaList)
+//     let finalarrState = arrStates[stateSelect.selectedIndex - 1]
 
-    lgaSelect.innerHTML = ''
+//     lgaSelect.innerHTML = ''
 
-    finalarrState.forEach((opt, ii) => {
-      lgaSelect.innerHTML += `
-        <option value="${opt}">${opt}</option>
-      `
-    })
+//     finalarrState.forEach((opt, ii) => {
+//       lgaSelect.innerHTML += `
+//         <option value="${opt}">${opt}</option>
+//       `
+//     })
 
 
-  })
+//   })
 
 }
 
@@ -1239,22 +1245,22 @@ if (stateSelect2) {
       <option value="${lga}">${lga}</option>
     `
   })
-  // stateSelect2.addEventListener('change', function () {
-  //   let selectedState = $(this).val()
+//   stateSelect2.addEventListener('change', function () {
+//     let selectedState = $(this).val()
 
-  //   let arrStates = Object.values(lgaList)
-  //   let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
+//     let arrStates = Object.values(lgaList)
+//     let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
 
-  //   lgaSelect2.innerHTML = ''
+//     lgaSelect2.innerHTML = ''
 
-  //   finalarrState.forEach((opt, ii) => {
-  //     lgaSelect2.innerHTML += `
-  //       <option value="${opt}">${opt}</option>
-  //     `
-  //   })
+//     finalarrState.forEach((opt, ii) => {
+//       lgaSelect2.innerHTML += `
+//         <option value="${opt}">${opt}</option>
+//       `
+//     })
 
 
-  // })
+//   })
 
 }
 

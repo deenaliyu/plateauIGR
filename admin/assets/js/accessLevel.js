@@ -16,9 +16,10 @@ async function getRolesAdmin() {
     $(".main_section").removeClass("hidden")
     let adminRoles = userRoles.dashboard_access
 
-    let full_access = adminRoles.find(ff => ff === "full")
+    let full_access = adminRoles.find(ff => ff === "dashboard_access")
     let no_access = adminRoles.find(ff => ff === "no_access")
 
+    
     if (no_access === undefined && full_access === undefined) {
       $(".main_section").html(`<p class="text-center text-xl fontBold">No Access</p>`)
 
