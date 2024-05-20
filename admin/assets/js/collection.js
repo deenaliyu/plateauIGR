@@ -45,6 +45,7 @@ function displayData(userInvoices) {
         <td>${formatMoney(parseFloat(userInvoice.amount_paid))}</td>
         <td>${userInvoice.payment_channel}</td>
         <td>${userInvoice.payment_gateway}</td>
+        <td>${userInvoice.payment_method}</td>
         <td>${userInvoice.payment_reference_number}</td>
         <td>${userInvoice.invoice_number}</td>
         <td>${userInvoice.timeIn}</td>
@@ -68,6 +69,7 @@ function displayData(userInvoices) {
           <td>&#8358; ${(parseFloat(userInvoice.amount_paid))}</td>
           <td>${userInvoice.payment_channel}</td>
           <td>${userInvoice.payment_gateway}</td>
+          <td>${userInvoice.payment_method}</td>
           <td>${userInvoice.payment_reference_number}</td>
           <td>${userInvoice.invoice_number}</td>
           <td>${userInvoice.timeIn}</td>
