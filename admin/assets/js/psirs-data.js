@@ -627,7 +627,7 @@ shuffledUsers.forEach((user, i) => {
       </td>
       <td>
         <div class="flex gap-3">
-          <a href="taxpayerlist.html?id=${user.id}" class="btn btn-primary btn-sm">View</a>
+          <a href="#" class="btn btn-primary btn-sm">View</a>
 
           ${user.accountStatus === "linked" ? `
                 <button class="btn btn-primary btn-sm disabled" disabled data-bs-toggle="modal" data-bs-target="#linkUser">Link
@@ -639,5 +639,7 @@ shuffledUsers.forEach((user, i) => {
     </tr>
   `)
 });
+
+// taxpayerlist.html?id=${user.id}
 
 $('#dataTable').DataTable();
