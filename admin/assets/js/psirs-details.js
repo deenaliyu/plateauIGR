@@ -645,7 +645,7 @@ $("#showPayment").append(`
     <td>Accommodation fee(all tertiary institutions)</td>
     <td>NGN 100.00</td>
     <td>PayStack</td>
-    <td><span class="badge badge-success">Paid</span></td>
+    <td><span class="badge bg-success">Paid</span></td>
   </tr>
 `)
 
