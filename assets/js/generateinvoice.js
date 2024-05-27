@@ -107,20 +107,34 @@ function addInput() {
 
   const amountInput = document.querySelectorAll('.amountTopay');
   amountInput.forEach(element => {
-    element.addEventListener('input', function (e) {
-    // Remove commas from the current input to avoid formatting issues
-    let value = e.target.value.replace(/,/g, '');
-    
-    // Convert to number and then back to string to remove leading zeros and non-numeric characters except dot
-    value = parseFloat(value.replace(/[^0-9.]/g, '')).toString();
-    
-    // Handle NaN case if the field becomes empty
-    if (!value) value = '';
+   element.addEventListener('input', function(e) {
+  let inputVal = e.target.value;
 
-    // Format the number with commas
-    e.target.value = value
-      .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-  });
+  // Immediately return if the first character is a dot to allow ".xx" inputs
+  if (inputVal === '.') {
+    return;
+  }
+
+  // Normalize the input by removing commas and any non-numeric characters except for the decimal point
+  let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
+
+  // Split the input into whole and decimal parts
+  let [whole, decimal] = normalizedInput.split('.');
+
+  // Ensure the whole part is only numeric
+  whole = whole.replace(/\D/g, '');
+
+  // If there's a decimal part, limit it to two digits
+  if (decimal) {
+    decimal = decimal.substring(0, 2); // Limit decimal part to two digits
+  }
+
+  // Format the whole part with commas
+  let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  // Reconstruct the formatted value
+  e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
+})
 });
 
   AllRevs.forEach(dd => {
@@ -230,7 +244,7 @@ function continuePage() {
   
   <div class="form-group w-full">
     <label for="">Phone number *</label>
-    <input type="number" class="form-control payInputs" minlength="11" maxlength="11" required
+    <input type="number" class="form-control payInputs" id="phonenumber" minlength="11" maxlength="11" required
       data-name="phone" placeholder="Your 11-digits phone number" value="">
   </div>
     `)
@@ -302,7 +316,7 @@ function continuePage() {
   
   <div class="form-group w-full">
     <label for="">Phone number *</label>
-    <input type="number" class="form-control payInputs" minlength="11" maxlength="11" required
+    <input type="number" class="form-control payInputs" id="phonenumber" minlength="11" maxlength="11" required
       data-name="phone" placeholder="Your 11-digits phone number" value="${userInfo.phone}">
   </div>
     `)
@@ -435,14 +449,22 @@ function goToPreviewPage() {
 
     if (i === payInputs.length - 1) {
       let allInputs = document.querySelectorAll(".payInputs")
+      
+      let phonenumber = document.querySelector("#phonenumber")
+      
+      if(phonenumber.value.length < 11) {
+          alert("Phone number should be equal to 100")
+      } else {
+         allInputs.forEach((inputt, i) => {
+            let theInputt = document.querySelector(`.payInputs2[data-name='${inputt.dataset.name}']`)
+            if (theInputt) {
+              theInputt.value = inputt.value
+            }
+          });
+          nextPrev(1) 
+      }
 
-      allInputs.forEach((inputt, i) => {
-        let theInputt = document.querySelector(`.payInputs2[data-name='${inputt.dataset.name}']`)
-        if (theInputt) {
-          theInputt.value = inputt.value
-        }
-      });
-      nextPrev(1)
+      
 
     }
   }
@@ -569,7 +591,7 @@ async function generateInvoiceNum(taxNumber) {
   let description = document.querySelector("#thedescripInput").value
 
   thePayInputs.forEach(payIn => {
-    amountto.push(parseFloat(payIn.value))
+    amountto.push(parseFloat(payIn.value.replace(/,/g, '')))
   })
 
   $.ajax({
