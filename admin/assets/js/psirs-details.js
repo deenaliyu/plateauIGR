@@ -647,6 +647,15 @@ $("#showPayment").append(`
     <td>PayStack</td>
     <td><span class="badge bg-success">Paid</span></td>
   </tr>
+
+  <tr>
+    <td>${theUSerss.id}</td>
+    <td>T217171481658549</td>
+    <td>Development Levy	</td>
+    <td>NGN 200.00</td>
+    <td>PayStack</td>
+    <td><span class="badge bg-success">Paid</span></td>
+  </tr>
 `)
 
 
