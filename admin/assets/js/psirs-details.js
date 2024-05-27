@@ -636,7 +636,7 @@ $("#userInfo").html(`
 `)
 
 $(".dataTable").DataTable();
-$(".dataTable2").DataTable();
+// $(".dataTable2").DataTable();
 
 
 function exportTablee(element, thetable) {
@@ -677,6 +677,37 @@ async function getTaxesCateg() {
   })
 
 }
+
+async function getTaxesCateg() {
+  const response = await fetch(`${HOST}?getAllRevenueHeads`)
+  const revenueHeads = await response.json()
+
+  // console.log(revenueHeads)
+
+  let ii = 0
+
+  revenueHeads.message.forEach((revenuehead, i) => {
+    $("#showAllTaxes").append(`
+      <tr>
+        <td>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="">
+          </div>
+        </td>
+        <td>${revenuehead["COL_3"]}</td>
+        <td>${revenuehead["COL_4"]}</td>
+        <td>GENERAL</td>
+        <td>${revenuehead["COL_5"]}</td>
+        <td>Yes</td>
+        <td>One-off</td>
+        <td>${revenuehead["COL_6"]}</td>
+      </tr>
+    `)
+  })
+
+}
+
+getTaxesCateg()
 
 
 async function getAnalytics() {
