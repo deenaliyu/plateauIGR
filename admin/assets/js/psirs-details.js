@@ -1,3 +1,6 @@
+const urlParams = new URLSearchParams(window.location.search);
+const userIdo = urlParams.get('id');
+
 let usersName = [
   {
     "name": "Abdullahi Musa",
@@ -606,39 +609,106 @@ let usersName = [
   },
 ]
 
-function shuffleArray(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
+const enumerated = urlParams.get('enumerated')
+let userrrData = {}
+
+let theUSerss = usersName.find((userIdolo => userIdolo.id === userIdo))
+let theimg = "./assets/img/avatars/1.png"
+
+$("#userInfo").html(`
+    <div class="flex gap-x-2">
+    <img src="${theimg}" class="h-[70px] w-[70px] object-cover rounded-full" />
+    <div class="mt-2">
+    <h6 class="font-bold text-[20px]">${theUSerss.name}</h6>
+    <p><span class="font-bold">TIN:</span> 9084587323</p>
+    </div>
+    </div>
+      
+        <div class="flex flex-wrap gap-x-5 gap-y-3 mt-2">
+          <p><span class="font-bold">Category:</span> Individual</p>
+          <p><span class="font-bold">State:</span> Plateau</p>
+          <p><span class="font-bold">LGA:</span> Wase</p>
+          <p><span class="font-bold">Address:</span> -</p>
+          <p><span class="font-bold">Email address:</span> ${theUSerss.name.replaceAll(' ', '').toLowerCase() + '@gmail.com'}</p>
+          <p><span class="font-bold">Contact:</span> 0908745232</p>
+          <p><span class="font-bold">Tax Number:</span> ${theUSerss.id}</p>
+        </div>
+`)
+
+$(".dataTable").DataTable();
+$(".dataTable2").DataTable();
+
+
+function exportTablee(element, thetable) {
+  $("#" + element).tableHTMLExport({
+    // csv, txt, json, pdf
+    type: 'csv',
+    // file name
+    filename: 'report.csv'
+  });
 }
 
-const shuffledUsers = shuffleArray(usersName);
 
-shuffledUsers.forEach((user, i) => {
-  $("#showreport").append(`
-    <tr>
-      <td>${i + 1}</td>
-      <td>${user.id}</td>
-      <td>${user.name}</td>
-      <td>
-        ${user.accountStatus === "linked" ? '<span class="badge bg-success">linked</span>' : '<span class="badge bg-danger">un-linked</span>'}
-      </td>
-      <td>
-        <div class="flex gap-3">
-          <a href="psirs-datadetails.html?id=${user.id}" class="btn btn-primary btn-sm">View</a>
+async function getTaxesCateg() {
+  const response = await fetch(`${HOST}?getAllRevenueHeads`)
+  const revenueHeads = await response.json()
 
-          ${user.accountStatus === "linked" ? `
-                <button class="btn btn-primary btn-sm disabled" disabled data-bs-toggle="modal" data-bs-target="#linkUser">Link
-                User</button>`:
-      `<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>`}
-          
-        </div>
-      </td>
-    </tr>
-  `)
-});
+  // console.log(revenueHeads)
+
+  let ii = 0
+
+  revenueHeads.message.forEach((revenuehead, i) => {
+    $("#showAllTaxes").append(`
+      <tr>
+        <td>
+          <div class="form-check">
+            <input class="form-check-input" type="checkbox" value="" id="">
+          </div>
+        </td>
+        <td>${revenuehead["COL_3"]}</td>
+        <td>${revenuehead["COL_4"]}</td>
+        <td>GENERAL</td>
+        <td>${revenuehead["COL_5"]}</td>
+        <td>Yes</td>
+        <td>One-off</td>
+        <td>${revenuehead["COL_6"]}</td>
+      </tr>
+    `)
+  })
+
+}
 
 
-$('#dataTable').DataTable();
+async function getAnalytics() {
+  try {
+
+    const response = await fetch(`${HOST}?inAppNotification&user_id=${userIdo}`)
+    const data = await response.json()
+    console.log(data)
+    if (data.status === 0) {
+      $("#ActivityLogs").html(``)
+
+    } else {
+      // <button class="text-[#CDA545] text-[12px] underline underline-offset-1">clear</button>
+
+      data.message.forEach((notification, i) => {
+        $("#ActivityLogs").append(`
+        <tr>
+          <td>${notification.timeIn}</td>
+          <td>${notification.comment}</td>
+        </tr>
+      `)
+
+      });
+
+
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+getAnalytics().then(ee => {
+  $('#dataTable77').DataTable();
+})
