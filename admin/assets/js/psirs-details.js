@@ -638,6 +638,17 @@ $("#userInfo").html(`
 $(".dataTable").DataTable();
 // $(".dataTable2").DataTable();
 
+$("#showPayment").append(`
+  <tr>
+    <td>${theUSerss.id}</td>
+    <td>214240206459608</td>
+    <td>Accommodation fee(all tertiary institutions)</td>
+    <td>NGN 100.00</td>
+    <td>PayStack</td>
+    <td><span class="badge badge-success">Paid</span></td>
+  </tr>
+`)
+
 
 function exportTablee(element, thetable) {
   $("#" + element).tableHTMLExport({
