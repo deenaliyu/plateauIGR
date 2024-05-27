@@ -88,6 +88,13 @@ $(".aside").html(`
         </a>
       </li>
 
+      <li class="menu-item">
+        <a href="psirs-data.html" class="menu-link psirs">
+          <iconify-icon icon="material-symbols:database" class="menu-icon"></iconify-icon>
+          <div data-i18n="Basic">PSIRS Data</div>
+        </a>
+      </li>
+
       
 
       <li class="menu-item">
