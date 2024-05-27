@@ -106,37 +106,9 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0" id="showreport">
-                    <tr>
-                      <td>1</td>
-                      <td>PSIRS3434343</td>
-                      <td>David Adeola</td>
-                      <td>
-                        <span class="badge bg-success">linked</span>
-                      </td>
-                      <td>
-                        <div class="flex gap-3">
-                          <a href="taxpayerlist.html?id=PLI-5089723614" class="btn btn-primary btn-sm">View</a>
-                          <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#linkUser">Link
-                            User</button>
-                        </div>
-                      </td>
-                    </tr>
+                    
 
-                    <tr>
-                      <td>2</td>
-                      <td>PSIRS74343</td>
-                      <td>David Adeola</td>
-                      <td>
-                        <span class="badge bg-danger">un-linked</span>
-                      </td>
-                      <td>
-                        <div class="flex gap-3">
-                          <a href="#" class="btn btn-primary btn-sm">View</a>
-                          <button class="btn btn-primary btn-sm disabled" disabled data-bs-toggle="modal" data-bs-target="#linkUser">Link
-                            User</button>
-                        </div>
-                      </td>
-                    </tr>
+                    
                   </tbody>
                 </table>
               </div>
@@ -228,10 +200,13 @@
   <script src="./assets/js/nav.js"></script>
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="./assets/js/psirs-data.js"></script>
   <!-- endbuild -->
   <script>
     let theAtivo = document.querySelector(`.psirs`)
     theAtivo.parentElement.classList.add("active")
+
+    
   </script>
 
   <!-- Vendors JS -->
@@ -239,6 +214,7 @@
   <!-- Main JS -->
   <!-- <script src="./assets/js/accessLevel.js"></script> -->
   <script src="./assets/js/main.js"></script>
+
 </body>
 
 </html>
