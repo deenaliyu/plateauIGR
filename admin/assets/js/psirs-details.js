@@ -17,7 +17,7 @@ let usersName = [
     "tin": "23205021-59",
     "accountStatus": "unlinked",
     "phoneNumber": "7034372015",
-    "lga": "909",
+    "lga": "N/A",
     "address": "UKADUM MAZA ROAD, JOS NORTH"
   },
   {
@@ -26,7 +26,7 @@ let usersName = [
     "tin": "23200970-58",
     "accountStatus": "linked",
     "phoneNumber": "8036197944",
-    "lga": "1239",
+    "lga": "N/A",
     "address": "NURTW FANDA KARSHI"
   },
   {
@@ -35,7 +35,7 @@ let usersName = [
     "tin": "23000028-57",
     "accountStatus": "linked",
     "phoneNumber": "8164145770",
-    "lga": "954",
+    "lga": "N/A",
     "address": "N/A"
   },
   {
@@ -44,7 +44,7 @@ let usersName = [
     "tin": "23000044-2",
     "accountStatus": "unlinked",
     "phoneNumber": "8039668212",
-    "lga": "897",
+    "lga": "N/A",
     "address": "SABON BARKI, JOS SOUTH"
   },
   {
@@ -80,7 +80,7 @@ let usersName = [
     "tin": "23205372-48",
     "accountStatus": "linked",
     "phoneNumber": "8035701158",
-    "lga": "1431",
+    "lga": "N/A",
     "address": "MANGU"
   },
   {
@@ -89,7 +89,7 @@ let usersName = [
     "tin": "23000040-2",
     "accountStatus": "unlinked",
     "phoneNumber": "8105883615",
-    "lga": "1056",
+    "lga": "N/A",
     "address": "N/A"
   },
   {
@@ -98,7 +98,7 @@ let usersName = [
     "tin": "23000041-8",
     "accountStatus": "linked",
     "phoneNumber": "7036832030",
-    "lga": "871",
+    "lga": "N/A",
     "address": "RIKKOS, NEAR NDLEA OFFICE"
   },
   {
