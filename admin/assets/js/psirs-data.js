@@ -1019,30 +1019,41 @@ let usersName = [
 
 ]
 
-usersName.forEach((user, i) => {
-  $("#showreport").append(`
-    <tr>
-      <td>${i + 1}</td>
-      <td>PSIRS-${user.id}</td>
-      <td>${user.tin}</td>
-      <td>${user.name}</td>
-      <td>
-        ${user.accountStatus === "linked" ? '<span class="badge bg-success">linked</span>' : '<span class="badge bg-danger">un-linked</span>'}
-      </td>
-      <td>
-        <div class="flex gap-3">
-          <a href="psirs-datadetails.html?id=${user.id}" class="btn btn-primary btn-sm">View</a>
+async function getAllUsers() {
+  const response = await fetch(`https://plateauigr.com/php/?pull_old_users&limit=1`)
+  const userDatas = await response.json()
 
-          ${user.accountStatus === "linked" ? `
-                <button class="btn btn-primary btn-sm disabled" disabled data-bs-toggle="modal" data-bs-target="#linkUser">Link
-                User</button>`:
-      `<button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>`}
-          
-        </div>
-      </td>
-    </tr>
-  `)
-});
+  // console.log(userDatas)
+
+  $("#loader").remove()
+
+  userDatas.message.forEach((user, i) => {
+    $("#showreport").append(`
+      <tr>
+        <td>${i + 1}</td>
+        <td>PSIRS-${user.user_id}</td>
+        <td>${user.user_tin}</td>
+        <td>${user.name}</td>
+        <td>
+          <span class="badge bg-danger">un-linked</span>
+        </td>
+        <td>
+          <div class="flex gap-3">
+            <a href="psirs-datadetails.html?id=${user.user_tin}" class="btn btn-primary btn-sm">View</a>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
+          </div>
+        </td>
+      </tr>
+    `)
+  })
 
 
-$('#dataTable').DataTable();
+}
+
+getAllUsers()
+
+// .then({
+//   $('#dataTable').DataTable();
+// })
+
+
