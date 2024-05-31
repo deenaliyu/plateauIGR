@@ -1050,10 +1050,8 @@ async function getAllUsers() {
 
 }
 
-getAllUsers()
-
-// .then({
-//   $('#dataTable').DataTable();
-// })
+getAllUsers().then(res => {
+  $('#dataTable').DataTable();
+})
 
 

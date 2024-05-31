@@ -59,7 +59,7 @@ async function getPaymentUser() {
   try {
     const response = await fetch(`https://plateauigr.com/php/?pull_old_payments&id=${userIdo}`)
     const userPDatas = await response.json()
-
+    
     // console.log(userPDatas)
     userPDatas.message.forEach(((pDatas, i) => {
       let ruless = JSON.parse(pDatas.rules)
