@@ -1050,8 +1050,85 @@ async function getAllUsers() {
 
 }
 
-getAllUsers().then(res => {
-  $('#dataTable').DataTable();
-})
+document.addEventListener('DOMContentLoaded', () => {
+  const apiUrl = 'https://plateauigr.com/php/?pull_old_users&limit=';
+  let totalRecords = 0;
+
+  fetchTotalRecords().then(total => {
+    totalRecords = total;
+    createPagination(totalRecords);
+    fetchData(1); // Fetch initial data for page 1
+  });
+
+  function fetchTotalRecords() {
+    return fetch(apiUrl + '1')
+      .then(response => response.json())
+      .then(data => {
+        return { dataLenth: data.length, total: data.message.length }
+      }) // Assuming length represents the total records
+      .catch(error => console.error('Error fetching total records:', error));
+  }
+
+  function fetchData(page) {
+    $("#showreport").html('')
+    $("#loader").css('display', 'flex')
+    fetch(apiUrl + page)
+      .then(response => response.json())
+      .then(data => displayData(data.message))
+      .catch(error => console.error('Error fetching data:', error));
+  }
+
+  function displayData(data) {
+    $("#loader").css('display', 'none')
+    const tbody = document.querySelector('#showreport');
+    tbody.innerHTML = '';
+    data.forEach((item, i) => {
+      const row = `<tr>
+        <td>${i + 1}</td>
+        <td>PSIRS-${item.user_id}</td>
+        <td>${item.user_tin}</td>
+        <td>${item.name}</td>
+        <td>
+          <span class="badge bg-danger">un-linked</span>
+        </td>
+        <td>
+          <div class="flex gap-3">
+            <a href="psirs-datadetails.html?id=${item.user_tin}" class="btn btn-primary btn-sm">View</a>
+            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
+          </div>
+        </td>
+      </tr>
+    `;
+      tbody.innerHTML += row;
+    });
+  }
+
+  function createPagination(totalRecords) {
+    const pagination = document.getElementById('pagination');
+    // console.log(totalRecords)
+    let numberOfPagination = totalRecords.dataLenth / totalRecords.total
+    $("#showing").html(`Showing 1 to ${totalRecords.total} of ${totalRecords.dataLenth.toLocaleString()} entries`)
+    $("#paging").html('Page 1')
+
+    for (let i = 1; i <= numberOfPagination; i++) {
+      const li = document.createElement('li');
+      li.textContent = i;
+      li.addEventListener('click', () => {
+        fetchData(i);
+        document.querySelectorAll('.pagination li').forEach(el => el.classList.remove('active'));
+        li.classList.add('active');
+        $("#showing").html(`Showing ${i * 100} to ${(i + 1) * 100} of ${totalRecords.dataLenth.toLocaleString()} entries`)
+        $("#paging").html(`Page ${i}`)
+      });
+      if (i === 1) li.classList.add('active'); // Mark the first page as active
+      pagination.appendChild(li);
+    }
+  }
+
+});
+
+// getAllUsers().then(res => {
+//   $('#dataTable').DataTable();
+// })
 
 

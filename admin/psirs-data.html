@@ -37,6 +37,39 @@
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
   <script src="./assets/vendor/js/helpers.js"></script>
   <script src="./assets/js/config.js"></script>
+
+  <style>
+    .pagination {
+      display: flex;
+      list-style-type: none;
+      /* justify-content: center; */
+      overflow-x: auto;
+      padding: 0;
+      margin-top: 20px;
+    }
+
+    .pagination li {
+      margin: 0 5px;
+      padding: 4px 8px;
+      font-size: 12px;
+      cursor: pointer;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f2f2f2;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    .pagination li:hover {
+      background-color: #d1ab51;
+      color: #fff;
+    }
+
+    .pagination .active {
+      background-color: #CDA545;
+      color: white;
+      font-weight: bold;
+    }
+  </style>
 </head>
 
 <body class="taxpayer">
@@ -107,15 +140,24 @@
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0" id="showreport">
-                    
 
-                    
+
+
                   </tbody>
                 </table>
               </div>
+
               <div class="flex justify-center items-center mt-4" id="loader">
                 <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
               </div>
+
+              <div id="pagination" class="pagination"></div>
+
+              <div class="flex justify-between items-center mt-4">
+                <p id="showing">-</p>
+                <p id="paging">-</p>
+              </div>
+
 
             </div>
 
@@ -207,7 +249,7 @@
     let theAtivo = document.querySelector(`.psirs`)
     theAtivo.parentElement.classList.add("active")
 
-    
+
   </script>
 
   <!-- Vendors JS -->
