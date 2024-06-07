@@ -1094,6 +1094,21 @@ async function fetchAllData() {
       </tr>
     `;
       tbody.innerHTML += row;
+
+      $("#showreport2").append(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>PSIRS-${item.user_id}</td>
+          <td>${item.user_tin}</td>
+          <td>${item.name.replace(/,/g, '')}</td>
+          <td>${item.user_type}</td>
+          <td>${item.email}</td>
+          <td>${item.phone?.replace(/,/g, '')}</td>
+          <td>${item.city?.replace(/,/g, '')}</td>
+          <td>${item.address.replace(/,/g, '')}</td>
+          <td>${item.status}</td>
+        </tr>
+      `)
     });
   }
 
@@ -1215,6 +1230,21 @@ $("#searchBtn").on('click', async function () {
                 <button class="btn btn-primary btn-sm" data-usertin="${searched.user_tin}" onclick='openLinkUser(this)' data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
               </div>
             </td>
+          </tr>
+        `)
+
+        $("#showreport2").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>PSIRS-${searched.user_id}</td>
+            <td>${searched.user_tin}</td>
+            <td>${searched.name.replace(/,/g, '')}</td>
+            <td>${searched.user_type}</td>
+            <td>${searched.email}</td>
+            <td>${searched.phone?.replace(/,/g, '')}</td>
+            <td>${searched.city?.replace(/,/g, '')}</td>
+            <td>${searched.address.replace(/,/g, '')}</td>
+            <td>${searched.status}</td>
           </tr>
         `)
       })
