@@ -125,6 +125,50 @@
 
           <div class="container-xxl flex-grow-1 container-p-y taxes">
 
+            <div>
+              <h2 class="text-xl fontBold mb-4">Summary</h2>
+
+              <div class="grid lg:grid-cols-3 md:grid-cols-3 grid-cols-2 gap-3">
+
+                <div class="dashCards card">
+                  <div class="flex items-center gap-3">
+                    <div class="icoCont bg-[#1c315c1f] p-2">
+                      <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                    </div>
+                    <p class="text-[#000] text-[15px]">Total Number Of Taxpayers Migrated</p>
+                  </div>
+
+                  <p class="zanumbers text-end mt-5" id="totalNumb"></p>
+                </div>
+
+                <div class="dashCards card">
+                  <div class="flex items-center gap-3">
+                    <div class="icoCont bg-[#1c315c1f] p-2">
+                      <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                    </div>
+                    <p class="text-[#000] text-[15px]">Total Number Of Taxpayers Linked</p>
+                  </div>
+
+                  <p class="zanumbers text-end mt-5" id="totalLinked"></p>
+
+                </div>
+
+                <div class="dashCards card">
+                  <div class="flex items-center gap-3">
+                    <div class="icoCont bg-[#1c315c1f] p-2">
+                      <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                    </div>
+                    <p class="text-[#000] text-[15px]">Total Number Of Taxpayers Un-linked</p>
+                  </div>
+
+                  <p class="zanumbers text-end mt-5" id="totalNotLinked"></p>
+
+                </div>
+
+
+              </div>
+            </div>
+
             <div class="card py-4 mt-6 px-2">
 
               <div class="table-responsive">
@@ -177,10 +221,11 @@
                   <form action="">
                     <div class="form-group mt-3">
                       <label>PayerID</label>
-                      <input type="text" class="form-control" />
+                      <input type="text" class="form-control" id="theUserPlid" />
                     </div>
 
-                    <button class="btn btn-primary mt-4 w-full">Link User</button>
+                    <button class="btn btn-primary mt-4 w-full" type="button" id="linkTheUser">Link User</button>
+                    <div id="msg_box2"></div>
                   </form>
 
                 </div>

@@ -1019,36 +1019,26 @@ let usersName = [
 
 ]
 
-async function getAllUsers() {
-  const response = await fetch(`https://plateauigr.com/php/?pull_old_users&limit=1`)
-  const userDatas = await response.json()
+async function getMigratedDataAnalytics() {
+  try {
+    const response = await fetch(`https://plateauigr.com/php/?getMigratedDataAnalytics`)
+    const getMigrated = await response.json()
 
-  // console.log(userDatas)
+    $('#totalNumb').html(getMigrated.total_data_migrated.toLocaleString())
+    $('#totalLinked').html(getMigrated.total_data_linked.toLocaleString())
+    $('#totalNotLinked').html(getMigrated.total_data_unlinked.toLocaleString())
 
-  $("#loader").remove()
+  } catch (error) {
+    console.log(error)
+  }
 
-  userDatas.message.forEach((user, i) => {
-    $("#showreport").append(`
-      <tr>
-        <td>${i + 1}</td>
-        <td>PSIRS-${user.user_id}</td>
-        <td>${user.user_tin}</td>
-        <td>${user.name}</td>
-        <td>
-          <span class="badge bg-danger">un-linked</span>
-        </td>
-        <td>
-          <div class="flex gap-3">
-            <a href="psirs-datadetails.html?id=${user.user_tin}" class="btn btn-primary btn-sm">View</a>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
-          </div>
-        </td>
-      </tr>
-    `)
-  })
+
+
 
 
 }
+
+getMigratedDataAnalytics()
 
 document.addEventListener('DOMContentLoaded', () => {
   const apiUrl = 'https://plateauigr.com/php/?pull_old_users&limit=';
@@ -1089,12 +1079,13 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${item.user_tin}</td>
         <td>${item.name}</td>
         <td>
-          <span class="badge bg-danger">un-linked</span>
+        ${item.status === "Unlinked" ? '<span class="badge bg-danger">un-linked</span>' : '<span class="badge bg-success">linked</span>'}
+          
         </td>
         <td>
           <div class="flex gap-3">
             <a href="psirs-datadetails.html?id=${item.user_tin}" class="btn btn-primary btn-sm">View</a>
-            <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
+            <button class="btn btn-primary btn-sm" data-usertin="${item.user_tin}" onclick='openLinkUser(this)' data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
           </div>
         </td>
       </tr>
@@ -1127,8 +1118,61 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-// getAllUsers().then(res => {
-//   $('#dataTable').DataTable();
-// })
+// USER LINKING 
+
+function openLinkUser(e) {
+  let theTin = e.dataset.usertin
+  console.log(theTin)
+  sessionStorage.setItem('thelinkingusertin', theTin)
+}
+
+$("#linkTheUser").on('click', function () {
+  $("#msg_box2").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  $("#linkTheUser").addClass("hidden")
+
+  let theTin = sessionStorage.getItem('thelinkingusertin')
+  let thePLID = document.querySelector('#theUserPlid').value
+
+  $.ajax({
+    type: "GET",
+    url: `https://plateauigr.com/php/?linkUser&oldtin=${theTin}&newtin=${thePLID}`,
+    dataType: "json",
+    success: function (data) {
+      // console.log(data)
+
+      if (data.status === 1) {
+        $("#msg_box2").html(`
+          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
+        `)
+        $("#linkTheUser").removeClass("hidden")
+
+        $("#linkUser").modal("hide")
+        fetchTotalRecords().then(total => {
+          totalRecords = total;
+          createPagination(totalRecords);
+          fetchData(1); // Fetch initial data for page 1
+        });
+
+      } else {
+        $("#msg_box2").html(`
+        <p class="text-danger text-center mt-4 text-lg">Something went wrong, Try again !</p>
+      `)
+        $("#linkTheUser").removeClass("hidden")
 
 
+      }
+    },
+    error: function (request, error) {
+      $("#msg_box2").html(`
+        <p class="text-danger text-center mt-4 text-lg">Something went wrong, Try again !</p>
+      `)
+      $("#linkTheUser").removeClass("hidden")
+      console.log(error);
+    }
+  });
+
+})
