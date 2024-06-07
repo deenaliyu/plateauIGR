@@ -1040,9 +1040,12 @@ async function getMigratedDataAnalytics() {
 
 getMigratedDataAnalytics()
 
-document.addEventListener('DOMContentLoaded', () => {
+async function fetchAllData() {
   const apiUrl = 'https://plateauigr.com/php/?pull_old_users&limit=';
   let totalRecords = 0;
+
+  $("#showreport").html('')
+  $("#loader").css('display', 'flex')
 
   fetchTotalRecords().then(total => {
     totalRecords = total;
@@ -1115,8 +1118,11 @@ document.addEventListener('DOMContentLoaded', () => {
       pagination.appendChild(li);
     }
   }
+}
 
-});
+fetchAllData()
+
+
 
 // USER LINKING 
 
@@ -1146,16 +1152,14 @@ $("#linkTheUser").on('click', function () {
 
       if (data.status === 1) {
         $("#msg_box2").html(`
-          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
+          <p class="text-success text-center mt-4 text-lg">${data.message}</p>
         `)
         $("#linkTheUser").removeClass("hidden")
 
-        $("#linkUser").modal("hide")
-        fetchTotalRecords().then(total => {
-          totalRecords = total;
-          createPagination(totalRecords);
-          fetchData(1); // Fetch initial data for page 1
-        });
+        setTimeout(() => {
+          $("#linkUser").modal("hide")
+        }, 1000);
+
 
       } else {
         $("#msg_box2").html(`
@@ -1174,5 +1178,58 @@ $("#linkTheUser").on('click', function () {
       console.log(error);
     }
   });
+
+})
+
+$("#searchBtn").on('click', async function () {
+  let theValue = document.querySelector("#searchInpt").value
+
+  if (theValue === "") {
+    // alert()
+  } else {
+    // console.log(theValue)
+
+    $('#searchBtn').html(`
+      <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+    `)
+
+    try {
+      const response = await fetch(`https://plateauigr.com/php/?searchOldData&value=${theValue}`)
+      const gettSearchedData = await response.json()
+
+      $("#showreport").html('')
+
+      gettSearchedData.forEach((searched, i) => {
+        $("#showreport").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>PSIRS-${searched.user_id}</td>
+            <td>${searched.user_tin}</td>
+            <td>${searched.name}</td>
+            <td>
+              ${searched.status === "Unlinked" ? '<span class="badge bg-danger">un-linked</span>' : '<span class="badge bg-success">linked</span>'}
+            </td>
+            <td>
+              <div class="flex gap-3">
+                <a href="psirs-datadetails.html?id=${searched.user_tin}" class="btn btn-primary btn-sm">View</a>
+                <button class="btn btn-primary btn-sm" data-usertin="${searched.user_tin}" onclick='openLinkUser(this)' data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
+              </div>
+            </td>
+          </tr>
+        `)
+      })
+
+      $('#searchBtn').html('Search')
+
+    } catch (error) {
+      console.log(error)
+      $('#searchBtn').html('Search')
+      $("#showreport").html(`
+        <tr>
+          <td class="text-center" colspan='6'>No Record found</td>
+        </tr>
+      `)
+    }
+  }
 
 })

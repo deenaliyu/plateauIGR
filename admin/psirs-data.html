@@ -171,6 +171,12 @@
 
             <div class="card py-4 mt-6 px-2">
 
+              <div class="form-group flex items-center gap-2 mb-4">
+                <input type="search" placeholder="Search  ..." class="form-control" id="searchInpt" />
+                <button class="btn btn-primary" id="searchBtn">search</button>
+                <button class="btn btn-outline-primary" onclick="fetchAllData()">Clear</button>
+              </div>
+
               <div class="table-responsive">
                 <table class="table txTable" id="dataTable">
                   <thead>
@@ -248,34 +254,6 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
 
-  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header ">
-          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
-            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
-        </div>
-        <div class="modal-body mb-5">
-
-          <h1 class="text-center text-2xl">TIN Status</h1>
-          <form action="">
-            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
-              Number.</p>
-
-            <select name="" id="selectInput" class="form-select mt-5">
-              <option disabled selected>update status</option>
-              <option value="1">Verified</option>
-              <option value="2">Unverified</option>
-            </select>
-
-            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
-            <div id="msg_box" class="w-full"></div>
-          </form>
-        </div>
-
-      </div>
-    </div>
-  </div>
 
   <!-- build:js assets/vendor/js/core.js -->
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
