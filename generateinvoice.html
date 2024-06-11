@@ -240,7 +240,7 @@
               </div>
             </div>
             <h1 class="mb-3 mt-3">User Details</h1>
-            <div class="flex items-center mb-4 gap-2" id="theName">
+            <div class="flex items-center mb-4 gap-2" id="theName2">
               <div class="form-group w-full">
                 <label for="">First name</label>
                 <input type="text" class="form-control payInputs2" readonly data-name="first_name">
@@ -429,24 +429,38 @@
  
  const amountInp = document.querySelector('.amountTopay');
  
- amountInp.addEventListener('input', function (e) {
-     // Remove commas from the current input to avoid formatting issues
-     let value = e.target.value.replace(/,/g, '');
-     
-     // Convert to number and then back to string to remove leading zeros and non-numeric characters except dot
-     value = parseFloat(value.replace(/[^0-9.]/g, '')).toString();
-     
-     // Handle NaN case if the field becomes empty
-     if (!value) value = '';
- 
-     // Format the number with commas
-     e.target.value = value
-       .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-   });
+amountInp.addEventListener('input', function(e) {
+  let inputVal = e.target.value;
+
+  // Immediately return if the first character is a dot to allow ".xx" inputs
+  if (inputVal === '.') {
+    return;
+  }
+
+  // Normalize the input by removing commas and any non-numeric characters except for the decimal point
+  let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
+
+  // Split the input into whole and decimal parts
+  let [whole, decimal] = normalizedInput.split('.');
+
+  // Ensure the whole part is only numeric
+  whole = whole.replace(/\D/g, '');
+
+  // If there's a decimal part, limit it to two digits
+  if (decimal) {
+    decimal = decimal.substring(0, 2); // Limit decimal part to two digits
+  }
+
+  // Format the whole part with commas
+  let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  // Reconstruct the formatted value
+  e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
+});
   </script>
   
   
-  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/nav.js?v=1.2"></script>
   <script src="assets/js/payment.js"></script>
   <script src="assets/js/tabHandler.js"></script>
   <script src="assets/js/generateinvoice.js"></script>

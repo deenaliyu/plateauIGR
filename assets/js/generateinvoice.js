@@ -398,6 +398,22 @@ function goToPreviewPage() {
     amountto.push(parseFloat(mm))
   })
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
+ 
+    if(categOfTax === "Corporate") {
+        $("#theName2").html(`
+            <div class="form-group w-full">
+              <label for="">Company Name *</label>
+              <input type="text" class="form-control payInputs2" readonly data-name="first_name"
+              placeholder="" value="">
+            </div>
+      
+            <div class="form-group w-full hidden">
+              <label for="">Surname *</label>
+              <input type="text" class="form-control payInputs" value="&nbsp;" readonly data-name="surname"
+              placeholder="" value="">
+            </div>
+        `)
+    }
 
   let theSpace = `
     <div class="flex space-x-4">
@@ -453,7 +469,7 @@ function goToPreviewPage() {
       let phonenumber = document.querySelector("#phonenumber")
       
       if(phonenumber.value.length < 11) {
-          alert("Phone number should be equal to 100")
+          alert("Phone number should be equal to 11")
       } else {
          allInputs.forEach((inputt, i) => {
             let theInputt = document.querySelector(`.payInputs2[data-name='${inputt.dataset.name}']`)
