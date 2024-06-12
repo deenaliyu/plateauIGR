@@ -267,6 +267,20 @@
                       <div class="dashCards card card-hidden w-full flex-col space-y-2">
                         <div class="flex items-center  justify-start">
                           <div class="icoCont bg-[#d7a1271f] mr-auto">
+                            <iconify-icon class="text-[#D32121]" icon="mdi:recurring-payment"></iconify-icon>
+                          </div>
+                          <p class=" text-gray-500 text-xs text-end ">
+                            % OF EXPIRED INVOICES TO GENERATED INVOICES
+                          </p>
+                        </div>
+                        <p class="zanumbers text-end">
+                          <span id="percentageNum">-</span>
+                        </p>
+                      </div>
+
+                      <div class="dashCards card card-hidden w-full flex-col space-y-2">
+                        <div class="flex items-center  justify-start">
+                          <div class="icoCont bg-[#d7a1271f] mr-auto">
                             <iconify-icon class="text-[#D7A127]" icon="mdi:recurring-payment"></iconify-icon>
                           </div>
                           <p class=" text-gray-500 text-xs text-end ">
@@ -288,12 +302,12 @@
                             TOTAL NUMBER OF EXPIRED INVOICE
                           </p>
                         </div>
-                        
+
                         <div class="form-group  ml-auto" style="margin-bottom: 12px;">
-                            <select class="form-select" id="theMonth2" onchange="refreshTheMonth2()">
-                            </select>
+                          <select class="form-select" id="theMonth2" onchange="refreshTheMonth2()">
+                          </select>
                         </div>
-                
+
                         <p class="zanumbers text-end">
                           <span id="totalInvE">-</span>
                         </p>
@@ -308,12 +322,12 @@
                             TOTAL AMOUNT OF EXPIRED INVOICE
                           </p>
                         </div>
-                        
+
                         <div class="form-group  ml-auto" style="margin-bottom: 12px;">
-                            <select class="form-select" id="theMonth1" onchange="refreshTheMonth1()">
-                            </select>
+                          <select class="form-select" id="theMonth1" onchange="refreshTheMonth1()">
+                          </select>
                         </div>
-                        
+
                         <p class="zanumbers text-end">
                           <span id="total_amount_invoicedE">-</span>
                         </p>
@@ -595,13 +609,6 @@
   <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/main.js"></script>
   <script src="./assets/js/dashboard.js"></script>
-  <!-- <script src="../assets/js/invoicess.js"></script> -->
-  <!-- <script src="../assets/js/chartjs.min.js" async></script> -->
-
-  <!-- Page JS -->
-
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>
