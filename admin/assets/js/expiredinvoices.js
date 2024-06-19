@@ -243,3 +243,42 @@ async function totalExpiredInvoiceCount() {
 }
 
 totalExpiredInvoiceCount()
+
+async function fetchThePercentage() {
+
+  try {
+    const response = await fetch(`${HOST}?getDashboardAnalyticsAdmin`);
+    const response2 = await fetch(`${HOST}?getFilteredInv&sort=expired`);
+
+    const userAnalytics = await response.json();
+    const amountInvoiced = await response2.json();
+
+    let totalAmountInvoiced = userAnalytics.total_amount_invoiced
+    let totalExpiredRevenue = sumTotalExpiredRevenue(amountInvoiced.message);
+
+    function sumTotalExpiredRevenue(data) {
+      return data.reduce((acc, item) => {
+        return acc + parseFloat(item.total_expired_revenue);
+      }, 0);
+    }
+
+
+    const percentageExpired = calculatePercentage(totalExpiredRevenue, totalAmountInvoiced);
+    $("#percentageNum").html(percentageExpired.toFixed(2) + '%')
+
+
+  } catch (error) {
+    console.log(error)
+  }
+
+
+}
+
+fetchThePercentage()
+
+function calculatePercentage(expired, generated) {
+  if (generated === 0) {
+    return 0; // Avoid division by zero
+  }
+  return (expired / generated) * 100;
+}
