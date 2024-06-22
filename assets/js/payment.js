@@ -456,6 +456,15 @@ function makePayment() {
           email: invoiceDetails.email,
           amount: finalPay * 100,
           currency: 'NGN',
+          "metadata": {
+            "custom_fields": [
+              {
+                "display_name": "Invoice Number",
+                "variable_name": "invoice_number",
+                "value": invoicenum
+              }
+            ]
+          },
           callback: function (response) {
             //this happens after the payment is completed successfully
             var reference = response.reference;
@@ -819,7 +828,7 @@ async function openReceipt(invoicenum) {
           </tr>
           <tr>
             <td>JTB TIN</td>
-            <td>${invoice_info.tin ?invoice_info.tin : '-'}</td>
+            <td>${invoice_info.tin ? invoice_info.tin : '-'}</td>
           </tr>
           <tr>
             <td>Description</td>
