@@ -637,6 +637,7 @@ async function paymentMethod() {
             
             const options = {
                 responsive: true,
+                maintainAspectRatio: false,
                 plugins: {
                   legend: {
                     position: 'top',
@@ -653,7 +654,7 @@ async function paymentMethod() {
                 }
             };
             
-            new Chart(ctx, {
+            const myChart = new Chart(ctx, {
                 type: 'pie',
                 data: chartData,
                 options: options
@@ -740,7 +741,8 @@ async function invgenerated() {
                         'rgba(255, 206, 86, 1)',  // State Agency
                         'rgba(75, 192, 192, 1)'   // Federal Agency
                     ],
-                    borderWidth: 1
+                    borderWidth: 1,
+                    barThickness: 80 
                 }]
             };
         
@@ -852,7 +854,8 @@ async function invpaid() {
                         'rgba(255, 206, 86, 1)',  // State Agency
                         'rgba(75, 192, 192, 1)'   // Federal Agency
                     ],
-                    borderWidth: 1
+                    borderWidth: 1,
+                    barThickness: 80
                 }]
             };
         
