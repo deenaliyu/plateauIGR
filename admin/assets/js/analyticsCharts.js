@@ -900,7 +900,7 @@ async function avgpayment() {
     const selectInput = document.querySelector('#avgpaymentSelected')
 
     try {
-        const response = await fetch(`https://payzamfara.com/php/?averagePaymentTime`)
+        const response = await fetch(`https://plateauigr.com/php/?averagePaymentTime`)
         const responseDta = await response.json()
 
         function padNumberWithZero(num) {
