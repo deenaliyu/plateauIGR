@@ -113,52 +113,52 @@
             <section class="w-12/12 main_section bg-white">
 
               <ul class="nav nav-pills nav-pillsBtn mb-3 md:gap-[26px] gap-6 p-3" role="tablist">
-                  <li class="nav-item">
-                    <button class="nav-link active" data-name="view_revenue" role="tab" data-bs-toggle="tab"
-                      data-bs-target="#revPer">Revenue
-                      Performance</button>
-                  </li>
-  
-                  <li class="nav-item">
-                    <button class="nav-link" data-name="view_invoice" role="tab" data-bs-toggle="tab"
-                      data-bs-target="#invmanager">Invoice
-                      Manager</button>
-                  </li>
-  
-                  <li class="nav-item">
-                    <button class="nav-link" data-name="view_taxpayer" role="tab" data-bs-toggle="tab"
-                      data-bs-target="#paxprela">Taxpayer
-                      relations</button>
-                  </li>
-  
-                  <!--<li class="nav-item">-->
-                  <!--  <button class="nav-link" data-name="view_tin" role="tab" data-bs-toggle="tab"-->
-                  <!--    data-bs-target="#tinreqman">TIN-->
-                  <!--    Request Manager</button>-->
-                  <!--</li>-->
-  
-                  <!--<li class="nav-item">-->
-                  <!--  <button class="nav-link" data-name="view_impressions" role="tab" data-bs-toggle="tab"-->
-                  <!--    data-bs-target="#view_impressions">Impressions</button>-->
-                  <!--</li>-->
+                <li class="nav-item">
+                  <button class="nav-link active" data-name="view_revenue" role="tab" data-bs-toggle="tab"
+                    data-bs-target="#revPer">Revenue
+                    Performance</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-name="view_invoice" role="tab" data-bs-toggle="tab"
+                    data-bs-target="#invmanager">Invoice
+                    Manager</button>
+                </li>
+
+                <li class="nav-item">
+                  <button class="nav-link" data-name="view_taxpayer" role="tab" data-bs-toggle="tab"
+                    data-bs-target="#paxprela">Taxpayer
+                    relations</button>
+                </li>
+
+                <!--<li class="nav-item">-->
+                <!--  <button class="nav-link" data-name="view_tin" role="tab" data-bs-toggle="tab"-->
+                <!--    data-bs-target="#tinreqman">TIN-->
+                <!--    Request Manager</button>-->
+                <!--</li>-->
+
+                <!--<li class="nav-item">-->
+                <!--  <button class="nav-link" data-name="view_impressions" role="tab" data-bs-toggle="tab"-->
+                <!--    data-bs-target="#view_impressions">Impressions</button>-->
+                <!--</li>-->
               </ul>
 
               <!-- TAB CONTENT  -->
               <section class="tab-content">
-  
-                  <!-- Revenue Performance -->
-                  <div class="tab-pane fade active show" id="revPer" role="tabpanel">
-  
-                    <!-- <div class="flex gap-3 w-4/12">
+
+                <!-- Revenue Performance -->
+                <div class="tab-pane fade active show" id="revPer" role="tabpanel">
+
+                  <!-- <div class="flex gap-3 w-4/12">
                       <select class="form-select">
                         <option value="Monthly">Monthly</option>
                       </select>
                       <button class="btn btn-primary">Apply</button>
                     </div> -->
-  
-                    <div class="row gy-4">
-  
-                      <!-- <div class="col-md-12">
+
+                  <div class="row gy-4">
+
+                    <!-- <div class="col-md-12">
                         <div class="card card-body">
                           <div class='flex justify-end mb-3'>
                               <select class='form-select sm:w-[35%] w-full' id='zonalOfficeSelect'></select>
@@ -170,273 +170,276 @@
                           </div>
                         </div>
                       </div> -->
-  
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">Area office performance</div>-->
-  
-                      <!--    <canvas class="theChart" id="areaOffice"></canvas>-->
-                      <!--  </div>-->
-                      <!--</div>-->
-                      
-                      <div class="col-md-12">
-                        <div class="card card-body">
-                          <div class="card-title text-[#000]">Top & Least 5 performing LGA</div>
-                          <div class='flex justify-end mb-3'>
-                              <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceSelect'></select>
-                          </div> 
-                          
-                          <div id='topLeastPerformanceContainer'>
-                              <canvas class="theChart" id="topLeastPerformance"></canvas>
-                          </div>
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">Area office performance</div>-->
+
+                    <!--    <canvas class="theChart" id="areaOffice"></canvas>-->
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">Top & Least 5 performing LGA</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceSelect'></select>
+                        </div>
+
+                        <div id='topLeastPerformanceContainer'>
+                          <canvas class="theChart" id="topLeastPerformance"></canvas>
                         </div>
                       </div>
-                      
-                      <div class="col-md-12">
-                          <div class="card card-body">
-                              <div class="card-title text-[#000]">Top & Least 5 performing Revenue Head</div>
-                              <div class='flex justify-end mb-3'>
-                                  <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceRevSelect'></select>
-                              </div> 
-                              
-                              <div id='topLeastPerformanceRevContainer'>
-                                  <canvas class="theChart" id="topLeastPerformanceRev"></canvas>
-                              </div>
-                          </div>
-                      </div>
-                      
-                      <div class="col-md-12">
-                          <div class="card card-body">
-                              <div class="card-title text-[#000]">Top & Least 5 performing MDA</div>
-                              <div class='flex justify-end mb-3'>
-                                  <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceMDASelect'></select>
-                              </div> 
-                              
-                              <div id='topLeastPerformanceMDAContainer'>
-                                  <canvas class="theChart" id="topLeastPerformanceMDA"></canvas> 
-                              </div>
-                              
-                          </div>
-                      </div>
-                              
                     </div>
-  
-                  </div>
-  
-                  <!-- Invoice Manager -->
-                  <div class="tab-pane fade" id="invmanager" role="tabpanel">
-  
-                    <div class="row gy-4">
-  
-                      <div class="col-md-12">
-                        <div class="card card-body">
-                          <div class="card-title text-[#000]">No. OF INVOICE GENERATED BASED CATEGORY</div>
-                          <div class='flex justify-end mb-3'>
-                              <select class='form-select sm:w-[35%] w-full' id='invgeneratedSelected'></select>
-                          </div> 
-                          
-                          <div id='invgeneratedContainer'>
-                              <canvas id="invgenerated"></canvas>
-                          </div>
-  
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">Top & Least 5 performing Revenue Head</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceRevSelect'></select>
+                        </div>
+
+                        <div id='topLeastPerformanceRevContainer'>
+                          <canvas class="theChart" id="topLeastPerformanceRev"></canvas>
                         </div>
                       </div>
-  
-                      <div class="col-md-12">
-                        <div class="card card-body">
-                          <div class="card-title text-[#000]">No. OF INVOICE PAID BASED CATEGORY</div>
-                          <div class='flex justify-end mb-3'>
-                              <select class='form-select sm:w-[35%] w-full' id='invpaidSelected'></select>
-                          </div> 
-  
-                          <div id='invpaidContainer'>
-                              <canvas id="invpaid"></canvas>
-                          </div>
-                        </div>
-                      </div>
-  
-                      <div class="col-md-12">
-                        <div class="card card-body">
-                          <div class="card-title text-[#000]">AVERAGE PAYMENT TIME FOR GENERATED INVOICE</div>
-  
-                          <div>
-                            <canvas id="avgpayment"></canvas>
-                          </div>
-                        </div>
-                      </div>
-                      
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">Monthly invoice verification count</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="monthlyInvVerification"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-                      
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">Weekly invoice verification count</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="weeklyInvVerification"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-                      
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">Daily invoice verification count</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="dailyInvVerification"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-  
                     </div>
-  
-  
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">Top & Least 5 performing MDA</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceMDASelect'></select>
+                        </div>
+
+                        <div id='topLeastPerformanceMDAContainer'>
+                          <canvas class="theChart" id="topLeastPerformanceMDA"></canvas>
+                        </div>
+
+                      </div>
+                    </div>
+
                   </div>
-  
-                  <!-- Taxpayer relations -->
-                  <div class="tab-pane fade" id="paxprela" role="tabpanel">
-  
-                    <div class="row gy-4">
-  
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">Most common support issues raised-->
-                      <!--      (5 most common subjects )</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="commonsubjectSupport"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-  
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">SUPPORT CLOSURE RATE</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="supportClosure"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-  
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">SUPPORT TICKET AVERAGE RESOLUTION TIME</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="supportResolu"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-  
-                      <div class="col-md-12">
-                        <div class="card card-body">
-                          <div class="card-title text-[#000]">People's preferred Payment Channel</div>
-                          <div class='flex justify-end mb-3'>
-                              <select class='form-select sm:w-[35%] w-full' id='paymentMethodSelect'></select>
-                          </div> 
-                          
-                          <div id='paymentMethodContainer'>
-                              <canvas class="theChart" width='200' height='400' id="paymentMethod"></canvas>
-                          </div>
+
+                </div>
+
+                <!-- Invoice Manager -->
+                <div class="tab-pane fade" id="invmanager" role="tabpanel">
+
+                  <div class="row gy-4">
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">No. OF INVOICE GENERATED BASED CATEGORY</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='invgeneratedSelected'></select>
+                        </div>
+
+                        <div id='invgeneratedContainer'>
+                          <canvas id="invgenerated"></canvas>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">No. OF INVOICE PAID BASED CATEGORY</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='invpaidSelected'></select>
+                        </div>
+
+                        <div id='invpaidContainer'>
+                          <canvas id="invpaid"></canvas>
                         </div>
                       </div>
-  
                     </div>
-  
-                  </div>
-  
-                  <!-- TIN Request Manager -->
-                  <div class="tab-pane fade" id="tinreqman" role="tabpanel">
-  
-                    <div class="row gy-4">
-  
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">MONTHLY TIN REQUEST</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="monthlyTinRequest"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-  
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">WEEKLY TIN REQUEST</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="weeklyTinRequest"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-  
-  
-                    </div>
-  
-                  </div>
-  
-  
-                  <!-- Impressions -->
-                  <div class="tab-pane fade" id="view_impressions" role="tabpanel">
-  
-                    <div class="row gy-4">
-  
-                      <div class="col-md-12">
-                        <div class="card card-body">
-                          <div class="card-title text-[#000]">Visitor's count rate</div>
-  
-                          <div>
-                            <canvas id="visitorsCount"></canvas>
-                          </div>
-  
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">AVERAGE PAYMENT TIME FOR GENERATED INVOICE</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='avgpaymentSelected'></select>
+                        </div>
+
+                        <div id='avgpaymentContainer'>
+                          <canvas id="avgpayment"></canvas>
                         </div>
                       </div>
-  
-                      <div class="col-md-12">
-                        <div class="card card-body">
-                          <div class="card-title text-[#000]">Impressions</div>
-  
-                          <div>
-                            <canvas id="impressionsChart"></canvas>
-                          </div>
-  
+                    </div>
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">Monthly invoice verification count</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="monthlyInvVerification"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">Weekly invoice verification count</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="weeklyInvVerification"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">Daily invoice verification count</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="dailyInvVerification"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                  </div>
+
+
+                </div>
+
+                <!-- Taxpayer relations -->
+                <div class="tab-pane fade" id="paxprela" role="tabpanel">
+
+                  <div class="row gy-4">
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">Most common support issues raised-->
+                    <!--      (5 most common subjects )</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="commonsubjectSupport"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">SUPPORT CLOSURE RATE</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="supportClosure"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">SUPPORT TICKET AVERAGE RESOLUTION TIME</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="supportResolu"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">People's preferred Payment Channel</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='paymentMethodSelect'></select>
+                        </div>
+
+                        <div id='paymentMethodContainer'>
+                          <canvas class="theChart" width='200' height='400' id="paymentMethod"></canvas>
                         </div>
                       </div>
-  
-                      <!--<div class="col-md-12">-->
-                      <!--  <div class="card card-body">-->
-                      <!--    <div class="card-title text-[#000]">Social media interaction</div>-->
-  
-                      <!--    <div>-->
-                      <!--      <canvas id="socialMedia"></canvas>-->
-                      <!--    </div>-->
-  
-                      <!--  </div>-->
-                      <!--</div>-->
-  
                     </div>
-  
+
                   </div>
-  
-                </section>
-          
-          </section>
+
+                </div>
+
+                <!-- TIN Request Manager -->
+                <div class="tab-pane fade" id="tinreqman" role="tabpanel">
+
+                  <div class="row gy-4">
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">MONTHLY TIN REQUEST</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="monthlyTinRequest"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">WEEKLY TIN REQUEST</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="weeklyTinRequest"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+
+                  </div>
+
+                </div>
+
+
+                <!-- Impressions -->
+                <div class="tab-pane fade" id="view_impressions" role="tabpanel">
+
+                  <div class="row gy-4">
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">Visitor's count rate</div>
+
+                        <div>
+                          <canvas id="visitorsCount"></canvas>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="card card-body">
+                        <div class="card-title text-[#000]">Impressions</div>
+
+                        <div>
+                          <canvas id="impressionsChart"></canvas>
+                        </div>
+
+                      </div>
+                    </div>
+
+                    <!--<div class="col-md-12">-->
+                    <!--  <div class="card card-body">-->
+                    <!--    <div class="card-title text-[#000]">Social media interaction</div>-->
+
+                    <!--    <div>-->
+                    <!--      <canvas id="socialMedia"></canvas>-->
+                    <!--    </div>-->
+
+                    <!--  </div>-->
+                    <!--</div>-->
+
+                  </div>
+
+                </div>
+
+              </section>
+
+            </section>
           </div>
 
 
