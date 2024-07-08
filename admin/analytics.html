@@ -159,12 +159,17 @@
                   <div class="row gy-4">
 
                     <!-- <div class="col-md-12">
-                      <div class="card card-body">
-                        <div class="card-title text-[#000]">Zonal office performance</div>
-
-                        <canvas class="theChart" id="zonalOffPerformance"></canvas>
-                      </div>
-                    </div> -->
+                        <div class="card card-body">
+                          <div class='flex justify-end mb-3'>
+                              <select class='form-select sm:w-[35%] w-full' id='zonalOfficeSelect'></select>
+                          </div>  
+                          <div class="card-title text-[#000]">Zonal office performance</div>
+                          
+                          <div id='zonalOffContainer'>
+                              <canvas class="theChart" id="zonalOffPerformance"></canvas>
+                          </div>
+                        </div>
+                      </div> -->
 
                     <!--<div class="col-md-12">-->
                     <!--  <div class="card card-body">-->
@@ -177,24 +182,40 @@
                     <!-- <div class="col-md-12">
                       <div class="card card-body">
                         <div class="card-title text-[#000]">Top & Least 5 performing LGA</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceSelect'></select>
+                        </div>
 
-                        <canvas class="theChart" id="topLeastPerformance"></canvas>
+                        <div id='topLeastPerformanceContainer'>
+                          <canvas class="theChart" id="topLeastPerformance"></canvas>
+                        </div>
                       </div>
                     </div> -->
 
                     <div class="col-md-12">
                       <div class="card card-body">
                         <div class="card-title text-[#000]">Top & Least 5 performing Revenue Head</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceRevSelect'></select>
+                        </div>
 
-                        <canvas class="theChart" id="topLeastPerformanceRev"></canvas>
+                        <div id='topLeastPerformanceRevContainer'>
+                          <canvas class="theChart" id="topLeastPerformanceRev"></canvas>
+                        </div>
                       </div>
                     </div>
 
                     <div class="col-md-12">
                       <div class="card card-body">
                         <div class="card-title text-[#000]">Top & Least 5 performing MDA</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='topLeastPerformanceMDASelect'></select>
+                        </div>
 
-                        <canvas class="theChart" id="topLeastPerformanceMDA"></canvas>
+                        <div id='topLeastPerformanceMDAContainer'>
+                          <canvas class="theChart" id="topLeastPerformanceMDA"></canvas>
+                        </div>
+
                       </div>
                     </div>
 
@@ -210,8 +231,11 @@
                     <div class="col-md-12">
                       <div class="card card-body">
                         <div class="card-title text-[#000]">No. OF INVOICE GENERATED BASED CATEGORY</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='invgeneratedSelected'></select>
+                        </div>
 
-                        <div>
+                        <div id='invgeneratedContainer'>
                           <canvas id="invgenerated"></canvas>
                         </div>
 
@@ -221,8 +245,11 @@
                     <div class="col-md-12">
                       <div class="card card-body">
                         <div class="card-title text-[#000]">No. OF INVOICE PAID BASED CATEGORY</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='invpaidSelected'></select>
+                        </div>
 
-                        <div>
+                        <div id='invpaidContainer'>
                           <canvas id="invpaid"></canvas>
                         </div>
                       </div>
@@ -231,8 +258,11 @@
                     <div class="col-md-12">
                       <div class="card card-body">
                         <div class="card-title text-[#000]">AVERAGE PAYMENT TIME FOR GENERATED INVOICE</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='avgpaymentSelected'></select>
+                        </div>
 
-                        <div>
+                        <div id='avgpaymentContainer'>
                           <canvas id="avgpayment"></canvas>
                         </div>
                       </div>
@@ -317,9 +347,14 @@
 
                     <div class="col-md-12">
                       <div class="card card-body">
-                        <div class="card-title text-[#000]">People's preferred Payment Method</div>
+                        <div class="card-title text-[#000]">People's preferred Payment Channel</div>
+                        <div class='flex justify-end mb-3'>
+                          <select class='form-select sm:w-[35%] w-full' id='paymentMethodSelect'></select>
+                        </div>
 
-                        <canvas class="theChart" height="200" id="paymentMethod"></canvas>
+                        <div id='paymentMethodContainer'>
+                          <canvas class="theChart" width='200' height='400' id="paymentMethod"></canvas>
+                        </div>
                       </div>
                     </div>
 

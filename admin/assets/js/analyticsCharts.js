@@ -1,70 +1,101 @@
 let monthsss = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
+let topLeastColor5 = ['#63B967', '#63B967', '#63B967', '#63B967', '#63B967', '#EA4335', '#EA4335', '#EA4335', '#EA4335', '#EA4335']
+let topLeastColor3 = ['#63B967', '#63B967', '#63B967', '#EA4335', '#EA4335', '#EA4335']
+
 // zonalOffPerformance chart 
 async function zonalOffPerformance() {
-    const ctx = document.getElementById('zonalOffPerformance').getContext('2d');
-  
+    const selectInput = document.querySelector('#zonalOfficeSelect')
+
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?zonalOfficePerformance`)
+        const response = await fetch(`https://plateauigr.com/php/?zonalOfficePerformance`)
         const responseDta = await response.json()
-        
-        const topOfficeNames = responseDta.top.map(item => item.office_name);
-        const topTotalPayments = responseDta.top.map(item => item.total_payments);
-        
-        const leastOfficeNames = responseDta.Least.map(item => item.office_name);
-        const leastTotalPayments = responseDta.Least.map(item => item.total_payments);
-        
-        const combinedOfficeNames = [...topOfficeNames, ...leastOfficeNames];
-        const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
-        
-        const data = {
-        labels: combinedOfficeNames,
-        datasets: [{
-              label: 'Performance Metric',
-              data: combinedTotalPayments,
-              backgroundColor: [
-                'rgba(0, 128, 0, 0.8)', // Top 5: Green with higher opacity
-                'rgba(0, 128, 0, 0.8)',
-                'rgba(0, 128, 0, 0.8)',
-                'rgba(255, 0, 0, 0.5)', // Least 5: Red with lower opacity
-                'rgba(255, 0, 0, 0.5)',
-                'rgba(255, 0, 0, 0.5)',
-              ],
-              borderColor: [
-                'rgba(0, 128, 0, 1)', // Top 5: Green border
-                'rgba(0, 128, 0, 1)',
-                'rgba(0, 128, 0, 1)',
-                'rgba(255, 0, 0, 1)', // Least 5: Red border
-                'rgba(255, 0, 0, 1)',
-                'rgba(255, 0, 0, 1)',
-              ],
-              borderWidth: 2 // Thicker border for highlighting
-            }]
-        };
-        
-        const options = {
-            indexAxis: 'y',
-            scales: {
-              x: {
-                beginAtZero: true
-              }
-            },
-            plugins: {
-              legend: {
-                display: false
-              }
-            }
-        };
-        
-        const myChart = new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
+
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = date.getMonth() + 1; // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+
+        const months = Object.keys(responseDta).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
         });
-        
-        
-    } catch(error) {
+
+        months.forEach(month => {
+            $('#zonalOfficeSelect').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+
+        selectInput.addEventListener('change', function () {
+            const selectedMonth = this.value;
+            updateChart(selectedMonth, responseDta);
+        });
+
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta);
+
+    } catch (error) {
         console.log(error)
+    }
+
+    async function updateChart(month, data) {
+        document.querySelector("#zonalOffContainer").innerHTML = '<canvas class="theChart" id="zonalOffPerformance"></canvas>';
+        const ctx = document.getElementById('zonalOffPerformance').getContext('2d');
+
+        try {
+            const topOfficeNames = data[month].top.map(item => item.office_name);
+            const topTotalPayments = data[month].top.map(item => item.total_payments);
+
+            const leastOfficeNames = data[month].least.map(item => item.office_name);
+            const leastTotalPayments = data[month].least.map(item => item.total_payments);
+
+            const combinedOfficeNames = [...topOfficeNames, ...leastOfficeNames];
+            const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
+
+            const chartData = {
+                labels: combinedOfficeNames,
+                datasets: [{
+                    label: 'Performance Metric',
+                    data: combinedTotalPayments,
+                    backgroundColor: topLeastColor3,
+                    borderColor: topLeastColor3,
+                    borderWidth: 2 // Thicker border for highlighting
+                }]
+            };
+
+            const options = {
+                indexAxis: 'y',
+                scales: {
+                    x: {
+                        beginAtZero: true
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                }
+            };
+
+            const myChart = new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: options
+            });
+
+            // myChart.destroy();
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 
 }
@@ -72,680 +103,899 @@ async function zonalOffPerformance() {
 
 // Area office Performance
 function areaOffice() {
-  const ctx = document.getElementById('areaOffice').getContext('2d');
+    const ctx = document.getElementById('areaOffice').getContext('2d');
 
-  const data = {
-    labels: ['Area A', 'Area B', 'Area C', 'Area D', 'Area E', 'Area F', 'Area G', 'Area H', 'Area I', 'Area J'],
-    datasets: [{
-      label: 'Performance Metric',
-      data: [150, 200, 300, 250, 100, 50, 75, 125, 175, 225],
-      backgroundColor: [
-        'rgba(0, 128, 0, 0.8)', // Top 5: Green with higher opacity
-        'rgba(0, 128, 0, 0.8)',
-        'rgba(0, 128, 0, 0.8)',
-        'rgba(0, 128, 0, 0.8)',
-        'rgba(0, 128, 0, 0.8)',
-        'rgba(255, 0, 0, 0.5)', // Least 5: Red with lower opacity
-        'rgba(255, 0, 0, 0.5)',
-        'rgba(255, 0, 0, 0.5)',
-        'rgba(255, 0, 0, 0.5)',
-        'rgba(255, 0, 0, 0.5)'
-      ],
-      borderColor: [
-        'rgba(0, 128, 0, 1)', // Top 5: Green border
-        'rgba(0, 128, 0, 1)',
-        'rgba(0, 128, 0, 1)',
-        'rgba(0, 128, 0, 1)',
-        'rgba(0, 128, 0, 1)',
-        'rgba(255, 0, 0, 1)', // Least 5: Red border
-        'rgba(255, 0, 0, 1)',
-        'rgba(255, 0, 0, 1)',
-        'rgba(255, 0, 0, 1)',
-        'rgba(255, 0, 0, 1)'
-      ],
-      borderWidth: 2 // Thicker border for highlighting
-    }]
-  };
+    const data = {
+        labels: ['Area A', 'Area B', 'Area C', 'Area D', 'Area E', 'Area F', 'Area G', 'Area H', 'Area I', 'Area J'],
+        datasets: [{
+            label: 'Performance Metric',
+            data: [150, 200, 300, 250, 100, 50, 75, 125, 175, 225],
+            backgroundColor: topLeastColor5,
+            borderColor: topLeastColor5,
+            borderWidth: 2 // Thicker border for highlighting
+        }]
+    };
 
-  const options = {
-    indexAxis: 'y',
-    scales: {
-      x: {
-        beginAtZero: true
-      }
-    },
-    plugins: {
-      legend: {
-        display: false
-      }
-    }
-  };
+    const options = {
+        indexAxis: 'y',
+        scales: {
+            x: {
+                beginAtZero: true
+            }
+        },
+        plugins: {
+            legend: {
+                display: false
+            }
+        }
+    };
 
-  new Chart(ctx, {
-    type: 'bar',
-    data: data,
-    options: options
-  });
+    new Chart(ctx, {
+        type: 'bar',
+        data: data,
+        options: options
+    });
 
 }
 // areaOffice()
 
 // top least LGA performance
-async function topLeastPerformance()  {
-    const ctx = document.getElementById('topLeastPerformance').getContext('2d');
-    
+async function topLeastPerformance() {
+    const selectInput = document.querySelector('#topLeastPerformanceSelect')
+
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?getMDALGAPerformance`);
-        const responseDta = await response.json();
-        
-        const topLgaNames = responseDta.top.map(item => item.lga);
-        const topTotalPayments = responseDta.top.map(item => item.total_payments);
-        const topTotalInvoices = responseDta.top.map(item => item.total_invoices);
-        
-        const leastLgaNames = responseDta.Least.map(item => item.lga);
-        const leastTotalPayments = responseDta.Least.map(item => item.total_payments);
-        const leastTotalInvoices = responseDta.Least.map(item => item.total_invoices);
-        
-        const combinedLgaNames = [...topLgaNames, ...leastLgaNames];
-        const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
-        const combinedTotalInvoices = [...topTotalInvoices, ...leastTotalInvoices];
-        
-        const labels = combinedLgaNames;
-            
-        const revenueCollected = combinedTotalPayments;
-        const invoicesGenerated = combinedTotalInvoices;
-    
-        const data = {
-            labels: labels,
-            datasets: [
-                {
-                    label: 'Revenue Collected',
-                    data: revenueCollected,
-                    backgroundColor: [
-                        'rgba(0, 128, 0, 0.8)',  // Top 5 - Green
-                        'rgba(0, 128, 0, 0.8)',
-                        'rgba(0, 128, 0, 0.8)',
-                        'rgba(0, 128, 0, 0.8)',
-                        'rgba(0, 128, 0, 0.8)',
-                        'rgba(255, 0, 0, 0.8)',  // Least 5 - Red
-                        'rgba(255, 0, 0, 0.8)',
-                        'rgba(255, 0, 0, 0.8)',
-                        'rgba(255, 0, 0, 0.8)',
-                        'rgba(255, 0, 0, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 128, 0, 1)',  // Top 5 - Green
-                        'rgba(0, 128, 0, 1)',
-                        'rgba(0, 128, 0, 1)',
-                        'rgba(0, 128, 0, 1)',
-                        'rgba(0, 128, 0, 1)',
-                        'rgba(255, 0, 0, 1)',  // Least 5 - Red
-                        'rgba(255, 0, 0, 1)',
-                        'rgba(255, 0, 0, 1)',
-                        'rgba(255, 0, 0, 1)',
-                        'rgba(255, 0, 0, 1)'
-                    ],
-                    borderWidth: 1,
-                    yAxisID: 'yLeft'
-                },
-                {
-                    label: 'Invoices Generated',
-                    data: invoicesGenerated,
-                    backgroundColor: [
-                        'rgba(0, 0, 255, 0.8)',  // Top 5 - Blue
-                        'rgba(0, 0, 255, 0.8)',
-                        'rgba(0, 0, 255, 0.8)',
-                        'rgba(0, 0, 255, 0.8)',
-                        'rgba(0, 0, 255, 0.8)',
-                        'rgba(255, 165, 0, 0.8)',  // Least 5 - Orange
-                        'rgba(255, 165, 0, 0.8)',
-                        'rgba(255, 165, 0, 0.8)',
-                        'rgba(255, 165, 0, 0.8)',
-                        'rgba(255, 165, 0, 0.8)'
-                    ],
-                    borderColor: [
-                        'rgba(0, 0, 255, 1)',  // Top 5 - Blue
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(0, 0, 255, 1)',
-                        'rgba(255, 165, 0, 1)',  // Least 5 - Orange
-                        'rgba(255, 165, 0, 1)',
-                        'rgba(255, 165, 0, 1)',
-                        'rgba(255, 165, 0, 1)',
-                        'rgba(255, 165, 0, 1)'
-                    ],
-                    borderWidth: 1,
-                    yAxisID: 'yRight'
-                }
-            ]
-        };
-    
-        const options = {
-            responsive: true,
-            scales: {
-                yLeft: {
-                    beginAtZero: true,
-                    position: 'left',
-                    title: {
-                        display: true,
-                        text: 'Revenue Collected'
-                    }
-                },
-                yRight: {
-                    beginAtZero: true,
-                    position: 'right',
-                    title: {
-                        display: true,
-                        text: 'Invoices Generated'
+        const response = await fetch(`https://plateauigr.com/php/?getMDALGAPerformance`)
+        const responseDta = await response.json()
+
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = padNumberWithZero(date.getMonth() + 1); // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+
+        const months = Object.keys(responseDta).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
+        });
+
+        months.forEach(month => {
+            $('#topLeastPerformanceSelect').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+
+        selectInput.addEventListener('change', function () {
+            const selectedMonth = this.value;
+            updateChart(selectedMonth, responseDta);
+        });
+
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta);
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    async function updateChart(month, data) {
+        document.querySelector("#topLeastPerformanceContainer").innerHTML = '<canvas class="theChart" id="topLeastPerformance"></canvas>';
+        const ctx = document.getElementById('topLeastPerformance').getContext('2d');
+
+        try {
+            const topLgaNames = data[month].top.map(item => item.lga);
+            const topTotalPayments = data[month].top.map(item => item.total_payments);
+            const topTotalInvoices = data[month].top.map(item => item.total_invoices);
+
+            const leastLgaNames = data[month].least.map(item => item.lga);
+            const leastTotalPayments = data[month].least.map(item => item.total_payments);
+            const leastTotalInvoices = data[month].least.map(item => item.total_invoices);
+
+            const combinedLgaNames = [...topLgaNames, ...leastLgaNames];
+            const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
+            const combinedTotalInvoices = [...topTotalInvoices, ...leastTotalInvoices];
+
+            const labels = combinedLgaNames;
+
+            const revenueCollected = combinedTotalPayments;
+            const invoicesGenerated = combinedTotalInvoices;
+
+            const chartData = {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Revenue Collected',
+                        data: revenueCollected,
+                        backgroundColor: topLeastColor5,
+                        borderColor: topLeastColor5,
+                        borderWidth: 1,
+                        yAxisID: 'yLeft'
                     },
-                    grid: {
-                        drawOnChartArea: false  // Only want the grid lines for one axis to show up
+                    {
+                        label: 'Invoices Generated',
+                        data: invoicesGenerated,
+                        backgroundColor: [
+                            'rgba(0, 0, 255, 0.8)',  // Top 5 - Blue
+                            'rgba(0, 0, 255, 0.8)',
+                            'rgba(0, 0, 255, 0.8)',
+                            'rgba(0, 0, 255, 0.8)',
+                            'rgba(0, 0, 255, 0.8)',
+                            'rgba(255, 165, 0, 0.8)',  // Least 5 - Orange
+                            'rgba(255, 165, 0, 0.8)',
+                            'rgba(255, 165, 0, 0.8)',
+                            'rgba(255, 165, 0, 0.8)',
+                            'rgba(255, 165, 0, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(0, 0, 255, 1)',  // Top 5 - Blue
+                            'rgba(0, 0, 255, 1)',
+                            'rgba(0, 0, 255, 1)',
+                            'rgba(0, 0, 255, 1)',
+                            'rgba(0, 0, 255, 1)',
+                            'rgba(255, 165, 0, 1)',  // Least 5 - Orange
+                            'rgba(255, 165, 0, 1)',
+                            'rgba(255, 165, 0, 1)',
+                            'rgba(255, 165, 0, 1)',
+                            'rgba(255, 165, 0, 1)'
+                        ],
+                        borderWidth: 1,
+                        yAxisID: 'yRight'
+                    }
+                ]
+            };
+
+            const options = {
+                responsive: true,
+                scales: {
+                    yLeft: {
+                        beginAtZero: true,
+                        position: 'left',
+                        title: {
+                            display: true,
+                            text: 'Revenue Collected'
+                        }
+                    },
+                    yRight: {
+                        beginAtZero: true,
+                        position: 'right',
+                        title: {
+                            display: true,
+                            text: 'Invoices Generated'
+                        },
+                        grid: {
+                            drawOnChartArea: false  // Only want the grid lines for one axis to show up
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'LGA Name'
+                        }
                     }
                 },
-                x: {
-                    title: {
-                        display: true,
-                        text: 'LGA Name'
-                    }
-                }
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || '';
-                            const value = context.raw || 0;
-                            return `${label}: ${value}`;
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}`;
+                            }
                         }
                     }
                 }
-            }
-        };
-    
-        new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
-        
-        
-    } catch(error) {
-        console.log(error)
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: options
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
-    
+
+
 }
 // topLeastPerformance()
 
 // Top & Least 5 performing Revenue Head
-async function topLeastPerformanceRev()  {
-    const ctx = document.getElementById('topLeastPerformanceRev').getContext('2d');
-    
+async function topLeastPerformanceRev() {
+    const selectInput = document.querySelector('#topLeastPerformanceRevSelect')
+
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?getRevenueHeadsPerformance`);
-        const responseDta = await response.json();
-        
-        const topRevNames = responseDta.top.map(item => item.revenue_head);
-        const topTotalPayments = responseDta.top.map(item => item.total_payments);
-        
-        const leastRevNames = responseDta.Least.map(item => item.revenue_head);
-        const leastTotalPayments = responseDta.Least.map(item => item.total_payments);
-        
-        const combinedRevNames = [...topRevNames, ...leastRevNames];
-        const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
-        
-        const labels = combinedRevNames;
-            
-        const revenueCollected = combinedTotalPayments;
-    
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Revenue Collected',
-                data: revenueCollected,
-                backgroundColor: [
-                    'rgba(0, 128, 0, 0.8)',  // Top 5 - Green
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)',  // Least 5 - Red
-                    'rgba(255, 0, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(0, 128, 0, 1)',  // Top 5 - Green
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(255, 0, 0, 1)',  // Least 5 - Red
-                    'rgba(255, 0, 0, 1)',
-                    'rgba(255, 0, 0, 1)',
-                    'rgba(255, 0, 0, 1)',
-                    'rgba(255, 0, 0, 1)'
-                ],
-                borderWidth: 2,
-                barThickness: 30,  // Highlight bars by making them thicker
-            }]
-        };
-    
-        const options = {
-            responsive: true,
-            indexAxis: 'y',  // This makes the bar chart horizontal
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Revenue Collected'
+        const response = await fetch(`https://plateauigr.com/php/?getRevenueHeadsPerformance`)
+        const responseDta = await response.json()
+
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = padNumberWithZero(date.getMonth() + 1); // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+
+        const months = Object.keys(responseDta).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
+        });
+
+        months.forEach(month => {
+            $('#topLeastPerformanceRevSelect').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+
+        selectInput.addEventListener('change', function () {
+            const selectedMonth = this.value;
+            updateChart(selectedMonth, responseDta);
+        });
+
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta);
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    async function updateChart(month, data) {
+        document.querySelector("#topLeastPerformanceRevContainer").innerHTML = '<canvas class="theChart" id="topLeastPerformanceRev"></canvas>';
+        const ctx = document.getElementById('topLeastPerformanceRev').getContext('2d');
+
+        try {
+            const topRevNames = data[month].top.map(item => item.revenue_head);
+            const topTotalPayments = data[month].top.map(item => item.total_payments);
+
+            const leastRevNames = data[month].least.map(item => item.revenue_head);
+            const leastTotalPayments = data[month].least.map(item => item.total_payments);
+
+            const combinedRevNames = [...topRevNames, ...leastRevNames];
+            const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
+
+            const labels = combinedRevNames;
+
+            const revenueCollected = combinedTotalPayments;
+
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue Collected',
+                    data: revenueCollected,
+                    backgroundColor: topLeastColor5,
+                    borderColor: topLeastColor5,
+                    borderWidth: 2,
+                    barThickness: 30,  // Highlight bars by making them thicker
+                }]
+            };
+
+            const options = {
+                responsive: true,
+                indexAxis: 'y',  // This makes the bar chart horizontal
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Revenue Collected'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'Revenue Head'
+                        }
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'Revenue Head'
-                    }
-                }
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || '';
-                            const value = context.raw || 0;
-                            return `${label}: ${value}`;
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}`;
+                            }
                         }
                     }
                 }
-            }
-        };
-    
-        new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
-        
-        
-    
-    } catch(error) {
-        console.log(error)
-    }    
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: options
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 }
 topLeastPerformanceRev()
 
 // Top & Least 5 performing MDA
-async function topLeastPerformanceMDA()  {
-    const ctx = document.getElementById('topLeastPerformanceMDA').getContext('2d');
-    
+async function topLeastPerformanceMDA() {
+    const selectInput = document.querySelector('#topLeastPerformanceMDASelect')
+
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?getMDAPerformance`);
-        const responseDta = await response.json();
-        
-        const topMdaNames = responseDta.top.map(item => item.mda);
-        const topTotalPayments = responseDta.top.map(item => item.total_payments);
-        
-        const leastMdaNames = responseDta.Least.map(item => item.mda);
-        const leastTotalPayments = responseDta.Least.map(item => item.total_payments);
-        
-        const combinedMdaNames = [...topMdaNames, ...leastMdaNames];
-        const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
-        
-        const labels = combinedMdaNames;
-            
-        const revenueCollected = combinedTotalPayments;
-    
-        const data = {
-            labels: labels,
-            datasets: [{
-                label: 'Revenue Collected',
-                data: revenueCollected,
-                backgroundColor: [
-                    'rgba(0, 128, 0, 0.8)',  // Top 5 - Green
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(0, 128, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)',  // Least 5 - Red
-                    'rgba(255, 0, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)',
-                    'rgba(255, 0, 0, 0.8)'
-                ],
-                borderColor: [
-                    'rgba(0, 128, 0, 1)',  // Top 5 - Green
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(0, 128, 0, 1)',
-                    'rgba(255, 0, 0, 1)',  // Least 5 - Red
-                    'rgba(255, 0, 0, 1)',
-                    'rgba(255, 0, 0, 1)',
-                    'rgba(255, 0, 0, 1)',
-                    'rgba(255, 0, 0, 1)'
-                ],
-                borderWidth: 2,
-                barThickness: 30,  // Highlight bars by making them thicker
-            }]
-        };
-    
-        const options = {
-            responsive: true,
-            indexAxis: 'y',  // This makes the bar chart horizontal
-            scales: {
-                x: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Revenue Collected'
+        const response = await fetch(`https://plateauigr.com/php/?getMDAPerformance`)
+        const responseDta = await response.json()
+
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = padNumberWithZero(date.getMonth() + 1); // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+
+        const months = Object.keys(responseDta).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
+        });
+
+        months.forEach(month => {
+            $('#topLeastPerformanceMDASelect').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+
+        selectInput.addEventListener('change', function () {
+            const selectedMonth = this.value;
+            updateChart(selectedMonth, responseDta);
+        });
+
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta);
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    async function updateChart(month, data) {
+        document.querySelector("#topLeastPerformanceMDAContainer").innerHTML = '<canvas class="theChart" id="topLeastPerformanceMDA"></canvas>';
+        const ctx = document.getElementById('topLeastPerformanceMDA').getContext('2d');
+
+        try {
+            const topMdaNames = data[month].top.map(item => item.mda);
+            const topTotalPayments = data[month].top.map(item => item.total_payments);
+
+            const leastMdaNames = data[month].least.map(item => item.mda);
+            const leastTotalPayments = data[month].least.map(item => item.total_payments);
+
+            const combinedMdaNames = [...topMdaNames, ...leastMdaNames];
+            const combinedTotalPayments = [...topTotalPayments, ...leastTotalPayments];
+
+            const labels = combinedMdaNames;
+
+            const revenueCollected = combinedTotalPayments;
+
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue Collected',
+                    data: revenueCollected,
+                    backgroundColor: topLeastColor5,
+                    borderColor: topLeastColor5,
+                    borderWidth: 2,
+                    barThickness: 30,  // Highlight bars by making them thicker
+                }]
+            };
+
+            const options = {
+                responsive: true,
+                indexAxis: 'y',  // This makes the bar chart horizontal
+                scales: {
+                    x: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Revenue Collected'
+                        }
+                    },
+                    y: {
+                        title: {
+                            display: true,
+                            text: 'MDA'
+                        }
                     }
                 },
-                y: {
-                    title: {
-                        display: true,
-                        text: 'MDA'
-                    }
-                }
-            },
-            plugins: {
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || '';
-                            const value = context.raw || 0;
-                            return `${label}: ${value}`;
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}`;
+                            }
                         }
                     }
                 }
-            }
-        };
-    
-        new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
-        
-    } catch(error) {
-        
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: options
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
-    
-    
 }
 topLeastPerformanceMDA()
 
 // preferred payment method
 async function paymentMethod() {
-  const ctx = document.getElementById('paymentMethod').getContext('2d');
-  
-   try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?analyticsTaxPayerPayment`);
-        const responseDta = await response.json();
-        
-        const payment_channel = responseDta.message.map(item => item.payment_channel)
-        const total_amount = responseDta.message.map(item => item.percentage)
-        
-        const getRandomColor = () => {
-            const letters = '0123456789ABCDEF';
-            let color = '#';
-            for (let i = 0; i < 6; i++) {
-                color += letters[Math.floor(Math.random() * 16)];
-            }
-            return color;
-        };
+    const selectInput = document.querySelector('#paymentMethodSelect')
 
-        const generateColors = (numColors) => {
-            const colors = [];
-            for (let i = 0; i < numColors; i++) {
-                colors.push(getRandomColor());
-            }
-            return colors;
-        };
-        
-        const data = {
-            labels: payment_channel,
-            datasets: [{
-              label: 'Payment Methods',
-              data: total_amount,
-              backgroundColor: generateColors(responseDta.message.length),
-              borderWidth: 1
-            }]
-        };
-        
-        const options = {
-            responsive: true,
-            plugins: {
-              legend: {
-                position: 'top',
-              },
-              tooltip: {
-                callbacks: {
-                  label: function (context) {
-                    const label = context.label || '';
-                    const value = context.raw || 0;
-                    return `${label}: ${value}%`;
-                  }
-                }
-              }
-            }
-        };
-        
-        new Chart(ctx, {
-            type: 'pie',
-            data: data,
-            options: options
+    try {
+        const response = await fetch(`https://plateauigr.com/php/?analyticsTaxPayerPayment`)
+        const responseDta = await response.json()
+
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = padNumberWithZero(date.getMonth() + 1); // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+
+        const months = Object.keys(responseDta).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
         });
-        
-        
-   } catch(error) {
-       console.log(error)
-   }    
+
+        months.forEach(month => {
+            $('#paymentMethodSelect').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+
+        selectInput.addEventListener('change', function () {
+            const selectedMonth = this.value;
+            console.log(selectedMonth, responseDta)
+            updateChart(selectedMonth, responseDta);
+        });
+
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta);
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    async function updateChart(month, data) {
+        document.querySelector("#paymentMethodContainer").innerHTML = '<canvas class="theChart" id="paymentMethod"></canvas>';
+        const ctx = document.getElementById('paymentMethod').getContext('2d');
+
+        try {
+            const payment_channel = data[month].map(item => item.payment_channel)
+            const total_amount = data[month].map(item => item.percentage)
+
+            const getRandomColor = () => {
+                const letters = '0123456789ABCDEF';
+                let color = '#';
+                for (let i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            };
+
+            const generateColors = (numColors) => {
+                const colors = [];
+                for (let i = 0; i < numColors; i++) {
+                    colors.push(getRandomColor());
+                }
+                return colors;
+            };
+
+            const chartData = {
+                labels: payment_channel,
+                datasets: [{
+                    label: 'Payment Methods',
+                    data: total_amount,
+                    backgroundColor: generateColors(data[month].length),
+                    borderWidth: 1
+                }]
+            };
+
+            const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}%`;
+                            }
+                        }
+                    }
+                }
+            };
+
+            const myChart = new Chart(ctx, {
+                type: 'pie',
+                data: chartData,
+                options: options
+            });
+
+        } catch (error) {
+            console.log(error)
+        }
+
+    }
+
 }
 paymentMethod()
 
 // invoice generated category
 async function invgenerated() {
-    const ctx = document.getElementById('invgenerated').getContext('2d');
-    
+    const selectInput = document.querySelector('#invgeneratedSelected')
+
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?getInvoicesGeneratedBasedOnCategories`);
-        const responseDta = await response.json();
-        
-        const theCategories = responseDta.invoicesPerCategory.map(item => item.category)
-        const theTotalPayments = responseDta.invoicesPerCategory.map(item => item.count)
-        
-        const data = {
-            labels: theCategories,
-            datasets: [{
-                label: 'Number of Invoices Generated',
-                data: theTotalPayments,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.8)',  // Individual
-                    'rgba(54, 162, 235, 0.8)',  // Corporate
-                    'rgba(255, 206, 86, 0.8)',  // State Agency
-                    'rgba(75, 192, 192, 0.8)'   // Federal Agency
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',  // Individual
-                    'rgba(54, 162, 235, 1)',  // Corporate
-                    'rgba(255, 206, 86, 1)',  // State Agency
-                    'rgba(75, 192, 192, 1)'   // Federal Agency
-                ],
-                borderWidth: 1
-            }]
-        };
-    
-        const options = {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top'
+        const response = await fetch(`https://plateauigr.com/php/?getInvoicesGeneratedBasedOnCategories`)
+        const responseDta = await response.json()
+
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = padNumberWithZero(date.getMonth() + 1); // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+
+        const months = Object.keys(responseDta.results).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
+        });
+
+        months.forEach(month => {
+            $('#invgeneratedSelected').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+
+        selectInput.addEventListener('change', function () {
+            const selectedMonth = this.value;
+            updateChart(selectedMonth, responseDta.results);
+        });
+
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta.results);
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    async function updateChart(month, data) {
+        document.querySelector("#invgeneratedContainer").innerHTML = '<canvas class="theChart" id="invgenerated"></canvas>';
+        const ctx = document.getElementById('invgenerated').getContext('2d');
+
+        try {
+            const theCategories = data[month].invoicesPerCategory.map(item => item.category)
+            const theTotalPayments = data[month].invoicesPerCategory.map(item => item.count)
+
+            const chartData = {
+                labels: theCategories,
+                datasets: [{
+                    label: 'Number of Invoices Generated',
+                    data: theTotalPayments,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)',  // Individual
+                        'rgba(54, 162, 235, 0.8)',  // Corporate
+                        'rgba(255, 206, 86, 0.8)',  // State Agency
+                        'rgba(75, 192, 192, 0.8)'   // Federal Agency
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',  // Individual
+                        'rgba(54, 162, 235, 1)',  // Corporate
+                        'rgba(255, 206, 86, 1)',  // State Agency
+                        'rgba(75, 192, 192, 1)'   // Federal Agency
+                    ],
+                    borderWidth: 1,
+                    barThickness: 80
+                }]
+            };
+
+            const options = {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || '';
-                            const value = context.raw || 0;
-                            return `${label}: ${value}`;
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}`;
+                            }
                         }
                     }
                 }
-            }
-        };
-    
-        new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
-        
-        
-    } catch(error) {
-        console.log(error)   
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: options
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 invgenerated()
 
 // invoice paid category
 async function invpaid() {
-    const ctx = document.getElementById('invpaid').getContext('2d');
-    
-     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?getAnalyticPaidInvoiceBasedOnCategories`);
-        const responseDta = await response.json();
-        
-        const theCategories = responseDta.paidInvoicesPerCategory.map(item => item.category)
-        const theTotalPayments = responseDta.paidInvoicesPerCategory.map(item => item.count)
-        
-        const data = {
-            labels: theCategories,
-            datasets: [{
-                label: 'Number of Invoices Paid',
-                data: theTotalPayments,
-                backgroundColor: [
-                    'rgba(255, 99, 132, 0.8)',  // Individual
-                    'rgba(54, 162, 235, 0.8)',  // Corporate
-                    'rgba(255, 206, 86, 0.8)',  // State Agency
-                    'rgba(75, 192, 192, 0.8)'   // Federal Agency
-                ],
-                borderColor: [
-                    'rgba(255, 99, 132, 1)',  // Individual
-                    'rgba(54, 162, 235, 1)',  // Corporate
-                    'rgba(255, 206, 86, 1)',  // State Agency
-                    'rgba(75, 192, 192, 1)'   // Federal Agency
-                ],
-                borderWidth: 1
-            }]
-        };
-    
-        const options = {
-            responsive: true,
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top'
+    const selectInput = document.querySelector('#invpaidSelected')
+
+    try {
+        const response = await fetch(`https://plateauigr.com/php/?getAnalyticPaidInvoiceBasedOnCategories`)
+        const responseDta = await response.json()
+
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = padNumberWithZero(date.getMonth() + 1); // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+
+        const months = Object.keys(responseDta.results).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
+        });
+
+        months.forEach(month => {
+            $('#invpaidSelected').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+
+        selectInput.addEventListener('change', function () {
+            const selectedMonth = this.value;
+            updateChart(selectedMonth, responseDta.results);
+        });
+
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta.results);
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    async function updateChart(month, data) {
+        document.querySelector("#invpaidContainer").innerHTML = '<canvas class="theChart" id="invpaid"></canvas>';
+        const ctx = document.getElementById('invpaid').getContext('2d');
+
+        try {
+            const theCategories = data[month].paidInvoicesPerCategory.map(item => item.category)
+            const theTotalPayments = data[month].paidInvoicesPerCategory.map(item => item.count)
+
+            const chartData = {
+                labels: theCategories,
+                datasets: [{
+                    label: 'Number of Invoices Paid',
+                    data: theTotalPayments,
+                    backgroundColor: [
+                        'rgba(255, 99, 132, 0.8)',  // Individual
+                        'rgba(54, 162, 235, 0.8)',  // Corporate
+                        'rgba(255, 206, 86, 0.8)',  // State Agency
+                        'rgba(75, 192, 192, 0.8)'   // Federal Agency
+                    ],
+                    borderColor: [
+                        'rgba(255, 99, 132, 1)',  // Individual
+                        'rgba(54, 162, 235, 1)',  // Corporate
+                        'rgba(255, 206, 86, 1)',  // State Agency
+                        'rgba(75, 192, 192, 1)'   // Federal Agency
+                    ],
+                    borderWidth: 1,
+                    barThickness: 80
+                }]
+            };
+
+            const options = {
+                responsive: true,
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
                 },
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || '';
-                            const value = context.raw || 0;
-                            return `${label}: ${value}`;
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}`;
+                            }
                         }
                     }
                 }
-            }
-        };
-    
-        new Chart(ctx, {
-            type: 'bar',
-            data: data,
-            options: options
-        });
-        
-    } catch(error) {
-        console.log(error)
-    }    
+            };
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: options
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 invpaid()
 
 // Average  payment time
 async function avgpayment() {
-    const ctx = document.getElementById('avgpayment').getContext('2d');
-    
+    const selectInput = document.querySelector('#avgpaymentSelected')
+
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?averagePaymentTime`);
-        const responseDta = await response.json();
-        
-        const theMonth = responseDta.map(item => item.month)
-        const thePaymentTime = responseDta.map(item => item.avg_cycle_time)
-        
-        const data = {
-            labels: theMonth,
-            datasets: [{
-                label: 'Average Payment Time',
-                data: thePaymentTime,
-                borderColor: 'rgba(54, 162, 235, 1)',  // Blue line
-                backgroundColor: 'rgba(54, 162, 235, 0.2)',  // Light blue fill (optional)
-                borderWidth: 2,
-                fill: true  // If you want the area under the line to be filled with color
-            }]
-        };
-    
-        const options = {
-            responsive: true,
-            scales: {
-                x: {
-                    title: {
-                        display: true,
-                        text: 'Days'
-                    }
-                },
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Average Payment Time'
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    position: 'top'
-                },
-                tooltip: {
-                    callbacks: {
-                        label: function (context) {
-                            const label = context.dataset.label || '';
-                            const value = context.raw || 0;
-                            return `${label}: ${value} days`;
+        const response = await fetch(`https://plateauigr.com/php/?averagePaymentTime`)
+        const responseDta = await response.json()
+
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+
+        const years = Object.keys(responseDta);
+
+        years.forEach(year => {
+            const option = document.createElement('option');
+            option.value = year;
+            option.text = year;
+            selectInput.appendChild(option);
+        });
+
+        const date = new Date();
+        const currentYear = date.getFullYear().toString();
+
+        if (years.includes(currentYear)) {
+            selectInput.value = currentYear;
+        } else {
+            selectInput.value = years[0]; // Fallback to the first available year
+        }
+
+
+        selectInput.addEventListener('change', function () {
+            const selectedYear = this.value;
+            updateChart(selectedYear, responseDta);
+        });
+
+        const initialYear = selectInput.value;
+        updateChart(initialYear, responseDta);
+
+    } catch (error) {
+        console.log(error)
+    }
+
+    async function updateChart(year, data) {
+        document.querySelector("#avgpaymentContainer").innerHTML = '<canvas class="theChart" id="avgpayment"></canvas>';
+        const ctx = document.getElementById('avgpayment').getContext('2d');
+
+        try {
+            const monthsData = data[year];
+            const monthNames = monthsData.map(item => {
+                const [year, month] = item.month.split('-');
+                return new Date(year, month - 1).toLocaleString('default', { month: 'long' });
+            });
+            const avgCycleTimes = monthsData.map(item => item.avg_cycle_time_hours);
+
+            const chartData = {
+                labels: monthNames,
+                datasets: [{
+                    label: 'Average Cycle Time (hours)',
+                    data: avgCycleTimes,
+                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                    borderColor: 'rgba(75, 192, 192, 1)',
+                    borderWidth: 2,
+                    fill: true  // Adjust this value to reduce the bar width
+                }]
+            };
+
+            const options = {
+                responsive: true,
+                scales: {
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'months'
+                        }
+                    },
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Average Payment Time'
                         }
                     }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    }
                 }
-            }
-        };
-    
-        new Chart(ctx, {
-            type: 'line',
-            data: data,
-            options: options
-        });
-        
-    } catch(error) {
-        console.log(error)
-    }  
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: chartData,
+                options: options
+            });
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
 }
 avgpayment()
 
@@ -1062,7 +1312,7 @@ function commonsubjectSupport() {
 
 // supportClosure
 function supportClosure() {
-     const ctx = document.getElementById('supportClosure').getContext('2d');
+    const ctx = document.getElementById('supportClosure').getContext('2d');
 
     const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
     const dataValues = [75, 80, 85, 70, 90, 95, 88, 92, 85, 87, 89, 93];  // Example data for percentage of tickets closed
@@ -1183,19 +1433,19 @@ function supportResolu() {
 
 
 // Monthly TIN Request
-async function monthlyTinRequest()  {
+async function monthlyTinRequest() {
     const ctx = document.getElementById('monthlyTinRequest').getContext('2d');
-    
+
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php/?getAnalyticsTINRequestPerMonth`);
+        const response = await fetch(`https://plateauigr.com/php/?getAnalyticsTINRequestPerMonth`);
         const responseDta = await response.json();
-        
+
         const theMonth = responseDta.tinRequestsPerMonth.map(item => item.month)
         const requestCount = responseDta.tinRequestsPerMonth.map(item => item.requestCount)
-        
+
         const labels = theMonth;
         const dataValues = requestCount;  // Example data for number of TIN requests
-    
+
         // Use a pre-defined color palette to distinguish months
         const colors = [
             'rgba(255, 99, 132, 0.8)',   // Red
@@ -1204,7 +1454,7 @@ async function monthlyTinRequest()  {
             'rgba(75, 192, 192, 0.8)',   // Green
             'rgba(153, 102, 255, 0.8)'   // Purple
         ];
-    
+
         const data = {
             labels: labels,
             datasets: [{
@@ -1215,7 +1465,7 @@ async function monthlyTinRequest()  {
                 borderWidth: 1
             }]
         };
-    
+
         const options = {
             responsive: true,
             scales: {
@@ -1245,15 +1495,15 @@ async function monthlyTinRequest()  {
                 }
             }
         };
-    
+
         new Chart(ctx, {
             type: 'bar',
             data: data,
             options: options
         });
-        
-        
-    } catch(error) {
+
+
+    } catch (error) {
         console.log(error)
     }
 }
