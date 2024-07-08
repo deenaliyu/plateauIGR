@@ -204,7 +204,7 @@ async function totalExpiredInvoiceCount() {
     const response = await fetch(`${HOST}?getFilteredInv`);
     const userAnalytics = await response.json();
 
-    // console.log(userAnalytics)
+    console.log(userAnalytics)
     if (userAnalytics.status === 0) {
       $("#totalInvE").html(0)
     } else {
@@ -244,41 +244,99 @@ async function totalExpiredInvoiceCount() {
 
 totalExpiredInvoiceCount()
 
-async function fetchThePercentage() {
+let allExpectedRevenueDataEx3 = []
+
+function refreshTheMonth3() {
+  let theMonth = document.querySelector("#theMonth3").value
+
+  let genAmount = filterByMonthEx(allExpectedRevenueDataEx3, theMonth)
+  $("#percentageNum").html(genAmount)
+}
+
+async function totalExpiredInvoicePercentage() {
+  $("#percentageNum").html(`
+          <div class="flex mb-4">
+            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
+          </div>
+      `)
 
   try {
-    const response = await fetch(`${HOST}?getDashboardAnalyticsAdmin`);
-    const response2 = await fetch(`${HOST}?getFilteredInv&sort=expired`);
-
+    const response = await fetch(`${HOST}?getExpiredInvoicePercentage`);
     const userAnalytics = await response.json();
-    const amountInvoiced = await response2.json();
+    console.log(userAnalytics);
+ 
+      allExpectedRevenueDataEx3 = userAnalytics
+      const monthSelector = document.getElementById('theMonth3');
 
-    let totalAmountInvoiced = userAnalytics.total_amount_invoiced
-    let totalExpiredRevenue = sumTotalExpiredRevenue(amountInvoiced.message);
+      let theSortedData = sortByDateDescendingExpired(userAnalytics)
 
-    function sumTotalExpiredRevenue(data) {
-      return data.reduce((acc, item) => {
-        return acc + parseFloat(item.total_expired_revenue);
-      }, 0);
-    }
+      for (const monthData of theSortedData) {
+        const option = document.createElement('option');
+        const monthValue = monthData.month;
+        const displayText = `${getMonthNameEx(monthValue)} ${getYearEx(monthValue)}`;
+
+        option.value = monthValue;
+        option.text = displayText;
+
+        // Set the default selected option to the current month and year
+        if (monthValue === `${theCurrentYearEx}-${theCurrentMonthEx}`) {
+          option.selected = true;
+        }
+
+        monthSelector.add(option);
+      }
 
 
-    const percentageExpired = calculatePercentage(totalExpiredRevenue, totalAmountInvoiced);
-    $("#percentageNum").html(percentageExpired.toFixed(2) + '%')
+      let theAmountGen = filterByMonthEx(theSortedData, `${theCurrentYearEx}-${theCurrentMonthEx}`)
+      $("#percentageNum").html(theAmountGen)
+    
+
 
 
   } catch (error) {
     console.log(error)
+    $("#percentageNum").html(0)
   }
-
-
 }
 
-fetchThePercentage()
+totalExpiredInvoicePercentage()
 
-function calculatePercentage(expired, generated) {
-  if (generated === 0) {
-    return 0; // Avoid division by zero
-  }
-  return (expired / generated) * 100;
-}
+
+// async function fetchThePercentage() {
+
+//   try {
+//     const response = await fetch(`${HOST}?getDashboardAnalyticsAdmin`);
+//     const response2 = await fetch(`${HOST}?getFilteredInv&sort=expired`);
+
+//     const userAnalytics = await response.json();
+//     const amountInvoiced = await response2.json();
+
+//     let totalAmountInvoiced = userAnalytics.total_amount_invoiced
+//     let totalExpiredRevenue = sumTotalExpiredRevenue(amountInvoiced.message);
+
+//     function sumTotalExpiredRevenue(data) {
+//       return data.reduce((acc, item) => {
+//         return acc + parseFloat(item.total_expired_revenue);
+//       }, 0);
+//     }
+
+
+//     const percentageExpired = calculatePercentage(totalExpiredRevenue, totalAmountInvoiced);
+//     $("#percentageNum").html(percentageExpired.toFixed(2) + '%')
+
+
+//   } catch (error) {
+//     console.log(error)
+//   }
+
+
+// }
+
+// fetchThePercentage()
+
+// function calculatePercentage(expired, generated) {
+//   if (generated === 0) {
+//     return 0; // Avoid division by zero
+//   }
+//   return (expired / generated) * 100;
+// }
