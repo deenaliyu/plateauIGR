@@ -472,9 +472,15 @@
 
                     <div class="col-md-6 md:mt-0">
                       <div class="card h-[400px]">
+                        <div class="form-group  ml-auto p-2" style="margin-top: 10px;">
+                          <select class="form-select" id="theMonth" onchange="refreshTheMonth1()">
+                          </select>
+                      </div>
                         <div id="gauge-graph" class="theChart"></div>
-
-                        <p class="text-center -mt-20 mb-2 text-black">% of number of invoices paid on time</p>
+                        <div class="-mt-10">
+                          <p class="text-center  mb-2 text-black fontBold" id="percent">-</p>
+                          <p class="text-center  mb-2 text-black">% of number of invoices paid on time</p>
+                        </div>
                       </div>
                     </div>
                   </div>
