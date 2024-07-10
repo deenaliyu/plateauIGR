@@ -18,15 +18,23 @@ if (myParam == "individual") {
 let theIDD
 let selectedValue = "";
 
-function limitInputLength(inputElement) {
-  // Remove any non-digit characters
-  inputElement.value = inputElement.value.replace(/\D/g, '');
+document.addEventListener('DOMContentLoaded', (event) => {
+  const inputField = document.getElementById('phon');
 
-  // Limit the input to 11 digits
-  if (inputElement.value.length > 11) {
-      inputElement.value = inputElement.value.slice(0, 11);
-  }
-}
+  inputField.addEventListener('input', function(e) {
+      let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+      if (value.length > 11) {
+          value = value.slice(0, 11); // Restrict to 11 digits
+      }
+      e.target.value = value;
+  });
+
+  inputField.addEventListener('blur', function(e) {
+      if (e.target.value.length !== 11) {
+          alert('Phone number must be exactly 11 digits.');
+      }
+  });
+});
 
 
 function continueReg() {
