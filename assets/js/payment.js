@@ -261,7 +261,7 @@ function makePaymentRemita() {
   async function openInvoice(invoicenum) {
     const response = await fetch(
       // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-      `${HOST}?getSingleInvoice&invoiceNumber=${invoicenum}`
+      `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
     );
     const userInvoices = await response.json();
     console.log(userInvoices);
@@ -352,72 +352,78 @@ function makePaymentRemita2() {
   `)
 
   async function openInvoice(invoicenum) {
-
-    const response = await fetch(
-      // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-      `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-    );
-
-    const userInvoices = await response.json();
-    console.log(userInvoices);
-
-    if (userInvoices.status === 1) {
-
-      if (userInvoices.message[0].payment_status === "paid") {
-        alert("This Invoice has already been paid")
-        $("#makePBtn").removeClass("hidden")
-        $("#msg_boxx").html('')
-
-      } else {
-        let invoiceDetails = userInvoices.message[0]
-
-        let PaymentData = {
-          "amount": parseFloat(finalPay) * 100,
-          // "amount": 200.00,
-          "bearer": 1,
-          "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
-          "channels": ["card", "bank"],
-          "currency": "NGN",
-          "customerFirstName": invoiceDetails.first_name,
-          "customerLastName": invoiceDetails.surname,
-          "customerPhoneNumber": invoiceDetails.phone,
-          "email": invoiceDetails.email,
-        }
-
-        $.ajax({
-          type: "POST",
-          url: 'https://api.credocentral.com/transaction/initialize',
-          headers: {
-            'Authorization': '1PUB1094T1lYkD5BDRhngk28DC4MMj4E5nyVA0',
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          dataType: 'json',
-          data: JSON.stringify(PaymentData),
-          success: function (data) {
-            console.log(data)
-
-            if (data.status === 200) {
-              window.location.href = data.data.authorizationUrl
-            } else {
-              $("#makePBtn").removeClass("hidden")
-              $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
-            }
-
-          },
-          error: function (request, error) {
-            console.log(error)
+    try {
+        
+        const response = await fetch(
+          `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
+        );
+    
+        const userInvoices = await response.json();
+        // console.log(userInvoices);
+    
+        if (userInvoices.status === 1) {
+    
+          if (userInvoices.message[0].payment_status === "paid") {
+            alert("This Invoice has already been paid")
             $("#makePBtn").removeClass("hidden")
-            $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+            $("#msg_boxx").html('')
+    
+          } else {
+            let invoiceDetails = userInvoices.message[0]
+    
+            let PaymentData = {
+              "amount": parseFloat(finalPay) * 100,
+              // "amount": 200.00,
+              "bearer": 1,
+              "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
+              "channels": ["card", "bank"],
+              "currency": "NGN",
+              "customerFirstName": invoiceDetails.first_name,
+              "customerLastName": invoiceDetails.surname,
+              "customerPhoneNumber": invoiceDetails.phone,
+              "email": invoiceDetails.email,
+            }
+    
+            $.ajax({
+              type: "POST",
+              url: 'https://api.credocentral.com/transaction/initialize',
+              headers: {
+                'Authorization': '1PUB1136Y1BWMxynI6L3hrqu0H6F4Kfpdp2WME',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              dataType: 'json',
+              data: JSON.stringify(PaymentData),
+              success: function (data) {
+                console.log(data)
+    
+                if (data.status === 200) {
+                  window.location.href = data.data.authorizationUrl
+                } else {
+                  $("#makePBtn").removeClass("hidden")
+                  $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
+                }
+    
+              },
+              error: function (request, error) {
+                console.log(error)
+                $("#makePBtn").removeClass("hidden")
+                $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+              }
+            });
+    
+    
+    
+    
           }
-        });
-
-
-
-
-      }
-    } else {
-      alert("Wrong Invoice")
+        } else {
+          alert("Wrong Invoice")
+        }
+    
+    } catch(error) {
+        $("#makePBtn").removeClass("hidden")
+        
+        $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
     }
 
 
@@ -433,14 +439,14 @@ function makePaymentRemita2() {
 function makePayment() {
   let thePay = document.querySelector("#theBal")
   let finalPay = thePay.dataset.money
-  console.log(finalPay)
+//   console.log(finalPay)
   async function openInvoice(invoicenum) {
     const response = await fetch(
       // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
       `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
     );
     const userInvoices = await response.json();
-    console.log(userInvoices);
+    // console.log(userInvoices);
 
     if (userInvoices.status === 1) {
       if (userInvoices.message[0].payment_status === "paid") {
@@ -451,11 +457,12 @@ function makePayment() {
         let invoiceDetails = userInvoices.message[0]
 
         var handler = PaystackPop.setup({
-          key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790',
+          //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
+          key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
           "subaccount": "ACCT_govno1idl9hxudv",
           email: invoiceDetails.email,
           amount: finalPay * 100,
-          currency: 'NGN',
+          currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
           "metadata": {
             "custom_fields": [
               {
@@ -486,7 +493,7 @@ function makePayment() {
               dataType: 'json',
               data: JSON.stringify(dataToPush),
               success: function (data) {
-                console.log(data)
+                // console.log(data)
                 alert("payment success")
                 nextPrev(1)
                 openReceipt(invoicenum)
@@ -627,7 +634,7 @@ async function openReceipt(invoicenum) {
   console.log(invoicenum)
 
   const response = await fetch(
-    `${HOST}?getSinglePayment&invoiceNumber=${invoicenum}`
+    `${HOST}/php/index.php?getSinglePayment&invoiceNumber=${invoicenum}`
   );
   const userInvoices = await response.json();
   console.log(userInvoices);
@@ -753,7 +760,7 @@ async function openReceipt(invoicenum) {
                 <p class="mb-2">Due Date: ${invoice_info.due_date}</p>
               </div>
               <div>
-                <p class="mb-2">Invoice Date: ${invoice_info.date_created}</p>
+                <p class="mb-2">Invoice Date: ${invoice_info.timeIn}</p>
                 <p class="mb-2">Expiry Date: ${invoice_info.due_date}</p>
               </div>
             </div>
@@ -796,69 +803,68 @@ async function openReceipt(invoicenum) {
           
           </div>
 
-        <div class="flex justify-end mx-6 mt-6">
-          <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
-        </div>
+          <div class="flex justify-end mx-6">
+            <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
+          </div>
 
 
-        <table class="table table-borderless mx-6 mt-4 font-bold">
-          <tr>
-            <td>MDA</td>
-            <td>${invoice_info['COL_3']}</td>
-          </tr>
-          <tr>
-            <td>Status</td>
-            <td>${invoice_info.payment_status.toUpperCase()}</td>
-          </tr>
-          <tr>
-            <td>Tax Item</td>
-            <td>${theItems.join(', ')}</td>
-          </tr>
-          <tr>
-            <td>Amount</td>
-            <td>${formatMoney(theAmount)}</td>
-          </tr>
-          <tr>
-            <td>PAYER NAME</td>
-            <td>${invoice_info.first_name} ${invoice_info.surname}</td>
-          </tr>
-          <tr>
-            <td>Payer ID</td>
-            <td>${invoice_info.tax_number}</td>
-          </tr>
-          <tr>
-            <td>JTB TIN</td>
-            <td>${invoice_info.tin ? invoice_info.tin : '-'}</td>
-          </tr>
-          <tr>
-            <td>Description</td>
-            <td>${invoice_info.description}</td>
-          </tr>
-          <tr>
-            <td>Period</td>
-            <td>${formatDateRange(invoice_info.date_created)}</td>
-          </tr>
-          <tr>
-            <td>Billing Ref</td>
-            <td>${invoice_info.invoice_number}</td>
-          </tr>
-          <tr>
-            <td>Created By</td>
-            <td>${invoice_info.first_name} ${invoice_info.surname}</td>
-          </tr>
-          <tr>
-            <td>Date Paid</td>
-            <td>${formatDate(invoice_info.timeIn)}</td>
-          </tr>
+          <table class="table table-borderless mx-6 mt-4">
+            <tr>
+              <td>MDA</td>
+              <td>${invoice_info['COL_3']}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>${invoice_info.payment_status.toUpperCase()}</td>
+            </tr>
+            <tr>
+              <td>Tax Item</td>
+              <td>${theItems.join(', ')}</td>
+            </tr>
+            <tr>
+              <td>Amount</td>
+              <td>${formatMoney(theAmount)}</td>
+            </tr>
+            <tr>
+              <td>PAYER NAME</td>
+              <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+            </tr>
+            <tr>
+              <td>Payer ID</td>
+              <td>${invoice_info.tax_number}</td>
+            </tr>
+            <tr>
+              <td>JTB TIN</td>
+              <td>${invoice_info.tin ? invoice_info.tin : '-'}</td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td>${invoice_info.description}</td>
+            </tr>
+            <tr>
+              <td>Period</td>
+              <td>${formatDateRange(invoice_info.timeIn)}</td>
+            </tr>
+            <tr>
+              <td>Billing Ref</td>
+              <td>${invoice_info.invoice_number}</td>
+            </tr>
+            <tr>
+              <td>Created By</td>
+              <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+            </tr>
+            <tr>
+              <td>Date Paid</td>
+              <td>${formatDate(invoice_info.timeIn)}</td>
+            </tr>
 
-        </table>
+          </table>
 
-        <div class='mx-6 flex justify-between mt-5'>
-          <div>
-            <div class="border-b border-b border-[#6F6F84] mb-2">
-              <img src="./assets/img/sign.png" alt="" class="pb-2">
-            </div>
-          
+          <div class='mx-6 flex justify-between mt-5'>
+            <div>
+              <div class="border-b border-b border-[#6F6F84] mb-2">
+                <img src="./assets/img/sign.png" alt="" class="pb-2">
+              </div>
             
               
               <h4 class="fontBold">Executive Chairman PSIRS</h4>
