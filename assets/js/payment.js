@@ -423,7 +423,7 @@ function makePaymentRemita2() {
     } catch(error) {
         $("#makePBtn").removeClass("hidden")
         
-        $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+        $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Network Error, Please Try Again!</p>`)
     }
 
 
