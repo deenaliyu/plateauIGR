@@ -72,8 +72,8 @@
     </div>
 
     <div class="md:w-9/12 w-full bg-[url('./assets/img/slideimg.png')] bg-center overflow-y-scroll">
-
-      <section class="formTabs h-full">
+        
+    <section class="formTabs h-full">
 
         <div class="flex justify-center items-center h-full">
 
@@ -98,7 +98,7 @@
           </form>
 
         </div>
-      </section>
+      </section>    
 
       <section class="formTabs h-full">
         <div class="pt-10 md:px-10 px-4">
@@ -107,9 +107,10 @@
             <span>Go back</span>
           </button>
         </div>
-        <div class="flex justify-center items-center h-full -mt-10">
+        
+        <div class="flex justify-center items-center h-full">
 
-          <form action="" class="md:w-[70%] secondForm">
+          <form action="" class="md:w-[60%] w-[80%] ">
             <h1 class="fontBold text-2xl">Generate Invoice</h1>
             <h1 class="mb-3 mt-3">Personal Details</h1>
 
@@ -196,10 +197,9 @@
             <span>Go back</span>
           </button>
         </div>
+        <div class="flex justify-center items-center h-full -mt-10">
 
-        <div class="flex justify-center items-center h-full">
-
-          <form action="" class="md:w-[60%] w-[80%] firstDiv">
+          <form action="" class="md:w-[70%] secondForm">
             <h1 class="fontBold text-2xl">Generate Invoice</h1>
             <h1 class="mb-3 mt-3">Billing Information</h1>
 
@@ -254,8 +254,6 @@
 
         </div>
       </section>
-
-
 
       <section class="formTabs h-full">
 
@@ -462,58 +460,46 @@
       $(".revHeadInputSel").select2();
     });
   </script>
-  <script>
-    let popup = document.getElementById("popup");
-    function openPopup() {
-      popup.classList.add("open-popup");
-      document.getElementById("lastly-button").disabled = true;
 
-    }
+<script>
+ 
+ const amountInp = document.querySelector('.amountTopay');
+ 
+amountInp.addEventListener('input', function(e) {
+  let inputVal = e.target.value;
 
-    function disabled() {
-      document.getElementById("lastly-button").disabled = false
-    }
+  // Immediately return if the first character is a dot to allow ".xx" inputs
+  if (inputVal === '.') {
+    return;
+  }
+
+  // Normalize the input by removing commas and any non-numeric characters except for the decimal point
+  let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
+
+  // Split the input into whole and decimal parts
+  let [whole, decimal] = normalizedInput.split('.');
+
+  // Ensure the whole part is only numeric
+  whole = whole.replace(/\D/g, '');
+
+  // If there's a decimal part, limit it to two digits
+  if (decimal) {
+    decimal = decimal.substring(0, 2); // Limit decimal part to two digits
+  }
+
+  // Format the whole part with commas
+  let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  // Reconstruct the formatted value
+  e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
+});
   </script>
-
-  <script>
-
-    const amountInp = document.querySelector('.amountTopay');
-
-    amountInp.addEventListener('input', function (e) {
-      let inputVal = e.target.value;
-
-      // Immediately return if the first character is a dot to allow ".xx" inputs
-      if (inputVal === '.') {
-        return;
-      }
-
-      // Normalize the input by removing commas and any non-numeric characters except for the decimal point
-      let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
-
-      // Split the input into whole and decimal parts
-      let [whole, decimal] = normalizedInput.split('.');
-
-      // Ensure the whole part is only numeric
-      whole = whole.replace(/\D/g, '');
-
-      // If there's a decimal part, limit it to two digits
-      if (decimal) {
-        decimal = decimal.substring(0, 2); // Limit decimal part to two digits
-      }
-
-      // Format the whole part with commas
-      let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-      // Reconstruct the formatted value
-      e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
-    });
-  </script>
-
-
+  
+  
   <script src="assets/js/nav.js?v=1.2"></script>
-  <script src="assets/js/payment.js"></script>
+  <script src="assets/js/payment.js?v=2.0"></script>
   <script src="assets/js/tabHandler.js"></script>
-  <script src="assets/js/generateinvoice.js"></script>
+  <script src="assets/js/generateinvoice.js?v=5.0"></script>
   <script src="assets/js/invoice.js"></script>
   <script src="assets/js/landingcms.js"></script>
 </body>
