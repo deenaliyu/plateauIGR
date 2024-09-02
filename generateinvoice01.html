@@ -80,20 +80,202 @@
           <form action="" class="md:w-[60%] w-[80%]">
             <div id="text-color">
               <h1 class="fontBold text-3xl">Generate Invoice</h1>
-              <h1 class="mb-10 mt-3">Personal Details</h1>
+              <h1 class="mb-3 mt-3 text-2xl">Personal Details</h1>  
+            </div>
+
+            <div class="form-group mb-4">
+              <label for="">Select your category*</label>
+              <select data-name="category" class="form-select genInv selCateg" required name="" id="category">
+                <option disabled selected>Select---</option>
+                <option value="2">Individual</option>
+                <option value="1">Corporate</option>
+                <option value="3">State Agency</option>
+                <option value="4">Federal Agency</option>
+              </select>
+
             </div>
 
             <div class="form-group mb-3">
-              <label for="tin/email">Enter Tin or Email*</label>
-              <input type="text" class="form-control" id="tinOrEmail" required>
+              <label for="description">Description*</label>
+              <input type="text" class="form-control genInv" id="thedescripInput" required>
             </div>
 
-            <div class="form-group flex gap-4 mt-10" id="theFetchBtns">
-              <button type="button" id="last-button" onclick="nextPrev(1)">Fill Manually</button>
-              <button id="lastly-button" onclick="fetchUserDetails()" class="btn-only" type="button">Fetch
-                Details</button>
+
+<!-- 
+            <div class="form-group mb-2">
+              <label for="">Select MDA *</label>
+              <select onchange="updateSelectedOption1(this)" class="revHeadInputSel form-select mda" required name=""
+                id="mda">
+              </select>
             </div>
-            <div id="msg_box001"></div>
+ -->
+
+
+            <!-- <div class="hidden justify-end" id="otherSec">
+              <button onclick="addInput()" type="button" class="textPrimary flex gap-2 items-center"><iconify-icon
+                  icon="ic:outline-plus"></iconify-icon> Add Item</button>
+            </div> -->
+
+            <div id="moreInput" class="mb-4">
+
+            </div>
+
+            <!-- <div class="form-group mb-3">
+              <label for="description">Enter Tin or Email*</label>
+              <input type="text" onchange="updateSelectedOption1(this)" class="revHeadInputSel form-select mda"  id="mda" placeholder="Text Area" class="form-control genInv"  required>
+            </div> -->
+
+            <div class="form-group flex gap-4">
+              <button type="button" id="last-button" onclick="continuePage()">Fill Manually</button>
+              <button id="lastly-button" onclick="openPopup()" class="btn-only" type="submit">Fetch Details</button>
+              </div>
+
+              <div class="containon">
+                <div class="popup" id="popup">
+                  <svg xmlns="http://www.w3.org/2000/svg" id="not-icon" width="60" height="60" fill="red" class="bi bi-bag-x-fill" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M10.5 3.5a2.5 2.5 0 0 0-5 0V4h5zm1 0V4H15v10a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V4h3.5v-.5a3.5 3.5 0 1 1 7 0M6.854 8.146a.5.5 0 1 0-.708.708L7.293 10l-1.147 1.146a.5.5 0 0 0 .708.708L8 10.707l1.146 1.147a.5.5 0 0 0 .708-.708L8.707 10l1.147-1.146a.5.5 0 0 0-.708-.708L8 9.293z"/>
+                  </svg>
+                  <h2>Not Found!</h2>
+                  <h5>User detail not found in the database! please go back <br> and fill your details manually</h5>  
+                  <button id="one-and-only" class="button w-full" type="button" onclick="continuePage()">Fill Manually</button>      
+                </div>
+
+              <style>
+                *{
+                  margin: 0;
+                  padding: 0;
+                  box-sizing: border-box;
+                  font-family: 'poppins', sans-serif;
+                }
+
+                .containon {
+                  width: 100%;
+                  height: 10vh;
+                  display: flex;
+                  justify-content: center;
+                  padding: 10px;
+                }
+
+                .containon h2{
+                  color: #000;
+                  font-size: 28px;
+                  font-weight: bolder;
+                  margin-top: 20px;
+                  margin-bottom: 20px;
+                  text-align: center;
+                  justify-content: center;
+                }
+
+                .containon h5{
+                  font-weight: bold;
+                  font-size: 13px;
+                  color: #000;
+                  margin-bottom: 20px;
+                  text-align: center;
+                }
+
+                .containon #not-icon{
+                  align-items: center;
+                  background-color: rgb(255, 218, 218);
+                  padding: 10px;
+                  border-radius: 100%;
+                  margin-left: 135px;
+                  margin-top: 10px;
+                }
+
+                .containon #one-and-only{
+                  background-color: #CDA545;
+                  justify-content: center;
+                  align-items: center;
+                  border-radius: 100px;
+                  padding: 10px 20px;
+                  text-align: center;
+                  width: 100%;
+                }
+
+                .popup{
+                  width: 400px;
+                  background-color: #fff;
+                  border-radius: 6%;
+                  position: absolute;
+                  top: 0;
+                  left: 50%;
+                  transform: translate(-50%, -50%) scale(0.1);
+                  text-align: center;
+                  padding: 0 30px 30px;
+                  color: #333;
+                  visibility: hidden;
+                  transition: transform 0.4s, top 0.4s;
+                }
+
+                .open-popup{
+                  visibility: visible;
+                  top: 50%;
+                  transform: translate(-50%, -50%) scale(1);
+                  /* background-image: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0,0)), url();
+                  filter: brightness(100%); */
+                  
+                }
+
+
+              </style>
+              <script>
+                let popup = document.getElementById("popup");
+                function openPopup() {
+                  popup.classList.add("open-popup");
+                  document.getElementById("lastly-button").disabled = true;
+
+                }
+
+                function disabled(){
+                  document.getElementById("lastly-button").disabled = false
+                }
+
+
+              </script>
+  
+            </div>
+
+
+
+
+            <!-- <div class="form-group mb-2">
+              <label for="">What did you want to pay for?*</label>
+              <select onchange="updateSelectedOption1(this)" class="revHeadInputSel form-select mda" required name=""
+                id="mda">
+
+              </select>
+            </div> -->
+
+            <!-- <hr class="my-3" />
+
+            <div class="flex items-center gap-7">
+
+              <div class="form-group mb-1 w-100">
+              <label for="">What did you want to pay for?*</label>
+              <select onchange="updateSelectedOption1(this)" class="revHeadInputSel form-select mda " required name=""
+                id="mda">
+
+              </select>
+            </div> -->
+
+
+              <!-- <div class="form-group w-8/12">
+                <label for="">What do you want to pay for?*</label>
+                <select onchange="updateSelectedOpytion()" class="revHeadInputSel h-[40px] form-select genInv revHeadsss" required
+                  name="" id="rev_heads">
+
+                </select>
+              </div> -->
+
+              <!-- <div class="form-group w-4/12">
+                <label for="">Amount to be paid*</label>
+                <input type="text" class="form-control genInv h-[40px] thePaymentInput amountTopay amountTopa" id="amountTopay">
+              </div>
+
+            </div> -->
+
+
 
           </form>
 
@@ -109,20 +291,31 @@
         </div>
         <div class="flex justify-center items-center h-full -mt-10">
 
-          <form action="" class="md:w-[70%] secondForm">
-            <h1 class="fontBold text-2xl">Generate Invoice</h1>
-            <h1 class="mb-3 mt-3">Personal Details</h1>
+          <form action="" class="md:w-[60%] w-[80%] firstDiv">
+            <div id="text-color">
+              <h1 class="fontBold text-3xl">Generate Invoice</h1>
+              <h1 class="mb-3 mt-3 text-2xl">Personal Details</h1>  
+            </div>
 
             <div class="form-group mb-4">
               <label for="">Select your category*</label>
-              <select class="form-select payInputs selCateg" required id="category">
-                <option disabled selected>Select--</option>
+              <select data-name="category"  class="form-select genInv selCateg" required name="" id="category">
+                <option disabled selected>Individual</option>
                 <option value="2">Individual</option>
                 <option value="1">Corporate</option>
                 <option value="3">State Agency</option>
                 <option value="4">Federal Agency</option>
               </select>
+
             </div>
+
+
+            <div id="theEmail" class="form-group w-full gap-2 mb-3">
+              <label for="">Email *</label>
+              <input type="text" class="form-control payInputs" required data-name="email"
+                placeholder="Enter your Email Address">
+            </div>
+
 
             <div class="flex items-center mb-4 gap-2" id="theName">
               <div class="form-group w-full">
@@ -138,52 +331,46 @@
               </div>
             </div>
 
-            <div class="flex items-center mb-4 gap-2" id="theEmail">
-              <div class="form-group w-full">
-                <label for="">Email *</label>
-                <input type="text" class="form-control payInputs" required data-name="email"
-                  placeholder="Enter your Email Address">
-              </div>
-
-              <div class="form-group w-full">
+            <div class=" flex items-center mb-4 gap-2">
+              <div class="form-group w-full"  id="theEmal">
                 <label for="">Phone number *</label>
-                <input type="number" class="form-control payInputs" id="phonenumber" minlength="11" maxlength="11"
-                  required data-name="phone" placeholder="Your 11-digits phone number">
-              </div>
-            </div>
-
-            <div class="flex items-center mb-4 gap-2">
-              <div class="form-group w-full" id="theTin">
-                <label for="">JTB TIN (Optional)</label>
-                <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN">
+                <input type="number" class="form-control payInputs" minlength="11" maxlength="11" required
+                  data-name="phone" placeholder="Your 11-digits phone number">
               </div>
 
-              <div class="form-group w-full">
+              <div id="theTin" class="form-group w-full">
                 <label for="">State*</label>
                 <select name="" id="selectState" class="form-select payInputs" data-name="state">
                   <option value="Akwa Ibom">Akwa Ibom</option>
                 </select>
               </div>
+
             </div>
 
             <div class="flex items-center mb-4 gap-2">
-              <div class="form-group w-full">
+
+              <div  id="theLga" class="form-group w-full">
+                <label for="">Address*</label>
+                <input type="text" class="form-control payInputs" minlength="10" required data-name="address"
+                  placeholder=" Enter your address">
+              </div>
+
+
+              <div  class="form-group w-full">
                 <label for="">LGA*</label>
                 <select name="" id="selectLGA" class="form-select payInputs" required data-name="lga">
                 </select>
               </div>
 
-              <div class="form-group w-full" id="theLga">
-                <label for="">Address*</label>
-                <input type="text" class="form-control payInputs" minlength="10" required data-name="address"
-                  placeholder=" Enter your address">
-              </div>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
             </div>
 
 
 
 
-            <button class="button w-full" type="button" onclick="continuePage()">Continue</button>
+            <button class="button w-full" type="button" onclick="goToPreviewPage()">Continue</button>
           </form>
 
         </div>
@@ -199,11 +386,20 @@
 
         <div class="flex justify-center items-center h-full">
 
-          <form action="" class="md:w-[60%] w-[80%] firstDiv">
+          <form action="" class="md:w-[70%] firstDiv">
             <h1 class="fontBold text-2xl">Generate Invoice</h1>
-            <h1 class="mb-3 mt-3">Billing Information</h1>
+            <h1 class="mb-3 mt-3">Billing information</h1>
 
-
+            <div class="form-group mb-4">
+              <label for="">Select your category*</label>
+              <select data-name="category" class="form-select genInv selCateg" required name="" id="category">
+                <option disabled selected>Select--</option>
+                <option value="2">Individual</option>
+                <option value="1">Corporate</option>
+                <option value="3">State Agency</option>
+                <option value="4">Federal Agency</option>
+              </select>
+            </div>
 
             <div class="form-group mb-2">
               <label for="">Select MDA *</label>
@@ -219,16 +415,15 @@
 
               <div class="form-group w-8/12">
                 <label for="">What do you want to pay for?*</label>
-                <select onchange="updateSelectedOption()" class="revHeadInputSel h-[40px] form-select genInv revHeadsss"
-                  required name="" id="rev_heads">
+                <select onchange="updateSelectedOption()" class="revHeadInputSel h-[40px] form-select genInv revHeadsss" required
+                  name="" id="rev_heads">
 
                 </select>
               </div>
 
               <div class="form-group w-4/12">
                 <label for="">Amount to be paid*</label>
-                <input type="text" class="form-control genInv h-[40px] thePaymentInput amountTopay amountTopa"
-                  id="amountTopay">
+                <input type="text" class="form-control genInv h-[40px] thePaymentInput amountTopay amountTopa" id="amountTopay">
               </div>
 
             </div>
@@ -247,14 +442,13 @@
               <input type="text" class="form-control genInv" id="thedescripInput" required>
             </div>
 
-            <button class="button w-full" type="button" onclick="goToPreviewPage()">Continue</button>
+            <button class="button w-full" type="button" onclick="continuePage()">Continue</button>
 
 
           </form>
 
         </div>
       </section>
-
 
 
       <section class="formTabs h-full">
@@ -267,17 +461,26 @@
         </div>
 
         <div class="flex justify-center items-center h-full">
-          <form action="" class="md:w-[70%] secondForm">
+          <form action="" class="md:w-[70%] firstDiv">
             <!-- <h1 class="fontBold text-2xl">Generate Invoice</h1> -->
 
-            <h1 class="mb-3 mt-3">Billing Details</h1>
+            <h1 class="fontBold text-2xl">Generate Invoice</h1>
+            <h1 class="mb-3 mt-3">Billing information</h1>
             <div class="shadow-md p-3 bg-[#E9ECEF]" id="bill">
               <div class="flex space-x-3">
                 <p></p>
                 <p></p>
               </div>
             </div>
-            <h1 class="mb-3 mt-3">User Details</h1>
+            <h1 class="mb-3 mt-3 fontBold">User Details</h1>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Email</label>
+                <input type="text" class="form-control payInputs2" readonly data-name="email">
+              </div>  
+            </div>
+
             <div class="flex items-center mb-4 gap-2" id="theName2">
               <div class="form-group w-full">
                 <label for="">First name</label>
@@ -290,31 +493,30 @@
               </div>
             </div>
 
+            
+
+
             <div class="flex items-center mb-4 gap-2">
-              <div class="form-group w-full">
-                <label for="">Email</label>
-                <input type="text" class="form-control payInputs2" readonly data-name="email">
-              </div>
 
               <div class="form-group w-full">
                 <label for="">Phone number *</label>
                 <input type="text" class="form-control payInputs2" readonly data-name="phone">
               </div>
-            </div>
-
-            <div class="flex items-center mb-4 gap-2">
-              <div class="form-group w-full">
-                <label for="">JTB TIN (Optional)</label>
-                <input type="text" class="form-control payInputs2" readonly data-name="tin">
-              </div>
-
               <div class="form-group w-full">
                 <label for="">State</label>
                 <input type="text" class="form-control payInputs2" readonly data-name="state">
               </div>
             </div>
 
+
+
+
             <div class="flex items-center mb-4 gap-2">
+              <!-- <div class="form-group w-full">
+                <label for="">JTB TIN (Optional)</label>
+                <input type="text" class="form-control payInputs2" readonly data-name="tin">
+              </div> -->
+
               <div class="form-group w-full">
                 <label for="">LGA</label>
                 <input type="text" class="form-control payInputs2" readonly data-name="lga">
@@ -328,9 +530,7 @@
 
 
 
-
-            <button class="button w-full" type="button" id="generating_inv"
-              onclick="generateInvoiceNon()">Continue</button>
+            <button class="button w-full" type="button" id="generating_inv" onclick="generateInvoiceNon()">Continue</button>
             <div id="msg_box"></div>
           </form>
         </div>
@@ -462,58 +662,46 @@
       $(".revHeadInputSel").select2();
     });
   </script>
-  <script>
-    let popup = document.getElementById("popup");
-    function openPopup() {
-      popup.classList.add("open-popup");
-      document.getElementById("lastly-button").disabled = true;
 
-    }
+<script>
+ 
+ const amountInp = document.querySelector('.amountTopay');
+ 
+amountInp.addEventListener('input', function(e) {
+  let inputVal = e.target.value;
 
-    function disabled() {
-      document.getElementById("lastly-button").disabled = false
-    }
+  // Immediately return if the first character is a dot to allow ".xx" inputs
+  if (inputVal === '.') {
+    return;
+  }
+
+  // Normalize the input by removing commas and any non-numeric characters except for the decimal point
+  let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
+
+  // Split the input into whole and decimal parts
+  let [whole, decimal] = normalizedInput.split('.');
+
+  // Ensure the whole part is only numeric
+  whole = whole.replace(/\D/g, '');
+
+  // If there's a decimal part, limit it to two digits
+  if (decimal) {
+    decimal = decimal.substring(0, 2); // Limit decimal part to two digits
+  }
+
+  // Format the whole part with commas
+  let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+
+  // Reconstruct the formatted value
+  e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
+});
   </script>
-
-  <script>
-
-    const amountInp = document.querySelector('.amountTopay');
-
-    amountInp.addEventListener('input', function (e) {
-      let inputVal = e.target.value;
-
-      // Immediately return if the first character is a dot to allow ".xx" inputs
-      if (inputVal === '.') {
-        return;
-      }
-
-      // Normalize the input by removing commas and any non-numeric characters except for the decimal point
-      let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
-
-      // Split the input into whole and decimal parts
-      let [whole, decimal] = normalizedInput.split('.');
-
-      // Ensure the whole part is only numeric
-      whole = whole.replace(/\D/g, '');
-
-      // If there's a decimal part, limit it to two digits
-      if (decimal) {
-        decimal = decimal.substring(0, 2); // Limit decimal part to two digits
-      }
-
-      // Format the whole part with commas
-      let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-      // Reconstruct the formatted value
-      e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
-    });
-  </script>
-
-
+  
+  
   <script src="assets/js/nav.js?v=1.2"></script>
   <script src="assets/js/payment.js"></script>
   <script src="assets/js/tabHandler.js"></script>
-  <script src="assets/js/generateinvoice.js"></script>
+  <script src="assets/js/generateinvoice01.js"></script>
   <script src="assets/js/invoice.js"></script>
   <script src="assets/js/landingcms.js"></script>
 </body>
