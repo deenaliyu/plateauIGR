@@ -251,6 +251,21 @@ async function fetchUserDetails() {
             theInputt.value = theValuee
           }
         });
+
+        if (data.user.old_user && data.user.category === "Individual") {
+          if (data.user.state === null) {
+            selectOptionByText('selectState', "Plateau");
+          }
+
+        } else if (data.user.old_user && data.user.category === "Corporate") {
+          document.querySelector(".payInputs[data-name='first_name']").value = data.user.company_name
+          document.querySelector(".payInputs[data-name='email']").value = data.user.office_email
+          document.querySelector(".payInputs[data-name='phone']").value = data.user.office_number
+
+          if (data.user.state === null) {
+            selectOptionByText('selectState', "Plateau");
+          }
+        }
         nextPrev(1)
 
 
@@ -284,6 +299,20 @@ async function fetchUserDetails() {
   });
 }
 
+function fillManually() {
+  const inputs = document.querySelectorAll('.payInputs');
+
+  inputs.forEach(input => {
+    input.value = '';
+  });
+
+  const selects = document.querySelectorAll('select.payInputs');
+  selects.forEach(select => {
+    select.selectedIndex = 0;
+  });
+
+  nextPrev(1)
+}
 
 function continuePage() {
   let genInv = document.querySelectorAll(".payInputs")
