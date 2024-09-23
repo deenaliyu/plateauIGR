@@ -369,6 +369,44 @@ function sumArray(numbers) {
   return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 }
 
+document.getElementById("category").addEventListener("change", function () {
+  const selectedValue = this.value;
+
+  if (selectedValue === "") {
+    console.log("No category selected");
+  } else if (selectedValue === "2") {
+    // INDIVIDUAL
+    $("#theName").html(`
+      <div class="form-group w-full">
+        <label for="">First name *</label>
+        <input type="text" class="form-control payInputs" required data-name="first_name"
+          placeholder="Enter your first name">
+      </div>
+
+      <div class="form-group w-full">
+        <label for="">Surname *</label>
+        <input type="text" class="form-control payInputs" required data-name="surname"
+          placeholder="Enter your surname">
+      </div>
+  `)
+  } else {
+    $("#theName").html(`
+      <div class="form-group w-full">
+        <label for="">Organization Name *</label>
+        <input type="text" class="form-control payInputs" required data-name="first_name" placeholder="" value="">
+      </div>
+
+      <div class="form-group w-full hidden">
+        <label for="">Surname *</label>
+        <input type="text" class="form-control payInputs" value="&nbsp;" data-name="surname"
+        placeholder="" value="">
+      </div>
+  `)
+  }
+
+});
+
+
 function goToPreviewPage() {
   let payInputs = document.querySelectorAll(".payInputs")
   let amountto = []

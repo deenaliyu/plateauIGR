@@ -757,6 +757,7 @@ async function openReceipt(invoicenum) {
             <div class="flex justify-between">
               <div>
                 <p class="mb-2 fontBold">Payer ID: ${(invoice_info.tax_number === true) ? invoice_info.tax_number : invoice_info.payer_id}</p>
+                <p class="mb-2 fontBold">TIN: ${invoice_info.tin ? invoice_info.tin : '-'}</p>
                 <p class="mb-2">Due Date: ${invoice_info.due_date}</p>
               </div>
               <div>
