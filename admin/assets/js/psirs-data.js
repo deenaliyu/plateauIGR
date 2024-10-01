@@ -15,101 +15,153 @@ async function getMigratedDataAnalytics() {
 getMigratedDataAnalytics()
 
 async function fetchAllData() {
-  const apiUrl = 'https://plateauigr.com/php/?pull_old_users&limit=';
+  const apiUrl = 'https://plateauigr.com/php/?pull_old_users1&limit=';
   let totalRecords = 0;
 
-  $("#showreport").html('')
-  $("#loader").css('display', 'flex')
+  initializeLoader(true); // Show loader
 
-  fetchTotalRecords().then(total => {
-    totalRecords = total;
+  try {
+    totalRecords = await fetchTotalRecords();
     createPagination(totalRecords);
-    fetchData(1); // Fetch initial data for page 1
-  });
+    await fetchData(1); // Fetch initial data for page 1
+  } catch (error) {
+    console.error('Error during data fetching:', error);
+  } finally {
+    initializeLoader(false); // Hide loader
+  }
 
+  // Fetch total records from the API
   function fetchTotalRecords() {
     return fetch(apiUrl + '1')
       .then(response => response.json())
       .then(data => {
-        return { dataLenth: data.length, total: data.message.length }
-      }) // Assuming length represents the total records
-      .catch(error => console.error('Error fetching total records:', error));
+        const individualRecords = data.individual ? data.individual.length : 0;
+        const companyRecords = data.companies ? data.companies.length : 0;
+        return individualRecords + companyRecords;
+      })
+      .catch(error => {
+        console.error('Error fetching total records:', error);
+        throw error; // Re-throw error to handle it in fetchAllData
+      });
   }
 
+  // Fetch data for a specific page
   function fetchData(page) {
-    $("#showreport").html('')
-    $("#loader").css('display', 'flex')
-    fetch(apiUrl + page)
+    return fetch(apiUrl + page)
       .then(response => response.json())
-      .then(data => displayData(data.message))
-      .catch(error => console.error('Error fetching data:', error));
+      .then(data => {
+        const combinedData = [...(data.individual || []), ...(data.companies || [])];
+        displayData(combinedData);
+      })
+      .catch(error => {
+        console.error('Error fetching data for page:', page, error);
+        throw error; // Re-throw error to handle it in fetchAllData
+      });
   }
 
+  // Display data in the table
   function displayData(data) {
-    $("#loader").css('display', 'none')
     const tbody = document.querySelector('#showreport');
-    tbody.innerHTML = '';
-    data.forEach((item, i) => {
-      const row = `<tr>
-        <td>${i + 1}</td>
-        <td>PSIRS-${item.user_id}</td>
-        <td>${item.user_tin}</td>
-        <td>${item.name}</td>
-        <td>
-        ${item.status === "Unlinked" ? '<span class="badge bg-danger">un-linked</span>' : '<span class="badge bg-success">linked</span>'}
-          
-        </td>
-        <td>
-          <div class="flex gap-3">
-            <a href="psirs-datadetails.html?id=${item.user_tin}" class="btn btn-primary btn-sm">View</a>
-            <button class="btn btn-primary btn-sm" data-usertin="${item.user_tin}" onclick='openLinkUser(this)' data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>       
-          </div>
-        </td>
-      </tr>
-    `;
-      tbody.innerHTML += row;
+    const tbody2 = document.querySelector('#showreport2');
 
-      $("#showreport2").append(`
-        <tr>
-          <td>${i + 1}</td>
-          <td>PSIRS-${item.user_id}</td>
-          <td>${item.user_tin}</td>
-          <td>${item.name.replace(/,/g, '')}</td>
-          <td>${item.user_type}</td>
-          <td>${item.email}</td>
-          <td>${item.phone?.replace(/,/g, '')}</td>
-          <td>${item.city?.replace(/,/g, '')}</td>
-          <td>${item.address?.replace(/,/g, '')}</td>
-          <td>${item.status}</td>
-        </tr>
-      `)
+    tbody.innerHTML = '';
+    tbody2.innerHTML = ''; // Clear the second table as well
+
+    data.forEach((item, index) => {
+      const statusBadge = item.status === "Unlinked"
+        ? '<span class="badge bg-danger">un-linked</span>'
+        : '<span class="badge bg-success">linked</span>';
+
+      const row1 = `
+              <tr>
+                  <td>${index + 1}</td>
+                  <td>PSIRS-${item.user_id}</td>
+                  <td>${item.user_tin}</td>
+                  <td>${item.name}</td>
+                  <td>${statusBadge}</td>
+                  <td>
+                      <div class="flex gap-3">
+                          <a href="psirs-datadetails.html?id=${item.user_tin}" class="btn btn-primary btn-sm">View</a>
+                          <button class="btn btn-primary btn-sm" data-usertin="${item.user_tin}" onclick='openLinkUser(this)' data-bs-toggle="modal" data-bs-target="#linkUser">Link User</button>
+                      </div>
+                  </td>
+              </tr>
+          `;
+      tbody.innerHTML += row1;
+
+      const row2 = `
+              <tr>
+                  <td>${index + 1}</td>
+                  <td>PSIRS-${item.user_id}</td>
+                  <td>${item.user_tin}</td>
+                  <td>${sanitizeText(item.name)}</td>
+                  <td>${item.user_type || 'N/A'}</td>
+                  <td>${item.email || 'N/A'}</td>
+                  <td>${sanitizeText(item.phone) || 'N/A'}</td>
+                  <td>${sanitizeText(item.city) || 'N/A'}</td>
+                  <td>${sanitizeText(item.address) || 'N/A'}</td>
+                  <td>${item.status}</td>
+              </tr>
+          `;
+      tbody2.innerHTML += row2;
     });
   }
 
+  // Sanitize text by removing commas or handling null values
+  function sanitizeText(text) {
+    return text ? text.replace(/,/g, '') : 'N/A';
+  }
+
+  // Initialize or hide loader
+  function initializeLoader(show) {
+    const loader = $("#loader");
+    if (show) {
+      loader.css('display', 'flex');
+    } else {
+      loader.css('display', 'none');
+    }
+  }
+
+  // Create pagination for the data
   function createPagination(totalRecords) {
     const pagination = document.getElementById('pagination');
-    // console.log(totalRecords)
-    let numberOfPagination = totalRecords.dataLenth / totalRecords.total
-    $("#showing").html(`Showing 1 to ${totalRecords.total} of ${totalRecords.dataLenth.toLocaleString()} entries`)
-    $("#paging").html('Page 1')
+    const entriesPerPage = 200; // Example number of records per page
+    const totalPages = Math.ceil(466, 188 / entriesPerPage);
 
-    for (let i = 1; i <= numberOfPagination; i++) {
+    $("#showing").html(`Showing 1 to ${entriesPerPage} of ${totalRecords.toLocaleString()} entries`);
+    $("#paging").html('Page 1');
+
+    pagination.innerHTML = ''; // Clear previous pagination
+
+    for (let i = 1; i <= totalPages; i++) {
       const li = document.createElement('li');
       li.textContent = i;
+      li.classList.add('page-item');
+
       li.addEventListener('click', () => {
         fetchData(i);
-        document.querySelectorAll('.pagination li').forEach(el => el.classList.remove('active'));
-        li.classList.add('active');
-        $("#showing").html(`Showing ${i * 100} to ${(i + 1) * 100} of ${totalRecords.dataLenth.toLocaleString()} entries`)
-        $("#paging").html(`Page ${i}`)
+        updatePaginationUI(i, totalRecords, entriesPerPage, pagination);
       });
-      if (i === 1) li.classList.add('active'); // Mark the first page as active
+
+      if (i === 1) li.classList.add('active'); // Mark first page as active
       pagination.appendChild(li);
     }
   }
+
+  // Update the pagination UI and data display
+  function updatePaginationUI(currentPage, totalRecords, entriesPerPage, pagination) {
+    const startRecord = (currentPage - 1) * entriesPerPage + 1;
+    const endRecord = Math.min(currentPage * entriesPerPage, totalRecords);
+
+    $("#showing").html(`Showing ${startRecord} to ${endRecord} of ${totalRecords.toLocaleString()} entries`);
+    $("#paging").html(`Page ${currentPage}`);
+
+    document.querySelectorAll('.pagination li').forEach(el => el.classList.remove('active'));
+    pagination.children[currentPage - 1].classList.add('active');
+  }
 }
 
-fetchAllData()
+fetchAllData();
 
 
 
@@ -212,12 +264,12 @@ $("#searchBtn").on('click', async function () {
             <td>${i + 1}</td>
             <td>PSIRS-${searched.user_id}</td>
             <td>${searched.user_tin}</td>
-            <td>${searched.name.replace(/,/g, '')}</td>
+            <td>${searched.name?.replace(/,/g, '')}</td>
             <td>${searched.user_type}</td>
             <td>${searched.email}</td>
             <td>${searched.phone?.replace(/,/g, '')}</td>
             <td>${searched.city?.replace(/,/g, '')}</td>
-            <td>${searched.address.replace(/,/g, '')}</td>
+            <td>${searched.address?.replace(/,/g, '')}</td>
             <td>${searched.status}</td>
           </tr>
         `)

@@ -7,7 +7,7 @@ $(document).ready(function() {
 	sendPaymentToDb()
 });
 
-async function sendPaymentToDb(referencee) {
+async function sendPaymentToDb(reference) {
     let dataToPush = {
       "endpoint": "createInvidualPayment",
       "data": {
