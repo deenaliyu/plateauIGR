@@ -15,6 +15,8 @@ async function getMigratedDataAnalytics() {
 getMigratedDataAnalytics()
 
 async function fetchAllData() {
+  document.querySelector('#categ-select').value = ''
+
   const apiUrl = 'https://plateauigr.com/php/?pull_old_users1&limit=';
   let totalRecords = 0;
 
@@ -46,11 +48,17 @@ async function fetchAllData() {
   }
 
   // Fetch data for a specific page
-  function fetchData(page) {
+  function fetchData(page, category = '') {
     return fetch(apiUrl + page)
       .then(response => response.json())
       .then(data => {
-        const combinedData = [...(data.individual || []), ...(data.companies || [])];
+        let combinedData = [...(data.individual || []), ...(data.companies || [])];
+
+        // Filter data based on the category, if specified
+        if (category) {
+          combinedData = combinedData.filter(item => item.category === category);
+        }
+
         displayData(combinedData);
       })
       .catch(error => {
@@ -77,6 +85,7 @@ async function fetchAllData() {
                   <td>${index + 1}</td>
                   <td>PSIRS-${item.user_id}</td>
                   <td>${item.user_tin}</td>
+                  <td>${item.category}</td>
                   <td>${item.name}</td>
                   <td>${statusBadge}</td>
                   <td>
@@ -94,6 +103,7 @@ async function fetchAllData() {
                   <td>${index + 1}</td>
                   <td>PSIRS-${item.user_id}</td>
                   <td>${item.user_tin}</td>
+                  <td>${item.category}</td>
                   <td>${sanitizeText(item.name)}</td>
                   <td>${item.user_type || 'N/A'}</td>
                   <td>${item.email || 'N/A'}</td>
@@ -159,11 +169,17 @@ async function fetchAllData() {
     document.querySelectorAll('.pagination li').forEach(el => el.classList.remove('active'));
     pagination.children[currentPage - 1].classList.add('active');
   }
+
+  $('#categ-select').change(function () {
+    const category = $(this).val();
+
+    fetchData(1, category);
+  });
+
 }
 
+
 fetchAllData();
-
-
 
 // USER LINKING 
 
@@ -246,6 +262,7 @@ $("#searchBtn").on('click', async function () {
             <td>${i + 1}</td>
             <td>PSIRS-${searched.user_id}</td>
             <td>${searched.user_tin}</td>
+            <td>${searched.category}</td>
             <td>${searched.name}</td>
             <td>
               ${searched.status === "Unlinked" ? '<span class="badge bg-danger">un-linked</span>' : '<span class="badge bg-success">linked</span>'}
@@ -264,6 +281,7 @@ $("#searchBtn").on('click', async function () {
             <td>${i + 1}</td>
             <td>PSIRS-${searched.user_id}</td>
             <td>${searched.user_tin}</td>
+            <td>${searched.category}</td>
             <td>${searched.name?.replace(/,/g, '')}</td>
             <td>${searched.user_type}</td>
             <td>${searched.email}</td>

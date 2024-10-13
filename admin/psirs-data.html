@@ -175,10 +175,23 @@
 
             <div class="card py-4 mt-6 px-2">
 
-              <div class="form-group flex items-center gap-2 mb-4">
-                <input type="search" placeholder="Search  ..." class="form-control" id="searchInpt" />
-                <button class="btn btn-primary" id="searchBtn">search</button>
-                <button class="btn btn-outline-primary" onclick="fetchAllData()">Clear</button>
+              <div class="form-group flex md:flex-row flex-col items-center gap-2 mb-4">
+                <div class="md:w-2/12 w-full">
+                  <select class="form-select" id="categ-select">
+                    <option value="">Filter by Category</option>
+                    <option value="Individual">Individual</option>
+                    <option value="Corporate">Corporate</option>
+                  </select>
+                </div>
+                <div class="md:w-10/12 w-full flex gap-2 items-center">
+                  <input type="search" placeholder="Search  ..." class="form-control" id="searchInpt" />
+                  <button class="btn btn-primary" id="searchBtn">search</button>
+                  <button class="btn btn-outline-primary" onclick="fetchAllData()">Clear</button>
+                </div>
+              </div>
+
+              <div class="flex justify-center items-center mt-4" id="loader">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
               </div>
 
               <div class="table-responsive">
@@ -188,6 +201,7 @@
                       <th>S/N</th>
                       <th>ID</th>
                       <th>TIN</th>
+                      <th>Category</th>
                       <th>Name</th>
                       <th>Account Status</th>
                       <th></th>
@@ -201,9 +215,7 @@
                 </table>
               </div>
 
-              <div class="flex justify-center items-center mt-4" id="loader">
-                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-              </div>
+
 
               <div id="pagination" class="pagination"></div>
 
@@ -218,6 +230,7 @@
                     <th>S/N</th>
                     <th>ID</th>
                     <th>TIN</th>
+                    <th>Category</th>
                     <th>Name</th>
                     <th>User Type</th>
                     <th>Email</th>
