@@ -1,55 +1,3 @@
-function convertNumberToWords(amount) {
-  const units = ['', 'Thousand', 'Million', 'Billion', 'Trillion'];
-
-    const convertThreeDigits = (num, sign) => {
-        const ones = ['', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine'];
-        const teens = ['', 'Eleven', 'Twelve', 'Thirteen', 'Fourteen', 'Fifteen', 'Sixteen', 'Seventeen', 'Eighteen', 'Nineteen'];
-        const tens = ['', 'Ten', 'Twenty', 'Thirty', 'Forty', 'Fifty', 'Sixty', 'Seventy', 'Eighty', 'Ninety'];
-
-        let result = '';
-
-        if (num >= 100) {
-            result += ones[Math.floor(num / 100)] + ' Hundred ';
-            num %= 100;
-        }
-
-        if (num >= 11 && num <= 19) {
-            result += teens[num - 11] + ' ';
-        } else {
-            result += tens[Math.floor(num / 10)] + ' ';
-            num %= 10;
-
-            result += ones[num] + ' ';
-        }
-
-        return result.trim() + sign;
-    };
-
-    if (amount === 0) {
-        return 'Zero Naira';
-    }
-
-    let nairaAmount = Math.floor(amount);
-    let koboAmount = Math.round((amount - nairaAmount) * 100);
-
-    let words = convertThreeDigits(nairaAmount % 1000, " Naira");
-
-    if (koboAmount > 0) {
-        words += ' and ' + convertThreeDigits(koboAmount % 1000, " Kobo");
-    }
-
-    let i = 1;
-
-    while (nairaAmount >= 1000) {
-        nairaAmount = Math.floor(nairaAmount / 1000);
-        words = convertThreeDigits(nairaAmount % 1000) + ' ' + units[i] + ' ' + words;
-        i++;
-    }
-
-    return words.trim();
-
-}
-
 function formatMoney(amount) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
@@ -57,9 +5,21 @@ function formatMoney(amount) {
     minimumFractionDigits: 2,
   });
 }
-console.log(formatMoney(10000))
+
+function getFormattedDate(date) {
+  date = new Date(date)
+  
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
+// console.log(formatMoney(10000))
 
 function sumArray(numbers) {
+  // console.log(numbers)
   return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 }
 // function editoo() {
@@ -178,11 +138,11 @@ async function openInvoice(invoicenum, price) {
             <td>
               <p class="fontBold">Payer ID: ${invoice_info.tax_number ? invoice_info.tax_number : invoice_info.payer_id}</p>
             </td>
-            <td>Due Date: ${invoice_info.due_date}</td>
+            <td>Due Date: ${getFormattedDate(invoice_info.due_date)}</td>
           </tr>
           <tr>
-            <td>Invoice Date: ${invoice_info.date_created.split(" ")[0]}</td>
-            <td>Expiry Date: ${invoice_info.due_date}</td>
+            <td>Invoice Date: ${getFormattedDate(invoice_info.date_created)}</td>
+            <td>Expiry Date: ${getFormattedDate(invoice_info.due_date)}</td>
           </tr>
           <tr>
             <td><span class="fontBold">Description:</span> ${invoice_info.description ? invoice_info.description : '-'}</td>
@@ -321,7 +281,7 @@ async function openInvoice(invoicenum, price) {
           <div>
             <p class="text-xl fontBold pb-0">Plateau State Internal Revenue Service</p>
             <div class="flex items-center gap-x-3 flex-wrap">
-              <p class="text-sm text-[#6F6F84]">www.plateaugr.com</p>
+              <p class="text-sm text-[#6F6F84]">www.plateauigr.com</p>
               <p class="text-sm text-[#6F6F84]">info@psirs.gov.ng</p>
               <p class="text-sm text-[#6F6F84]">07056990777, 08031230301</p>
               <img src="./assets/img/logo1.png" class="h-[30px] w-[70px]" alt="">
