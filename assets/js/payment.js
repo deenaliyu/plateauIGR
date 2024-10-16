@@ -274,7 +274,6 @@ function makePaymentRemita() {
 
         let invoiceDetails = userInvoices.message[0]
 
-
         var paymentEngine = RmPaymentEngine.init({
           key: 'QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=',
           transactionId: Math.floor(Math.random() * 1101233), // Replace with a reference you generated or remove the entire field for us to auto-generate a reference for you. Note that you will be able to check the status of this transaction using this transaction Id
@@ -286,32 +285,36 @@ function makePaymentRemita() {
           narration: invoiceDetails.COL_4,
           onSuccess: function (response) {
             console.log('callback Successful Response', response);
+            
+            alert("payment success")
+            nextPrev(1)
+            openReceipt(invoicenum)
 
-            let dataToPush = {
-              "endpoint": "createInvidualPayment",
-              "data": {
-                "invoice_number": invoicenum,
-                "payment_channel": "paystack",
-                "payment_reference_number": reference,
-                "receipt_number": reference,
-                "amount_paid": invoiceDetails.amount_paid
-              }
-            }
-            $.ajax({
-              type: "POST",
-              url: HOST,
-              dataType: 'json',
-              data: JSON.stringify(dataToPush),
-              success: function (data) {
-                console.log(data)
-                alert("payment success")
-                nextPrev(1)
-                openReceipt(invoicenum)
-              },
-              error: function (request, error) {
-                console.log(error)
-              }
-            });
+            // let dataToPush = {
+            //   "endpoint": "createInvidualPayment",
+            //   "data": {
+            //     "invoice_number": invoicenum,
+            //     "payment_channel": "paystack",
+            //     "payment_reference_number": reference,
+            //     "receipt_number": reference,
+            //     "amount_paid": invoiceDetails.amount_paid
+            //   }
+            // }
+            // $.ajax({
+            //   type: "POST",
+            //   url: HOST,
+            //   dataType: 'json',
+            //   data: JSON.stringify(dataToPush),
+            //   success: function (data) {
+            //     console.log(data)
+            //     alert("payment success")
+            //     nextPrev(1)
+            //     openReceipt(invoicenum)
+            //   },
+            //   error: function (request, error) {
+            //     console.log(error)
+            //   }
+            // });
           },
           onError: function (response) {
             console.log('callback Error Response', response);
@@ -322,10 +325,6 @@ function makePaymentRemita() {
           },
         });
         paymentEngine.showPaymentWidget();
-        // let bbButton = document.querySelector("#js-payment-tabs > li.branch.payment-nav > a")
-        // if (bbButton) {
-        //   bbButton.click()
-        // }
 
       }
     } else {
@@ -378,8 +377,8 @@ function makePaymentRemita2() {
               "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
               "channels": ["card", "bank"],
               "currency": "NGN",
-              "customerFirstName": invoiceDetails.first_name,
-              "customerLastName": invoiceDetails.surname,
+              "customerFirstName": invoiceDetails.first_name + invoiceDetails.surname,
+              "customerLastName": invoicenum,
               "customerPhoneNumber": invoiceDetails.phone,
               "email": invoiceDetails.email,
             }
@@ -626,8 +625,18 @@ function formatMoney(amount) {
 }
 
 function sumArray(numbers) {
-  // console.log(numbers)
+   console.log(numbers)
   return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
+}
+
+function getFormattedDate(date) {
+  date = new Date(date)
+  
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
 }
 
 async function openReceipt(invoicenum) {
@@ -757,12 +766,12 @@ async function openReceipt(invoicenum) {
             <div class="flex justify-between">
               <div>
                 <p class="mb-2 fontBold">Payer ID: ${(invoice_info.tax_number === true) ? invoice_info.tax_number : invoice_info.payer_id}</p>
-                <p class="mb-2 fontBold">TIN: ${invoice_info.tin ? invoice_info.tin : '-'}</p>
-                <p class="mb-2">Due Date: ${invoice_info.due_date}</p>
+                <p class="mb-2 fontBold">TIN: ${invoice_info.tin}</p>
+                <p class="mb-2">Due Date: ${getFormattedDate(invoice_info.due_date)}</p>
               </div>
               <div>
-                <p class="mb-2">Invoice Date: ${invoice_info.timeIn}</p>
-                <p class="mb-2">Expiry Date: ${invoice_info.due_date}</p>
+                <p class="mb-2">Invoice Date: ${getFormattedDate(invoice_info.timeIn)}</p>
+                <p class="mb-2">Expiry Date: ${getFormattedDate(invoice_info.due_date)}</p>
               </div>
             </div>
 
@@ -994,21 +1003,13 @@ function formatDate(inputDate) {
   // Parse the input date string
   const parsedDate = new Date(inputDate.replace(/-/g, '/'));
 
-  // Options for formatting the date
-  const options = {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric'
-  };
-
-  // Format the date using the options
-  const formattedDate = parsedDate.toLocaleDateString('en-US', options);
-
-  // Extract the day and add the appropriate suffix
+  // Extract the day, month, and year
   const dayWithSuffix = addSuffix(parsedDate.getDate());
+  const month = parsedDate.toLocaleString('en-US', { month: 'long' });
+  const year = parsedDate.getFullYear();
 
-  // Construct the final formatted date string
-  const finalFormattedDate = `${formattedDate}`;
+  // Construct the final formatted date string in dd mm yyyy format
+  const finalFormattedDate = `${dayWithSuffix} ${month} ${year}`;
 
   return finalFormattedDate;
 }

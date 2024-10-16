@@ -5,6 +5,15 @@ $("#theUser").html(
   `<span>${userInfo.surname} ${userInfo.first_name}</span></h1>`
 );
 
+function getFormattedDate(date) {
+  date = new Date(date)    
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 async function fetchInvoice() {
   $("#showInvoice").html("");
   $("#loader").css("display", "flex");
@@ -39,7 +48,7 @@ async function fetchInvoice() {
           }&load=true">${userInvoice.tax_number}</a></td>
           <td>${userInvoice.invoice_number}</td>
           <td>&#8358; ${userInvoice.amount_paid}</td>
-          <td>${userInvoice.due_date}</td>            
+          <td>${getFormattedDate(userInvoice.due_date)}</td>            
         </tr>
       `);
 
@@ -146,7 +155,7 @@ async function fetchPayment() {
           <td>${userInvoice["COL_4"]}</td>
           <td>${userInvoice["receipt_number"]}</td>
           <td>&#8358;${userInvoice["amount_paid"]}</td>
-          <td>${userInvoice.timeIn}</td>            
+          <td>${getFormattedDate(userInvoice.timeIn)}</td>            
         </tr>
       `);
 
