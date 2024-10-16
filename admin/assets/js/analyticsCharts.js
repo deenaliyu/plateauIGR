@@ -944,6 +944,130 @@ async function LeastPerformanceRev()  {
 }
 LeastPerformanceRev()
 
+
+// INDUSTRIES PERFORMANCE
+
+async function industriesPerformance()  {
+    const selectInput = document.querySelector('#industriesSelect')
+    
+    try {
+        const response = await fetch(`https://plateauigr.com/php/?getExpectedRevenueByIndustries`)
+        const responseDta = await response.json()
+        
+        function padNumberWithZero(num) {
+            return num.toString().padStart(2, '0');
+        }
+        
+        const date = new Date();
+        const currentYear = date.getFullYear();
+        const currentMonth = padNumberWithZero(date.getMonth() + 1); // JavaScript months are 0-based
+        const currentMonthYear = `${currentYear}-${currentMonth}`;
+        
+        const months = Object.keys(responseDta).map(key => {
+            const [year, month] = key.split('-');
+            const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+            return { value: key, text: `${monthNames[parseInt(month) - 1]} ${year}` };
+        });
+        
+        months.forEach(month => {
+            $('#industriesSelect').append(`
+                <option value='${month.value}'>${month.text}</option>
+            `)
+        });
+        
+        if (months.some(month => month.value === currentMonthYear)) {
+            selectInput.value = currentMonthYear;
+        } else {
+            selectInput.value = months[0].value; // Fallback to the first available month
+        }
+        
+        selectInput.addEventListener('change', function() {
+            const selectedMonth = this.value;
+            updateChart(selectedMonth, responseDta);
+        });
+        
+        const initialMonth = selectInput.value;
+        updateChart(initialMonth, responseDta);
+
+    } catch(error) {
+        console.log(error)
+    }
+    
+    async function updateChart(month, data) {
+        document.querySelector("#industriesSelectContainer").innerHTML = '<canvas class="theChart" id="industriesSelectPerformance"></canvas>';
+        const ctx = document.getElementById('industriesSelectPerformance').getContext('2d');
+
+        try {
+            const topRevNames = data[month].map(item => item.industry);
+            const topTotalPayments = data[month].map(item => item.total_revenue);
+            
+            const labels = topRevNames;
+                
+            const revenueCollected = topTotalPayments;
+        
+            const chartData = {
+                labels: labels,
+                datasets: [{
+                    label: 'Revenue Collected',
+                    data: revenueCollected,
+                    backgroundColor: "#E6D9B9",
+                      borderColor: "#CDA545",
+                    borderWidth: 2,
+                    barThickness: 30, 
+                }]
+            };
+        
+            const options = {
+                responsive: true,
+                maintainAspectRatio: false,
+                indexAxis: 'x',  // This makes the bar chart horizontal
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Revenue Collected by Industry'
+                        },
+                        ticks: {
+                            callback: function(value) {
+                                return value + 'M';
+                            }
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Industry'
+                        }
+                    }
+                },
+                plugins: {
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                const label = context.dataset.label || '';
+                                const value = context.raw || 0;
+                                return `${label}: ${value}M`;
+                            }
+                        }
+                    }
+                }
+            };
+        
+            new Chart(ctx, {
+                type: 'bar',
+                data: chartData,
+                options: options
+            });
+            
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+}
+industriesPerformance()
+
 // Top 5 performing MDA
 async function topLeastPerformanceMDA()  {
     const selectInput = document.querySelector('#topLeastPerformanceMDASelect')
