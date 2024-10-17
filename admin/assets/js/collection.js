@@ -15,7 +15,7 @@ async function fetchInvoice() {
 
   const response = await fetch(`${HOST}?fetchAllPayment`);
   const userInvoices = await response.json();
-  
+
   console.log(userInvoices);
 
   $("#loader").css("display", "none");
@@ -41,14 +41,16 @@ function displayData(userInvoices) {
         <td>${userInvoice.COL_4}</td>
         <td>${userInvoice.first_name} ${userInvoice.surname}</td>
         <td>${userInvoice.tax_number}</td>
+        <td>${userInvoice.tin}</td>
+        <td>${userInvoice.business_type}</td>
         <td>${userInvoice.invoice_number}</td>
         <td>${formatMoney(parseFloat(userInvoice.amount_paid))}</td>
         <td>${userInvoice.payment_channel}</td>
-        <td>${userInvoice.payment_gateway}</td>
         <td>${userInvoice.payment_method}</td>
+        <td>${userInvoice.payment_bank}</td>
         <td>${userInvoice.payment_reference_number}</td>
         <td>${userInvoice.invoice_number}</td>
-        <td>${userInvoice.timeIn}</td>
+        <td>${getFormattedDate(userInvoice.timeIn)}</td>
         
           `
     addd += `
@@ -66,13 +68,15 @@ function displayData(userInvoices) {
           <td>${userInvoice.first_name?.replace(/,/g, '')} ${userInvoice.surname?.replace(/,/g, '')}</td>
           <td>${userInvoice.tax_number}</td>
           <td>${userInvoice.invoice_number}</td>
-          <td>&#8358; ${(parseFloat(userInvoice.amount_paid))}</td>
+          <td>${userInvoice.tin}</td>
+          <td>${userInvoice.business_type}</td>
+          <td>${(parseFloat(userInvoice.amount_paid))}</td>
           <td>${userInvoice.payment_channel}</td>
-          <td>${userInvoice.payment_gateway}</td>
           <td>${userInvoice.payment_method}</td>
+          <td>${userInvoice.payment_bank}</td>
           <td>${userInvoice.payment_reference_number}</td>
           <td>${userInvoice.invoice_number}</td>
-          <td>${userInvoice.timeIn}</td>
+          <td>${getFormattedDate(userInvoice.timeIn)}</td>
       </tr>
     `)
   });
