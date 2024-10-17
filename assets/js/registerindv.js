@@ -144,8 +144,8 @@ function registerUser() {
       "rep_state": "",
       "rep_lga": "",
       "rep_address": "",
+      "industry": "",
       "category": myParam,
-
       "business_own": selectedValue
     }
   }
@@ -454,10 +454,33 @@ fetchBusiness()
 function addBusiness() {
   $("#businessCnt").append(`
     <div class="businessNums mt-3">
+
+
       <div class="flex justify-end">
         <button onclick="deleteBusiness(this)">
           <iconify-icon icon="ic:round-delete"></iconify-icon>
         </button>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="">Industry*</label>
+        <select class="form-select enumInputB" data-name="industry" required>
+          <option value="">Select</option>
+          <option value="Mining">Mining</option>
+          <option value="Commerce">Commerce</option>
+          <option value="Banking">Banking</option>
+          <option value="Agriculture">Agriculture</option>
+          <option value="Engineering">Engineering</option>
+          <option value="Construction">Construction</option>
+          <option value="Government Institution">Government Institution</option>
+          <option value="NGO">NGO</option>
+          <option value="Religious Institutions">Religious Institutions</option>
+          <option value="General Merchandise">General Merchandise</option>
+          <option value="General Contractor">General Contractor</option>
+          <option value="Private Schools"> Private Schools</option>
+          <option value="Public Schools">Public Schools</option>
+          <option value="Hospitals">Hospitals</option>
+        </select>
       </div>
 
       <div class="flex gap-3 md:flex-row flex-col mb-3">

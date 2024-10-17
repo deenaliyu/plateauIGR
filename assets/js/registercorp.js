@@ -150,7 +150,7 @@ function registerUser() {
       "rep_lga": "",
       "rep_address": "",
       "category": myParam,
-
+      "industry": "",
       "business_own": "2"
     }
   }

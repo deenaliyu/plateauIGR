@@ -556,6 +556,7 @@ async function generateInvoiceNon() {
           "password": "12345",
           "verification_status": "grfdses",
           "business_own": "2",
+          "industry": "",
           "bvn": "",
           "nin": "",
           "annual_revenue": "",

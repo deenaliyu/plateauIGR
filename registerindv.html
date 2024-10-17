@@ -120,7 +120,8 @@
 
             <div class="form-group md:w-6/12">
               <label for="">JTB TIN (Optional)</label>
-              <input type="number" class="form-control w-full enumInput" data-name="tin" min="0" max="99999999999" step="1" oninput="limitInputLength(this)">
+              <input type="number" class="form-control w-full enumInput" data-name="tin" min="0" max="99999999999"
+                step="1" oninput="limitInputLength(this)">
             </div>
 
             <div class="form-group md:w-6/12">
@@ -138,14 +139,14 @@
 
             <div class="form-group md:w-6/12">
               <label for="">NIN*</label>
-              <input type="number" class="form-control w-ful enumInput" data-name="nin"
-                placeholder="Input NIN" min="0" max="99999999999" step="1" oninput="limitInputLength(this)" required>
+              <input type="number" class="form-control w-ful enumInput" data-name="nin" placeholder="Input NIN" min="0"
+                max="99999999999" step="1" oninput="limitInputLength(this)" required>
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">BVN*</label>
-              <input type="number" class="form-control w-ful enumInput" data-name="bvn"
-                placeholder="Input BVN" min="0" max="99999999999" step="1" oninput="limitInputLength(this)" required>
+              <input type="number" class="form-control w-ful enumInput" data-name="bvn" placeholder="Input BVN" min="0"
+                max="99999999999" step="1" oninput="limitInputLength(this)" required>
             </div>
 
           </div>
@@ -162,6 +163,8 @@
               <label class="form-check-label" for="no">No</label>
             </div>
           </div>
+
+
 
           <div class="flex gap-3 md:flex-row flex-col mb-3">
 
@@ -213,6 +216,28 @@
           <p class="mt-2 mb-4">Business Information</p>
 
           <div class="businessNums">
+
+            <div class="form-group mb-3">
+              <label for="">Industry*</label>
+              <select class="form-select enumInputB" data-name="industry" required>
+                <option value="">Select</option>
+                <option value="Mining">Mining</option>
+                <option value="Commerce">Commerce</option>
+                <option value="Banking">Banking</option>
+                <option value="Agriculture">Agriculture</option>
+                <option value="Engineering">Engineering</option>
+                <option value="Construction">Construction</option>
+                <option value="Government Institution">Government Institution</option>
+                <option value="NGO">NGO</option>
+                <option value="Religious Institutions">Religious Institutions</option>
+                <option value="General Merchandise">General Merchandise</option>
+                <option value="General Contractor">General Contractor</option>
+                <option value="Private Schools"> Private Schools</option>
+                <option value="Public Schools">Public Schools</option>
+                <option value="Hospitals">Hospitals</option>
+              </select>
+            </div>
+
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
               <div class="form-group md:w-6/12">
@@ -385,6 +410,11 @@
 
 
             <p class="mt-2 mb-4">Business Information</p>
+
+            <div class="form-group mb-3">
+              <label for="">Industry</label>
+              <input type="text" class="enumInputB2 form-control" data-name="industry" readonly>
+            </div>
 
             <div class="flex gap-3 md:flex-row flex-col mb-3">
 
