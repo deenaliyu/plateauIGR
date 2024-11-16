@@ -68,8 +68,8 @@ async function openInvoice(invoicenum, price) {
     let currentDate = new Date();
     currentDate.setHours(0, 0, 0, 0);
     let specificDate = new Date(invoice_info.due_date);
-    if( specificDate < currentDate){
-// console.log(invoice_info)
+    if (specificDate < currentDate) {
+      // console.log(invoice_info)
       $("#invoiceCard").html(`
       <div class="invoicetop"></div>
       <div class="flex justify-center items-center h-[60vh]">
@@ -77,27 +77,27 @@ async function openInvoice(invoicenum, price) {
       </div>
     `)
 
-    let thePP = document.querySelector('.invoiceContainer')
+      let thePP = document.querySelector('.invoiceContainer')
 
-    let thSiblings = thePP.nextElementSibling
-    let sesinID = JSON.parse(localStorage.getItem("userDataPrime"))
-    if (sesinID) {
-      thSiblings.innerHTML = `
+      let thSiblings = thePP.nextElementSibling
+      let sesinID = JSON.parse(localStorage.getItem("userDataPrime"))
+      if (sesinID) {
+        thSiblings.innerHTML = `
         <a href="./dashboard/taxes.html" class="button flex gap-3 items-center px-10 mt-6">
           <span>Regenerate Invoice</span>
           <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
         </a>
       `
-    } else {
-      thSiblings.innerHTML = `
+      } else {
+        thSiblings.innerHTML = `
         <a href="./generateinvoice.html" class="button flex gap-3 items-center px-10 mt-6">
           <span>Regenerate Invoice</span>
           <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
         </a>
       `
-    }
-    }else{
-    TotalInvoice += `
+      }
+    } else {
+      TotalInvoice += `
       <div class="invoicetop"></div>
 
       <div class="flex px-6 pt-3 items-center justify-between">
@@ -116,8 +116,8 @@ async function openInvoice(invoicenum, price) {
       </div>
 `
 
-    if (userInvoices.message.length > 1) {
-      TotalInvoice += `
+      if (userInvoices.message.length > 1) {
+        TotalInvoice += `
       <div class="flex  justify-between px-6 mt-4">
         <div class="w-full">
           <p class="text-[#555555]">FROM :</p>
@@ -127,13 +127,13 @@ async function openInvoice(invoicenum, price) {
         <div class="w-full md:mr-[-10%]">
           <p class="text-[#555555]">TO :</p>
           <p class="fontBold text-left">${invoice_info.surname} ${invoice_info.first_name}</p>
-          <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address}</p>
+          <p class="text-[#222234] text-sm md:w-[60%]">${invoice_info.address ? invoice_info.address : ''}</p>
         </div>
 
       </div>
 `
-    } else {
-      TotalInvoice += `
+      } else {
+        TotalInvoice += `
       <div class="flex  justify-between px-6 mt-4">
         <div class="w-full">
           <p class="text-[#555555]">FROM :</p>
@@ -149,8 +149,8 @@ async function openInvoice(invoicenum, price) {
 
       </div>
     `
-    }
-    TotalInvoice += `
+      }
+      TotalInvoice += `
       <div class="px-6 mt-4">
         <p class="text-[#555555]">INFO :</p>
 
@@ -172,10 +172,10 @@ async function openInvoice(invoicenum, price) {
       </div>
     `
 
-    if (userInvoices.message.length > 1) {
-      let theTotal = []
-      // let totalAmount = parseFloat(userInvoices.message[0].amount_paid)
-      TotalInvoice += `
+      if (userInvoices.message.length > 1) {
+        let theTotal = []
+        // let totalAmount = parseFloat(userInvoices.message[0].amount_paid)
+        TotalInvoice += `
         <div class="px-6">
           <table class="table table-borderless table-sm">
             <thead>
@@ -189,8 +189,8 @@ async function openInvoice(invoicenum, price) {
             <tbody>
           `
 
-      userInvoices.message.forEach(element => {
-        TotalInvoice += `
+        userInvoices.message.forEach(element => {
+          TotalInvoice += `
                 <tr>
                   <td class="text-sm">${element.COL_4}</td>
                   <td class="text-sm">01</td>
@@ -198,9 +198,9 @@ async function openInvoice(invoicenum, price) {
                   <td class="text-sm">${parseFloat(element.amount_paid).toLocaleString()}</td>
                 </tr>
               `
-        theTotal.push(parseFloat(element.amount_paid))
-      });
-      TotalInvoice += `
+          theTotal.push(parseFloat(element.amount_paid))
+        });
+        TotalInvoice += `
               <tr class="border-t border-[#6F6F84]">
                 <td class="text-[#555555] text-sm">Sub Total</td>
                 <td></td>
@@ -231,8 +231,8 @@ async function openInvoice(invoicenum, price) {
           </table>  
         </div>
         `
-    }  else {
-      TotalInvoice += `
+      } else {
+        TotalInvoice += `
         <div class="px-6">
           <table class="table table-borderless">
             <tr class="bg-[#CDA545]">
@@ -290,10 +290,10 @@ async function openInvoice(invoicenum, price) {
           
         </div>
     `
-    }
+      }
 
 
-    TotalInvoice += `
+      TotalInvoice += `
       <hr class="my-4 md:mx-10 mx-4">
 
       <div class="md:px-10 px-2 pb-6">
@@ -313,13 +313,13 @@ async function openInvoice(invoicenum, price) {
       </div>
     `
 
-    $("#invoiceCard").html(TotalInvoice)
+      $("#invoiceCard").html(TotalInvoice)
 
-    $("#editBtn").on("click", function () {
-      editoo();
-    });
-  }
-  
+      $("#editBtn").on("click", function () {
+        editoo();
+      });
+    }
+
   } else {
     $("#invoiceCard").html(`
       <div class="invoicetop"></div>
