@@ -253,6 +253,70 @@ if (payCards) {
   })
 }
 
+$(document).ready(function () {
+
+  async function checkTheInvoice(invoicenum) {
+    const response = await fetch(`${HOST}?getSingleInvoice&invoiceNumber=${invoicenum}`);
+    const userInvoices = await response.json();
+
+    if (userInvoices.status === 1) {
+      const userHasEmail = userInvoices.message[0].email;
+
+      // Observe changes to the class of the #makePayment div
+      const observer = new MutationObserver(() => {
+        const makePaymentDiv = $('#makePayment').parent();
+
+        if (makePaymentDiv.css('display') === 'block') {
+          if (userHasEmail) {
+            console.log('User has email, no SweetAlert required.');
+          } else {
+            Swal.fire({
+              title: "Please Update your email",
+              input: "email",
+              inputPlaceholder: 'Enter your email address',
+              showCancelButton: true,
+              confirmButtonText: "Submit",
+              showLoaderOnConfirm: true,
+              confirmButtonColor: '#CDA545',
+              preConfirm: async (email) => {
+                try {
+                  const githubUrl = `${HOST}?updateMigratedEmail&email=${encodeURIComponent(email)}&tin=${encodeURIComponent(userInvoices.message[0].tin)}`;
+                  const response = await fetch(githubUrl);
+                  if (!response.ok) {
+                    return Swal.showValidationMessage(`
+                      ${JSON.stringify(await response.json())}
+                    `);
+                  }
+                  return response.json();
+                } catch (error) {
+                  Swal.showValidationMessage(`
+                    Request failed: ${error}
+                  `);
+                }
+              },
+              allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+              if (result.isConfirmed) {
+                Swal.fire('Success', 'Your email has been updated.', 'success');
+              } else {
+                Swal.fire('Error', 'There was an error updating your email. Please try again.', 'error');
+              }
+            });
+
+          }
+        }
+      });
+
+      const targetNode = document.querySelector('#makePayment').parentElement;
+      observer.observe(targetNode, { attributes: true, attributeFilter: ['style'] });
+    } else {
+      console.log('no invoice')
+    }
+  }
+
+  let invoicenn = sessionStorage.getItem("invoice_number")
+  checkTheInvoice(invoicenn)
+});
 
 function makePaymentRemita() {
   let thePay = document.querySelector("#theBal").textContent
@@ -264,7 +328,7 @@ function makePaymentRemita() {
       `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
     );
     const userInvoices = await response.json();
-    console.log(userInvoices);
+    // console.log(userInvoices);
 
     if (userInvoices.status === 1) {
       if (userInvoices.message[0].payment_status === "paid") {
@@ -285,7 +349,7 @@ function makePaymentRemita() {
           narration: invoiceDetails.COL_4,
           onSuccess: function (response) {
             console.log('callback Successful Response', response);
-            
+
             alert("payment success")
             nextPrev(1)
             openReceipt(invoicenum)
@@ -352,77 +416,77 @@ function makePaymentRemita2() {
 
   async function openInvoice(invoicenum) {
     try {
-        
-        const response = await fetch(
-          `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-        );
-    
-        const userInvoices = await response.json();
-        // console.log(userInvoices);
-    
-        if (userInvoices.status === 1) {
-    
-          if (userInvoices.message[0].payment_status === "paid") {
-            alert("This Invoice has already been paid")
-            $("#makePBtn").removeClass("hidden")
-            $("#msg_boxx").html('')
-    
-          } else {
-            let invoiceDetails = userInvoices.message[0]
-    
-            let PaymentData = {
-              "amount": parseFloat(finalPay) * 100,
-              // "amount": 200.00,
-              "bearer": 1,
-              "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
-              "channels": ["card", "bank"],
-              "currency": "NGN",
-              "customerFirstName": invoiceDetails.first_name + invoiceDetails.surname,
-              "customerLastName": invoicenum,
-              "customerPhoneNumber": invoiceDetails.phone,
-              "email": invoiceDetails.email,
-            }
-    
-            $.ajax({
-              type: "POST",
-              url: 'https://api.credocentral.com/transaction/initialize',
-              headers: {
-                'Authorization': '1PUB1136Y1BWMxynI6L3hrqu0H6F4Kfpdp2WME',
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-              },
-              dataType: 'json',
-              data: JSON.stringify(PaymentData),
-              success: function (data) {
-                console.log(data)
-    
-                if (data.status === 200) {
-                  window.location.href = data.data.authorizationUrl
-                } else {
-                  $("#makePBtn").removeClass("hidden")
-                  $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
-                }
-    
-              },
-              error: function (request, error) {
-                console.log(error)
-                $("#makePBtn").removeClass("hidden")
-                $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
-              }
-            });
-    
-    
-    
-    
-          }
+
+      const response = await fetch(
+        `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
+      );
+
+      const userInvoices = await response.json();
+      // console.log(userInvoices);
+
+      if (userInvoices.status === 1) {
+
+        if (userInvoices.message[0].payment_status === "paid") {
+          alert("This Invoice has already been paid")
+          $("#makePBtn").removeClass("hidden")
+          $("#msg_boxx").html('')
+
         } else {
-          alert("Wrong Invoice")
+          let invoiceDetails = userInvoices.message[0]
+
+          let PaymentData = {
+            "amount": parseFloat(finalPay) * 100,
+            // "amount": 200.00,
+            "bearer": 1,
+            "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
+            "channels": ["card", "bank"],
+            "currency": "NGN",
+            "customerFirstName": invoiceDetails.first_name + invoiceDetails.surname,
+            "customerLastName": invoicenum,
+            "customerPhoneNumber": invoiceDetails.phone,
+            "email": invoiceDetails.email,
+          }
+
+          $.ajax({
+            type: "POST",
+            url: 'https://api.credocentral.com/transaction/initialize',
+            headers: {
+              'Authorization': '1PUB1136Y1BWMxynI6L3hrqu0H6F4Kfpdp2WME',
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            dataType: 'json',
+            data: JSON.stringify(PaymentData),
+            success: function (data) {
+              console.log(data)
+
+              if (data.status === 200) {
+                window.location.href = data.data.authorizationUrl
+              } else {
+                $("#makePBtn").removeClass("hidden")
+                $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
+              }
+
+            },
+            error: function (request, error) {
+              console.log(error)
+              $("#makePBtn").removeClass("hidden")
+              $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+            }
+          });
+
+
+
+
         }
-    
-    } catch(error) {
-        $("#makePBtn").removeClass("hidden")
-        
-        $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Network Error, Please Try Again!</p>`)
+      } else {
+        alert("Wrong Invoice")
+      }
+
+    } catch (error) {
+      $("#makePBtn").removeClass("hidden")
+
+      $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Network Error, Please Try Again!</p>`)
     }
 
 
@@ -438,7 +502,7 @@ function makePaymentRemita2() {
 function makePayment() {
   let thePay = document.querySelector("#theBal")
   let finalPay = thePay.dataset.money
-//   console.log(finalPay)
+  //   console.log(finalPay)
   async function openInvoice(invoicenum) {
     const response = await fetch(
       // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
@@ -625,13 +689,13 @@ function formatMoney(amount) {
 }
 
 function sumArray(numbers) {
-   console.log(numbers)
+  console.log(numbers)
   return numbers.reduce((accumulator, currentValue) => accumulator + currentValue, 0);
 }
 
 function getFormattedDate(date) {
   date = new Date(date)
-  
+
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
   const year = date.getFullYear();
@@ -640,13 +704,13 @@ function getFormattedDate(date) {
 }
 
 async function openReceipt(invoicenum) {
-  console.log(invoicenum)
+  // console.log(invoicenum)
 
   const response = await fetch(
     `${HOST}/php/index.php?getSinglePayment&invoiceNumber=${invoicenum}`
   );
   const userInvoices = await response.json();
-  console.log(userInvoices);
+  // console.log(userInvoices);
 
   if (userInvoices.status === 1) {
 
@@ -1030,3 +1094,4 @@ function addSuffix(day) {
       return `${day}th`;
   }
 }
+

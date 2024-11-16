@@ -158,9 +158,6 @@ $(".mda").on("change", function () {
 
 })
 
-
-
-
 async function fetchRevHeads(theVal) {
   const response = await fetch(`${HOST}/?getMDAsRevenueHeads&mdName=${theVal}`)
   const revHeads = await response.json()
