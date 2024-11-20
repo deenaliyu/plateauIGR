@@ -253,70 +253,44 @@ if (payCards) {
   })
 }
 
-$(document).ready(function () {
+async function upDateEmail(tin) {
 
-  async function checkTheInvoice(invoicenum) {
-    const response = await fetch(`${HOST}?getSingleInvoice&invoiceNumber=${invoicenum}`);
-    const userInvoices = await response.json();
-
-    if (userInvoices.status === 1) {
-      const userHasEmail = userInvoices.message[0].email;
-
-      // Observe changes to the class of the #makePayment div
-      const observer = new MutationObserver(() => {
-        const makePaymentDiv = $('#makePayment').parent();
-
-        if (makePaymentDiv.css('display') === 'block') {
-          if (userHasEmail) {
-            console.log('User has email, no SweetAlert required.');
-          } else {
-            Swal.fire({
-              title: "Please Update your email",
-              input: "email",
-              inputPlaceholder: 'Enter your email address',
-              showCancelButton: true,
-              confirmButtonText: "Submit",
-              showLoaderOnConfirm: true,
-              confirmButtonColor: '#CDA545',
-              preConfirm: async (email) => {
-                try {
-                  const githubUrl = `${HOST}?updateMigratedEmail&email=${encodeURIComponent(email)}&tin=${encodeURIComponent(userInvoices.message[0].tin)}`;
-                  const response = await fetch(githubUrl);
-                  if (!response.ok) {
-                    return Swal.showValidationMessage(`
-                      ${JSON.stringify(await response.json())}
-                    `);
-                  }
-                  return response.json();
-                } catch (error) {
-                  Swal.showValidationMessage(`
-                    Request failed: ${error}
-                  `);
-                }
-              },
-              allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-              if (result.isConfirmed) {
-                Swal.fire('Success', 'Your email has been updated.', 'success');
-              } else {
-                Swal.fire('Error', 'There was an error updating your email. Please try again.', 'error');
-              }
-            });
-
-          }
+  Swal.fire({
+    title: "Please Update your email",
+    icon: 'info',
+    input: "email",
+    inputPlaceholder: 'Enter your email address',
+    showCancelButton: true,
+    confirmButtonText: "Submit",
+    showLoaderOnConfirm: true,
+    confirmButtonColor: '#CDA545',
+    preConfirm: async (email) => {
+      try {
+        const githubUrl = `${HOST}?updateMigratedEmail&email=${encodeURIComponent(email)}&tin=${encodeURIComponent(tin)}`;
+        const response = await fetch(githubUrl);
+        if (!response.ok) {
+          return Swal.showValidationMessage(`
+                ${JSON.stringify(await response.json())}
+              `);
         }
-      });
-
-      const targetNode = document.querySelector('#makePayment').parentElement;
-      observer.observe(targetNode, { attributes: true, attributeFilter: ['style'] });
+        return response.json();
+      } catch (error) {
+        Swal.showValidationMessage(`
+              Request failed: ${error}
+            `);
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading()
+  }).then((result) => {
+    if (result.isConfirmed) {
+      Swal.fire('Success', 'Your email has been updated.', 'success');
     } else {
-      console.log('no invoice')
+      Swal.fire('Error', 'There was an error updating your email. Please try again.', 'error');
     }
-  }
+  });
 
-  let invoicenn = sessionStorage.getItem("invoice_number")
-  checkTheInvoice(invoicenn)
-});
+}
+
 
 function makePaymentRemita() {
   let thePay = document.querySelector("#theBal").textContent
@@ -405,7 +379,7 @@ function makePaymentRemita2() {
   let thePay = document.querySelector("#theBal")
   let finalPay = thePay.dataset.money
 
-  console.log(finalPay)
+  // console.log(finalPay)
 
   $("#makePBtn").addClass("hidden")
   $("#msg_boxx").html(`
@@ -417,12 +391,9 @@ function makePaymentRemita2() {
   async function openInvoice(invoicenum) {
     try {
 
-      const response = await fetch(
-        `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-      );
+      const response = await fetch(`${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`);
 
       const userInvoices = await response.json();
-      // console.log(userInvoices);
 
       if (userInvoices.status === 1) {
 
@@ -432,51 +403,58 @@ function makePaymentRemita2() {
           $("#msg_boxx").html('')
 
         } else {
-          let invoiceDetails = userInvoices.message[0]
 
-          let PaymentData = {
-            "amount": parseFloat(finalPay) * 100,
-            // "amount": 200.00,
-            "bearer": 1,
-            "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
-            "channels": ["card", "bank"],
-            "currency": "NGN",
-            "customerFirstName": invoiceDetails.first_name + invoiceDetails.surname,
-            "customerLastName": invoicenum,
-            "customerPhoneNumber": invoiceDetails.phone,
-            "email": invoiceDetails.email,
-          }
+          const userHasEmail = userInvoices.message[0].email;
 
-          $.ajax({
-            type: "POST",
-            url: 'https://api.credocentral.com/transaction/initialize',
-            headers: {
-              'Authorization': '1PUB1136Y1BWMxynI6L3hrqu0H6F4Kfpdp2WME',
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            dataType: 'json',
-            data: JSON.stringify(PaymentData),
-            success: function (data) {
-              console.log(data)
+          if (userHasEmail && userHasEmail !== '') {
+            let invoiceDetails = userInvoices.message[0]
 
-              if (data.status === 200) {
-                window.location.href = data.data.authorizationUrl
-              } else {
-                $("#makePBtn").removeClass("hidden")
-                $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
-              }
-
-            },
-            error: function (request, error) {
-              console.log(error)
-              $("#makePBtn").removeClass("hidden")
-              $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+            let PaymentData = {
+              "amount": parseFloat(finalPay) * 100,
+              // "amount": 200.00,
+              "bearer": 1,
+              "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
+              "channels": ["card", "bank"],
+              "currency": "NGN",
+              "customerFirstName": invoiceDetails.first_name + invoiceDetails.surname,
+              "customerLastName": invoicenum,
+              "customerPhoneNumber": invoiceDetails.phone,
+              "email": invoiceDetails.email,
             }
-          });
 
+            $.ajax({
+              type: "POST",
+              url: 'https://api.credocentral.com/transaction/initialize',
+              headers: {
+                'Authorization': '1PUB1136Y1BWMxynI6L3hrqu0H6F4Kfpdp2WME',
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+              },
+              dataType: 'json',
+              data: JSON.stringify(PaymentData),
+              success: function (data) {
+                console.log(data)
 
+                if (data.status === 200) {
+                  window.location.href = data.data.authorizationUrl
+                } else {
+                  $("#makePBtn").removeClass("hidden")
+                  $("#msg_boxx").html(`<p class="text-warning text-center mt-4 text-lg">${data.message}</p>`)
+                }
 
+              },
+              error: function (request, error) {
+                console.log(error)
+                $("#makePBtn").removeClass("hidden")
+                $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+              }
+            });
+
+          } else {
+            $("#makePBtn").removeClass("hidden")
+            $("#msg_boxx").html('')
+            upDateEmail(userInvoices.message[0].tin)
+          }
 
         }
       } else {
@@ -516,63 +494,68 @@ function makePayment() {
         alert("This Invoice has already been paid")
       } else {
 
+        const userHasEmail = userInvoices.message[0].email;
 
-        let invoiceDetails = userInvoices.message[0]
+        if (userHasEmail && userHasEmail !== '') {
+          let invoiceDetails = userInvoices.message[0]
 
-        var handler = PaystackPop.setup({
-          //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
-          key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
-          "subaccount": "ACCT_govno1idl9hxudv",
-          email: invoiceDetails.email,
-          amount: finalPay * 100,
-          currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
-          "metadata": {
-            "custom_fields": [
-              {
-                "display_name": "Invoice Number",
-                "variable_name": "invoice_number",
-                "value": invoicenum
+          var handler = PaystackPop.setup({
+            //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
+            key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
+            "subaccount": "ACCT_govno1idl9hxudv",
+            email: invoiceDetails.email,
+            amount: finalPay * 100,
+            currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+            "metadata": {
+              "custom_fields": [
+                {
+                  "display_name": "Invoice Number",
+                  "variable_name": "invoice_number",
+                  "value": invoicenum
+                }
+              ]
+            },
+            callback: function (response) {
+              //this happens after the payment is completed successfully
+              var reference = response.reference;
+              alert('Payment complete! Reference: ' + reference);
+              // Make an AJAX call to your server with the reference to verify the transaction
+              let dataToPush = {
+                "endpoint": "createInvidualPayment",
+                "data": {
+                  "invoice_number": invoicenum,
+                  "payment_channel": "paystack",
+                  "payment_reference_number": reference,
+                  "receipt_number": reference,
+                  "amount_paid": finalPay
+                }
               }
-            ]
-          },
-          callback: function (response) {
-            //this happens after the payment is completed successfully
-            var reference = response.reference;
-            alert('Payment complete! Reference: ' + reference);
-            // Make an AJAX call to your server with the reference to verify the transaction
-            let dataToPush = {
-              "endpoint": "createInvidualPayment",
-              "data": {
-                "invoice_number": invoicenum,
-                "payment_channel": "paystack",
-                "payment_reference_number": reference,
-                "receipt_number": reference,
-                "amount_paid": finalPay
-              }
-            }
-            $.ajax({
-              type: "POST",
-              url: HOST,
-              dataType: 'json',
-              data: JSON.stringify(dataToPush),
-              success: function (data) {
-                // console.log(data)
-                alert("payment success")
-                nextPrev(1)
-                openReceipt(invoicenum)
-              },
-              error: function (request, error) {
-                console.log(error)
-              }
-            });
+              $.ajax({
+                type: "POST",
+                url: HOST,
+                dataType: 'json',
+                data: JSON.stringify(dataToPush),
+                success: function (data) {
+                  // console.log(data)
+                  alert("payment success")
+                  nextPrev(1)
+                  openReceipt(invoicenum)
+                },
+                error: function (request, error) {
+                  console.log(error)
+                }
+              });
 
-          },
-          onClose: function () {
-            alert('Transaction was not completed, window closed.');
-          },
-        });
-        handler.openIframe();
+            },
+            onClose: function () {
+              alert('Transaction was not completed, window closed.');
+            },
+          });
+          handler.openIframe();
 
+        } else {
+          upDateEmail(userInvoices.message[0].tin)
+        }
         // const modal = FlutterwaveCheckout({
         //   public_key: "FLWPUBK_TEST-b75c6102b14be3e6292bc9eca05a3497-X",
         //   tx_ref: "titanic" + Math.floor(Math.random() * 1101233),
