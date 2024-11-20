@@ -70,7 +70,11 @@
             </div>
 
             <div class="mt-4 flex gap-x-5 absolute right-24">
-
+              <button class="flex gap-1 align-items-center" type="button" data-bs-toggle="modal"
+                data-bs-target="#filterInvoice">
+                <iconify-icon icon="mdi:filter-variant" style="font-size: 24px"></iconify-icon>
+                Filter
+              </button>
 
               <div class="flex items-center gap-2">
                 <a href="../generatetin.html?user=admin" target="_blank" class="button flex gap-x-1 items-center"
@@ -173,6 +177,7 @@
                     <tr>
                       <th></th>
                       <th>Category</th>
+                      <th>Payer ID</th>
                       <th>Name</th>
                       <th>Phone</th>
                       <th>Email Address</th>
@@ -187,6 +192,7 @@
                     <tr>
                       <td>1</td>
                       <td>Individual</td>
+                      <td>PLI-34934343</td>
                       <td>John Doe</td>
                       <td>08135719391</td>
                       <td>johndoe@gmail.com</td>
@@ -194,11 +200,12 @@
                       <td>-</td>
                       <td>user</td>
                       <td>00/00/2024</td>
-                      <td><a href="#" class="btn btn-primary btn-sm">View</a></td>
+                      <td><a href="#viewData" data-bs-toggle="modal" class="btn btn-primary btn-sm">View</a></td>
                     </tr>
                     <tr>
                       <td>2</td>
                       <td>Corporate</td>
+                      <td>PLC-34934343</td>
                       <td>Prime G</td>
                       <td>09045678032</td>
                       <td>prime@gmail.com</td>
@@ -206,7 +213,7 @@
                       <td>Hospitals</td>
                       <td>Administrator</td>
                       <td>00/00/2024</td>
-                      <td><a href="#" class="btn btn-primary btn-sm">View</a></td>
+                      <td><a href="#viewData" data-bs-toggle="modal" class="btn btn-primary btn-sm">View</a></td>
                     </tr>
                   </tbody>
                 </table>
@@ -235,29 +242,132 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
 
-  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
+  <div class="modal fade" id="filterInvoice" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <h5 class="modal-title text-center text-2xl font-bold" id="exampleModalLabel3">Filter</h5>
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body" style="overflow:hidden;">
+          <div class="flex justify-end">
+            <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
+          </div>
+          <div class="row">
+            <div class="col mb-3" id="mdass">
+              <label for="defaultSelect" class="form-label">Industry</label>
+              <div class="form-group">
+                <select name="" id="getMDAs" class="form-select">
+                  <option selected value="">--- All ---</option>
+                  <option value="Mining">Mining</option>
+                  <option value="Commerce">Commerce</option>
+                  <option value="Banking">Banking</option>
+                  <option value="Agriculture">Agriculture</option>
+                  <option value="Engineering">Engineering</option>
+                  <option value="Construction">Construction</option>
+                  <option value="Government Institution">Government Institution</option>
+                  <option value="NGO">NGO</option>
+                  <option value="Religious Institutions">Religious Institutions</option>
+                  <option value="General Merchandise">General Merchandise</option>
+                  <option value="General Contractor">General Contractor</option>
+                  <option value="Private Schools"> Private Schools</option>
+                  <option value="Public Schools">Public Schools</option>
+                  <option value="Hospitals">Hospitals</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col mb-0" id="the_rev">
+              <label for="defaultSelect" class="form-label">Created By</label>
+              <div class="form-group">
+                <select name="" id="getRevs" class="form-select">
+                  <option selected value="">All</option>
+                  <option selected value="user">user</option>
+                  <option selected value="Admin">Admin</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row g-2">
+            <label for="" class="mt-3">Date</label>
+            <div class="col mb-0">
+              <label for="emailLarge" class="form-label">From</label>
+              <input class="form-control" type="date" value="" id="fromDateInput">
+            </div>
+            <div class="col mb-0">
+              <label for="dobLarge" class="form-label">To</label>
+              <input class="form-control" type="date" value="" id="toDateInput">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer ">
+          <button type="button" class="btn btn-prime w-full" id="filterMda">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="viewData" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
       <div class="modal-content">
         <div class="modal-header ">
           <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
             aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
         </div>
-        <div class="modal-body mb-5">
+        <div class="modal-body">
 
-          <h1 class="text-center text-2xl">TIN Status</h1>
-          <form action="">
-            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
-              Number.</p>
-
-            <select name="" id="selectInput" class="form-select mt-5">
-              <option disabled selected>update status</option>
-              <option value="1">Verified</option>
-              <option value="2">Unverified</option>
-            </select>
-
-            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
-            <div id="msg_box" class="w-full"></div>
-          </form>
+          <h1 class="text-center text-2xl">User Data</h1>
+          <table class="table">
+            <tr>
+              <th>Name</th>
+              <td>John Doe</td>
+            </tr>
+            <tr>
+              <th>Category</th>
+              <td>Individual</td>
+            </tr>
+            <tr>
+              <th>Payer ID</th>
+              <td>PLI-542323234</td>
+            </tr>
+            <tr>
+              <th>Email</th>
+              <td>johndoe@gmail.com</td>
+            </tr>
+            <tr>
+              <th>Phone</th>
+              <td>08135719391</td>
+            </tr>
+            <tr>
+              <th>State</th>
+              <td>Plateau</td>
+            </tr>
+            <tr>
+              <th>LGA</th>
+              <td>Bokkos</td>
+            </tr>
+            <tr>
+              <th>Industry</th>
+              <td>Hospitals</td>
+            </tr>
+            <tr>
+              <th>Sector</th>
+              <td>-</td>
+            </tr>
+            <tr>
+              <th>Created by</th>
+              <td>user</td>
+            </tr>
+            <tr>
+              <th>Date Created</th>
+              <td>00/00/2024</td>
+            </tr>
+          </table>
         </div>
 
       </div>
