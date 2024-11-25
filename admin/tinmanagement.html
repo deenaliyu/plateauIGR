@@ -113,7 +113,7 @@
                     <p class="text-[#000] text-[15px]">Total TIN created</p>
                   </div>
 
-                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4 registered">10</span>
+                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4" id="registered">-</span>
                   </p>
                 </div>
 
@@ -125,7 +125,7 @@
                     <p class="text-[#000] text-[15px]">Total created by Individual</p>
                   </div>
 
-                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4" id="selfRegis">10</span></p>
+                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4" id="indregistered">-</span></p>
 
                 </div>
 
@@ -137,7 +137,7 @@
                     <p class="text-[#000] text-[15px]">Total created by Corporate</p>
                   </div>
 
-                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4" id="enumRegs">10</span></p>
+                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4" id="corpregistered">-</span></p>
 
                 </div>
 
@@ -148,7 +148,7 @@
                     </div>
                     <p class="text-[#000] text-[15px]">Total Count of Self Created</p>
                   </div>
-                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4 registered">0</span>
+                  <p class="zanumbers text-end mt-4"><span class="fontBold mt-4" id="registered2">-</span>
                   </p>
 
                 </div>
@@ -310,9 +310,10 @@
             </div>
           </div>
         </div>
-        
+
         <div class="modal-footer ">
-          <button type="button" class="btn btn-prime w-full" id="filterTinModule" onclick="filterTinModule()">Apply</button>
+          <button type="button" class="btn btn-prime w-full" id="filterTinModule"
+            onclick="filterTinModule()">Apply</button>
           <div id="msg_boxer"></div>
         </div>
       </div>

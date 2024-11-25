@@ -25,6 +25,12 @@ async function getTinManagements() {
       `)
     });
 
+    $("#registered").html(data.data.length)
+    $("#indregistered").html(data.data.filter(e => e.type  === 'individual').length)
+    $("#corpregistered").html(data.data.filter(e => e.type  === 'corporate').length)
+    $("#registered2").html(data.data.length)
+
+
 
   } catch (error) {
     console.log(error)
@@ -136,6 +142,7 @@ async function filterTinModule() {
       $("#filterTinModule").removeClass("hidden")
       $("#msg_boxer").html('')
 
+      $("#showreport").html('')
       $("#filterInvoice").modal('hide')
 
       data.data.reverse().forEach((tinmngment, i) => {
