@@ -43,7 +43,6 @@ if (THE_SESSION) {
         <a href="offer.html">What we offer</a>
         <a  href="taxcategory.html">Tax category</a>
         <a href="howtopay.html">How to pay</a>
-        <a class="button" href="generatetin.html">Generate TIN</a>
       </div>
 
       <div class="flex items-center gap-3">
@@ -66,7 +65,6 @@ if (THE_SESSION) {
     <a class="text-xl" href="offer.html">What we offer</a>
     <a class="text-xl" href="taxcategory.html">Tax category</a>
     <a class="text-xl" href="howtopay.html">How to pay</a>
-    <a class="button" href="generatetin.html">Generate TIN</a>
   </div>
 
     <h1 class="text-left mb-3 mt-3">Links</h1>

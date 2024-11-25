@@ -38,89 +38,98 @@
       <h1 class="fontBold text-2xl">Generate Tin</h1>
       <h1 class="mb-3 mt-3">Personal Details</h1>
 
-      <div class="flex items-center mb-4 gap-2" id="theName">
+      <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
-          <label for="">First name *</label>
+          <label for="">First name*</label>
           <input type="text" class="form-control payInputs" required data-name="first_name"
             placeholder="Enter your first name">
         </div>
 
         <div class="form-group w-full">
-          <label for="">Surname *</label>
-          <input type="text" class="form-control payInputs" required data-name="surname"
-            placeholder="Enter your surname">
+          <label for="">Middle name*</label>
+          <input type="text" class="form-control payInputs" required data-name="middle_name"
+            placeholder="Enter your middle name">
+        </div>
+
+        <div class="form-group w-full">
+          <label for="">Surname*</label>
+          <input type="text" class="form-control payInputs" data-name="last_name" placeholder="Enter your last name"
+            required>
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2" id="theEmail">
         <div class="form-group w-full">
           <label for="">Email *</label>
-          <input type="text" class="form-control payInputs" required data-name="email"
-            placeholder="Enter your Email Address">
+          <input type="text" class="form-control payInputs" data-name="email" placeholder="Enter your Email Address"
+            required>
         </div>
 
         <div class="form-group w-full">
           <label for="">Phone number *</label>
           <input type="number" class="form-control payInputs" id="phonenumber" minlength="11" maxlength="11" required
-            data-name="phone" placeholder="Your 11-digits phone number">
+            data-name="phone_number" placeholder="Your 11-digits phone number">
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full" id="theTin">
           <label for="">NIN/BVN (Optional)</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN">
+          <input type="text" class="form-control payInputs" data-name="nin_bvn" placeholder="Enter your TIN/BVN">
         </div>
 
         <div class="form-group w-full">
           <label for="">Date of Birth*</label>
-          <input type="date" class="form-control payInputs" id="tin" data-name="tin">
+          <input type="date" class="form-control payInputs" data-name="date_of_birth" required>
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
-          <label for="">Employment*</label>
-          <select name="" class="form-select payInputs" data-name="state">
-            <option value="Self-Employed">Self-Employed</option>
-            <option value="Un-Employed">Un-Employed</option>
+          <label for="">Employment Status*</label>
+          <select name="" class="form-select payInputs" onchange="employmentStatus(this)" data-name="employment"
+            required>
+            <option value="" selected disabled>Select --</option>
+            <option value="Employed">Employed</option>
+            <option value="Unemployed">Unemployed</option>
+            <option value="Self Employed">Self Employed</option>
           </select>
         </div>
 
         <div class="form-group w-full">
           <label for="">Occupation*</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin">
+          <input type="text" class="form-control payInputs" data-name="occupation" required>
         </div>
 
+      </div>
+
+      <div id="employmentTerms">
+        <!-- coming from JS -->
       </div>
 
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
           <label for="">Nationality*</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="">
+          <select class="form-select payInputs" id="nationality" data-name="nationality" required>
+            <option value="Nigeria">Nigeria</option>
+          </select>
         </div>
 
         <div class="form-group w-full">
           <label for="">State of Origin*</label>
-          <select name="" id="selectState" class="form-select payInputs" data-name="state">
-            <option value="Plateau">Plateau</option>
+          <select id="selectState" class="form-select payInputs" data-name="state" required>
           </select>
         </div>
 
         <div class="form-group w-full">
           <label for="">LGA*</label>
-          <select name="" id="selectLGA" class="form-select payInputs" required data-name="lga">
+          <select id="selectLGA" class="form-select payInputs" data-name="lga" required>
           </select>
         </div>
       </div>
 
-
-
-
-
-
-      <button class="button w-full" type="button" onclick="nextPrev(1)">Preview</button>
+      <button class="button w-full" type="button" onclick="previewPage()">Preview</button>
     </form>
 
     <form action="" class="formTabs md:w-[60%] w-[80%]">
@@ -136,80 +145,95 @@
 
       <div class="flex items-center mb-4 gap-2" id="theName">
         <div class="form-group w-full">
-          <label for="">First name *</label>
-          <input type="text" class="form-control payInputs" required data-name="first_name" value="John" readonly>
+          <label for="">First name </label>
+          <input type="text" class="form-control payInputs2" data-name="first_name" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">Surname *</label>
-          <input type="text" class="form-control payInputs" required data-name="surname" value="Doe" readonly>
+          <label for="">Middle name </label>
+          <input type="text" class="form-control payInputs2" data-name="middle_name" readonly>
+        </div>
+
+        <div class="form-group w-full">
+          <label for="">Surname </label>
+          <input type="text" class="form-control payInputs2" data-name="last_name" readonly>
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2" id="theEmail">
         <div class="form-group w-full">
-          <label for="">Email *</label>
-          <input type="text" class="form-control payInputs" required data-name="email" value="johndoe@gmail.com"
-            readonly>
+          <label for="">Email </label>
+          <input type="text" class="form-control payInputs2" data-name="email" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">Phone number *</label>
-          <input type="number" class="form-control payInputs" id="phonenumber" value="08135719391" minlength="11"
-            maxlength="11" required data-name="phone" readonly>
+          <label for="">Phone number </label>
+          <input type="number" class="form-control payInputs2" data-name="phone_number" readonly>
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full" id="theTin">
           <label for="">NIN/BVN</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin" readonly>
+          <input type="text" class="form-control payInputs2" id="tin" data-name="nin_bvn" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">Date of Birth*</label>
-          <input type="text" class="form-control payInputs" id="tin" value="00/00/2023" data-name="tin" readonly>
+          <label for="">Date of Birth</label>
+          <input type="text" class="form-control payInputs2" data-name="date_of_birth" readonly>
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
-          <label for="">Employment*</label>
-          <input type="text" class="form-control payInputs" value="self-employed" id="tin" data-name="tin" readonly>
+          <label for="">Employment</label>
+          <input type="text" class="form-control payInputs2" data-name="employment" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">Occupation*</label>
-          <input type="date" class="form-control payInputs" value="occupation" id="tin" data-name="tin" readonly>
+          <label for="">Occupation</label>
+          <input type="text" class="form-control payInputs2" data-name="occupation" readonly>
         </div>
 
       </div>
 
+      <div class="flex items-center mb-4 gap-2">
+        <div class="form-group w-full mb-4 mt-2">
+          <label for="">Name of Organization/Business</label>
+          <input type="text" class="form-control payInputs2" data-name="organization_name" readonly>
+        </div>
+
+        <div class="form-group w-full">
+          <label for="">Industry</label>
+          <input type="text" class="form-control payInputs2" data-name="industry" readonly>
+        </div>
+
+        <div class="form-group w-full">
+          <label for="">Sector</label>
+          <input type="text" class="form-control payInputs2" data-name="sector" readonly>
+        </div>
+
+      </div>
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
-          <label for="">Nationality*</label>
-          <input type="text" class="form-control payInputs" id="tin" value="Nigeria" data-name="tin" placeholder=""
-            readonly>
+          <label for="">Nationality</label>
+          <input type="text" class="form-control payInputs2" data-name="nationality" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">State of Origin*</label>
-          <input type="text" class="form-control payInputs" id="tin" value="Plateau" data-name="tin" readonly>
+          <label for="">State of Origin</label>
+          <input type="text" class="form-control payInputs2" data-name="state" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">LGA*</label>
-          <input type="text" class="form-control payInputs" id="tin" value="Bokkos" data-name="tin" readonly>
+          <label for="">LGA</label>
+          <input type="text" class="form-control payInputs2" data-name="lga" readonly>
         </div>
       </div>
 
-
-
-
-
-
-      <button class="button w-full" type="button" onclick="nextPrev(1)">Generate Tin</button>
+      <button class="button w-full" id="generateTinBtn" type="button" onclick="generateTin()">Generate Tin</button>
+      <div id="msg_box"></div>
     </form>
 
     <form action="" class="formTabs md:w-[60%] w-[80%]">
@@ -218,6 +242,8 @@
       </div>
       <p class="text-center text-black text-lg">TIN has been generated successfully</p>
       <p class="text-center text-black text-lg">Your TIN has been sent to your email/phone number.</p>
+
+      <p class="text-3xl text-center text-[#CDA545] cursor-pointer mt-5" id="tinNumber"></p>
     </form>
 
   </div>
@@ -235,6 +261,7 @@
 
   </script>
   <script src="assets/js/nav.js"></script>
+  <!-- <script src="assets/js/nationality.js"></script> -->
   <script src="assets/js/generatetin-code.js"></script>
 </body>
 
