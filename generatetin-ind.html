@@ -22,12 +22,12 @@
   </style>
 </head>
 
-<body class="bg-[url('./assets/img/slide2.png')] bg-no-repeat bg-center">
+<body class="bg-[url('./assets/img/slide2.png')] bg-no-repeat bg-center h-[100vh]">
   <header class="flex justify-between px-10 bg-white py-3" id="theHeader"></header>
 
-  <div class="flex justify-center items-center h-[100vh]">
+  <div class="flex justify-center items-center pt-[10%]">
 
-    <form action="" class="formTabs md:w-[60%] w-[80%]">
+    <form action="" class="formTabs md:w-[60%] w-[80%] pb-10">
       <div class="pt-10">
         <button class="flex items-center gap-2" onclick="history.back(-1)" type="button">
           <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
@@ -117,7 +117,7 @@
         </div>
 
         <div class="form-group w-full">
-          <label for="">State of Origin*</label>
+          <label for="">State of Residence*</label>
           <select id="selectState" class="form-select payInputs" data-name="state" required>
           </select>
         </div>
@@ -132,7 +132,7 @@
       <button class="button w-full" type="button" onclick="previewPage()">Preview</button>
     </form>
 
-    <form action="" class="formTabs md:w-[60%] w-[80%]">
+    <form action="" class="formTabs md:w-[60%] w-[80%] pb-10">
       <div class="pt-10">
         <button class="flex items-center gap-2" onclick="nextPrev(-1)" type="button">
           <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
@@ -222,7 +222,7 @@
         </div>
 
         <div class="form-group w-full">
-          <label for="">State of Origin</label>
+          <label for="">State of Residence</label>
           <input type="text" class="form-control payInputs2" data-name="state" readonly>
         </div>
 
@@ -232,11 +232,11 @@
         </div>
       </div>
 
-      <button class="button w-full" id="generateTinBtn" type="button" onclick="generateTin()">Generate Tin</button>
+      <button class="button w-full" id="generateTinBtn" type="button" onclick="generateTin('individual')">Generate Tin</button>
       <div id="msg_box"></div>
     </form>
 
-    <form action="" class="formTabs md:w-[60%] w-[80%]">
+    <form action="" class="formTabs md:w-[60%] w-[80%] mt-[20%]">
       <div class="flex justify-center mb-3">
         <img src="./assets/img/paid.png" />
       </div>

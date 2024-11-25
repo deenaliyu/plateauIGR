@@ -111,7 +111,7 @@ function previewPage() {
 }
 
 
-async function generateTin() {
+async function generateTin(accountType) {
   try {
     $("#msg_box").html(`
       <div class="flex justify-center items-center mt-4">
@@ -124,7 +124,7 @@ async function generateTin() {
     let lgaInput = document.querySelector("#selectLGA")
 
     let dataToSend = {
-      type: "individual"
+      type: accountType
     }
 
     allInputs.forEach(allInput => {

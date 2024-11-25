@@ -22,12 +22,12 @@
   </style>
 </head>
 
-<body class="bg-[url('./assets/img/slide2.png')] bg-no-repeat bg-center">
+<body class="bg-[url('./assets/img/slide2.png')] bg-no-repeat bg-center h-[100vh]">
   <header class="flex justify-between px-10 bg-white py-3" id="theHeader"></header>
 
-  <div class="flex justify-center items-center h-[100vh]">
+  <div class="flex justify-center items-center pt-[10%]">
 
-    <form action="" class="formTabs md:w-[60%] w-[80%]">
+    <form action="" class="formTabs md:w-[60%] w-[80%] pb-10">
       <div class="pt-10">
         <button class="flex items-center gap-2" onclick="history.back(-1)" type="button">
           <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
@@ -40,10 +40,10 @@
 
       <div class="form-group w-full mb-4">
         <label for="">Name of Organization*</label>
-        <input type="text" class="form-control payInputs" required data-name="first_name">
+        <input type="text" class="form-control payInputs" required data-name="organization_name">
       </div>
 
-      <div class="flex items-center mb-4 gap-2" id="theEmail">
+      <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
           <label for="">Email *</label>
           <input type="text" class="form-control payInputs" required data-name="email"
@@ -53,19 +53,20 @@
         <div class="form-group w-full">
           <label for="">Phone number *</label>
           <input type="number" class="form-control payInputs" id="phonenumber" minlength="11" maxlength="11" required
-            data-name="phone" placeholder="Your 11-digits phone number">
+            data-name="phone_number" placeholder="Your 11-digits phone number">
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
-        <div class="form-group w-full" id="theTin">
+        <div class="form-group w-full">
           <label for="">CAC*</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your CAC">
+          <input type="text" class="form-control payInputs" data-name="cac_number" placeholder="Enter your CAC"
+            required>
         </div>
 
-        <div class="form-group mb-3">
+        <div class="form-group w-full">
           <label for="">Industry*</label>
-          <select class="form-select enumInputB" data-name="industry" required>
+          <select class="form-select payInputs" data-name="industry" required>
             <option value="">Select</option>
             <option value="Mining">Mining</option>
             <option value="Commerce">Commerce</option>
@@ -88,12 +89,12 @@
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
           <label for="">Sector*</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin">
+          <input type="text" class="form-control payInputs" data-name="sector" required>
         </div>
 
         <div class="form-group w-full">
           <label for="">Number of Employee*</label>
-          <input type="number" class="form-control payInputs" id="tin" data-name="tin">
+          <input type="number" class="form-control payInputs" data-name="num_employees">
         </div>
 
       </div>
@@ -102,34 +103,34 @@
       <div class="flex items-center mb-4 gap-2">
 
         <div class="form-group w-full">
-          <label for="">State of Origin*</label>
-          <select name="" id="selectState" class="form-select payInputs" data-name="state">
+          <label for="">State of Residence*</label>
+          <select id="selectState" class="form-select payInputs" data-name="state" required>
             <option value="Plateau">Plateau</option>
           </select>
         </div>
 
         <div class="form-group w-full">
           <label for="">LGA*</label>
-          <select name="" id="selectLGA" class="form-select payInputs" required data-name="lga">
+          <select id="selectLGA" class="form-select payInputs" required data-name="lga">
           </select>
         </div>
 
         <div class="form-group w-full">
           <label for="">Address*</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="">
+          <input type="text" class="form-control payInputs" data-name="address" placeholder="" required>
         </div>
       </div>
 
 
       <div class="form-group w-full mb-3">
         <label for="">Website*</label>
-        <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="">
+        <input type="text" class="form-control payInputs" data-name="website" placeholder="example.com">
       </div>
 
-      <button class="button w-full" type="button" onclick="nextPrev(1)">Preview</button>
+      <button class="button w-full" type="button" onclick="previewPage()">Preview</button>
     </form>
 
-    <form action="" class="formTabs md:w-[60%] w-[80%]">
+    <form action="" class="formTabs md:w-[60%] w-[80%] pb-10">
       <div class="pt-10">
         <button class="flex items-center gap-2" onclick="nextPrev(-1)" type="button">
           <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
@@ -141,44 +142,43 @@
       <h1 class="mb-3 mt-3">Preview Details</h1>
 
       <div class="form-group w-full mb-4">
-        <label for="">Name of Organization*</label>
-        <input type="text" class="form-control payInputs" required data-name="first_name" value="Prime G" readonly>
-      </div>
-
-      <div class="flex items-center mb-4 gap-2" id="theEmail">
-        <div class="form-group w-full">
-          <label for="">Email *</label>
-          <input type="text" class="form-control payInputs" required data-name="email" value="primeg@hotmail.com" readonly>
-        </div>
-
-        <div class="form-group w-full">
-          <label for="">Phone number *</label>
-          <input type="number" class="form-control payInputs" id="phonenumber" minlength="11" maxlength="11" required
-            data-name="phone" value="08923992223" readonly>
-        </div>
+        <label for="">Name of Organization</label>
+        <input type="text" class="form-control payInputs2" data-name="organization_name" readonly>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
-        <div class="form-group w-full" id="theTin">
-          <label for="">CAC*</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin" value="2948820232" readonly>
+        <div class="form-group w-full">
+          <label for="">Email</label>
+          <input type="text" class="form-control payInputs2" data-name="email" readonly>
         </div>
 
-        <div class="form-group mb-3">
-          <label for="">Industry*</label>
-          <input type="text" class="form-control payInputs" required data-name="email" value="Hospitals" readonly>
+        <div class="form-group w-full">
+          <label for="">Phone number </label>
+          <input type="number" class="form-control payInputs2" data-name="phone_number" readonly>
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
-          <label for="">Sector*</label>
-          <input type="text" class="form-control payInputs" id="tin" data-name="tin" value="Banking" readonly>
+          <label for="">CAC</label>
+          <input type="text" class="form-control payInputs2" data-name="cac_number" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">Number of Employee*</label>
-          <input type="number" class="form-control payInputs" id="tin" data-name="tin" value="2" readonly>
+          <label for="">Industry</label>
+          <input type="text" class="form-control payInputs2" data-name="industry" readonly>
+        </div>
+      </div>
+
+      <div class="flex items-center mb-4 gap-2">
+        <div class="form-group w-full">
+          <label for="">Sector</label>
+          <input type="text" class="form-control payInputs2" data-name="sector" readonly>
+        </div>
+
+        <div class="form-group w-full">
+          <label for="">Number of Employee</label>
+          <input type="number" class="form-control payInputs2" data-name="num_employees" readonly>
         </div>
 
       </div>
@@ -187,36 +187,39 @@
       <div class="flex items-center mb-4 gap-2">
 
         <div class="form-group w-full">
-          <label for="">State of Origin*</label>
-          <input type="text" class="form-control payInputs" required data-name="email" value="Plateau" readonly>
+          <label for="">State of Residence</label>
+          <input type="text" class="form-control payInputs2" data-name="state" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">LGA*</label>
-          <input type="text" class="form-control payInputs" required data-name="email" value="Bakkos" readonly>
+          <label for="">LGA</label>
+          <input type="text" class="form-control payInputs2" data-name="lga" readonly>
         </div>
 
         <div class="form-group w-full">
-          <label for="">Address*</label>
-          <input type="text" class="form-control payInputs" required data-name="email" value="Address" readonly>
+          <label for="">Address</label>
+          <input type="text" class="form-control payInputs2" data-name="address" readonly>
         </div>
       </div>
 
 
       <div class="form-group w-full mb-3">
-        <label for="">Website*</label>
-        <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="" readonly>
+        <label for="">Website</label>
+        <input type="text" class="form-control payInputs2" id="tin" data-name="website" readonly>
       </div>
 
-      <button class="button w-full" type="button" onclick="nextPrev(1)">Generate Tin</button>
+      <button class="button w-full" id="generateTinBtn" type="button" onclick="generateTin('corporate')">Generate Tin</button>
+      <div id="msg_box"></div>
     </form>
 
-    <form action="" class="formTabs md:w-[60%] w-[80%]">
+    <form action="" class="formTabs md:w-[60%] w-[80%] mt-[20%]">
       <div class="flex justify-center mb-3">
         <img src="./assets/img/paid.png" />
       </div>
       <p class="text-center text-black text-lg">TIN has been generated successfully</p>
       <p class="text-center text-black text-lg">Your TIN has been sent to your email/phone number.</p>
+
+      <p class="text-3xl text-center text-[#CDA545] cursor-pointer mt-5" id="tinNumber"></p>
     </form>
 
   </div>
