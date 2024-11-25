@@ -75,7 +75,11 @@ function employmentStatus(e) {
 
         <div class="form-group w-full">
           <label for="">Sector*</label>
-          <input type="text" class="form-control payInputs" data-name="sector">
+          <select class="form-select payInputs" data-name="sector">
+            <option value="">Select</option>
+            <option value="0">Private</option>
+            <option value="1">Public</option>
+          </select>
         </div>
 
       </div>  
