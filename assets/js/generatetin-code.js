@@ -36,6 +36,15 @@ let plateauLGAs = {
   "Shendam": "16",
   "Wase": "17"
 }
+const urlParams = new URLSearchParams(window.location.search);
+let myParam = urlParams.get('category');
+
+let regType = urlParams.get('user');
+
+if (regType === "admin") {
+  $("#theHeader").remove()
+}
+
 function employmentStatus(e) {
   let theval = e.value
 
