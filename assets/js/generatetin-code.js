@@ -77,8 +77,8 @@ function employmentStatus(e) {
           <label for="">Sector*</label>
           <select class="form-select payInputs" data-name="sector">
             <option value="">Select</option>
-            <option value="0">Private</option>
-            <option value="1">Public</option>
+            <option value="Private">Private</option>
+            <option value="Public">Public</option>
           </select>
         </div>
 
@@ -137,7 +137,7 @@ async function generateTin(accountType) {
 
     dataToSend.lga = plateauLGAs[lgaInput.value] ? plateauLGAs[lgaInput.value] : "18"
 
-    console.log(dataToSend)
+    // console.log(dataToSend)
     const response = await fetch('https://plateauigr.com/php/tinGeneration/index.php', {
       method: "POST",
       headers: {
@@ -148,7 +148,7 @@ async function generateTin(accountType) {
     })
     const resdata = await response.json()
 
-    console.log(resdata)
+    // console.log(resdata)
     if (resdata.success) {
       $("#msg_box").html(`<p class="text-success text-center mt-4 text-lg">TIN Generated successfully.</p>`)
       $("#generateTinBtn").removeClass("hidden")

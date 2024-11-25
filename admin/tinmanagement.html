@@ -231,11 +231,26 @@
           <div class="flex justify-end">
             <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
           </div>
+
           <div class="row">
-            <div class="col mb-3" id="mdass">
+            <div class="col mb-3">
+              <label for="defaultSelect" class="form-label">Category</label>
+              <div class="form-group">
+                <select name="" id="getMDAs" class="form-select payInputs" data-name="type">
+                  <option selected value="">--- All ---</option>
+                  <option value="individual">Individual</option>
+                  <option value="corporate">Corporate</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="row">
+            <div class="col mb-3">
               <label for="defaultSelect" class="form-label">Industry</label>
               <div class="form-group">
-                <select name="" id="getMDAs" class="form-select">
+                <select name="" id="getMDAs" class="form-select payInputs" data-name="industry">
                   <option selected value="">--- All ---</option>
                   <option value="Mining">Mining</option>
                   <option value="Commerce">Commerce</option>
@@ -257,33 +272,48 @@
           </div>
 
           <div class="row">
+            <div class="col mb-3">
+              <label for="defaultSelect" class="form-label">Sector</label>
+              <div class="form-group">
+                <select name="" id="getMDAs" class="form-select payInputs" data-name="sector">
+                  <option selected value="">--- All ---</option>
+                  <option value="Private">Private</option>
+                  <option value="Public">Public</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="row">
             <div class="col mb-0" id="the_rev">
               <label for="defaultSelect" class="form-label">Created By</label>
               <div class="form-group">
-                <select name="" id="getRevs" class="form-select">
+                <select name="" id="getRevs" class="form-select payInputs" data-name="">
                   <option selected value="">All</option>
                   <option selected value="user">user</option>
                   <option selected value="Admin">Admin</option>
                 </select>
               </div>
             </div>
-          </div>
+          </div> -->
 
 
           <div class="row g-2">
             <label for="" class="mt-3">Date</label>
             <div class="col mb-0">
               <label for="emailLarge" class="form-label">From</label>
-              <input class="form-control" type="date" value="" id="fromDateInput">
+              <input class="form-control payInputs" type="date" data-name="created_at_min">
             </div>
             <div class="col mb-0">
               <label for="dobLarge" class="form-label">To</label>
-              <input class="form-control" type="date" value="" id="toDateInput">
+              <input class="form-control payInputs" type="date" data-name="created_at_max">
             </div>
           </div>
         </div>
+        
         <div class="modal-footer ">
-          <button type="button" class="btn btn-prime w-full" id="filterMda">Apply</button>
+          <button type="button" class="btn btn-prime w-full" id="filterTinModule" onclick="filterTinModule()">Apply</button>
+          <div id="msg_boxer"></div>
         </div>
       </div>
     </div>
@@ -300,7 +330,7 @@
 
           <h1 class="text-center text-2xl  mb-4">User Data</h1>
           <table class="table" id="userDataID">
-            
+
           </table>
         </div>
 
