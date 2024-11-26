@@ -24,7 +24,7 @@ async function getTinManagements() {
           <td>${tinmngment.tin}</td>
           <td>${tinmngment.state}</td>
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
-          <td>self</td>
+          <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
           <td>${new Date(tinmngment.created_at).toDateString()}</td>
           <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
         </tr>
@@ -35,7 +35,7 @@ async function getTinManagements() {
     $("#indregistered").html(data.data.filter(e => e.type === 'individual').length)
     $("#corpregistered").html(data.data.filter(e => e.type === 'corporate').length)
     $("#registered2").html(data.data.length)
-    // $("#admincreated").html(data.data.filter(e => e.created_by !== null).length)
+    $("#admincreated").html(data.data.filter(e => e.payer_id !== null).length)
 
 
 
@@ -111,7 +111,7 @@ function viewUser(e) {
       </tr>
       <tr>
         <th>Created by</th>
-        <td>Self</td>
+        <td>${theuser.payer_id === null ? 'Self' : 'Admin'}</td>
       </tr>
       <tr>
         <th>Date Created</th>
