@@ -165,13 +165,13 @@ async function generateTin(accountType) {
       $("#tinNumber").html(resdata.tin)
       nextPrev(1)
     } else {
-      $("#msg_box").html(`<p class="text-danger text-center mt-4 text-lg">Something went wrong, Try again.</p>`)
+      $("#msg_box").html(`<p class="text-warning text-center mt-4 text-lg">${resdata.error}.</p>`)
       $("#generateTinBtn").removeClass("hidden")
     }
 
 
   } catch (error) {
-    console.log(error)
+    console.log(error.error)
     $("#msg_box").html(`<p class="text-danger text-center mt-4 text-lg">${error.error ? error.error : 'something went wrong, Try Again.'}.</p>`)
     $("#generateTinBtn").removeClass("hidden")
   }
