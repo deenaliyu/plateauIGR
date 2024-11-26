@@ -1,3 +1,8 @@
+let theUserDataTin = JSON.parse(localStorage.getItem("adminDataPrime"))
+
+if (theUserDataTin) {
+  $("#createTaxP").attr('href', `../generatetin.html?user=${theUserDataTin.id}`)
+}
 let allTinData = []
 
 async function getTinManagements() {
@@ -26,8 +31,8 @@ async function getTinManagements() {
     });
 
     $("#registered").html(data.data.length)
-    $("#indregistered").html(data.data.filter(e => e.type  === 'individual').length)
-    $("#corpregistered").html(data.data.filter(e => e.type  === 'corporate').length)
+    $("#indregistered").html(data.data.filter(e => e.type === 'individual').length)
+    $("#corpregistered").html(data.data.filter(e => e.type === 'corporate').length)
     $("#registered2").html(data.data.length)
 
 

@@ -41,8 +41,9 @@ let myParam = urlParams.get('category');
 
 let regType = urlParams.get('user');
 
-if (regType === "admin") {
+if (regType) {
   $("#theHeader").remove()
+  document.querySelector('#tinDisplayForm').style = 'margin-top: 10% !important'
 }
 
 function employmentStatus(e) {
@@ -137,7 +138,8 @@ async function generateTin(accountType) {
     let lgaInput = document.querySelector("#selectLGA")
 
     let dataToSend = {
-      type: accountType
+      type: accountType,
+      created_by: regType ? regType : null
     }
 
     allInputs.forEach(allInput => {

@@ -3,7 +3,7 @@ let myParam = urlParams.get('category');
 
 let regType = urlParams.get('user');
 
-if (regType === "admin") {
+if (regType) {
     $("#theHeader").remove()
 }
 
@@ -58,11 +58,11 @@ selectcategory.forEach(selecti => {
         // console.log(dataId)
         if (dataId === "individual") {
             $(".bb").on("click", (e) => {
-                window.location.href = `generatetin-ind.html${regType === "admin" ? '?user=admin' : ''}`;
+                window.location.href = `generatetin-ind.html${regType ? `?user=${regType}` : ''}`;
             })
         } else {
             $(".bb").on("click", (e) => {
-                window.location.href = `generatetin-corp.html${regType === "admin" ? '?user=admin' : ''}`;
+                window.location.href = `generatetin-corp.html${regType ? `?user=${regType}` : ''}`;
             })
         }
     })
