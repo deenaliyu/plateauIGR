@@ -34,6 +34,7 @@ async function getTinManagements() {
     $("#indregistered").html(data.data.filter(e => e.type === 'individual').length)
     $("#corpregistered").html(data.data.filter(e => e.type === 'corporate').length)
     $("#registered2").html(data.data.length)
+    // $("#admincreated").html(data.data.filter(e => e.created_by !== null).length)
 
 
 
