@@ -44,6 +44,8 @@ let regType = urlParams.get('user');
 if (regType) {
   $("#theHeader").remove()
   document.querySelector('#tinDisplayForm').style = 'margin-top: 10% !important'
+
+  $("#goHomeBtn").attr('href', `./admin/tinmanagement.html`)
 }
 
 function employmentStatus(e) {
