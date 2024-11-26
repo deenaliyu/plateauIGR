@@ -21,6 +21,7 @@ async function getTinManagements() {
           <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
           <td>${tinmngment.phone_number}</td>
           <td>${tinmngment.email}</td>
+          <td>${tinmngment.tin}</td>
           <td>${tinmngment.state}</td>
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>self</td>
@@ -83,6 +84,10 @@ function viewUser(e) {
       <tr>
         <th>Email</th>
         <td>${theuser.email}</td>
+      </tr>
+      <tr>
+        <th>TIN</th>
+        <td>${theuser.tin}</td>
       </tr>
       <tr>
         <th>Phone</th>
