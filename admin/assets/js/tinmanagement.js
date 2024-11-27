@@ -49,6 +49,28 @@ getTinManagements().then(e => {
   $("#dataTable").DataTable();
 })
 
+async function getTinMetrics() {
+  try {
+    const response = await fetch(`https://plateauigr.com/php/tinGeneration/metrics.php`)
+    const data = await response.json()
+
+
+    if (data.success) {
+      $("#registered").html(data.data.total_tin_created)
+      $("#indregistered").html(data.data.total_created_by_individual)
+      $("#corpregistered").html(data.data.total_created_by_corporate)
+      $("#registered2").html(data.data.total_self_created)
+      $("#admincreated").html(data.data.total_admin_created)
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+
+}
+
+getTinMetrics()
+
 function clearfilter() {
   $("#filterInvoice").modal('hide')
   $("#showreport").html('')
@@ -60,6 +82,8 @@ function clearfilter() {
     $("#dataTable").DataTable();
   })
 }
+
+
 
 function viewUser(e) {
   let theID = e.dataset.userid
