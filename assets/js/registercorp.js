@@ -19,6 +19,12 @@ if (myParam == "individual") {
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
 
+  let tin = document.querySelector("#tin")
+
+  if (tin.value === "") {
+    $("#popUpModal").modal("show")
+    return;
+  }
 
   // check for empty fileds
 
@@ -66,6 +72,7 @@ function continueReg2() {
 
 function continueReg3() {
   let allInputs = document.querySelectorAll(".enumInputB")
+
 
 
   // check for empty fileds

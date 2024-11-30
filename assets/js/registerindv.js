@@ -21,18 +21,18 @@ let selectedValue = "";
 document.addEventListener('DOMContentLoaded', (event) => {
   const inputField = document.getElementById('phon');
 
-  inputField.addEventListener('input', function(e) {
-      let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
-      if (value.length > 11) {
-          value = value.slice(0, 11); // Restrict to 11 digits
-      }
-      e.target.value = value;
+  inputField.addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+    if (value.length > 11) {
+      value = value.slice(0, 11); // Restrict to 11 digits
+    }
+    e.target.value = value;
   });
 
-  inputField.addEventListener('blur', function(e) {
-      if (e.target.value.length !== 11) {
-          alert('Phone number must be exactly 11 digits.');
-      }
+  inputField.addEventListener('blur', function (e) {
+    if (e.target.value.length !== 11) {
+      alert('Phone number must be exactly 11 digits.');
+    }
   });
 });
 
@@ -40,6 +40,13 @@ document.addEventListener('DOMContentLoaded', (event) => {
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
   let radioInputs = document.querySelectorAll(".radiInpu");
+
+  let tin = document.querySelector("#tin")
+
+  if (tin.value === "") {
+    $("#popUpModal").modal("show")
+    return;
+  }
 
   // check for empty fileds
 

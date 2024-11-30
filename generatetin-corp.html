@@ -98,7 +98,13 @@
 
         <div class="form-group w-full">
           <label for="">Number of Employee*</label>
-          <input type="number" class="form-control payInputs" data-name="num_employees">
+          <select class="form-select payInputs" data-name="num_employees" required>
+            <option value="">Select</option>
+            <option value="0 - 10">0 - 10</option>
+            <option value="11 - 50">11 - 50</option>
+            <option value="51 - 500">51 - 500</option>
+            <option value="500 and above">500 and above</option>
+          </select>
         </div>
 
       </div>
@@ -182,7 +188,7 @@
 
         <div class="form-group w-full">
           <label for="">Number of Employee</label>
-          <input type="number" class="form-control payInputs2" data-name="num_employees" readonly>
+          <input type="text" class="form-control payInputs2" data-name="num_employees" readonly>
         </div>
 
       </div>
@@ -217,7 +223,7 @@
       <div id="msg_box"></div>
     </form>
 
-    <form action="" class="formTabs md:w-[60%] w-[80%] mt-[20%]" id="tinDisplayForm">
+    <form action="" class="formTabs md:w-[60%] w-[80%] mt-[15%]" id="tinDisplayForm">
       <div class="flex justify-center mb-3">
         <img src="./assets/img/paid.png" />
       </div>

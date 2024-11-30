@@ -29,13 +29,22 @@ async function getTinManagements() {
           <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
         </tr>
       `)
-    });
 
-    $("#registered").html(data.data.length)
-    $("#indregistered").html(data.data.filter(e => e.type === 'individual').length)
-    $("#corpregistered").html(data.data.filter(e => e.type === 'corporate').length)
-    $("#registered2").html(data.data.length)
-    $("#admincreated").html(data.data.filter(e => e.payer_id !== null).length)
+      $("#tinTableFull").append(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>${tinmngment.type}</td>
+          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
+          <td>${tinmngment.phone_number}</td>
+          <td>${tinmngment.email}</td>
+          <td>${tinmngment.tin}</td>
+          <td>${tinmngment.state}</td>
+          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
+          <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
+          <td>${new Date(tinmngment.created_at).toDateString()}</td>
+        </tr>
+      `)
+    });
 
 
 
@@ -96,10 +105,13 @@ function viewUser(e) {
         <th>Name of business</th>
         <td>${theuser.organization_name}</td>
       </tr>
-
       <tr>
         <th>Name</th>
         <td>${theuser.type === 'corporate' ? '-' : `${theuser.first_name} ${theuser.middle_name} ${theuser.last_name}`}</td>
+      </tr>
+      <tr>
+        <th>TIN</th>
+        <td>${theuser.tin}</td>
       </tr>
       <tr>
         <th>Category</th>
@@ -109,10 +121,7 @@ function viewUser(e) {
         <th>Email</th>
         <td>${theuser.email}</td>
       </tr>
-      <tr>
-        <th>TIN</th>
-        <td>${theuser.tin}</td>
-      </tr>
+      
       <tr>
         <th>Phone</th>
         <td>${theuser.phone_number}</td>
@@ -168,7 +177,7 @@ async function filterTinModule() {
 
     const urlParam = new URLSearchParams(obj).toString()
 
-    console.log(urlParam)
+    // console.log(urlParam)
 
     const response = await fetch(`https://plateauigr.com/php/tinGeneration/fetch.php?${urlParam}`)
     const data = await response.json()
@@ -178,24 +187,42 @@ async function filterTinModule() {
       $("#msg_boxer").html('')
 
       $("#showreport").html('')
+      $("#tinTableFull").html('')
       $("#filterInvoice").modal('hide')
 
       data.data.reverse().forEach((tinmngment, i) => {
         $("#showreport").append(`
-        <tr>
-          <td>${i + 1}</td>
-          <td>${tinmngment.type}</td>
-          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
-          <td>${tinmngment.phone_number}</td>
-          <td>${tinmngment.email}</td>
-          <td>${tinmngment.state}</td>
-          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
-          <td>self</td>
-          <td>${new Date(tinmngment.created_at).toDateString()}</td>
-          <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
-        </tr>
-      `)
+          <tr>
+            <td>${i + 1}</td>
+            <td>${tinmngment.type}</td>
+            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
+            <td>${tinmngment.phone_number}</td>
+            <td>${tinmngment.email}</td>
+            <td>${tinmngment.state}</td>
+            <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
+            <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
+            <td>${new Date(tinmngment.created_at).toDateString()}</td>
+            <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
+          </tr>
+        `)
+
+        $("#tinTableFull").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>${tinmngment.type}</td>
+            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
+            <td>${tinmngment.phone_number}</td>
+            <td>${tinmngment.email}</td>
+            <td>${tinmngment.tin}</td>
+            <td>${tinmngment.state}</td>
+            <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
+            <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
+            <td>${new Date(tinmngment.created_at).toDateString()}</td>
+          </tr>
+        `)
       });
+
+
     } else {
       $("#msg_boxer").html(`<p class="text-danger text-center">Something went wrong, Try again</p>`)
 

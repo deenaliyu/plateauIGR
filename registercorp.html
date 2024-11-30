@@ -126,7 +126,7 @@
 
             <div class="form-group md:w-6/12">
               <label for="">JTB TIN <span class="text-danger">*</span></label>
-              <input type="text" class="form-control w-full enumInput" data-name="tin" required>
+              <input type="text" class="form-control w-full enumInput" id="tin" data-name="tin" required>
               <p class="text-sm font-bold">Don't have TIN?<a href="generatetin.html" class="fontBold text-[#CDA545]">
                   Generate TIN</a></p>
             </div>
@@ -672,6 +672,9 @@
 
   </section>
 
+  <!-- MODAL FOR TIN -->
+  <div id="ModalsContainer"></div>
+
 
 
   <script src="assets/js/jquery.js"></script>
@@ -687,6 +690,7 @@
   </script>
   <script src="assets/js/nav.js"></script>
   <script src="assets/js/tabHandler.js"></script>
+  <script src="assets/js/hadleTinGen.js"></script>
   <script src="assets/js/registercorp.js"></script>
 </body>
 
