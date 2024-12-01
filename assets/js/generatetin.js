@@ -2,6 +2,7 @@ const urlParams = new URLSearchParams(window.location.search);
 let myParam = urlParams.get('category');
 
 let regType = urlParams.get('user');
+let callbackParam = urlParams.get('callback')
 
 if (regType) {
     $("#theHeader").remove()
@@ -58,11 +59,11 @@ selectcategory.forEach(selecti => {
         // console.log(dataId)
         if (dataId === "individual") {
             $(".bb").on("click", (e) => {
-                window.location.href = `generatetin-ind.html${regType ? `?user=${regType}` : ''}`;
+                window.location.href = `generatetin-ind.html${regType ? `?user=${regType}` : ''}${callbackParam ? `?callback=${callbackParam}` : ''}`;
             })
         } else {
             $(".bb").on("click", (e) => {
-                window.location.href = `generatetin-corp.html${regType ? `?user=${regType}` : ''}`;
+                window.location.href = `generatetin-corp.html${regType ? `?user=${regType}` : ''}${callbackParam ? `?callback=${callbackParam}` : ''}`;
             })
         }
     })

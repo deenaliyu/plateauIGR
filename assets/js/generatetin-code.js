@@ -40,6 +40,7 @@ const urlParams = new URLSearchParams(window.location.search);
 let myParam = urlParams.get('category');
 
 let regType = urlParams.get('user');
+let callbackParam = urlParams.get('callback')
 
 if (regType) {
   $("#theHeader").remove()
@@ -167,6 +168,13 @@ async function generateTin(accountType) {
       $("#generateTinBtn").removeClass("hidden")
 
       $("#tinNumber").html(resdata.tin)
+
+      if (callbackParam) {
+        $("#goHomeBtnCont").html(`
+          <a href="${callbackParam}" class="button" id="goHomeBtn">Continue</a> 
+        `)
+      }
+
       nextPrev(1)
     } else {
       $("#msg_box").html(`<p class="text-warning text-center mt-4 text-lg">${resdata.error}.</p>`)
