@@ -103,8 +103,29 @@
 
       </div>
 
-      <div id="employmentTerms">
-        <!-- coming from JS -->
+      <div id="employmentTerms" class="hidden">
+        <p>Employment Information</p>
+        <hr />
+        <div class="form-group w-full mb-4 mt-2">
+          <label for="">Name of Organization/Business*</label>
+          <input type="text" class="form-control payInputs" data-name="organization_name">
+        </div>
+
+        <div class="flex items-center mb-4 gap-2">
+          <div class="form-group w-full">
+            <label for="">Sector*</label>
+            <select class="form-select payInputs" id="sectorSelect" data-name="sector">
+              <option value="">Select</option>
+            </select>
+          </div>
+
+          <div class="form-group w-full">
+            <label for="">Industry*</label>
+            <select name="" class="form-select payInputs" id="industrySelect" data-name="industry">
+              <option value="">Select</option>
+            </select>
+          </div>
+        </div>
       </div>
 
 

@@ -53,50 +53,10 @@ function employmentStatus(e) {
   let theval = e.value
 
   if (theval === "Unemployed") {
-    $('#employmentTerms').html('')
+    $('#employmentTerms').addClass('hidden')
 
   } else {
-    $('#employmentTerms').html(`
-      <p>Employment Information</p>
-      <hr />
-      <div class="form-group w-full mb-4 mt-2">
-        <label for="">Name of Organization/Business*</label>
-        <input type="text" class="form-control payInputs" data-name="organization_name">
-      </div>
-
-      <div class="flex items-center mb-4 gap-2">
-        <div class="form-group w-full">
-          <label for="">Industry*</label>
-          <select name="" class="form-select payInputs" data-name="industry">
-            <option value="">Select</option>
-            <option value="Mining">Mining</option>
-            <option value="Commerce">Commerce</option>
-            <option value="Banking">Banking</option>
-            <option value="Agriculture">Agriculture</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Construction">Construction</option>
-            <option value="Government Institution">Government Institution</option>
-            <option value="NGO">NGO</option>
-            <option value="Religious Institutions">Religious Institutions</option>
-            <option value="General Merchandise">General Merchandise</option>
-            <option value="General Contractor">General Contractor</option>
-            <option value="Private Schools"> Private Schools</option>
-            <option value="Public Schools">Public Schools</option>
-            <option value="Hospitals">Hospitals</option>
-          </select>
-        </div>
-
-        <div class="form-group w-full">
-          <label for="">Sector*</label>
-          <select class="form-select payInputs" data-name="sector">
-            <option value="">Select</option>
-            <option value="Private">Private</option>
-            <option value="Public">Public</option>
-          </select>
-        </div>
-
-      </div>  
-    `)
+    $('#employmentTerms').removeClass('hidden')
   }
 }
 
@@ -126,6 +86,49 @@ function previewPage() {
   }
 
 }
+
+async function getIndustriesSectors() {
+  try {
+    const response = await fetch(`${HOST}?getIndustriesSectors`);
+    const resdata = await response.json();
+
+    if (resdata.status === 1) {
+      const data = resdata.message;
+
+      const sectors = [...new Set(data.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect');
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        sectorSelect.appendChild(option);
+      });
+
+      sectorSelect.addEventListener('change', () => {
+        const selectedSector = sectorSelect.value;
+
+        const filteredIndustries = data.filter(
+          item => item.SectorName === selectedSector
+        );
+
+        const industrySelect = document.getElementById('industrySelect');
+        industrySelect.innerHTML = '<option value="">Select</option>';
+
+        filteredIndustries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry.IndustryName;
+          option.textContent = industry.IndustryName;
+          industrySelect.appendChild(option);
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+getIndustriesSectors();
 
 
 async function generateTin(accountType) {

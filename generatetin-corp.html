@@ -57,43 +57,29 @@
         </div>
       </div>
 
+
+
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
-          <label for="">CAC*</label>
-          <input type="text" class="form-control payInputs" data-name="cac_number" placeholder="Enter your CAC"
-            required>
+          <label for="">Sector*</label>
+          <select class="form-select payInputs" id="sectorSelect" data-name="sector" required>
+            <option value="">Select</option>
+          </select>
         </div>
 
         <div class="form-group w-full">
           <label for="">Industry*</label>
-          <select class="form-select payInputs" data-name="industry" required>
+          <select class="form-select payInputs" id="industrySelect" data-name="industry" required>
             <option value="">Select</option>
-            <option value="Mining">Mining</option>
-            <option value="Commerce">Commerce</option>
-            <option value="Banking">Banking</option>
-            <option value="Agriculture">Agriculture</option>
-            <option value="Engineering">Engineering</option>
-            <option value="Construction">Construction</option>
-            <option value="Government Institution">Government Institution</option>
-            <option value="NGO">NGO</option>
-            <option value="Religious Institutions">Religious Institutions</option>
-            <option value="General Merchandise">General Merchandise</option>
-            <option value="General Contractor">General Contractor</option>
-            <option value="Private Schools"> Private Schools</option>
-            <option value="Public Schools">Public Schools</option>
-            <option value="Hospitals">Hospitals</option>
           </select>
         </div>
       </div>
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
-          <label for="">Sector*</label>
-          <select class="form-select payInputs" data-name="sector" required>
-            <option value="">Select</option>
-            <option value="Private">Private</option>
-            <option value="Public">Public</option>
-          </select>
+          <label for="">CAC*</label>
+          <input type="text" class="form-control payInputs" data-name="cac_number" placeholder="Enter your CAC"
+            required>
         </div>
 
         <div class="form-group w-full">
