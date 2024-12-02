@@ -101,6 +101,25 @@
 
           </div>
 
+          <div class="form-group mw-full mb-4">
+            <label for="">Email*</label>
+            <input type="email" class="form-control w-full enumInput" data-name="email" required>
+          </div>
+
+          <div class="form-group w-full mb-4">
+            <label for="">JTB TIN <span class="text-danger">*</span></label>
+            <input type="text" class="form-control w-full enumInput" id="tin" data-name="tin" required>
+            <div class="flex justify-between items-center">
+              <p class="text-sm font-bold">Don't have TIN?<a href="#popUpModal" data-bs-toggle="modal"
+                  class="fontBold text-[#CDA545]">
+                  Click here</a></p>
+
+              <p class="text-sm font-bold">Can't remember TIN?<a href="#forgotTinModal" data-bs-toggle="modal"
+                  class="fontBold text-danger">
+                  Forgot TIN</a></p>
+            </div>
+          </div>
+
           <div class="form-group mb-3">
             <label for="">Industry*</label>
             <select class="form-select enumInput" data-name="industry" required>
@@ -122,23 +141,11 @@
             </select>
           </div>
 
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
 
-            <div class="form-group md:w-6/12">
-              <label for="">JTB TIN <span class="text-danger">*</span></label>
-              <input type="text" class="form-control w-full enumInput" id="tin" data-name="tin" required>
-              <p class="text-sm font-bold">Don't have TIN?<a href="#popUpModal" data-bs-toggle="modal"
-                  class="fontBold text-[#CDA545]">
-                  Click here</a></p>
-            </div>
 
-            <div class="form-group md:w-6/12">
-              <label for="">Email*</label>
-              <input type="email" class="form-control w-full enumInput" data-name="email" required>
-              <p>&nbsp;</p>
-            </div>
 
-          </div>
+
+
 
 
           <div class="flex gap-3 md:flex-row flex-col mb-3">
