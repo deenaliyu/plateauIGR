@@ -237,3 +237,65 @@ async function filterTinModule() {
     $("#filterTinModule").removeClass("hidden")
   }
 }
+
+async function filterSummary() {
+  try {
+    $("#summaryBox").html(`
+      <div class="flex justify-center items-center mt-4">
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+      </div>
+    `)
+
+    $("#filterSummary").addClass("hidden")
+
+    let startDate = document.querySelector("#dateStart").value
+    let toDate = document.querySelector("#dateEnd").value
+
+    let obj = {
+      total_tin_start: startDate,
+      total_tin_end: toDate,
+      individual_start: startDate,
+      individual_end: toDate,
+      corporate_start: startDate,
+      corporate_end: toDate,
+      self_start: startDate,
+      self_end: toDate,
+      admin_start: startDate,
+      admin_end: toDate,
+    }
+
+
+    const urlParam = new URLSearchParams(obj).toString()
+
+    // console.log(urlParam)
+
+    const response = await fetch(`https://plateauigr.com/php/tinGeneration/metrics.php?${urlParam}`)
+    const data = await response.json()
+
+    $("#filterSummary").removeClass("hidden")
+
+    if (data.success) {
+
+      $("#summaryBox").html("")
+
+      $("#registered").html(data.data.total_tin_created)
+      $("#indregistered").html(data.data.total_created_by_individual)
+      $("#corpregistered").html(data.data.total_created_by_corporate)
+      $("#registered2").html(data.data.total_self_created)
+      $("#admincreated").html(data.data.total_admin_created)
+
+
+    } else {
+      $("#summaryBox").html(`<p class="text-danger text-center">${data.message}</p>`)
+
+
+    }
+
+
+  } catch (error) {
+    console.log(error)
+    $("#summaryBox").html(`<p class="text-danger text-center">${error.error ? error.error : 'something went wrong, Try Again.'}</p>`)
+
+    $("#filterTinModule").removeClass("hidden")
+  }
+}
