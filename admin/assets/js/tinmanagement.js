@@ -25,7 +25,7 @@ async function getTinManagements() {
           <td>${tinmngment.state}</td>
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
-          <td>${new Date(tinmngment.created_at).toDateString()}</td>
+          <td>${getFormattedDate(tinmngment.created_at)}</td>
           <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
         </tr>
       `)
@@ -41,7 +41,7 @@ async function getTinManagements() {
           <td>${tinmngment.state}</td>
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
-          <td>${new Date(tinmngment.created_at).toDateString()}</td>
+          <td>${getFormattedDate(tinmngment.created_at)}</td>
         </tr>
       `)
     });
@@ -298,4 +298,13 @@ async function filterSummary() {
 
     $("#filterTinModule").removeClass("hidden")
   }
+}
+
+function getFormattedDate(date) {
+  date = new Date(date)
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
 }
