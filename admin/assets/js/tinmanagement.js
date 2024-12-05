@@ -24,6 +24,7 @@ async function getTinManagements() {
           <td>${tinmngment.tin}</td>
           <td>${tinmngment.state}</td>
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
+          <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
           <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
           <td>${getFormattedDate(tinmngment.created_at)}</td>
           <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
@@ -40,6 +41,7 @@ async function getTinManagements() {
           <td>${tinmngment.tin}</td>
           <td>${tinmngment.state}</td>
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
+          <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
           <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
           <td>${getFormattedDate(tinmngment.created_at)}</td>
         </tr>
