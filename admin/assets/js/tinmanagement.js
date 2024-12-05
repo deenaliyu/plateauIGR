@@ -23,8 +23,8 @@ async function getTinManagements() {
           <td>${tinmngment.email}</td>
           <td>${tinmngment.tin}</td>
           <td>${tinmngment.state}</td>
-          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
+          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
           <td>${getFormattedDate(tinmngment.created_at)}</td>
           <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
@@ -40,8 +40,8 @@ async function getTinManagements() {
           <td>${tinmngment.email}</td>
           <td>${tinmngment.tin}</td>
           <td>${tinmngment.state}</td>
-          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
+          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
           <td>${getFormattedDate(tinmngment.created_at)}</td>
         </tr>
@@ -104,16 +104,16 @@ function viewUser(e) {
   if (theuser) {
     $('#userDataID').html(`
       <tr>
-        <th>Name of business</th>
-        <td>${theuser.organization_name}</td>
+        <th>TIN</th>
+        <td>${theuser.tin}</td>
       </tr>
       <tr>
         <th>Name</th>
         <td>${theuser.type === 'corporate' ? '-' : `${theuser.first_name} ${theuser.middle_name} ${theuser.last_name}`}</td>
       </tr>
       <tr>
-        <th>TIN</th>
-        <td>${theuser.tin}</td>
+        <th>Name of business</th>
+        <td>${theuser.organization_name}</td>
       </tr>
       <tr>
         <th>Category</th>
@@ -129,6 +129,14 @@ function viewUser(e) {
         <td>${theuser.phone_number}</td>
       </tr>
       <tr>
+        <th>Sector</th>
+        <td>${theuser.sector ? theuser.sector : '-'}</td>
+      </tr>
+      <tr>
+        <th>Industry</th>
+        <td>${theuser.industry ? theuser.industry : '-'}</td>
+      </tr>
+      <tr>
         <th>State</th>
         <td>${theuser.state}</td>
       </tr>
@@ -136,14 +144,7 @@ function viewUser(e) {
         <th>LGA</th>
         <td>${theuser.lga}</td>
       </tr>
-      <tr>
-        <th>Industry</th>
-        <td>${theuser.industry ? theuser.industry : '-'}</td>
-      </tr>
-      <tr>
-        <th>Sector</th>
-        <td>${theuser.sector ? theuser.sector : '-'}</td>
-      </tr>
+      
       <tr>
         <th>Created by</th>
         <td>${theuser.payer_id === null ? 'Self' : 'Admin'}</td>
