@@ -152,7 +152,7 @@ async function generateTin(accountType) {
       dataToSend[allInput.dataset.name] = allInput.value
     })
 
-    dataToSend.lga = plateauLGAs[lgaInput.value] ? plateauLGAs[lgaInput.value] : "18"
+    // dataToSend.lga = plateauLGAs[lgaInput.value] ? plateauLGAs[lgaInput.value] : "18"
 
     // console.log(dataToSend)
     const response = await fetch('https://plateauigr.com/php/tinGeneration/index.php', {
