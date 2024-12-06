@@ -237,7 +237,7 @@
                     <th>TIN</th>
                     <th>State</th>
                     <th>Sector</th>
-                      <th>Industry</th>
+                    <th>Industry</th>
                     <th>Created by</th>
                     <th>Date Created</th>
                   </tr>
@@ -247,6 +247,7 @@
                   <!-- coming from JS -->
                 </tbody>
               </table>
+
 
 
 
@@ -377,11 +378,21 @@
             aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
         </div>
         <div class="modal-body">
+          <div id="userDataTabView">
 
-          <h1 class="text-center text-2xl  mb-4">User Data</h1>
-          <table class="table" id="userDataID">
 
-          </table>
+            <h1 class="text-center text-2xl mb-4">User Data</h1>
+            <table class="table" id="userDataID">
+
+            </table>
+          </div>
+
+        </div>
+
+        <div class="modal-footer">
+          <div class="flex justify-center mt-5">
+            <button class="button" onclick="printSlip('userDataTabView')">Print</button>
+          </div>
         </div>
 
       </div>
@@ -399,10 +410,11 @@
   <script src="./assets/js/nav.js"></script>
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script src="./assets/js/table2CSV.js"></script>
   <!-- endbuild -->
   <script>
-    let theAtivo = document.querySelector(`.tinmanage`)
+    let theAtivo = document.querySelector(`.dggg`)
     theAtivo.parentElement.classList.add("active")
   </script>
   <script>

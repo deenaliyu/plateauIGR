@@ -311,3 +311,23 @@ function getFormattedDate(date) {
 
   return `${day}/${month}/${year}`;
 }
+
+function printSlip(thecard) {
+  var mywindow = window.open('', 'PRINT', 'height=400,width=600');
+  mywindow.document.write('<html><head><title></title>');
+  mywindow.document.write('<link rel="stylesheet" href="./assets/vendor/css/core.css" type="text/css" />');
+  mywindow.document.write('</head><body >');
+  mywindow.document.write(document.getElementById(thecard).innerHTML);
+  mywindow.document.write('</body></html>');
+  mywindow.document.close();
+  mywindow.focus();
+
+  setTimeout(function () {
+    mywindow.print();
+    mywindow.close();
+  }, 1000);
+
+
+  return true;
+
+}

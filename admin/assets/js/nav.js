@@ -60,6 +60,12 @@ $(".aside").html(`
               <div data-i18n="Input groups">Collection Report</div>
             </a>
           </li>
+
+          <li class="menu-item">
+            <a href="tinmanagement.html" class="menu-link">
+              <div data-i18n="Input groups">TIN Report</div>
+            </a>
+          </li>
           
           <li class="menu-item">
             <a href="expiredinvoice.html" class="menu-link">
@@ -85,14 +91,6 @@ $(".aside").html(`
         <a href="taxpayer.html" class="menu-link mdd">
           <i class='menu-icon tf-icons bx bxs-group' ></i>
           <div data-i18n="Basic">Tax Payer</div>
-        </a>
-      </li>
-
-      <li class="menu-item">
-        <a href="tinmanagement.html" class="menu-link tinmanage">
-        
-          <iconify-icon icon="hugeicons:taxes" class="menu-icon"></iconify-icon>
-          <div data-i18n="Basic">TIN Management Module</div>
         </a>
       </li>
 
