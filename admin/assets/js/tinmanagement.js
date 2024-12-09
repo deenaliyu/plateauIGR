@@ -186,7 +186,7 @@ async function editTinModule() {
       </div>
     `)
 
-    $("#filterTinModule").addClass("hidden")
+    $("#editTinModule").addClass("hidden")
     let allInputs = document.querySelectorAll(".payInputs2")
 
     let dataToSend = {}
@@ -209,21 +209,21 @@ async function editTinModule() {
     // console.log(resdata)
     if (resdata.success) {
       $("#msg_boxeredit").html(`<p class="text-success text-center mt-4 text-lg">TIN Updated successfully.</p>`)
-      $("#filterTinModule").removeClass("hidden")
+      $("#editTinModule").removeClass("hidden")
 
       $("#dataTable").DataTable().clear().destroy();
       $("#EditInfo").modal("hide")
       getTinManagements()
     } else {
       $("#msg_boxeredit").html(`<p class="text-warning text-center mt-4 text-lg">${resdata.error}.</p>`)
-      $("#filterTinModule").removeClass("hidden")
+      $("#editTinModule").removeClass("hidden")
     }
 
 
   } catch (error) {
     console.log(error)
     $("#msg_boxeredit").html(`<p class="text-danger text-center mt-4 text-lg">${error.error ? error.error : 'something went wrong, Try Again.'}.</p>`)
-    $("#filterTinModule").removeClass("hidden")
+    $("#editTinModule").removeClass("hidden")
   }
 }
 
@@ -271,11 +271,21 @@ async function filterTinModule() {
             <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
             <td>${tinmngment.phone_number}</td>
             <td>${tinmngment.email}</td>
+            <td>${tinmngment.tin}</td>
             <td>${tinmngment.state}</td>
+            <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
             <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
             <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
-            <td>${new Date(tinmngment.created_at).toDateString()}</td>
-            <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
+            <td>${getFormattedDate(tinmngment.created_at)}</td>
+            <td>
+            <div class="flex gap-3 items-center">
+              <a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a>
+              <a href="#EditInfo" data-bs-toggle="modal" onclick="editUser(this)" data-userid="${tinmngment.id}">
+                <iconify-icon icon="uil:edit"></iconify-icon></button>
+              </a>
+            </div>
+            </td>
+
           </tr>
         `)
 
@@ -288,9 +298,10 @@ async function filterTinModule() {
             <td>${tinmngment.email}</td>
             <td>${tinmngment.tin}</td>
             <td>${tinmngment.state}</td>
+            <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
             <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
             <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
-            <td>${new Date(tinmngment.created_at).toDateString()}</td>
+            <td>${getFormattedDate(tinmngment.created_at)}</td>
           </tr>
         `)
       });
@@ -444,3 +455,46 @@ async function getIndustriesSectors() {
 }
 
 getIndustriesSectors();
+
+async function getIndustriesSectors2() {
+  try {
+    const response = await fetch(`${HOST}?getIndustriesSectors`);
+    const resdata = await response.json();
+
+    if (resdata.status === 1) {
+      const data = resdata.message;
+
+      const sectors = [...new Set(data.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect2');
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        sectorSelect.appendChild(option);
+      });
+
+      sectorSelect.addEventListener('change', () => {
+        const selectedSector = sectorSelect.value;
+
+        const filteredIndustries = data.filter(
+          item => item.SectorName === selectedSector
+        );
+
+        const industrySelect = document.getElementById('industrySelect2');
+        industrySelect.innerHTML = '<option value="">Select</option>';
+
+        filteredIndustries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry.IndustryName;
+          option.textContent = industry.IndustryName;
+          industrySelect.appendChild(option);
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+getIndustriesSectors2();

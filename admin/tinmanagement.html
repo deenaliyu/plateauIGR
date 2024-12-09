@@ -414,7 +414,7 @@
         </div>
 
         <div class="modal-footer ">
-          <button type="button" class="btn btn-prime w-full" id="filterTinModule"
+          <button type="button" class="btn btn-prime w-full" id="editTinModule"
             onclick="editTinModule()">Edit</button>
           <div id="msg_boxeredit"></div>
         </div>
@@ -449,27 +449,12 @@
             </div>
           </div>
 
-
           <div class="row">
             <div class="col mb-3">
-              <label for="defaultSelect" class="form-label">Industry</label>
+              <label for="defaultSelect" class="form-label">Sector</label>
               <div class="form-group">
-                <select name="" id="getMDAs" class="form-select payInputs" data-name="industry">
-                  <option selected value="">--- All ---</option>
-                  <option value="Mining">Mining</option>
-                  <option value="Commerce">Commerce</option>
-                  <option value="Banking">Banking</option>
-                  <option value="Agriculture">Agriculture</option>
-                  <option value="Engineering">Engineering</option>
-                  <option value="Construction">Construction</option>
-                  <option value="Government Institution">Government Institution</option>
-                  <option value="NGO">NGO</option>
-                  <option value="Religious Institutions">Religious Institutions</option>
-                  <option value="General Merchandise">General Merchandise</option>
-                  <option value="General Contractor">General Contractor</option>
-                  <option value="Private Schools"> Private Schools</option>
-                  <option value="Public Schools">Public Schools</option>
-                  <option value="Hospitals">Hospitals</option>
+                <select name="" id="sectorSelect2" class="form-select payInputs" data-name="sector">
+                  <option value="">All ---</option>
                 </select>
               </div>
             </div>
@@ -477,12 +462,10 @@
 
           <div class="row">
             <div class="col mb-3">
-              <label for="defaultSelect" class="form-label">Sector</label>
+              <label for="defaultSelect" class="form-label">Industry</label>
               <div class="form-group">
-                <select name="" id="getMDAs" class="form-select payInputs" data-name="sector">
-                  <option selected value="">--- All ---</option>
-                  <option value="Private">Private</option>
-                  <option value="Public">Public</option>
+                <select name="" id="industrySelect2"  class="form-select payInputs" data-name="industry">
+                  <option value="">All ---</option>
                 </select>
               </div>
             </div>
