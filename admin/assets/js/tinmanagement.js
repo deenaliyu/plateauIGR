@@ -27,7 +27,15 @@ async function getTinManagements() {
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
           <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
           <td>${getFormattedDate(tinmngment.created_at)}</td>
-          <td><a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a></td>
+          <td>
+          <div class="flex gap-3 items-center">
+            <a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a>
+            <a href="#EditInfo" data-bs-toggle="modal" onclick="editUser(this)" data-userid="${tinmngment.id}">
+              <iconify-icon icon="uil:edit"></iconify-icon></button>
+            </a>
+          </div>
+          </td>
+
         </tr>
       `)
 
@@ -94,8 +102,6 @@ function clearfilter() {
   })
 }
 
-
-
 function viewUser(e) {
   let theID = e.dataset.userid
 
@@ -154,6 +160,70 @@ function viewUser(e) {
         <td>${new Date(theuser.created_at).toDateString()}</td>
       </tr>
     `)
+  }
+}
+
+function editUser(e) {
+  let theID = e.dataset.userid
+
+  let payInputs = document.querySelectorAll(".payInputs2")
+  let theuser = allTinData.find(alluser => alluser.id === parseInt(theID))
+  // console.log(theuser)
+
+  if (theuser) {
+    payInputs.forEach(payInpt => {
+      payInpt.value = theuser[payInpt.dataset.name]
+    })
+  }
+
+}
+
+async function editTinModule() {
+  try {
+    $("#msg_boxeredit").html(`
+      <div class="flex justify-center items-center mt-4">
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+      </div>
+    `)
+
+    $("#filterTinModule").addClass("hidden")
+    let allInputs = document.querySelectorAll(".payInputs2")
+
+    let dataToSend = {}
+
+    allInputs.forEach(allInput => {
+      dataToSend[allInput.dataset.name] = allInput.value
+    })
+
+    // console.log(JSON.stringify(dataToSend))
+    const response = await fetch('https://plateauigr.com/php/tinGeneration/updateTINInfo.php', {
+      method: "POST",
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataToSend)
+    })
+    const resdata = await response.json()
+
+    // console.log(resdata)
+    if (resdata.success) {
+      $("#msg_boxeredit").html(`<p class="text-success text-center mt-4 text-lg">TIN Updated successfully.</p>`)
+      $("#filterTinModule").removeClass("hidden")
+
+      $("#dataTable").DataTable().clear().destroy();
+      $("#EditInfo").modal("hide")
+      getTinManagements()
+    } else {
+      $("#msg_boxeredit").html(`<p class="text-warning text-center mt-4 text-lg">${resdata.error}.</p>`)
+      $("#filterTinModule").removeClass("hidden")
+    }
+
+
+  } catch (error) {
+    console.log(error)
+    $("#msg_boxeredit").html(`<p class="text-danger text-center mt-4 text-lg">${error.error ? error.error : 'something went wrong, Try Again.'}.</p>`)
+    $("#filterTinModule").removeClass("hidden")
   }
 }
 
@@ -331,3 +401,46 @@ function printSlip(thecard) {
   return true;
 
 }
+
+async function getIndustriesSectors() {
+  try {
+    const response = await fetch(`${HOST}?getIndustriesSectors`);
+    const resdata = await response.json();
+
+    if (resdata.status === 1) {
+      const data = resdata.message;
+
+      const sectors = [...new Set(data.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect');
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        sectorSelect.appendChild(option);
+      });
+
+      sectorSelect.addEventListener('change', () => {
+        const selectedSector = sectorSelect.value;
+
+        const filteredIndustries = data.filter(
+          item => item.SectorName === selectedSector
+        );
+
+        const industrySelect = document.getElementById('industrySelect');
+        industrySelect.innerHTML = '<option value="">Select</option>';
+
+        filteredIndustries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry.IndustryName;
+          option.textContent = industry.IndustryName;
+          industrySelect.appendChild(option);
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+getIndustriesSectors();
