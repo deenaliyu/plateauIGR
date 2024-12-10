@@ -18,7 +18,7 @@ async function getTinManagements() {
         <tr>
           <td>${i + 1}</td>
           <td>${tinmngment.type}</td>
-          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
+          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
           <td>${tinmngment.phone_number}</td>
           <td>${tinmngment.email}</td>
           <td>${tinmngment.tin}</td>
@@ -43,7 +43,7 @@ async function getTinManagements() {
         <tr>
           <td>${i + 1}</td>
           <td>${tinmngment.type}</td>
-          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
+          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
           <td>${tinmngment.phone_number}</td>
           <td>${tinmngment.email}</td>
           <td>${tinmngment.tin}</td>
@@ -115,7 +115,7 @@ function viewUser(e) {
       </tr>
       <tr>
         <th>Name</th>
-        <td>${theuser.type === 'corporate' ? '-' : `${theuser.first_name} ${theuser.middle_name} ${theuser.last_name}`}</td>
+        <td>${theuser.type === 'corporate' ? '-' : `${theuser.first_name} ${theuser.last_name}`}</td>
       </tr>
       <tr>
         <th>Name of business</th>
@@ -197,7 +197,7 @@ async function editTinModule() {
 
     // console.log(JSON.stringify(dataToSend))
     const response = await fetch('https://plateauigr.com/php/tinGeneration/updateTINInfo.php', {
-      method: "POST",
+      method: "PUT",
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
@@ -268,7 +268,7 @@ async function filterTinModule() {
           <tr>
             <td>${i + 1}</td>
             <td>${tinmngment.type}</td>
-            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
+            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
             <td>${tinmngment.phone_number}</td>
             <td>${tinmngment.email}</td>
             <td>${tinmngment.tin}</td>
@@ -293,7 +293,7 @@ async function filterTinModule() {
           <tr>
             <td>${i + 1}</td>
             <td>${tinmngment.type}</td>
-            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.middle_name} ${tinmngment.last_name}`}</td>
+            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
             <td>${tinmngment.phone_number}</td>
             <td>${tinmngment.email}</td>
             <td>${tinmngment.tin}</td>
