@@ -70,7 +70,8 @@
               <div class="flex gap-x-5" id="createRevCont">
 
 
-                <button class="button" data-bs-toggle="modal" data-bs-target="#createRevenueHead">Create revenue head </button>
+                <button class="button" data-bs-toggle="modal" data-bs-target="#createRevenueHead">Create revenue head
+                </button>
                 <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#bulkCreateRevModal">Create
                   Bulk</button>
 
@@ -152,6 +153,12 @@
                     Approval requests
                   </button>
                 </li>
+
+                <li class="nav-item flex align-items-center" id="aprrv">
+                  <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#mdaAdmins">
+                    MDA Admins
+                  </button>
+                </li>
               </ul>
 
               <div class="tab-content">
@@ -197,6 +204,29 @@
                   </table>
 
                 </div>
+
+                <div class="tab-pane fade" id="mdaAdmins" role="tabpanel">
+                  <div class="flex justify-end mb-4">
+                    <button class="button" data-bs-toggle="modal" data-bs-target="#createMdaAdmin">Create Admin</button>
+                  </div>
+
+                  <table class="table table-sm" id="mdaAdminTable">
+                    <thead>
+                      <tr>
+                        <th>S/N</th>
+                        <th>Full Name</th>
+                        <th>Email</th>
+                        <th>Phone Number</th>
+                        <th>Date Created</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody id="showUsers">
+
+                    </tbody>
+                  </table>
+
+                </div>s
               </div>
 
 
@@ -411,7 +441,207 @@
       </div>
     </div>
   </div>
+
+  <div class="modal fade" id="createMdaAdmin" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <h5 class="modal-title text-center text-2xl font-bold" id="exampleModalLabel3">Create MDA Admin</h5>
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body">
+          <form action="">
+
+
+            <div class="form-group mb-3">
+              <label for="defaultSelect" class="my-0">Name of User <span class="text-[red]">*</span></label>
+              <input required type="text" class="form-control userInputs " data-name="name"
+                placeholder="Enter Full Name.." />
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="defaultSelect" class="my-0">Email <span class="text-[red]">*</span></label>
+              <input required type="text" class="form-control userInputs " data-name="email" />
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="defaultSelect" class="my-0">Phone Number<span class="text-[red]">*</span></label>
+              <input required type="text" class="form-control userInputs" data-name="phone_number" />
+            </div>
+
+            <div class="mt-[4vh]">
+              <p class="mb-2 font-semibold text-black">Access Level</p>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Revenue Head<span class="text-[red]">*</span></label>
+
+                  <select class="form-select accleveler" id="Revenue Head" aria-label="Default select example"
+                    name="revenue_head_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Users<span class="text-[red]">*</span></label>
+                  <select class="form-select accleveler" id="Users" aria-label="Default select example"
+                    name="users_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Payment<span class="text-[red]">*</span></label>
+                  <select class="form-select accleveler" id="Payment" aria-label="Default select example"
+                    name="payment_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Report<span class="text-[red]">*</span></label>
+                  <select class="form-select accleveler" id="Report" aria-label="Default select example"
+                    name="report_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-prime w-full" id="createUser">Create</button>
+          <div id="msg_boxadmin" class="w-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editMDAUser" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <h5 class="modal-title text-center text-2xl font-bold" id="exampleModalLabel3">Edit Admin </h5>
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body">
+          <form action="">
+
+            <div class="form-group mb-3">
+              <label for="defaultSelect" class="my-0">Name of User <span class="text-[red]">*</span></label>
+              <input required type="text" class="form-control userInputs2" data-name="name"
+                placeholder="Enter Full Name.." />
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="defaultSelect" class="my-0">Email <span class="text-[red]">*</span></label>
+              <input required type="text" class="form-control userInputs2" data-name="email" />
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="defaultSelect" class="my-0">Phone Number<span class="text-[red]">*</span></label>
+              <input required type="text" class="form-control userInputs2" data-name="phone_number" />
+            </div>
+
+            <div class="form-group mb-3">
+              <label for="defaultSelect" class="my-0">Password<span class="text-[red]">*</span></label>
+              <input required type="text" class="form-control userInputs2" data-name="password" />
+            </div>
+
+            <div class="mt-[4vh]">
+              <p class="mb-2 font-semibold text-black">Access Level</p>
+            </div>
+
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Revenue Head<span class="text-[red]">*</span></label>
+
+                  <select class="form-select accleveler2" id="Revenue Head" aria-label="Default select example"
+                    name="revenue_head_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Users<span class="text-[red]">*</span></label>
+                  <select class="form-select accleveler2" id="Users" aria-label="Default select example"
+                    name="users_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Payment<span class="text-[red]">*</span></label>
+                  <select class="form-select accleveler2" id="Payment" aria-label="Default select example"
+                    name="payment_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-group mb-4">
+                  <label for="defaultSelect" class="my-0">Report<span class="text-[red]">*</span></label>
+                  <select class="form-select accleveler2" id="Report" aria-label="Default select example"
+                    name="report_access">
+                    <option selected>--select</option>
+                    <option value="full">Full access</option>
+                    <option value="view">View only</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+          </form>
+
+        </div>
+        <div class="modal-footer ">
+          <button type="button" class="btn btn-prime w-full" id="editMDA">Edit</button>
+          <div id="msg_boxedit" class="w-full">
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <div id="msg_box"></div>
+
   <input type="hidden" id="mdaID" value="">
+
+
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
@@ -432,9 +662,10 @@
 
   <!-- Vendors JS -->
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
-  
+
   <!-- Main JS -->
   <script src="./assets/js/revHead.js"></script>
+  <script src="./assets/js/mda-admins.js"></script>
   <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/main.js"></script>
 </body>

@@ -3,6 +3,7 @@ const urlParams = new URLSearchParams(queryString);
 const mdaId = urlParams.get('id');
 const mdn = urlParams.get('name');
 let ALLREV = ""
+
 let adminInfo2 = JSON.parse(localStorage.getItem("adminDataPrime"))
 
 // console.log(mdn)
@@ -15,7 +16,7 @@ async function fetchRevHeads() {
   const revHeads = await response.json()
   ALLREV = revHeads
 
-  console.log(ALLREV)
+  // console.log(ALLREV)
 
   $("#loader").css("display", "none")
 
@@ -38,12 +39,12 @@ async function fetchRevHeads() {
           <td>
             <div class="flex items-center gap-3" id="updtCont">
             `
-            addd += `
+      addd += `
               <button onclick="deleteRev(this)" data-revid="${revHd.id}"><iconify-icon icon="material-symbols:delete-outline-rounded"></iconify-icon></button>
               <button onclick="editRevFunc(this)" data-revid="${revHd.id}" data-bs-toggle="modal" data-bs-target="#editRev"><iconify-icon 
                 icon="material-symbols:edit-square-outline"></iconify-icon></button>
             `
-          addd + `
+      addd + `
             </div>
           </td>
         </tr>
@@ -262,7 +263,6 @@ async function fetchMDAs() {
 }
 
 fetchMDAs()
-
 
 $("#createRevenue").on("click", () => {
 

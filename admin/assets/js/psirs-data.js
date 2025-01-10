@@ -1,3 +1,47 @@
+const the_industries = [
+  "AGRICULTURAL",
+  "AGRO BUSINESS",
+  "ART AND ENTERTAINMENT",
+  "ASSOCIATION",
+  "AUTOMOBILE BUSINESS",
+  "BEAUTY & FASHION",
+  "BUSINESS",
+  "COMMUNICATION",
+  "CONSTRUCTION",
+  "CONTRACTOR",
+  "Contract",
+  "DRILLING",
+  "EDUCATION",
+  "EXTRACTION",
+  "FASHION DESIGNING",
+  "FINANCIAL SERVICES",
+  "GAMING / LOTTERY",
+  "HEALTH",
+  "HOSPITALITY",
+  "INFORMATION TECHNOLOGY",
+  "InFormal",
+  "LEGAL SERVICES",
+  "MANUFACTURING",
+  "MINING",
+  "MINISTRY",
+  "NGO",
+  "OIL AND GAS",
+  "PROFESSIONAL SERVICES",
+  "RELIGIOUS",
+  "RETAIL TRADE",
+  "SECURITY SERVICES",
+  "SERVICE",
+  "SOCIAL SERVICES",
+  "TRANSPORTATION",
+  "Trading"
+]
+
+$(document).ready(function () {
+  the_industries.forEach(industry => {
+    $('#getSector').append(`<option value="${industry}">${industry}</option>`)
+  })
+});
+
 async function getMigratedDataAnalytics() {
   try {
     const response = await fetch(`https://plateauigr.com/php/?getMigratedDataAnalytics`)
@@ -15,16 +59,14 @@ async function getMigratedDataAnalytics() {
 getMigratedDataAnalytics()
 
 async function fetchAllData() {
-  document.querySelector('#categ-select').value = ''
-
-  const apiUrl = 'https://plateauigr.com/php/?pull_old_users1&limit=';
+  const apiUrl = 'https://plateauigr.com/php/?pull_old_users1';
   let totalRecords = 0;
 
   initializeLoader(true); // Show loader
 
   try {
     totalRecords = await fetchTotalRecords();
-    createPagination(totalRecords);
+    createPagination(472070);
     await fetchData(1); // Fetch initial data for page 1
   } catch (error) {
     console.error('Error during data fetching:', error);
@@ -32,9 +74,19 @@ async function fetchAllData() {
     initializeLoader(false); // Hide loader
   }
 
+  // Event listener for the filter
+  document.getElementById('filterMda').addEventListener('click', async () => {
+    const category = document.querySelector('.thecategselect').value;
+    const sector = document.querySelector('.thesectorselect').value;
+
+    await fetchData(1, category, sector); // Apply filters and fetch data
+    $("#filterData").modal("hide")
+  });
+
   // Fetch total records from the API
-  function fetchTotalRecords() {
-    return fetch(apiUrl + '1')
+  function fetchTotalRecords(category = '', sector = '') {
+    const url = `${apiUrl}&limit=1&category=${category}&sector=${sector}`;
+    return fetch(url)
       .then(response => response.json())
       .then(data => {
         const individualRecords = data.individual ? data.individual.length : 0;
@@ -48,17 +100,12 @@ async function fetchAllData() {
   }
 
   // Fetch data for a specific page
-  function fetchData(page, category = '') {
-    return fetch(apiUrl + page)
+  function fetchData(page, category = '', sector = '') {
+    const url = `${apiUrl}&limit=${page}&category=${category}&sector=${sector}`;
+    return fetch(url)
       .then(response => response.json())
       .then(data => {
         let combinedData = [...(data.individual || []), ...(data.companies || [])];
-
-        // Filter data based on the category, if specified
-        if (category) {
-          combinedData = combinedData.filter(item => item.category === category);
-        }
-
         displayData(combinedData);
       })
       .catch(error => {
@@ -87,6 +134,7 @@ async function fetchAllData() {
                   <td>${item.user_tin}</td>
                   <td>${item.category}</td>
                   <td>${item.name}</td>
+                  <td>${item.sector ? item.sector : '-'}</td>
                   <td>${statusBadge}</td>
                   <td>
                       <div class="flex gap-3">
@@ -136,7 +184,7 @@ async function fetchAllData() {
   function createPagination(totalRecords) {
     const pagination = document.getElementById('pagination');
     const entriesPerPage = 200; // Example number of records per page
-    const totalPages = Math.ceil(466, 188 / entriesPerPage);
+    const totalPages = Math.ceil(totalRecords / entriesPerPage);
 
     $("#showing").html(`Showing 1 to ${entriesPerPage} of ${totalRecords.toLocaleString()} entries`);
     $("#paging").html('Page 1');
@@ -149,7 +197,9 @@ async function fetchAllData() {
       li.classList.add('page-item');
 
       li.addEventListener('click', () => {
-        fetchData(i);
+        const category = document.querySelector('.thecategselect').value;
+        const sector = document.querySelector('.thesectorselect').value;
+        fetchData(i, category, sector);
         updatePaginationUI(i, totalRecords, entriesPerPage, pagination);
       });
 
@@ -169,15 +219,7 @@ async function fetchAllData() {
     document.querySelectorAll('.pagination li').forEach(el => el.classList.remove('active'));
     pagination.children[currentPage - 1].classList.add('active');
   }
-
-  $('#categ-select').change(function () {
-    const category = $(this).val();
-
-    fetchData(1, category);
-  });
-
 }
-
 
 fetchAllData();
 
