@@ -67,6 +67,15 @@ if (payment === "yes") {
           <div data-i18n="Analytics"  class = "text-[2vh]">Dashboard</div>
         </a>
       </li>
+
+      <li class="menu-item">
+        <a href="analytics.html" class="menu-link anala">
+          <iconify-icon icon="majesticons:analytics-line" class = "menu-icon tf-icons"></iconify-icon>
+          <div data-i18n="Analytics"  class = "text-[2vh]">Analytics</div>
+        </a>
+      </li>
+
+
       <li class="menu-item">
         <a href="revenue.html" class="menu-link das">
           <iconify-icon icon="mdi:file-document-outline" class='menu-icon tf-icons'></iconify-icon>
