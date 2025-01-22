@@ -30,6 +30,22 @@ async function fetchRevHeads(categ) {
 
 fetchRevHeads();
 
+function generatePassword(length = 8) {
+  if (length < 1) {
+    throw new Error("Password length must be at least 1.");
+  }
+
+  const digits = '0123456789';
+  let password = '';
+
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * digits.length);
+    password += digits[randomIndex];
+  }
+
+  return password;
+}
+
 $("#createUser").on("click", function () {
 
   // console.log('you cick')
@@ -61,7 +77,8 @@ $("#createUser").on("click", function () {
           payment_access: "full",
           users_access: "full",
           report_access: "full",
-
+          offices: "full",
+          passwd: generatePassword(8),
         },
       };
 
