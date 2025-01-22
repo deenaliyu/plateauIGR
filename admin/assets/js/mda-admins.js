@@ -47,7 +47,7 @@ async function fetchUSERS() {
       `);
     });
   } else {
-    $("#mdaAdminTable").empty();
+    // $("#mdaAdminTable").empty();
   }
 }
 
@@ -200,9 +200,20 @@ function editMDAFunc(e) {
 
   let theREV = ALLMDAUSERS.find(dd => dd.id === editaID)
 
+  let userDataMdaaa = JSON.parse(localStorage.getItem("adminDataPrime"))
+  if (userDataMdaaa.email === "primeguage@gmail.com") {
+    $("#thePasswordField").html(`
+      <div class="form-group mb-3">
+        <label for="defaultSelect" class="my-0">Password<span class="text-[red]">*</span></label>
+        <input required type="text" class="form-control userInputs2" data-name="password" />
+      </div>  
+    `)
+  } else {
+    $("#thePasswordField").html('')
+  }
+
   let allInputs = document.querySelectorAll(".userInputs2")
   let allRadioBoxs = document.querySelectorAll(".form-select.accleveler2");
-
 
   allInputs.forEach(theInpt => {
     if (theREV[theInpt.dataset.name]) {
@@ -211,7 +222,6 @@ function editMDAFunc(e) {
   })
 
   allRadioBoxs.forEach(radi => {
-    console.log(radi, radi.name, theREV[radi.name])
     if (theREV[radi.name]) {
       radi.value = theREV[radi.name]
     }
