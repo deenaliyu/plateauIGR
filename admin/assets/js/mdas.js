@@ -26,7 +26,7 @@ async function fetchMDAs() {
     $("#showThem").html("<tr></tr>")
     $('#dataTable').DataTable();
   } else {
-    MDAs.message.reverse().forEach((MDA, i) => {
+    MDAs.message.forEach((MDA, i) => {
       let addd = ""
       addd += `
         <tr class="relative">
