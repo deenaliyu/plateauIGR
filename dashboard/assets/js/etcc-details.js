@@ -123,7 +123,7 @@ async function theVerify(thelvl) {
 
     if (etccDetail.status === 1) {
       alert("Approved successfully")
-      window.location.reload()
+      window.location.href = `./etcc-management.html`
 
     }
   } catch (error) {
@@ -146,7 +146,7 @@ async function declineThis() {
 
     if (etccDetail.status === 1) {
       alert("Declined successfully")
-      window.location.reload()
+      window.location.href = `./etcc-management.html`
 
     }
   } catch (error) {
@@ -171,7 +171,7 @@ async function unapprove() {
 
     if (etccDetail.status === 1) {
       alert("success")
-      window.location.reload()
+     window.location.href = `./etcc-management.html`
 
     }
   } catch (error) {
