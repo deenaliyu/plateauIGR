@@ -172,7 +172,7 @@
 
 
               <section class="mt-4 card px-2">
-                <div class="flex justify-end mt-4">
+                <div class="flex justify-end mt-4 mb-2">
                   <div class="flex gap-4">
                     <button class="button flex items-center gap-3">
                       <iconify-icon icon="humbleicons:download" class="text-xl"></iconify-icon>
@@ -190,20 +190,27 @@
                       Submitted (First Reviewer)
                     </button>
                   </li>
-
                   <li class="nav-item text-center" role="presentation" id="second_reviewer">
                     <button class="nav-link" data-bs-toggle="pill" data-bs-target="#rev_apprv" type="button" role="tab">
-                      Reviewer Approval
+                      Second Reviewer
                     </button>
                   </li>
-
                   <li class="nav-item text-center" role="presentation" id="third_reviewer">
                     <button class="nav-link" data-bs-toggle="pill" data-bs-target="#dir_apprv" type="button" role="tab">
                       Director Approval
                     </button>
                   </li>
-
-
+                  <li class="nav-item text-center" role="presentation" id="final_approved">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#approved" type="button" role="tab">
+                      Approved
+                    </button>
+                  </li>
+                  <li class="nav-item text-center" role="presentation" id="declined">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#declined_one" type="button"
+                      role="tab">
+                      Declined
+                    </button>
+                  </li>
                 </ul>
 
                 <div class="tab-content" id="pills-tabContent">
@@ -213,13 +220,11 @@
                       <table class="table payeTable" id="dataTable">
                         <thead>
                           <tr>
-                            <th></th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
-                            <th>TCC</th>
                           </tr>
                         </thead>
                         <tbody id="etccTable">
@@ -243,13 +248,11 @@
                       <table class="table payeTable" id="dataTable2">
                         <thead>
                           <tr>
-                            <th></th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
-                            <th>TCC</th>
                           </tr>
                         </thead>
                         <tbody id="etccTable2">
@@ -266,13 +269,11 @@
                       <table class="table payeTable" id="dataTable3">
                         <thead>
                           <tr>
-                            <th></th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
-                            <th>TCC</th>
                           </tr>
                         </thead>
                         <tbody id="etccTable3">
@@ -283,9 +284,45 @@
 
                   </div>
 
+                  <div class="tab-pane fade final_approved" id="approved" role="tabpanel">
+                    <div class="table-responsive">
+                      <table class="table payeTable" id="dataTable4">
+                        <thead>
+                          <tr>
+                            <th>Date Sent</th>
+                            <th>Reference Number</th>
+                            <th>Status</th>
+                            <th>Date Approved</th>
+                            <th>Action</th>
+                            <th>TCC</th>
+                          </tr>
+                        </thead>
+                        <tbody id="etccTable4">
 
+                        </tbody>
+                      </table>
+                    </div>
 
+                  </div>
+                  <div class="tab-pane fade declined" id="declined_one" role="tabpanel">
+                    <div class="table-responsive">
+                      <table class="table payeTable" id="dataTable5">
+                        <thead>
+                          <tr>
+                            <th>Date Sent</th>
+                            <th>Reference Number</th>
+                            <th>Status</th>
+                            <th>Date Approved</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="etccTable5">
 
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
                 </div>
 
               </section>

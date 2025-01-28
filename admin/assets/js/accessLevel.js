@@ -280,37 +280,48 @@ async function getRolesAdmin() {
     }
 
   } else if (currentPage.includes("etcc-management.html")) {
-    let etccRoles = userRoles.etcc_access
-    // console.log(etccRoles)
+    let etccRoles = userRoles.etcc_access;
 
-    $(".main_section").removeClass('hidden')
-    $("#theLoader").remove()
+    $(".main_section").removeClass('hidden');
+    $("#theLoader").remove();
 
-    let first_reviewer = etccRoles.find(ff => ff === "first_reviewer")
-    let second_reviewer = etccRoles.find(ff => ff === "second_reviewer")
-    let third_reviewer = etccRoles.find(ff => ff === "third_reviewer")
+    const firstReviewer = etccRoles.includes("first_reviewer");
+    const secondReviewer = etccRoles.includes("second_reviewer");
+    const thirdReviewer = etccRoles.includes("third_reviewer");
 
-    if (first_reviewer === undefined && second_reviewer === undefined && third_reviewer === undefined) {
-      $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access !</p>`)
-      $("#initiateEtcc").remove()
-
-    } else if (third_reviewer) {
-
-    } else if (second_reviewer) {
-      $("#third_reviewer").remove()
-      $("#first_reviewer").remove()
-
+    // Check if the user has no access
+    if (!firstReviewer && !secondReviewer && !thirdReviewer) {
+        $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access!</p>`);
+        $("#initiateEtcc").remove();
     } else {
-      if (second_reviewer === undefined) {
-        $("#second_reviewer").remove()
-      }
-
-      if (third_reviewer === undefined) {
-        $("#third_reviewer").remove()
-      }
+        // Handle role-based UI adjustments for multiple roles
+        if (thirdReviewer && secondReviewer && firstReviewer) {
+            // All three roles are present, no need to remove anything
+        } else if (thirdReviewer && secondReviewer) {
+            // If both thirdReviewer and secondReviewer are present
+            $("#first_reviewer").remove();
+        } else if (secondReviewer && firstReviewer) {
+            // If both secondReviewer and firstReviewer are present
+            $("#third_reviewer").remove();
+        } else if (thirdReviewer && firstReviewer) {
+            // If both thirdReviewer and firstReviewer are present
+            $("#second_reviewer").remove();
+        } else if (thirdReviewer) {
+            // If only thirdReviewer is present
+            $("#second_reviewer").remove();
+            $("#first_reviewer").remove();
+        } else if (secondReviewer) {
+            // If only secondReviewer is present
+            $("#third_reviewer").remove();
+            $("#first_reviewer").remove();
+        } else if (firstReviewer) {
+            // If only firstReviewer is present
+            $("#second_reviewer").remove();
+            $("#third_reviewer").remove();
+        }
     }
-
-  } else if (currentPage.includes("service.html")) {
+}
+ else if (currentPage.includes("service.html")) {
     if (adminInfo.email === "primeguage@gmail.com") {
 
     } else {
