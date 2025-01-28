@@ -117,7 +117,7 @@ $("#checkStatus").on("click", function () {
         $("#checkStatus").removeClass("hidden")
         $("#confirmationModal").modal("show")
 
-        if (statusData.message[0].app_status === "Accepted") {
+        if (statusData.message[0].app_status !== "Accepted") {
           $("#modalBody").html(`
           <div class="flex justify-center">
             <img src="./assets/img/review.png" alt="">
