@@ -1,3 +1,12 @@
+:root {
+  --primaryCol: #CDA545;
+  --orange: #CDA545;
+  --lightBlue: #25B0E9;
+  --shadowedBlue: rgba(28, 123, 175, 0.78);
+  --fade-gray: #657482;
+}
+
+
 .button {
   background: #CDA545 !important;
   color: #000 !important;
@@ -496,4 +505,24 @@ a:hover {
 
 .cardi {
   cursor: pointer;
+}
+
+#last-button {
+  background: white;
+  width: 380px;
+  color: #000;
+  border: 3px solid var(--primaryCol);
+  border-radius: 100px;
+  padding: 10px 20px;
+  text-align: center;
+}
+
+#lastly-button {
+  background-color: #CDA545;
+  width: 380px;
+  color: #000 !important;
+  border: 3px solid var(--primaryCol);
+  border-radius: 100px;
+  padding: 10px 20px;
+  text-align: center;
 }

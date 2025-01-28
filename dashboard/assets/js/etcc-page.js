@@ -41,7 +41,7 @@ async function getEtccRequests() {
           <td>${etcReq.timeIn}</td>
           <td>${etcReq.refe}</td>
           <td>${etccStatus}</td>
-          <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
+          <td>${etcReq.date_approved === null ? '-' : etcReq.date_approved}</td>
           <td>
             <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
           </td>
@@ -117,7 +117,7 @@ $("#checkStatus").on("click", function () {
         $("#checkStatus").removeClass("hidden")
         $("#confirmationModal").modal("show")
 
-        if (statusData.message[0].app_status === "Declined") {
+        if (statusData.message[0].app_status !== "Accepted") {
           $("#modalBody").html(`
           <div class="flex justify-center">
             <img src="./assets/img/review.png" alt="">
@@ -132,6 +132,10 @@ $("#checkStatus").on("click", function () {
             </div>
 
             <p class="text-xl fontBold text-black text-center mb-3 mt-3">Your application has been approved.</p>
+
+            <div class="flex justify-center">
+              <a class="button" href="./etcc-preview.html?theid=${therefNumber}">View Certificate</a>
+            </div>
           `)
 
         }
