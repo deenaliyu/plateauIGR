@@ -36,22 +36,27 @@ async function getEtccDetails() {
       inpt.value = theEtcDetail[inpt.dataset.name]
     })
 
-    // if (theEtcDetail.app_status === "Declined") {
-    //   $("#decider").html(`
+    if (theEtcDetail.app_status === "Declined") {
+      $("#deciders").html(`
+        
+      `)
+    } else if (theEtcDetail.app_status === "Accepted") {
+      $("#deciders").html(`
+    `)
+    } else {
+      $("#deciders").html(`
+       <div id="decider" class="mt-5">
+                          <button class="button" id="theApprBtn" type="button" onclick="aprovethis()">Approve
+                            Request</button>
+                        </div>
 
-    //     <button class="button" id="theApprBtn" type="button" onclick="aprovethis()">Approve Request</button>
-    //   `)
-    // } else {
-    //   $("#decider").html(`
-    //   <button class="button" id="theApprBtn" type="button" onclick="unapprove()">Un-pprove Request</button>
-    // `)
-
-    // }
-
-
+                        <div id="decider2" class="mt-5">
+                          <button class="btn btn-danger" id="theApprBtn2" type="button" onclick="declineThis()">Decline Request</button>
+                        </div>
+    `)
   }
 }
-
+}
 
 getEtccDetails()
 
@@ -122,9 +127,19 @@ async function theVerify(thelvl) {
     const etccDetail = await response.json()
 
     if (etccDetail.status === 1) {
-      alert("Approved successfully")
-      window.location.href = `./etcc-management.html`
-
+      Swal.fire({
+        title: 'Generated',
+        text: "Approved successfully",
+        icon: 'success',
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Ok',
+        allowOutsideClick: false
+      }).then((result) => {
+        if (result.isConfirmed) {
+          window.location.href = `./etcc-management.html`
+        }
+      });
     }
   } catch (error) {
     console.log(error)

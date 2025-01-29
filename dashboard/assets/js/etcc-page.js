@@ -5,7 +5,6 @@ async function getEtccRequests() {
 
   const response = await fetch(`${HOST}/?${currentPageURL.includes('admin/etcc-management') ? 'getETCC&type=' : `getETCC&type=payer_user&id=${userInfo?.tax_number}`}`)
   const etccReqs = await response.json()
-
   $("#loader").css("display", "none")
 
   //   Accepted: 1

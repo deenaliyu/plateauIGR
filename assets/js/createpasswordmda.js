@@ -23,7 +23,7 @@ $("#createPass").on("click", function () {
       dataType: 'json',
       // data: StringedData,
       success: function (data) {
-        console.log(data)
+        // console.log(data)
 
         if (data.status === 1) {
 
