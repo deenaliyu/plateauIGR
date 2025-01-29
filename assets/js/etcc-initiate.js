@@ -1,5 +1,7 @@
-let userDATA = JSON.parse(localStorage.getItem("userDataPrime"))
-let currentPageURL = window.location.href;
+// let userDATA = JSON.parse(localStorage.getItem("userDataPrime"))
+
+const urlParamsEtcc = new URLSearchParams(window.location.search);
+const initiator = urlParamsEtcc.get('initiator');
 
 let theFetchedDetails = null
 
@@ -429,8 +431,16 @@ function registerUser() {
       if (data.status === 1) {
         $("#theButton").removeClass("hidden");
         $("#msg_box").html(`<p class="text-success text-center text-lg">ETCC generated Successfully!</p>`);
+
+        if (initiator === "admin") {
+          // callbackBtn
+          $("#callbackBtn").attr("href", "./admin/etcc-management.html").text("Return to Admin");
+        }
+
         $("#refNumber").html(data.ref);
         $("#refNumberModal").modal("show");
+
+
       } else {
         $("#theButton").removeClass("hidden");
         $("#msg_box").html(`<p class="text-warning text-center text-lg">${data.message}</p>`);
