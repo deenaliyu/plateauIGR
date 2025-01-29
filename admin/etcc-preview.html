@@ -54,6 +54,7 @@
 
 <body>
   <!-- Layout wrapper -->
+
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
       <!-- Menu -->
@@ -114,11 +115,23 @@
                 <span>Go Back</span>
               </button>
 
-
-              <div class="previewCard bg-white w-[80%]" id="previewCard">
-
+              <div class="invoice bg-white w-[789.921px] py-6 hidden" id="receiptHardCopy"></div>
 
 
+              <div class="previewCard bg-white w-[80%]" id="previewCard"></div>
+
+
+
+              <div class="flex justify-between mt-4 space-x-3 w-[80%]">
+                <button class="button flex gap-3 items-center px-10" onclick="downloadInvoice('previewCard')">
+                  <iconify-icon icon="fa6-solid:download" class="text-xl"></iconify-icon>
+                  <span>Download Certificate</span>
+                </button>
+
+                <button class="button flex gap-3 items-center px-10" onclick="printInvoiceHard('receiptHardCopy')">
+                  <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
+                  <span>Print Certificate</span>
+                </button>
               </div>
 
             </section>
@@ -158,6 +171,7 @@
   <script src="./assets/js/main.js"></script>
 
   <script src="../dashboard/assets/js/etcc-preview.js"></script>
+  <script src="assets/js/etcc-hard-certificate.js"></script>
 
   <script>
 

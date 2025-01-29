@@ -1,6 +1,10 @@
 const urlParams = new URLSearchParams(window.location.search);
 const theid = urlParams.get('theid');
 
+var qr_codeScript = document.createElement('script')
+qr_codeScript.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js')
+document.head.appendChild(qr_codeScript)
+
 let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 // userInfo.tax_number
 const currentPageURL = window.location.href;
@@ -141,7 +145,7 @@ async function getEtccDetails() {
         </div>
 
         <div class="w-4/12 flex justify-center">
-          <img src="./assets/img/QR_Code.png" alt="">
+          <div id="qrContainer" class="w-[100px] h-[100px]"></div>
         </div>
 
         <div class="sig2 w-4/12">
@@ -151,7 +155,7 @@ async function getEtccDetails() {
 
       </div>
 
-      <p class="text-center">Two yeas(s) copies of Official receipts MUST be attached to this certificate to
+      <p class="text-center mt-2">Two yeas(s) copies of Official receipts MUST be attached to this certificate to
         make it valid</p>
 
 
@@ -174,6 +178,15 @@ async function getEtccDetails() {
 
       </div>
     `)
+
+    const qrCodeContainer = document.getElementById("qrContainer")
+
+    const qrCode = new QRCode(qrCodeContainer, {
+      text: `https://plateauigr.com/dashboard/etcc-preview.html?theid=${theEtcDetail.refe}`,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      version: 10,
+    });
   }
 }
 

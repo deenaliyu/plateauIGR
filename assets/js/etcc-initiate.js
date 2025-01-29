@@ -68,6 +68,8 @@ async function fetchUserDetails() {
             <label for="">CAC*</label>
             <input type="text" class="form-control enumA payInputs" data-name="cac" />
           `)
+
+          $("#DOBcont").html('')
         }
 
         allInputs.forEach((inputt, i) => {
@@ -154,6 +156,13 @@ $(".selCateg").on("change", function () {
       </select>
     `)
 
+    $("#DOBcont").html(`
+      <div class="form-group mb-4">
+        <label for="">Date of Birth*</label>
+        <input type="date" class="form-control w-full enumA" data-name="DOB" required>
+      </div>  
+    `)
+
   } else {
     $(`#theName`).html(`
       <div class="form-group w-full">
@@ -173,6 +182,8 @@ $(".selCateg").on("change", function () {
       <label for="">CAC*</label>
       <input type="text" class="form-control enumA payInputs" data-name="cac" />
     `)
+
+    $("#DOBcont").html('')
   }
 })
 
