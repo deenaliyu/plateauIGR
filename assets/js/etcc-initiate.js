@@ -57,9 +57,14 @@ async function fetchUserDetails() {
       
             <div class="form-group w-full hidden">
               <label for="">Surname *</label>
-              <input type="text" class="form-control payInputs" value="&nbsp;" readonly data-name="surname"
+              <input type="text" class="form-control payInputs" value="" readonly data-name="surname"
               placeholder="" value="">
             </div>
+          `)
+
+          $("#employStatus").html(`
+            <label for="">CAC*</label>
+            <input type="text" class="form-control enumA payInputs" data-name="cac" />
           `)
         }
 
@@ -91,19 +96,21 @@ async function fetchUserDetails() {
         theFetchedDetails = null
         $("#theFetchBtns").removeClass("hidden");
         $("#msg_box001").html(``);
-        Swal.fire({
-          title: 'Not Found',
-          text: "User detail not found in the database! please Register before proceeding!",
-          icon: 'error',
-          confirmButtonColor: '#3085d6',
-          cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Reister',
-          allowOutsideClick: false
-        }).then((result) => {
-          if (result.isConfirmed) {
-            window.location.href = "../regcategory.html"
-          }
-        });
+
+        nextPrev(1)
+        // Swal.fire({
+        //   title: 'Not Found',
+        //   text: "User detail not found in the database! please Register before proceeding!",
+        //   icon: 'error',
+        //   confirmButtonColor: '#3085d6',
+        //   cancelButtonColor: '#3085d6',
+        //   confirmButtonText: 'Reister',
+        //   allowOutsideClick: false
+        // }).then((result) => {
+        //   if (result.isConfirmed) {
+        //     window.location.href = "../regcategory.html"
+        //   }
+        // });
       }
     },
     error: function (request, error) {
@@ -116,6 +123,99 @@ async function fetchUserDetails() {
     }
   });
 }
+
+$("#selCateg").on("change", function () {
+  let value = $(this).val()
+
+  if (value === "2") {
+    $(`#theName`).html(`
+      <div class="form-group w-full">
+        <label for="">First name *</label>
+        <input type="text" class="form-control payInputs" required data-name="first_name"
+          placeholder="Enter your first name">
+      </div>
+
+      <div class="form-group w-full">
+        <label for="">Surname *</label>
+        <input type="text" class="form-control payInputs" required data-name="surname"
+          placeholder="Enter your surname">
+      </div>
+    `)
+
+    $("#employStatus").html(`
+      <label for="">Employment Status*</label>
+      <select class="form-select enumA payInputs" data-name="employment_type">
+        <option value=""  selected disabled>Select --</option>
+        <option value="Self Employed">Self Employed</option>
+        <option value="Employed">Employed</option>
+        <option value="Unemployed">Unemployed</option>
+      </select>
+    `)
+
+  } else {
+    $(`#theName`).html(`
+      <div class="form-group w-full">
+        <label for="">Organization Name *</label>
+        <input type="text" class="form-control payInputs" data-name="first_name"
+        placeholder="" value="">
+      </div>
+
+      <div class="form-group w-full hidden">
+        <label for="">Surname *</label>
+        <input type="text" class="form-control payInputs" value="" readonly data-name="surname"
+        placeholder="" value="">
+      </div>
+    `)
+
+    $("#employStatus").html(`
+      <label for="">CAC*</label>
+      <input type="text" class="form-control enumA payInputs" data-name="cac" />
+    `)
+  }
+})
+
+async function getIndustriesSectors() {
+  try {
+    const response = await fetch(`${HOST}?getIndustriesSectors`);
+    const resdata = await response.json();
+
+    if (resdata.status === 1) {
+      const data = resdata.message;
+
+      const sectors = [...new Set(data.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect');
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        sectorSelect.appendChild(option);
+      });
+
+      sectorSelect.addEventListener('change', () => {
+        const selectedSector = sectorSelect.value;
+
+        const filteredIndustries = data.filter(
+          item => item.SectorName === selectedSector
+        );
+
+        const industrySelect = document.getElementById('industrySelect');
+        industrySelect.innerHTML = '<option value="">Select</option>';
+
+        filteredIndustries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry.IndustryName;
+          option.textContent = industry.IndustryName;
+          industrySelect.appendChild(option);
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+getIndustriesSectors();
 
 function continuePage() {
   let genInv = document.querySelectorAll(".payInputs")
@@ -211,28 +311,32 @@ function registerUser() {
     </div>
   `)
 
-  let fname = theFetchedDetails.first_name
-  let sname = theFetchedDetails.surname
+  let fname = $('[data-name="first_name"]').val()
+  let sname = $('[data-name="surname"]').val()
+  let addressN = $('[data-name="address"]').val()
+  let emailN = $('[data-name="email"]').val()
 
   let thefullname = `${fname} ${sname}`
 
   let EnumData = {
     "endpoint": "createETCC",
     "data": {
-      "payer_id": theFetchedDetails.tax_number,
+      "payer_id": theFetchedDetails ? theFetchedDetails.tax_number : "null",
       "declaration": "I declare...",
       "applicant_tin": $("#tin").val(),
       "org_tin": $("#tin").val(),
       "fullname": thefullname,
       "organisation": thefullname,
+      "email": emailN,
       "recommendation": "recommendation",
-      "address": theFetchedDetails.address,
+      "address": addressN,
       "app_status": "3"
     }
   }
 
   let allInputs = document.querySelectorAll(".enumInput")
   let allInputsB = document.querySelectorAll(".enumInputB")
+  let allInputsA = document.querySelectorAll(".enumA")
 
   allInputs.forEach((inputt, i) => {
     EnumData.data[inputt.dataset.name] = inputt.value
@@ -242,169 +346,101 @@ function registerUser() {
     EnumData.data[inputt.dataset.name] = inputt.value
   })
 
-
+  allInputsA.forEach((inputt, i) => {
+    EnumData.data[inputt.dataset.name] = inputt.value
+  })
 
   async function doUpload() {
-    let uploadInputs = document.querySelectorAll(".uploadInputs")
+    let uploadInputs = document.querySelectorAll(".uploadInputs");
 
-    const publitio = new PublitioAPI(publitioKey1, publitioKey2)
+    const publitio = new PublitioAPI(publitioKey1, publitioKey2);
 
     for (let ii = 0; ii < uploadInputs.length; ii++) {
       const upInput = uploadInputs[ii];
-      // console.log(upInput)
-      if (upInput.value === "") {
-        EnumData.data[upInput.dataset.name] = ""
+
+      if (!upInput.files.length) {
+        EnumData.data[upInput.dataset.name] = "";
 
         if (upInput.required) {
-          alert('Please Upload the required files')
-          $("#msg_box").html(``)
-          $("#theButton").removeClass("hidden")
-          return
+          alert("Please upload the required files");
+          $("#msg_box").html("");
+          $("#theButton").removeClass("hidden");
+          return;
         }
 
-      } else {
-
-        $("#msg_box").html(`
-          <div class="flex justify-center items-center mb-4 gap-3">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-            <p>Uploading files....</p>
-          </div>
-        `)
-
-        let fileUrl = upInput.files[0]
-
-        const reader = new FileReader()
-        reader.readAsBinaryString(fileUrl);
-
-        publitio.uploadFile(fileUrl, 'file', {
-          title: `${fileUrl.name} - ${upInput.dataset.name}`,
-          public_id: `${fileUrl.name} - ${upInput.dataset.name}`,
-
-        }).then((data) => {
-          EnumData.data[upInput.dataset.name] = data.url_preview
-
-        }).catch((error) => {
-          console.log(error)
-          $("#msg_box").html(`<p class="text-center text-danger">Error uploading your files...please try again !</p>`)
-          $("#theButton").removeClass("hidden")
-        })
-
+        continue;
       }
 
-      // console.log(ii, uploadInputs.length - 1)
+      // Show uploading status
+      $("#msg_box").html(`
+        <div class="flex justify-center items-center mb-4 gap-3">
+          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          <p>Uploading files....</p>
+        </div>
+      `);
 
+      let file = upInput.files[0];
+
+      try {
+        let uploadResponse = await publitio.uploadFile(file, "file", {
+          title: `${file.name} - ${upInput.dataset.name}`,
+          public_id: `${file.name} - ${upInput.dataset.name}`,
+        });
+
+        EnumData.data[upInput.dataset.name] = uploadResponse.url_preview;
+      } catch (error) {
+        console.error(error);
+        $("#msg_box").html(`<p class="text-center text-danger">Error uploading files... Please try again!</p>`);
+        $("#theButton").removeClass("hidden");
+        return;
+      }
     }
+
+    // Proceed to send data to database after all uploads are completed
+    await sendToDB(EnumData);
   }
 
+  // Call the upload function and ensure it's completed before sending data
+  doUpload();
 
-  doUpload().then(e => {
-    setTimeout(() => {
-      sendToDB()
-      // console.log(EnumData)
-    }, 3000);
-
-  })
-
-
-  // console.log(JSON.stringify(EnumData))
-
-  async function sendToDB() {
+  /**
+   * Function to send data to database
+   */
+  async function sendToDB(enumData) {
     $("#msg_box").html(`
       <div class="flex justify-center items-center mb-4 gap-3">
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
       </div>
-  ` )
-    // console.log(JSON.stringify(EnumData))
-    // console.log(EnumData)
+    `);
+
+    console.log("Final Data:", enumData);
+
     try {
       const response = await fetch(HOST, {
         method: "POST",
-        body: JSON.stringify(EnumData),
+        body: JSON.stringify(enumData), // Ensure all fields are included
         headers: {
-          "Content-Type": "application/json"
-        }
-      })
-      const data = await response.json()
+          "Content-Type": "application/json",
+        },
+      });
 
-      let theRefNumber = data.ref
-      $("#refNumber").html(data.ref)
+      const data = await response.json();
 
       if (data.status === 1) {
-
-        $("#msg_box").html(`
-          <div class="flex justify-center items-center mb-4 gap-3">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-            <p>Generating Invoice....</p>
-          </div>
-
-         
-        `)
-
-        try {
-          const response = await fetch(
-            `${HOST}?generateSingleInvoices&tax_number=${theFetchedDetails.tax_number}&revenue_head_id=1357,1358&price=1000,500`
-          );
-
-          const theddata = await response.json()
-
-          $("#theButton").removeClass("hidden")
-
-          if (theddata.status === 1) {
-            $("#msg_box").html(``)
-            Swal.fire({
-              title: 'Success!',
-              html: `
-                  <br/>
-                  <p>Your invoice has been generated successfully.</p>
-                  <br/>
-                  <p><strong>ETCC Reference Number:</strong> ${theRefNumber}</p>
-                  <p><strong>Invoice Number:</strong> ${theddata.invoice_number}</p>
-              `,
-              icon: 'success',
-              confirmButtonText: 'Open Invoice',
-              confirmButtonColor: "#CDA545",
-              showCancelButton: false,
-              allowOutsideClick: false,
-              allowEscapeKey: false,
-              allowEnterKey: false,
-              focusConfirm: true
-            }).then((result) => {
-              if (result.isConfirmed) {
-                nextPrev(1)
-                openInvoice(theddata.invoice_number)
-                sessionStorage.setItem("invoice_number", theddata.invoice_number)
-              }
-            });
-
-          } else {
-            $("#msg_box").html(`
-             <p class="text-danger text-center">something went wrong while generating invoice.</p>
-            `)
-            $("#theButton").removeClass("hidden")
-          }
-
-        } catch (error) {
-          $("#msg_box").html(`
-             <p class="text-danger text-center">something went wrong while generating invoice.</p>             
-            `)
-          $("#theButton").removeClass("hidden")
-        }
-
+        $("#theButton").removeClass("hidden");
+        $("#msg_box").html(`<p class="text-success text-center text-lg">ETCC generated Successfully!</p>`);
+        $("#refNumber").html(data.ref);
+        $("#refNumberModal").modal("show");
       } else {
-        $("#theButton").removeClass("hidden")
-        $("#msg_box").html(`
-            <p class="text-warning text-center text-lg">${data.message}</p>
-          `)
+        $("#theButton").removeClass("hidden");
+        $("#msg_box").html(`<p class="text-warning text-center text-lg">${data.message}</p>`);
       }
-
-
     } catch (error) {
-      console.log(error)
-      $("#theButton").removeClass("hidden")
-      $("#msg_box").html(`
-          <p class="text-danger text-center text-lg">Something went wrong ! try again.</p>
-        `)
+      console.error(error);
+      $("#theButton").removeClass("hidden");
+      $("#msg_box").html(`<p class="text-danger text-center text-lg">Something went wrong! Try again.</p>`);
     }
   }
+
 
 }
