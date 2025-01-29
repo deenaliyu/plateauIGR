@@ -155,7 +155,7 @@ async function getEtccDetails() {
 
       </div>
 
-      <p class="text-center mt-2">Two yeas(s) copies of Official receipts MUST be attached to this certificate to
+      <p class="text-center mt-2">Three year(s) copies of Official receipts MUST be attached to this certificate to
         make it valid</p>
 
 
