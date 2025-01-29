@@ -126,7 +126,7 @@ async function fetchUserDetails() {
   });
 }
 
-$("#selCateg").on("change", function () {
+$(".selCateg").on("change", function () {
   let value = $(this).val()
 
   if (value === "2") {
