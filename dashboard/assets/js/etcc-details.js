@@ -46,25 +46,25 @@ async function getEtccDetails() {
     } else {
       $("#deciders").html(`
        <div id="decider" class="mt-5">
-                          <button class="button" id="theApprBtn" type="button" onclick="aprovethis()">Approve
-                            Request</button>
-                        </div>
+          <button class="button" id="theApprBtn" type="button" onclick="aprovethis()">Approve
+            Request</button>
+        </div>
 
-                        <div id="decider2" class="mt-5">
-                          <button class="btn btn-danger" id="theApprBtn2" type="button" onclick="declineThis()">Decline Request</button>
-                        </div>
-    `)
+        <div id="decider2" class="mt-5">
+          <button class="btn btn-danger" id="theApprBtn2" type="button" onclick="declineThis()">Decline Request</button>
+        </div>
+      `)
+    }
   }
-}
 }
 
 getEtccDetails()
 
-
-$("#viewThis").on('click', function () {
-  let thecall = document.querySelector('#thidCard').value
+function viewDocument(theElement) {
+  let thecall = $(`[data-name="${theElement}"]`).val()
+  console.log(thecall)
   window.open(thecall, '_blank')
-})
+}
 
 async function fetchPayment() {
 
@@ -186,7 +186,7 @@ async function unapprove() {
 
     if (etccDetail.status === 1) {
       alert("success")
-     window.location.href = `./etcc-management.html`
+      window.location.href = `./etcc-management.html`
 
     }
   } catch (error) {

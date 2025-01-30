@@ -1,6 +1,10 @@
 const urlParams = new URLSearchParams(window.location.search);
 const theid = urlParams.get('theid');
 
+var qr_codeScript = document.createElement('script')
+qr_codeScript.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js')
+document.head.appendChild(qr_codeScript)
+
 let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 // userInfo.tax_number
 const currentPageURL = window.location.href;
@@ -141,7 +145,7 @@ async function getEtccDetails() {
         </div>
 
         <div class="w-4/12 flex justify-center">
-          <img src="./assets/img/QR_Code.png" alt="">
+          <div id="qrContainer" class="w-[100px] h-[100px]"></div>
         </div>
 
         <div class="sig2 w-4/12">
@@ -151,7 +155,7 @@ async function getEtccDetails() {
 
       </div>
 
-      <p class="text-center">Two yeas(s) copies of Official receipts MUST be attached to this certificate to
+      <p class="text-center mt-2">Three year(s) copies of Official receipts MUST be attached to this certificate to
         make it valid</p>
 
 
@@ -174,8 +178,46 @@ async function getEtccDetails() {
 
       </div>
     `)
+
+    const qrCodeContainer = document.getElementById("qrContainer")
+
+    const qrCode = new QRCode(qrCodeContainer, {
+      text: `https://plateauigr.com/dashboard/etcc-preview.html?theid=${theEtcDetail.refe}`,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      version: 10,
+    });
   }
 }
 
 
 getEtccDetails()
+
+function downloadInvoice(thecard) {
+  const element = document.getElementById(thecard);
+  var originalContent = document.body.innerHTML
+
+  var HTML_Width = $("#" + thecard).width();
+  var HTML_Height = $("#" + thecard).height();
+  var top_left_margin = 15;
+  var PDF_Width = HTML_Width + (top_left_margin * 2);
+  var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+  var canvas_image_width = HTML_Width;
+  var canvas_image_height = HTML_Height;
+
+  var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+  html2canvas($("#" + thecard)[0]).then(function (canvas) {
+    var imgData = canvas.toDataURL("image/jpeg", 1.0);
+    var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+    pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+    for (var i = 1; i <= totalPDFPages; i++) {
+      pdf.addPage(PDF_Width, PDF_Height);
+      pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+    }
+    pdf.save(thecard + ".pdf");
+    document.body.innerHTML = originalContent;
+    // $("#" + thecard).hide();
+  });
+
+}

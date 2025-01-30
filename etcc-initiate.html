@@ -30,7 +30,7 @@
 
   <header>
     <a href="index.html" class="flex gap-2 items-center p-3 border-b">
-      
+
       <img src="./assets/img/logo.png" class="w-[50px]" alt="">
       <p class="text-md fontBold">Plateau IGR Portal</p>
     </a>
@@ -48,29 +48,27 @@
           <div class="mt-5 imgTabs">
             <img src="./assets/img/etcc1.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <!-- <div class="mt-5 imgTabs">
             <img src="./assets/img/etcc2.png" />
           </div>
           <div class="mt-5 imgTabs">
             <img src="./assets/img/etcc2.png" />
-          </div>
-          <div class="mt-5 imgTabs">
+          </div> -->
+          <!-- <div class="mt-5 imgTabs">
             <img src="./assets/img/etcc4.png" />
           </div>
           <div class="mt-5 imgTabs">
             <img src="./assets/img/etcc5.png" />
+          </div> -->
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/etcc2.png" />
           </div>
           <div class="mt-5 imgTabs">
-            <img src="./assets/img/etcc6.png" />
-          </div>
-          <div class="mt-5 imgTabs">
-            <img src="./assets/img/etcc6.png" />
+            <img src="./assets/img/etcc3.png" />
           </div>
 
         </div>
       </div>
-    </div>
-
     </div>
 
     <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
@@ -125,8 +123,6 @@
               <option disabled selected>Select--</option>
               <option value="2">Individual</option>
               <option value="1">Corporate</option>
-              <option value="3">State Agency</option>
-              <option value="4">Federal Agency</option>
             </select>
           </div>
 
@@ -158,6 +154,13 @@
             </div>
           </div>
 
+          <div id="DOBcont">
+            <div class="form-group mb-4">
+              <label for="">Date of Birth*</label>
+              <input type="date" class="form-control w-full enumA" data-name="DOB" required>
+            </div>
+          </div>
+
           <div class="form-group w-full mb-4" id="theTin">
             <label for="">TIN <span class="text-danger">*</span></label>
             <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN"
@@ -175,16 +178,48 @@
           </div>
 
 
-          <div class="form-group w-full">
+          <div class="form-group w-full mb-3">
             <label for="">Address*</label>
             <input type="text" class="form-control payInputs" minlength="10" required data-name="address"
               placeholder=" Enter your address">
           </div>
 
+          <p class="fontBold mb-3">More Information</p>
 
+          <div class="flex gap-3">
+            <div class="form-group mb-3" id="employStatus">
+              <label for="">Employment Status*</label>
+              <select class="form-select enumA payInputs" data-name="employment_type">
+                <option value="" selected disabled>Select --</option>
+                <option value="Self Employed">Self Employed</option>
+                <option value="Employed">Employed</option>
+                <option value="Unemployed">Unemployed</option>
+              </select>
+            </div>
 
+            <div class="form-group mb-3">
+              <label for="">BVN*</label>
+              <input type="number" class="form-control enumA payInputs" data-name="bvn">
+            </div>
+          </div>
 
-          <button class="button w-full mt-5" type="button" onclick="continuePage()">Continue</button>
+          <div class="flex mb-4 gap-2">
+            <div class="form-group w-full">
+              <label for="">Sector*</label>
+              <select class="form-select payInputs enumA" id="sectorSelect" data-name="sector">
+                <option value="" selected>Select</option>
+              </select>
+            </div>
+
+            <div class="form-group w-full">
+              <label for="">Industry*</label>
+              <select name="" class="form-select payInputs enumA" id="industrySelect" data-name="industry">
+                <option value="" selected>Select</option>
+              </select>
+            </div>
+          </div>
+
+          <button class="button w-full" type="button" onclick="continuePage()">Continue</button>
         </form>
 
       </section>
@@ -212,18 +247,14 @@
             </select>
           </div>
 
-          <div class="flex gap-3 md:flex-row flex-col mb-4">
+          <div class="form-group mb-3">
+            <label for="">Organization TIN*</label>
+            <input type="text" class="form-control w-full enumInput" data-name="org_tin" required>
+          </div>
 
-            <div class="form-group md:w-6/12">
-              <label for="">Date Employed*</label>
-              <input type="date" class="form-control w-full enumInput" data-name="date_of_employment" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Occupation or Kind of work done*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="occupation" required>
-            </div>
-
+          <div class="form-group mb-3">
+            <label for="">Occupation or Kind of work done*</label>
+            <input type="text" class="form-control w-full enumInput" data-name="occupation" required>
           </div>
 
           <div class="form-group mb-4">
@@ -252,14 +283,14 @@
           <p class="mt-2 mb-4">Secondary Information</p>
 
 
-          <div class="flex justify-between items-center mb-3">
-            <h1 class="fontBold text-lg text-black">Evidence of Tax Payments</h1>
+          <!-- <div class="flex justify-between items-center mb-3"> -->
+          <h1 class="fontBold text-lg text-black mb-3">Evidence of Tax Payments</h1>
 
-            <div class="form-group mb-3">
+          <!-- <div class="form-group mb-3">
               <label for="">File Number</label>
               <input type="text" class="form-control w-full enumInputB" data-name="filename">
-            </div>
-          </div>
+            </div> -->
+          <!-- </div> -->
 
           <div class="flex gap-3 mb-3">
             <div class="form-group w-4/12">
@@ -366,7 +397,8 @@
 
 
 
-          <button class="button w-full mb-4 mt-4" type="button" id="theButton" onclick="continueReg2()">Continue</button>
+          <button class="button w-full mb-4 mt-4 disabled" disabled type="button" id="theButton"
+            onclick="continueReg2()">Continue</button>
           <div id="msg_box"></div>
         </form>
 
@@ -471,12 +503,13 @@
   </section>
 
 
-  <div class="modal fade" id="refNumberModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <div class="modal fade" id="refNumberModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Reference Number</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <!-- <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button> -->
         </div>
         <div class="modal-body">
           <p class="text-3xl text-center fontBold" id="refNumber"></p>
@@ -485,7 +518,7 @@
           <p class="text-center mb-5">Kindly check back later to know your application status.</p>
 
           <div class="flex justify-center">
-            <a href="etcc-page.html" class="button">Back to PAYE Manager</a>
+            <a href="index.html" class="button" id="callbackBtn">Back to Home</a>
           </div>
 
         </div>
@@ -508,7 +541,7 @@
   <script src="./assets/node_modules/publitio_js_sdk/build/publitio-api.min.js"></script>
   <script src="./assets/js/nav.js"></script>
   <!-- <script src="./assets/js/session.js"></script> -->
-  
+
   <script src="./assets/js/payment.js"></script>
   <script src="./assets/js/tabHandler.js"></script>
   <script src="./assets/js/hadleTinGen.js"></script>

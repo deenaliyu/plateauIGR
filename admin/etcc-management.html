@@ -45,8 +45,6 @@
   <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
   <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="./assets/js/config.js"></script>
-  <script src="https://cdn.tiny.cloud/1/a2nnryhuz1r1qtqf4ap5nkr1msakmeqobebopr1d2o3nfx1h/tinymce/6/tinymce.min.js"
-    referrerpolicy="origin"></script>
 </head>
 
 <body>
@@ -81,7 +79,7 @@
             <div class="mt-4 flex gap-x-5">
               <div class="flex items-center gap-3" id="initiateEtcc">
 
-                <a href="etcc-initiate.html" class="button" type="button">Initiate eTCC</a>
+                <a href="../etcc-initiate.html?initiator=admin" class="button" type="button">Initiate eTCC</a>
 
               </div>
 
@@ -220,11 +218,13 @@
                       <table class="table payeTable" id="dataTable">
                         <thead>
                           <tr>
+                            <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
+                            <th>Preview</th>
                           </tr>
                         </thead>
                         <tbody id="etccTable">
@@ -248,11 +248,13 @@
                       <table class="table payeTable" id="dataTable2">
                         <thead>
                           <tr>
+                            <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
+                            <th>Preview</th>
                           </tr>
                         </thead>
                         <tbody id="etccTable2">
@@ -269,11 +271,13 @@
                       <table class="table payeTable" id="dataTable3">
                         <thead>
                           <tr>
+                            <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
+                            <th>Preview</th>
                           </tr>
                         </thead>
                         <tbody id="etccTable3">
@@ -289,6 +293,7 @@
                       <table class="table payeTable" id="dataTable4">
                         <thead>
                           <tr>
+                            <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
@@ -309,6 +314,7 @@
                       <table class="table payeTable" id="dataTable5">
                         <thead>
                           <tr>
+                            <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
                             <th>Status</th>
@@ -364,7 +370,7 @@
   <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/main.js"></script>
 
-  <script src="../dashboard/assets/js/etcc-page.js"></script>
+  <script src="./assets/js/etcc-page.js"></script>
 
   <script>
 
