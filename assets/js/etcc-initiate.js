@@ -296,6 +296,17 @@ function continueReg2() {
   }
 }
 
+// I certify
+$('#certify').on('change', function () {
+  if ($(this).is(':checked')) {
+    $('#theButton').prop('disabled', false);
+    $("#theButton").removeClass('disabled')
+  } else {
+    $('#theButton').prop('disabled', true);
+    $("#theButton").addClass('disabled')
+  }
+});
+
 // function continueReg3() {
 //   let allInputs = document.querySelectorAll(".enumInputC")
 //   // check for empty fileds
