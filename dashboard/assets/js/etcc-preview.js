@@ -56,7 +56,7 @@ async function getEtccDetails() {
       <div class="flex justify-between px-6 mt-4">
         <h1 class="text-xl fontBold text-black">TAX CLEARANCE CERTIFICATE</h1>
 
-        <p><span class="text-lg fontBold text-black">Certificate Number:</span> ${theEtcDetail.refe}</p>
+        <p><span class="text-lg fontBold text-black">Certificate Number:</span> ${theEtcDetail.etcc_no}</p>
       </div>
 
       <div class="px-6 mt-4">

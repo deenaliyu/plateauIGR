@@ -82,7 +82,7 @@
           </button>
         </div>
 
-        <form action="" class="mt-4 w-8/12">
+        <form action="" class="mt-4 md:w-8/12 w-full ">
 
           <h1 class="font-bold text-xl">Tax Clearance Certificate Request</h1>
           <p class="mt-2 mb-4">Primary Information</p>
@@ -113,7 +113,7 @@
         </div>
 
 
-        <form action="" class="mt-4 w-8/12">
+        <form action="" class="mt-4 md:w-8/12 w-full ">
           <h1 class="font-bold text-xl">Tax Clearance Certificate Request</h1>
           <h1 class="mb-3 mt-3">Personal Details</h1>
 
@@ -189,7 +189,7 @@
           <div class="flex gap-3">
             <div class="form-group mb-3" id="employStatus">
               <label for="">Employment Status*</label>
-              <select class="form-select enumA payInputs" data-name="employment_type">
+              <select class="form-select enumA payInputs" id="employSelect" data-name="employment_type">
                 <option value="" selected disabled>Select --</option>
                 <option value="Self Employed">Self Employed</option>
                 <option value="Employed">Employed</option>
@@ -233,7 +233,7 @@
           </button>
         </div>
 
-        <form action="" class="mt-4 w-8/12">
+        <form action="" class="mt-4 md:w-8/12 w-full ">
 
           <h1 class="fontBold text-xl">Tax Clearance Certificate Request</h1>
           <p class="mt-2 mb-4">Secondary Information</p>
@@ -247,14 +247,8 @@
             </select>
           </div>
 
-          <div class="form-group mb-3">
-            <label for="">Organization TIN*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="org_tin" required>
-          </div>
+          <div id="employmentState">
 
-          <div class="form-group mb-3">
-            <label for="">Occupation or Kind of work done*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="occupation" required>
           </div>
 
           <div class="form-group mb-4">
@@ -277,7 +271,7 @@
           </button>
         </div>
 
-        <form action="" class="mt-4 w-8/12">
+        <form action="" class="mt-4 md:w-8/12 w-full ">
 
           <h1 class="fontBold text-xl">Tax Clearance Certificate Request</h1>
           <p class="mt-2 mb-4">Secondary Information</p>
@@ -376,7 +370,7 @@
           </div>
 
 
-          <p class="text-lg fontBold text-black my-3">Other Document Uploads</p>
+          <p class="text-lg fontBold text-black my-3">Documents Uploads</p>
           <div class="form-group mb-3">
             <label for="">Identification of I.D Card(NIN/Passport/Driver License) <span
                 class="text-[red]">*</span></label>
@@ -384,8 +378,14 @@
             <input type="file" class="form-control w-full enumInputU mt-2 uploadInputs" data-name="id_card" required>
           </div>
 
+          <div class="form-group mb-3">
+            <label for="">Previous TCC (If Available)</label>
+            <p class="text-xs text-gray-600">Allowed formats: (png, pdf, docx, doc, jpeg, jpg)Max size: 10mb</p>
+            <input type="file" class="form-control w-full enumInputU mt-2 uploadInputs" data-name="previous_tcc">
+          </div>
+
           <div class="form-group w-full mb-3">
-            <label for="">Other Docs</label>
+            <label for="">Supporting Document</label>
             <input type="file" class="form-control w-full enumInputU mt-2 uploadInputs" data-name="other_doc">
           </div>
 

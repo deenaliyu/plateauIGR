@@ -148,7 +148,7 @@ $(".selCateg").on("change", function () {
 
     $("#employStatus").html(`
       <label for="">Employment Status*</label>
-      <select class="form-select enumA payInputs" data-name="employment_type">
+      <select class="form-select enumA payInputs" id="employSelect" data-name="employment_type">
         <option value=""  selected disabled>Select --</option>
         <option value="Self Employed">Self Employed</option>
         <option value="Employed">Employed</option>
@@ -306,6 +306,26 @@ $('#certify').on('change', function () {
     $("#theButton").addClass('disabled')
   }
 });
+
+$("#employSelect").on('change', function () {
+  let theval = $(this).val()
+  console.log(theval)
+  if (theval === "Employed") {
+    $("#employmentState").html(`
+      <div class="form-group mb-3">
+        <label for="">Organization TIN*</label>
+        <input type="text" class="form-control w-full enumInput" data-name="org_tin">
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="">Occupation or Kind of work done*</label>
+        <input type="text" class="form-control w-full enumInput" data-name="occupation">
+      </div>  
+    `)
+  } else {
+    $("#employmentState").html("")
+  }
+})
 
 // function continueReg3() {
 //   let allInputs = document.querySelectorAll(".enumInputC")

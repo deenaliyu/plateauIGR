@@ -3,9 +3,8 @@ let currentPageURL = window.location.href;
 // userInfo
 async function getEtccRequests() {
 
-  const response = await fetch(`${HOST}/?${currentPageURL.includes('admin/etcc-management') ? 'getETCC&type=' : `getETCC&type=payer_user&id=${userInfo?.tax_number}`}`)
+  const response = await fetch(`${HOST}/?getETCC&type=payer_user&id=${userInfo?.tax_number}`)
   const etccReqs = await response.json()
-console.log(etccReqs)
   $("#loader").css("display", "none")
 
   //   Accepted: 1
@@ -23,74 +22,59 @@ console.log(etccReqs)
 
       if (etcReq.app_status === "Declined") {
         etccStatus = `<span class="badge bg-danger">Declined</span>`
-        $("#etccTable5").append(`
-          <tr>
-            <td>${etcReq.timeIn}</td>
-            <td>${etcReq.refe}</td>
-            <td>${etccStatus}</td>
-            <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
-            <td>
-              <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
-            </td>
-          </tr>
-        `)
       } else if (etcReq.app_status === "Accepted") {
         etccStatus = `<span class="badge bg-success">Approved</span>`
-        $("#etccTable4").append(`
-          <tr>
-            <td>${etcReq.timeIn}</td>
-            <td>${etcReq.refe}</td>
-            <td>${etccStatus}</td>
-            <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
-            <td>
-              <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
-            </td>
-            <td>${etcReq.app_status === "Accepted" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
-          </tr>
-        `)
       } else if (etcReq.app_status === "First Review") {
         etccStatus = `<span class="badge bg-warning">First Review</span>`
-        $("#etccTable").append(`
-          <tr>
-            <td>${etcReq.timeIn}</td>
-            <td>${etcReq.refe}</td>
-            <td>${etccStatus}</td>
-            <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
-            <td>
-              <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
-            </td>
-          </tr>
-        `)
       } else if (etcReq.app_status === "Second Review") {
         etccStatus = `<span class="badge bg-warning">Second Review</span>`
-        $("#etccTable2").append(`
-          <tr>
-            <td>${etcReq.timeIn}</td>
-            <td>${etcReq.refe}</td>
-            <td>${etccStatus}</td>
-            <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
-            <td>
-              <a href="./etcc-details.html?theid=${etcReq.refe}&level=4&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
-            </td>
-          </tr>
-        `)
       } else if (etcReq.app_status === "Third Review") {
         etccStatus = `<span class="badge bg-warning">Third Review</span>`
-        $("#etccTable3").append(`
-          <tr>
-            <td>${etcReq.timeIn}</td>
-            <td>${etcReq.refe}</td>
-            <td>${etccStatus}</td>
-            <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
-            <td>
-              <a href="./etcc-details.html?theid=${etcReq.refe}&level=5&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
-            </td>
-          </tr>
-        `)
       } else {
         etccStatus = `<span class="badge bg-warning">Pending</span>`
       }
 
+      $("#etccTable").append(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>${etcReq.timeIn}</td>
+          <td>${etcReq.refe}</td>
+          <td>${etccStatus}</td>
+          <td>${etcReq.date_approved === null ? '-' : etcReq.date_approved}</td>
+          <td>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
+          </td>
+          <td>${etcReq.app_status === "Accepted" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
+        </tr>
+      `)
+
+      $("#etccTable2").append(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>${etcReq.timeIn}</td>
+          <td>${etcReq.refe}</td>
+          <td>${etccStatus}</td>
+          <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
+          <td>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=4&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
+          </td>
+          <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
+        </tr>
+      `)
+
+      $("#etccTable3").append(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>${etcReq.timeIn}</td>
+          <td>${etcReq.refe}</td>
+          <td>${etccStatus}</td>
+          <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
+          <td>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=5&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
+          </td>
+          <td>${etcReq.app_status === "Approved" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
+        </tr>
+      `)
 
     });
   }
@@ -100,11 +84,7 @@ getEtccRequests().then(tt => {
   $('#dataTable').DataTable();
   $('#dataTable2').DataTable();
   $('#dataTable3').DataTable();
-  $('#dataTable4').DataTable();
-  $('#dataTable5').DataTable();
 })
-
-
 
 
 $("#checkStatus").on("click", function () {

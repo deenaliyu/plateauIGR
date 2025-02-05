@@ -34,6 +34,7 @@ async function fetchUSERS() {
           <td>${MDAUSer.name}</td>
           <td>${MDAUSer.email}</td>
           <td>${MDAUSer.phone_number}</td>
+          <td>${MDAUSer.lga}</td>
           <td>${MDAUSer.created_at}</td>
           <td>
             <div class="flex gap-3 align-items-center">
