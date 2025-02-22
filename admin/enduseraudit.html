@@ -74,7 +74,7 @@
               <iconify-icon icon="mdi:filter-variant" style="font-size: 3vh"></iconify-icon>
               Filter
             </button>
-            
+
             <div class="mt-4 flex gap-x-5 ms-auto">
 
               <div class="avatar avatar-online flex gap-x-2 items-center">
@@ -100,9 +100,9 @@
 
               <h1 class="text-xl fontBold text-[#000]">Summary</h1>
 
-              <div class="grid md:grid-cols-3 grid-cols-2 gap-3">
+              <div class="grid md:grid-cols-3 grid-cols-2 gap-3 mt-3">
 
-                <div class="dashCards card md:w-[280px]">
+                <div class="dashCards card">
                   <p class="headder text-gray-500">Total Activity Count by Date</p>
                   <div class="flex items-center justify-between gap-4 mt-3">
                     <select class="form-select form-select-sm" onchange="fetchCateg2(this)" id="categgg2">
@@ -112,7 +112,7 @@
                   </div>
                 </div>
 
-                <div class="dashCards card md:w-[280px]">
+                <div class="dashCards card">
 
                   <div class="headder">
                     <p class="text-gray-500">Total User Logins by Date</p>
@@ -128,7 +128,7 @@
 
                 </div>
 
-                <div class=" dashCards card md:w-[280px]">
+                <div class=" dashCards card">
                   <p class="headder text-gray-500">Total System Errors Incurred by Date</p>
 
                   <div class="flex items-center justify-between gap-4 mt-3">
@@ -142,27 +142,42 @@
 
 
               </div>
-              <div class="flex justify-end mt-4">
-                <button onclick="convertTableToCSV()"
-                  class="button mt-[3.2vh] md:py-0 py-2 w-[30vh] mx-3 md:w-[37vh] md:text-[2.2vh] text-[2vh] hover:text-white flex justify-content-center align-items-center">
-                  <iconify-icon icon="material-symbols:cloud-download-rounded"
-                    style="font-size: 3vh; padding-right: 1.5vh"></iconify-icon>
-                  Download Report
-                </button>
+
+
+
+              <div class="bg-white rounded-lg p-6 mt-5">
+                <div class="flex flex-wrap items-center justify-between">
+                  <div class="flex items-center space-x-4">
+                    <select class="form-select">
+                      <option value="all">All Users</option>
+                      <option value="user">User</option>
+                      <option value="admin">Admin</option>
+                      <option value="mda-admin">MDA Admin</option>
+                    </select>
+                    <input type="date" class="form-control" />
+                    <button class="button">Apply</button>
+                  </div>
+
+                  <div class="relative">
+                    <button onclick="convertTableToCSV()" class="button flex items-center gap-2">
+                      <iconify-icon icon="material-symbols:cloud-download-rounded"></iconify-icon>
+                      <span>Export CSV</span>
+                    </button>
+                  </div>
+                </div>
               </div>
-              <div class="card card-body mt-2">
+
+              <div class="card card-body mt-1">
                 <div class="table-responsiveness">
                   <table class="table auditTable" id="dataTable" id="myTable">
                     <thead>
-                      <th scope="col">S/N</th>
-                      <th scope="col">Time Stamp</th>
-                      <th scope="col">User Name</th>
-                      <th scope="col">Role</th>
-                      <!-- <th scope="col" class="hidden">Session ID</th>
-                      <th scope="col" class="hidden">IP Address</th>
-                      <th scope="col" class="hidden">Duration</th> -->
-                      <th scope="col">Activity Type</th>
-                      <th scope="col"></th>
+                      <th>S/N</th>
+                      <th>User</th>
+                      <th>User Type</th>
+                      <th>Action</th>
+                      <th>Status</th>
+                      <th>Timestamp</th>
+                      <th></th>
                     </thead>
                     <tbody id="showThem">
 
@@ -172,6 +187,8 @@
                 </div>
 
               </div>
+
+
 
             </section>
           </div>
@@ -247,7 +264,7 @@
         </span>
 
         <div class="mx-3">
-          <p class="text-[3vh] font-semibold text-black text-center">
+          <p class="font-semibold text-black text-center">
             Filter by
           </p>
           <hr />
@@ -258,7 +275,7 @@
         <div class="p-4">
           <div class="col-span-2 my-3 ">
             <label for="">User Type</label>
-            <select required class="form-select w-[250px]" id="userTyp">
+            <select required class="form-select" id="userTyp">
               <option value="">select</option>
               <option value="Payer User">End User</option>
               <option value="Admin User">Admin User</option>
@@ -269,7 +286,7 @@
 
           <div class="col-span-2 my-3 ">
             <label for="">Activity</label>
-            <select required class="form-select w-[250px]" id="actiType">
+            <select required class="form-select" id="actiType">
               <option value="">select</option>
               <option value="Applicable taxes">Applicable taxes</option>
               <option value="Logged In">Logged In</option>

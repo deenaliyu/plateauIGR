@@ -88,6 +88,13 @@ $(".aside").html(`
       </li>
 
       <li class="menu-item">
+        <a href="demandnotice.html" class="menu-link dmn">
+           <iconify-icon icon="stash:invoice" class="menu-icon"></iconify-icon>
+          <div data-i18n="Basic">Demand Notice</div>
+        </a>
+      </li>
+
+      <li class="menu-item">
         <a href="taxpayer.html" class="menu-link mdd">
           <i class='menu-icon tf-icons bx bxs-group' ></i>
           <div data-i18n="Basic">Tax Payer</div>

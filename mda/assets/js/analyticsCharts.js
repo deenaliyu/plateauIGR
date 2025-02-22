@@ -26,7 +26,7 @@ async function revenueTrendSelectPerformance() {
   const selectInput = document.querySelector('#revenueTrendSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?filteredRevenue`)
+    const response = await fetch(`https://plateauigr.com/php/?filteredRevenue&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -147,7 +147,7 @@ async function zonalOffPerformance() {
   const selectInput = document.querySelector('#zonalOfficeSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?zonalOfficePerformance`)
+    const response = await fetch(`https://plateauigr.com/php/?zonalOfficePerformance&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     const date = new Date();
@@ -257,7 +257,7 @@ async function leastZonalOffPerformance() {
   const selectInput = document.querySelector('#leastZonalOfficeSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?zonalOfficePerformance`)
+    const response = await fetch(`https://plateauigr.com/php/?zonalOfficePerformance&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     const date = new Date();
@@ -405,7 +405,7 @@ async function topLeastPerformance() {
   const selectInput = document.querySelector('#topLeastPerformanceSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getMDALGAPerformance`)
+    const response = await fetch(`https://plateauigr.com/php/?getMDALGAPerformance&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -556,7 +556,7 @@ async function LeastPerformance() {
   const selectInput = document.querySelector('#LeastPerformanceSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getMDALGAPerformance`)
+    const response = await fetch(`https://plateauigr.com/php/?getMDALGAPerformance&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -966,7 +966,7 @@ async function industriesPerformance() {
   const selectInput = document.querySelector('#industriesSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getExpectedRevenueByIndustries`)
+    const response = await fetch(`https://plateauigr.com/php/?getExpectedRevenueByIndustries&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -1088,7 +1088,7 @@ async function topLeastPerformanceMDA() {
   const selectInput = document.querySelector('#topLeastPerformanceMDASelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getMDAPerformance`)
+    const response = await fetch(`https://plateauigr.com/php/?getMDAPerformance&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -1212,7 +1212,7 @@ async function LeastPerformanceMDA() {
   const selectInput = document.querySelector('#LeastPerformanceMDASelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getMDAPerformance`)
+    const response = await fetch(`https://plateauigr.com/php/?getMDAPerformance&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -1336,7 +1336,7 @@ async function paymentChannel() {
   const selectInput = document.querySelector('#paymentChannelSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?analyticsTaxPayerPayment`)
+    const response = await fetch(`https://plateauigr.com/php/?analyticsTaxPayerPayment&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -1453,7 +1453,7 @@ async function paymentBank() {
   const selectInput = document.querySelector('#paymentBankSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?analyticsTaxPayerPaymentBank`)
+    const response = await fetch(`https://plateauigr.com/php/?analyticsTaxPayerPaymentBank&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -1570,7 +1570,7 @@ async function paymentMethod() {
   const selectInput = document.querySelector('#paymentMethodSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?analyticsTaxPayerPaymentMethod`)
+    const response = await fetch(`https://plateauigr.com/php/?analyticsTaxPayerPaymentMethod&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -1688,7 +1688,7 @@ async function amountInvgenerated() {
   const selectInput = document.querySelector('#amountInvgeneratedSelected')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getMonthlyRevenueByUserCategories`)
+    const response = await fetch(`https://plateauigr.com/php/?getMonthlyRevenueByUserCategories&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -1792,7 +1792,7 @@ async function invgenerated() {
   const selectInput = document.querySelector('#invgeneratedSelected')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getInvoicesGeneratedBasedOnCategories`)
+    const response = await fetch(`https://plateauigr.com/php/?getInvoicesGeneratedBasedOnCategories&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {

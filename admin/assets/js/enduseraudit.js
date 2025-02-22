@@ -7,13 +7,14 @@ let enumUser = {}
 
 $("#showThem").html(`
   <tr class="text-center">
-    <td colspan="5">
+    <td colspan="7">
       <div class="flex justify-center items-center mb-4">
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
       </div>
     </td>
   </tr>
 `)
+
 async function getTaxPayers() {
   const response = await fetch(`${HOST}?getTaxPayer`);
   const getTaxPayer = await response.json();
@@ -38,14 +39,14 @@ async function adminUsers() {
   adminUser = getTaxPayer.message
 }
 
-getTaxPayers().then((uu) => {
-  EnumPayers()
-  mdaUsers()
-  adminUsers()
-  fetchUsers().then((uu) => {
-    $("#dataTable").DataTable();
-  });
-});
+// getTaxPayers().then((uu) => {
+//   EnumPayers()
+//   mdaUsers()
+//   adminUsers()
+//   fetchUsers().then((uu) => {
+//     $("#dataTable").DataTable();
+//   });
+// });
 
 let activityData = {}
 
@@ -56,107 +57,34 @@ async function fetchUsers() {
   $("#showThem").html("")
 
   activityData = userAudits.message
-  let iiii = 0
+
   userAudits.message.reverse().forEach((txpayers, i) => {
-    if (txpayers.user_category === "Payer User") {
-      let userDetail = UserDATA.find(tt => tt.tax_number === txpayers.user_id)
-
-      if (userDetail) {
-        iiii++
-        $("#showThem").append(`
-          <tr>
-            <td scope="row">${iiii}</td>
-            <td>${txpayers.timeIn}</td>
-            <td>${userDetail.first_name} ${userDetail.surname}</td>
-            <td>${txpayers.user_category}</td>
-            <td>${txpayers.comment}</td>
-            <td>
-              <button 
-              data-bs-toggle="modal" 
-              onclick="viewActii('${txpayers.timeIn}', '${txpayers.comment}','${userDetail.first_name}', '${txpayers.user_category}','${userDetail.surname}', '${txpayers.session_id}',  '${txpayers.ip_address}')" 
-              data-bs-target="#viewActivity" 
-              class="btn btn-primary btn-sm">View Activities</button>
-            </td>
-          </tr>
-        `)
-      }
-    } else if (txpayers.user_category === "Admin User") {
-      // console.log(adminUser)
-      let userDetail = adminUser?.find(tt => tt.id === txpayers.user_id)
-
-      if (userDetail) {
-        iiii++
-        $("#showThem").append(`
-          <tr>
-            <td scope="row">${iiii}</td>
-            <td>${txpayers.timeIn}</td>
-            <td>${userDetail.fullname}</td>
-            <td>${txpayers.user_category}</td>
-            <td>${txpayers.comment}</td>
-            <td>
-              <button 
-              data-bs-toggle="modal" 
-              onclick="viewActii('${txpayers.timeIn}', '${txpayers.comment}','${userDetail.name}', '${txpayers.user_category}','${userDetail.surname}',, '${txpayers.session_id}',  '${txpayers.ip_address}')" 
-              data-bs-target="#viewActivity" 
-              class="btn btn-primary btn-sm">View Activities</button>
-            </td>
-          </tr>
-        `)
-      }
-
-    } else if (txpayers.user_category === "Enum User") {
-      // console.log(enumUser)
-      let userDetail = enumUser?.find(tt => tt.id === txpayers.user_id)
-
-      if (userDetail) {
-        iiii++
-        $("#showThem").append(`
-          <tr>
-            <td scope="row">${iiii}</td>
-            <td>${txpayers.timeIn}</td>
-            <td>${userDetail.first_name} ${userDetail.last_name}</td>
-            <td>${txpayers.user_category}</td>
-            <td>${txpayers.comment}</td>
-            <td>
-              <button 
-              data-bs-toggle="modal" 
-              onclick="viewActii('${txpayers.timeIn}', '${txpayers.comment}','${userDetail.first_name}', '${txpayers.user_category}','${userDetail.surname}', '${txpayers.session_id}',  '${txpayers.ip_address}')" 
-              data-bs-target="#viewActivity" 
-              class="btn btn-primary btn-sm">View Activities</button>
-            </td>
-          </tr>
-        `)
-      }
-
-    } else if (txpayers.user_category === "Mda User") {
-      console.log(mdaUserss)
-      let userDetail = mdaUserss?.find(tt => tt.fullname === txpayers.user_id)
-
-      if (userDetail) {
-        iiii++
-        $("#showThem").append(`
-          <tr>
-            <td scope="row">${iiii}</td>
-            <td>${txpayers.timeIn}</td>
-            <td>${userDetail.name}</td>
-            <td>${txpayers.user_category}</td>
-            <td>${txpayers.comment}</td>
-            <td>
-              <button 
-              data-bs-toggle="modal" 
-              onclick="viewActii('${txpayers.timeIn}', '${txpayers.comment}','${userDetail.name}', '${txpayers.user_category}','${userDetail.surname}', '${txpayers.session_id}',  '${txpayers.ip_address}')" 
-              data-bs-target="#viewActivity" 
-              class="btn btn-primary btn-sm">View Activities</button>
-            </td>
-          </tr>
-        `)
-      }
-
-    }
-
+    $("#showThem").append(`
+      <tr>
+        <td scope="row">${i}</td>
+        <td>Name</td>
+        <td>${txpayers.user_category}</td>
+        <td>${txpayers.comment}</td>
+        <td>
+          <span class="badge bg-success">Success</span>
+        </td>
+        <td>${txpayers.timeIn}</td>
+        <td>
+          <button 
+          data-bs-toggle="modal" 
+          onclick="viewActii('${txpayers.timeIn}', '${txpayers.comment}','first nane', '${txpayers.user_category}','surname', '${txpayers.session_id}',  '${txpayers.ip_address}')" 
+          data-bs-target="#viewActivity" 
+          class="btn btn-primary btn-sm">View Activities</button>
+        </td>
+      </tr>
+    `)
 
   });
 }
+
+fetchUsers().then((uu) => {
+  $("#dataTable").DataTable();
+});
 
 function filterData(data, userType, activity, fromDate, toDate) {
 
