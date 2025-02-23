@@ -64,7 +64,7 @@ function add30Days(date) {
 }
 
 let textAssessment = "If you object to any charges on the consolidated notice of assessment, you have 30 days to submit a written objection. For personal income tax objections, refer to section 54(1) of PITA 2004 as amended. Other objections should be directed to the ZIRS and will be reviewed according to the relevant legislation. Please pay any undisputed charges promptly to avoid accruing interest and penalties"
-let textDemand = "You are required to present this Notice at any IGR collecting bank for payment or pay online via the Payzamfara portal. "
+let textDemand = "You are required to present this Notice at any IGR collecting bank for payment or pay online via the plateauigr portal. "
 
 function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
   let demandInvoice = ""
@@ -75,12 +75,12 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
           <div class="flex justify-between mb-2">
               <div class="flex gap-3 w-7/12">
                   <div>
-                      <img src="./assets/img/internalzamfara.png" class='w-[80px] object-cover' alt="" />
+                      <img src="./assets/img/logo.png" class='w-[80px] object-cover' alt="" />
                       <h1 class="text-3xl text-center">TO</h1>
                   </div>
                   <div class="h-full border border-2" style="border-color: #000 !important"></div>
                   <div class='w-[50%]'>
-                      <h1 class="fontBold text-base headingdeman">ZAMFARA STATE<br /> INTERNAL REVENUE<br /> SERVICE (ZIRS)</h1>
+                      <h1 class="fontBold text-base headingdeman">PLATEAU STATE<br /> INTERNAL REVENUE<br /> SERVICE (PSIRS)</h1>
                       <div class="border border-2 p-2 w-full" style="border-color: #000 !important;">
                           <p class="text-sm"><strong class='fontBold'>BUSINESS TYPE:</strong> <span class="text-xs">${demandInvoiceInfo[0].business_type ? demandInvoiceInfo[0].business_type : '-'}</span></p>
                           <p class="text-sm"><strong class='fontBold'>NAME:</strong> <span class="text-xs">${demandInvoiceInfo[0].first_name} ${demandInvoiceInfo[0].surname}</span></p>
@@ -157,7 +157,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
                           <ol style='font-size:12px; list-style-type: decimal; padding-left: 20px'>
                               <li> Unless the debt mentioned above is paid within one month from the date hereof, or proof of earlier payment of the said amount is produced as requested , an action will be commenced against you in a court of competent Jurisdiction.</li>
                               <li>${the2item}</li>
-                              <li>You are required to obtain a teller from the bank, an E-receipt from the payzamfara portal or any ZIRS Tax Station close to you.</li>
+                              <li>You are required to obtain a teller from the bank, an E-receipt from the plateauigr portal or any ZIRS Tax Station close to you.</li>
                           </ol>
                       </td>
                   </tr>
@@ -179,7 +179,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
                               <li>Confirm your details in the preview page.</li>
                               <li>Make your payments via cash or cheque, and ensure it is processed through any of the following gateways: PayDirect, Etransact and Remita.</li>
                               <li>Ensure you obtain a receipt from the bank teller upon completing payment.</li>
-                              <li>Bring the receipt to the ZIRS head office or any of our Tax stations to obtain your official ZIRS hardcopy receipt. You can also retrieve your E-receipt on the Payzamfara portal.</li>
+                              <li>Bring the receipt to the ZIRS head office or any of our Tax stations to obtain your official ZIRS hardcopy receipt. You can also retrieve your E-receipt on the plateauigr portal.</li>
                           </ol>
                       </td>
                       <td>
@@ -191,7 +191,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
                       <td>
                           <p class=" text-center p-1 bg-[#5B4242] text-white text-xs fontBold">HOW TO PAY ONLINE</p> 
                           <ol style='font-size:12px; list-style-type: decimal; padding-left: 20px'>
-                              <li>Visit <span class="underline text-[blue]">www.payzamfara.com</span> from your mobile or Computer.</li>
+                              <li>Visit <span class="underline text-[blue]">www.plateauigr.com</span> from your mobile or Computer.</li>
                               <li>Click on “Pay Now” on the homepage.</li>
                               <li>Enter your Demand Notice Number and click on proceed.</li>
                               <li>Preview the Your CDN and proceed to pay.</li>
@@ -209,7 +209,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
                       <img src='./assets/img/rakiya_signature.png' class='w-[200px]' alt='' />
                   </div>
                   <div class="border border-2 w-[200px]" style="border-color: #000 !important"></div>
-                  <p class="fontBold text-sm text-center">Rakiya Ahmad Dodo</p>
+                  <p class="fontBold text-sm text-center">Dr Jim Pam Wayas</p>
                   <p class="fontBold text-sm text-center">Executive Chairman</p>
               </div>
               
@@ -437,7 +437,7 @@ async function openInvoice(invoicenum, price) {
       // const qrCodeContainer = document.getElementById("qrContainer")
 
       // const qrCode = new QRCode(qrCodeContainer, {
-      //   text: `https://payzamfara.com/viewinvoice.html?invnumber=${invoicenum}&load=true`,
+      //   text: `https://plateauigr.com/viewinvoice.html?invnumber=${invoicenum}&load=true`,
       //   colorDark: '#000000',
       //   colorLight: '#ffffff',
       //   version: 10,
