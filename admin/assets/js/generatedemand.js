@@ -767,12 +767,12 @@ async function generateInvoiceNum(taxNumber) {
   let file_no = document.querySelector("#file_no").value
   let business_own = document.querySelector("#business_own").value
   
-  let lga = $("#LGAaas").val()
-  let zonalOff = $("#zonalOff").val()
+  // let lga = $("#LGAaas").val()
+  // let zonalOff = $("#zonalOff").val()
   
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=${lga}&zonalOffice=${zonalOff}&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&file_no=${file_no}&invoice_type=demand notice`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&file_no=${file_no}&invoice_type=demand notice`,
     dataType: 'json',
     success: function (data) {
       console.log(data)

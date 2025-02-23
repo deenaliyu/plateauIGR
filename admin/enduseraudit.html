@@ -102,47 +102,83 @@
 
               <div class="grid md:grid-cols-3 grid-cols-2 gap-3 mt-3">
 
-                <div class="dashCards card">
-                  <p class="headder text-gray-500">Total Activity Count by Date</p>
-                  <div class="flex items-center justify-between gap-4 mt-3">
-                    <select class="form-select form-select-sm" onchange="fetchCateg2(this)" id="categgg2">
+                <div class="bg-white card p-6 rounded-lg">
+                  <p class="text-lg font-semibold text-gray-700">Total Activity Count</p>
 
-                    </select>
-                    <p class="zanumbers "><span class="" id="totalRegis">-</span></p>
+                  <input type="month" class="form-control mt-4" onchange="fetchCateg3(this)" id="categgg2" />
+
+                  <div className="mt-4">
+                    <p class="text-3xl font-bold text-gray-900" id="totalRegis">-</p>
                   </div>
                 </div>
 
-                <div class="dashCards card">
+                <div class="bg-white card p-6 rounded-lg">
+                  <p class="text-lg font-semibold text-gray-700">Total User Logins</p>
 
-                  <div class="headder">
-                    <p class="text-gray-500">Total User Logins by Date</p>
+                  <input type="month" class="form-control mt-4" onchange="fetchCateg(this)" id="categgg" />
+
+                  <div className="mt-4">
+                    <p class="text-3xl font-bold text-gray-900" id="totalRegCateg">-</p>
                   </div>
-
-                  <div class="flex items-center justify-between gap-4 mt-3">
-                    <select class="form-select form-select-sm" onchange="fetchCateg(this)" id="categgg">
-
-                    </select>
-
-                    <p class="zanumbers" id="totalRegCateg">-</p>
-                  </div>
-
                 </div>
 
-                <div class=" dashCards card">
-                  <p class="headder text-gray-500">Total System Errors Incurred by Date</p>
+                <div class="bg-white card p-6 rounded-lg">
+                  <p class="text-lg font-semibold text-gray-700">Total System Errors Incurred</p>
 
-                  <div class="flex items-center justify-between gap-4 mt-3">
-                    <select class="form-select form-select-sm" onchange="fetchCateg2(this)" id="categgg3">
+                  <input type="month" class="form-control mt-4" onchange="fetchCateg2(this)" id="categgg3" />
 
-                    </select>
-
-                    <p class="zanumbers" id="totalRegCategRege">-</p>
+                  <div className="mt-4">
+                    <p class="text-3xl font-bold text-gray-900" id="totalRegCategRege">-</p>
                   </div>
                 </div>
 
 
               </div>
 
+              <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 mt-3">
+                <div class="bg-white rounded-lg card p-6">
+                  <div class="flex items-center">
+                    <div class="bg-blue-500 rounded-full p-3">
+                      <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                    </div>
+                    <div class="ml-4">
+                      <h3 class="text-lg font-semibold text-gray-700">Total Activities</h3>
+                      <p class="text-3xl font-bold text-blue-600">1,234</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg card p-6">
+                  <div class="flex items-center">
+                    <div class="bg-green-500 rounded-full p-3">
+                      <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                      </svg>
+                    </div>
+                    <div class="ml-4">
+                      <h3 class="text-lg font-semibold text-gray-700">User Activities</h3>
+                      <p class="text-3xl font-bold text-green-600">789</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="bg-white rounded-lg card p-6">
+                  <div class="flex items-center">
+                    <div class="bg-purple-500 rounded-full p-3">
+                      <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2}
+                          d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                      </svg>
+                    </div>
+                    <div class="ml-4">
+                      <h3 class="text-lg font-semibold text-gray-700">Admin Activities</h3>
+                      <p class="text-3xl font-bold text-purple-600">445</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
 
               <div class="bg-white rounded-lg p-6 mt-5">
