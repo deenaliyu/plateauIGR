@@ -1,165 +1,131 @@
-let theInfo = JSON.parse(localStorage.getItem("adminDataPrime"))
-
-let UserDATA = {}
-let adminUser = {}
-let mdaUserss = {}
-let enumUser = {}
-
-$("#showThem").html(`
-  <tr class="text-center">
-    <td colspan="7">
-      <div class="flex justify-center items-center mb-4">
-        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-      </div>
-    </td>
-  </tr>
-`)
-
-async function getTaxPayers() {
-  const response = await fetch(`${HOST}?getTaxPayer`);
-  const getTaxPayer = await response.json();
-  UserDATA = getTaxPayer.message
-}
-
-async function EnumPayers() {
-  const response = await fetch(`${HOST}?getEnumerationTaxPayer`);
-  const getTaxPayer = await response.json();
-  enumUser = getTaxPayer.message
-}
-
-async function mdaUsers() {
-  const response = await fetch(`${HOST}?getAllMdaUsers`);
-  const getTaxPayer = await response.json();
-  mdaUserss = getTaxPayer.message
-}
-
-async function adminUsers() {
-  const response = await fetch(`${HOST}?getAdminUser`);
-  const getTaxPayer = await response.json();
-  adminUser = getTaxPayer.message
-}
-
-// getTaxPayers().then((uu) => {
-//   EnumPayers()
-//   mdaUsers()
-//   adminUsers()
-//   fetchUsers().then((uu) => {
-//     $("#dataTable").DataTable();
-//   });
-// });
-
-let activityData = {}
-
-async function fetchUsers() {
-  const response = await fetch(`${HOST}?getAllActivityLogs`);
-  const userAudits = await response.json();
-
-  $("#showThem").html("")
-
-  activityData = userAudits.message
-
-  userAudits.message.reverse().forEach((txpayers, i) => {
-    $("#showThem").append(`
-      <tr>
-        <td scope="row">${i}</td>
-        <td>Name</td>
-        <td>${txpayers.user_category}</td>
-        <td>${txpayers.comment}</td>
-        <td>
-          <span class="badge bg-success">Success</span>
-        </td>
-        <td>${txpayers.timeIn}</td>
-        <td>
-          <button 
-          data-bs-toggle="modal" 
-          onclick="viewActii('${txpayers.timeIn}', '${txpayers.comment}','first nane', '${txpayers.user_category}','surname', '${txpayers.session_id}',  '${txpayers.ip_address}')" 
-          data-bs-target="#viewActivity" 
-          class="btn btn-primary btn-sm">View Activities</button>
-        </td>
-      </tr>
-    `)
-
-  });
-}
-
-fetchUsers().then((uu) => {
-  $("#dataTable").DataTable();
+$(document).ready(function () {
+  fetchAuditTrail()
 });
 
-function filterData(data, userType, activity, fromDate, toDate) {
+function fetchAuditTrail() {
+  if ($.fn.DataTable.isDataTable('#dataTable')) {
+    $('#dataTable').DataTable().clear().destroy();
+  }
 
-  return data.filter((item) => {
-    // Filter by userType (if provided)
-    if (userType && item.user_category !== userType) {
-      return false;
-    }
+  const userCategory = $('#filterByCategory').val();
+  const timeInFrom = $('#filterDfrom').val();
+  const timeInTo = $('#filterDto').val();
 
-    // Filter by activity (if provided)
-    if (activity && item.comment !== activity) {
-      return false;
-    }
+  table = $('#dataTable').DataTable({
+    processing: true, // Show processing indicator
+    serverSide: true, // Enable server-side processing
+    paging: true,     // Enable pagination
+    searching: false,  // Enable search box
+    pageLength: 50,   // Number of items per page
+    ajax: function (data, callback, settings) {
+      // Convert DataTables page number to your API page number
+      const pageNumber = Math.ceil(data.start / data.length) + 1;
 
-    // Filter by date range (if provided)
-    if (fromDate && toDate) {
-      const itemDate = new Date(item.timeIn.split(" ")[0]);
-      const fromDateObj = new Date(fromDate);
-      const toDateObj = new Date(toDate);
+      const filters = {
+        getAllActivityLogs: true,
+        page: pageNumber,
+        limit: data.length,
+        user_category: userCategory,
+        timeIn_from: timeInFrom,
+        timeIn_to: timeInTo,
+      };
 
-      if (itemDate < fromDateObj || itemDate > toDateObj) {
-        return false;
-      }
-    }
-
-    // If all conditions pass, include the item in the filtered result
-    return true;
+      // Call your API with the calculated page number
+      $.ajax({
+        url: HOST,
+        type: 'GET',
+        data: filters,
+        success: function (response) {
+          // Map the API response to DataTables expected format
+          callback({
+            draw: data.draw, // Pass through draw counter
+            recordsTotal: response.total, // Total records in your database
+            recordsFiltered: response.total, // Filtered records count
+            data: response.data, // The actual data array from your API
+          });
+        },
+        error: function () {
+          alert('Failed to fetch data.');
+        },
+      });
+    },
+    columns: [
+      {
+        data: null,
+        orderable: false, // Disable ordering for the numbering column
+        render: function (data, type, row, meta) {
+          // Calculate the row number based on the page
+          return meta.row + 1 + meta.settings._iDisplayStart;
+        },
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `Name`;
+        }
+      },
+      { data: 'user_category' },
+      { data: 'comment' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `<span class="badge bg-success">success</span>`;
+        }
+      },
+      { data: 'timeIn' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `<button 
+          data-bs-toggle="modal" 
+          onclick="viewActii('${row.timeIn}', '${row.comment}','first Name', '${row.user_category}','Surname', '${row.session_id}',  '${row.ip_address}')" 
+          data-bs-target="#viewActivity" 
+          class="btn btn-primary btn-sm">View Activities</button>`;
+        }
+      },
+    ],
   });
 }
 
+$('#filterBtn').on('click', function () {
+  fetchAuditTrail();
+});
 
-async function getFilters() {
+async function fetchActivityMetrics() {
+  try {
+    const response = await fetch('https://plateauigr.com/php/index.php?getActivityMetrics');
+    const data = await response.json();
 
-  let userTyp = document.querySelector("#userTyp").value
-  let actiType = document.querySelector("#actiType").value
-  let fromDate = document.querySelector("#fromDate").value
-  let toDate = document.querySelector("#toDate").value
+    if (data.status === 1) {
+      const metrics = data.data;
 
-  // console.log(userTyp, actiType, fromDate, toDate, activityData)
+      document.getElementById('totalRegis').innerText = metrics.total_activities || '-';
+      document.getElementById('totalRegCateg').innerText = metrics.total_user_logins || '-';
+      document.getElementById('totalRegCategRege').innerText = metrics.total_errors || '-';
 
-  const filteredData = filterData(activityData, userTyp, actiType, fromDate, toDate);
-  console.log(filteredData);
-
-  if (filteredData.length > 0) {
-    $("#showThem").html("")
-    filteredData.forEach((txpayers, i) => {
-      let userDetail = UserDATA.find(tt => tt.id === txpayers.user_id)
-      if (userDetail) {
-        $("#showThem").append(`
-        <tr>
-          <td scope="row">${i + 1}</td>
-          <td>${txpayers.timeIn}</td>
-          <td>${userDetail.first_name} ${userDetail.surname}</td>
-          <td>${txpayers.user_category}</td>
-          <td>${txpayers.comment}</td>
-          <td>
-            <button 
-            data-bs-toggle="modal" 
-            onclick="viewActii('${txpayers.timeIn}', '${txpayers.comment}','${userDetail.first_name}', '${txpayers.user_category}','${userDetail.surname}', '${txpayers.session_id}',  '${txpayers.ip_address}')" 
-            data-bs-target="#viewActivity" 
-            class="btn btn-primary btn-sm">View Activities</button>
-          </td>
-        </tr>
-      `)
-      }
-    });
-
-    $("#filterInvoice").modal("hide")
+      document.querySelector('.total-activities-count').innerText = Number(metrics.total_activities).toLocaleString() || '0';
+      document.querySelector('.user-activities-count').innerText = Number(metrics.payer_user_activities).toLocaleString() || '0';
+      document.querySelector('.admin-activities-count').innerText = Number(metrics.admin_user_activities).toLocaleString() || '0';
+    }
+  } catch (error) {
+    console.error('Error fetching activity metrics:', error);
   }
-
-
-
 }
 
 
+
+function setCurrentMonth() {
+  const today = new Date();
+  const month = today.getMonth() + 1;
+  const formattedMonth = month < 10 ? `0${month}` : month;
+  const currentYearMonth = `${today.getFullYear()}-${formattedMonth}`;
+  document.getElementById('categgg2').value = currentYearMonth;
+  document.getElementById('categgg3').value = currentYearMonth;
+  document.getElementById('categgg').value = currentYearMonth;
+}
+
+fetchActivityMetrics()
+setCurrentMonth()
 
 function viewActii(timeIn, comment, first_name, user_category, surname, session_id, ip_address) {
   let names = first_name + " " + surname;
@@ -169,37 +135,5 @@ function viewActii(timeIn, comment, first_name, user_category, surname, session_
   $("#theEm").html(user_category)
   $("#thess").html(session_id)
   $("#theip").html(ip_address)
-  // function fetchUsers() {
-  //   const response = fetch(`${HOST}?getActivityLogs&userId=${user_id}&user_category=${user_category}`);
-  //   const userAudits = response.json();
 
-  //   let number = 0
-
-  //   if (userAudits.status === 0) {
-  //     $("#showThem2").append(`
-  //       <tr>
-  //         <td></td>
-  //         <td>No data available</td>
-  //         <td></td>
-  //       </tr>
-  //     `)
-  //   } else {
-  //     userAudits.message.forEach((audits, i) => {
-  //       number++
-
-  //       $("#showThem2").append(`
-  //       <tr>
-  //         <td>${number}</td>
-  //         <td>${audits.timeIn}</td>
-  //         <td>${theEmail}</td>
-  //         <td>${audits.comment}</td>
-  //         <td><button data-bs-toggle="modal" onclick="viewActii('${audits.timeIn}', '${audits.comment}')" data-bs-target="#viewActivity" class="btn btn-primary">View
-  //             Activity</button></td>
-  //       </tr>
-  //       `)
-  //     });
-  //   }
-
-
-  // }
 }
