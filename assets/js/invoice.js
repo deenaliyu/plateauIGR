@@ -185,6 +185,9 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
             <p class="font-bold mt-1">Executive Chairman</p>
           </div>
 
+          <div class="border-t border-black w-full mt-5"></div>
+          <p class="text-sm text-center">KEY: MOC & I = Ministry of Commerce & Industry, TCOR = Tourism Corporation, MOL & S = Ministry of Lands, Survey & Town Planning, PSIRS = Plateau State Internal Revenue Service, MOENV = Ministry of Environment, LGOVT = Local Government</p>
+
       `
 
 
