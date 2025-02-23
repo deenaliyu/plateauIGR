@@ -9,95 +9,91 @@ function formatMoney(amount) {
 let AllDemanData = {}
 
 async function fetchInvoice() {
-
-  $("#showThem").html("");
-  $("#loader").css("display", "flex");
-
-  let config = {
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  };
-  const response = await fetch(
-    `${HOST}?getAllInvoiceDemandNotice`
-  );
-  const userInvoices = await response.json();
-//   console.log(userInvoices);
-  
- 
-  $("#loader").css("display", "none");
-  if (userInvoices.status === 1) {
-    AllDemanData =  userInvoices.message
-    
-    displayData(userInvoices.message.reverse())
-  } else {
-    // $("#showInvoice").html("<tr></tr>");
-    $("#dataTable").DataTable();
+  if ($.fn.DataTable.isDataTable('#dataTable')) {
+    $('#dataTable').DataTable().clear().destroy();
   }
+
+
+  table = $('#dataTable').DataTable({
+    processing: true, // Show processing indicator
+    serverSide: true, // Enable server-side processing
+    paging: true,     // Enable pagination
+    searching: false,  // Enable search box
+    pageLength: 50,   // Number of items per page
+    ajax: function (data, callback, settings) {
+      // Convert DataTables page number to your API page number
+      const pageNumber = Math.ceil(data.start / data.length) + 1;
+
+      const filters = {
+        getAllDemandNotice: true,
+        page: pageNumber,
+        limit: data.length,
+      };
+
+      // Call your API with the calculated page number
+      $.ajax({
+        url: HOST,
+        type: 'GET',
+        data: filters,
+        success: function (response) {
+          // Map the API response to DataTables expected format
+          callback({
+            draw: data.draw, // Pass through draw counter
+            recordsTotal: response.total, // Total records in your database
+            recordsFiltered: response.total, // Filtered records count
+            data: response.data, // The actual data array from your API
+          });
+        },
+        error: function () {
+          alert('Failed to fetch data.');
+        },
+      });
+    },
+    columns: [
+      {
+        data: null,
+        orderable: false, // Disable ordering for the numbering column
+        render: function (data, type, row, meta) {
+          // Calculate the row number based on the page
+          return meta.row + 1 + meta.settings._iDisplayStart;
+        },
+      },
+      { data: 'tax_number' },
+      { data: 'COL_3' },
+      { data: 'COL_4' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return row.first_name + " " + row.surname;
+        }
+      },
+      { data: 'invoice_number' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(row.amount_paid);
+        }
+      },
+      { data: 'date_created' },
+      { data: 'due_date' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return row.payment_status === "paid" ? `<span class="badge bg-success">Paid</span>` : `<span class="badge bg-danger">Unpaid</span>`;
+        }
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `<a href="./viewinvoice.html?invnumber=${row.invoice_number}&load=true" class="btn btn-primary btn-sm viewUser">View CDM/Invoice</a>`;
+        }
+      },
+    ],
+  });
+
 }
 
-function displayData(userInvoices) {
-    userInvoices.forEach((userInvoice, i) => {
-      let addd = ""
-      addd += `
-        <tr class="relative">
-        <td>${i + 1}</td>
-        <td>${userInvoice.tax_number}</td>
-        <td>${userInvoice.COL_3}</td>
-        <td>${userInvoice.COL_4}</td>
-        <td>${userInvoice.first_name} ${userInvoice.surname}</td>
-        <td>${userInvoice.office_name}</td>
-        <td>${userInvoice.invoice_number}</td>
-        <td>&#8358; ${parseFloat(userInvoice.amount_paid).toLocaleString()}</td>
-        <td>${userInvoice.date_created.split(" ")[0]}</td>
-        <td>${userInvoice.due_date}</td>
-          `
-      if (userInvoice.payment_status === "paid") {
-        addd += `
-            <td id="" class="checking">
-              <p class='text-success'>${userInvoice.payment_status}</p>
-            </td>
-            
-            `
-      } else {
-        addd += `
-            <td id="" class="checking">
-              <p class='text-danger'>${userInvoice.payment_status}</p>
-            </td>
-            `
-      }
-
-      addd += `
-        <td>
-          <a href="./viewinvoice.html?invnumber=${userInvoice.invoice_number}&load=true" class="btn btn-primary btn-sm viewUser">View CDM/Invoice</a>
-        </td>
-        </tr>
-        `
-      $("#showThem").append(addd);
-      $("#showThem2").append(`
-        <tr>
-            <td>${i + 1}</td>
-            <td>${userInvoice.tax_number}</td>
-            <td>${userInvoice.COL_3.replace(/,/g, '')}</td>
-            <td>${userInvoice.COL_4}</td>
-            <td>${userInvoice.first_name.replace(/,/g, '')} ${userInvoice.surname.replace(/,/g, '')}</td>
-            <td>${userInvoice.office_name}</td>
-            <td>${userInvoice.invoice_number}</td>
-            <td>&#8358; ${userInvoice.amount_paid}</td>
-            <td>${userInvoice.date_created.split(" ")[0]}</td>
-            <td>${userInvoice.due_date}</td>
-            <td>${userInvoice.payment_status}</td>
-        </tr>
-      `)
-    });
-}
-
-fetchInvoice().then((uu) => {
-  $("#dataTable").DataTable();
-});
+fetchInvoice()
 
 async function fetchAnalytics() {
 
@@ -115,12 +111,12 @@ async function fetchAnalytics() {
     );
 
     const userAnalytics = await response.json();
-    
+
     $("#totalInv").html(userAnalytics.total_invoice)
     $("#total_amount_invoiced").html(userAnalytics.total_amount_invoiced.toLocaleString())
-     $("#total_amountP").html(userAnalytics.total_amount_paid.toLocaleString())
+    $("#total_amountP").html(userAnalytics.total_amount_paid.toLocaleString())
     $("#total_amountU").html(userAnalytics.due_amount.toLocaleString())
-    
+
     // let total = (userAnalytics.total_amount_paid / userAnalytics.total_amount_invoiced) * 100
     // $("#Compliance").html(total + "%")
     // console.log(userAnalytics)
