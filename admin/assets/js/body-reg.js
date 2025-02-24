@@ -139,3 +139,46 @@ function registerUser() {
   sendToDB()
 
 }
+
+async function getIndustriesSectors() {
+  try {
+    const response = await fetch(`${HOST}?getIndustriesSectors`);
+    const resdata = await response.json();
+
+    if (resdata.status === 1) {
+      const data = resdata.message;
+
+      const sectors = [...new Set(data.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect');
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        sectorSelect.appendChild(option);
+      });
+
+      sectorSelect.addEventListener('change', () => {
+        const selectedSector = sectorSelect.value;
+
+        const filteredIndustries = data.filter(
+          item => item.SectorName === selectedSector
+        );
+
+        const industrySelect = document.getElementById('industrySelect');
+        industrySelect.innerHTML = '<option value="">Select</option>';
+
+        filteredIndustries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry.IndustryName;
+          option.textContent = industry.IndustryName;
+          industrySelect.appendChild(option);
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+getIndustriesSectors();

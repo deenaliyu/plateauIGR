@@ -105,14 +105,20 @@
             <input type="text" class="form-control w-full enumInput" data-name="fullname" required>
           </div>
 
-          <div class="form-group mb-3">
-            <label for="">Select your Industry*</label>
-            <select class="form-select w-full enumInput" data-name="industry" required>
-              <option value="">Select ---</option>
-              <option value="Industry A">Industry A</option>
-              <option value="Industry B">Industry B</option>
-              <option value="Industry C">Industry C</option>
-            </select>
+          <div class="flex mb-4 gap-2">
+            <div class="form-group w-full">
+              <label for="">Sector*</label>
+              <select class="form-select payInputs enumInput" id="sectorSelect" data-name="sector">
+                <option value="" selected>Select</option>
+              </select>
+            </div>
+
+            <div class="form-group w-full">
+              <label for="">Industry*</label>
+              <select name="" class="form-select payInputs enumInput" id="industrySelect" data-name="industry">
+                <option value="" selected>Select</option>
+              </select>
+            </div>
           </div>
 
           <div class="form-group mb-3">
@@ -124,6 +130,11 @@
           <div class="form-group mb-3">
             <label for="">Tax Identification Number(TIN) (Optional)</label>
             <input type="text" class="form-control w-full enumInput" data-name="tin">
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="">CAC</label>
+            <input type="text" class="form-control w-full enumInput" data-name="cac">
           </div>
 
           <button class="button w-full mb-4" type="button" onclick="continueReg()">Continue</button>
