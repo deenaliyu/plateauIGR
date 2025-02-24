@@ -83,7 +83,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
 
           <hr class="my-2"/>
 
-          <h1 class="fontBold text-lg mb-4">SECTOR</h1>
+          <h1 class="fontBold text-lg mb-4">${demandInvoiceInfo[0].sector}</h1>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             <div class="space-y-2">

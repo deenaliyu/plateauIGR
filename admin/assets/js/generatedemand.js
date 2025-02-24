@@ -280,7 +280,7 @@ let All15Items = [
 // }
 
 async function fetchRevHeads(categ) {
-  const response = await fetch(`${HOST}/?getAllRevenueHeads`)
+  const response = await fetch(`${HOST}/?getAllRevenueHeads&demand_notice=yes`)
   const revHeads = await response.json()
 
   if (revHeads.status === 0) {
@@ -295,13 +295,13 @@ async function fetchRevHeads(categ) {
     let revenueArr = []
 
     revHeads.message.forEach((revHd, i) => {
-      if (revHd.COL_5 === categ) {
+      // if (revHd.COL_5 === categ) {
 
         revenueArr.push(revHd)
         $("#rev_heads").append(`
-        <option value="${revHd["id"]}">${revHd["COL_4"]} (${revHd["COL_3"]})</option>
+        <option value="${revHd["id"]}">${revHd["COL_4"]} (${revHd["COL_3"]}) - ${revHd.COL_5}</option>
         `)
-      }
+      // }
 
     });
 
@@ -766,10 +766,11 @@ async function generateInvoiceNum(taxNumber) {
 
   // let lga = $("#LGAaas").val()
   // let zonalOff = $("#zonalOff").val()
+  let the_sector = $("#sectorSelect").val()
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&file_no=${file_no}&invoice_type=demand notice`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&sector=${the_sector}&file_no=${file_no}&invoice_type=demand notice`,
     dataType: 'json',
     success: function (data) {
       console.log(data)

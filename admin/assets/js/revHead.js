@@ -32,6 +32,7 @@ async function fetchRevHeads() {
           <td>${i + 1}</td>
           <td>${revHd["COL_4"]}</td>
           <td>${revHd["COL_5"]}</td>
+          <td>${revHd["demand_notice"]}</td>
           <td>${revHd["frequency"]}</td>
           <td>&#8358; ${revHd["COL_6"]}</td>
           
@@ -69,7 +70,7 @@ async function fetchRevHeadsPending() {
   let status = 'pending';
   const response = await fetch(`${HOST}/?getRevenueHeadByStatus&mdaName=${mdn}&status=${status}`)
   const revHeads = await response.json()
-  ALLREV = revHeads
+  // ALLREV = revHeads
   // console.log(ALLREV)
 
   $("#loader").css("display", "none")
@@ -179,12 +180,14 @@ function editRevFunc(e) {
   let theREV = ALLREV.message.filter(dd => dd.id === editaID)[0]
 
   let allInputss = document.querySelectorAll(".revInput2")
+
   allInputss[0].value = theREV["COL_4"]
   allInputss[1].value = theREV["COL_6"]
   allInputss[2].value = theREV["COL_5"]
-  allInputss[3].value = theREV["status"]
-  allInputss[4].value = theREV["frequency"]
-  allInputss[5].value = theREV["due_date"]
+  allInputss[3].value = theREV["demand_notice"]
+  allInputss[4].value = theREV["status"]
+  allInputss[5].value = theREV["frequency"]
+  // allInputss[6].value = theREV["due_date"]
 }
 
 
