@@ -194,6 +194,67 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
   return demandInvoice
 }
 
+function displayAuditLetter(demandInvoiceInfo) {
+  let auditletter = ""
+
+  let theauditTotal = []
+  demandInvoiceInfo.forEach((demandnot, i) => {
+
+    theauditTotal.push(parseFloat(demandnot.amount_paid))
+    if (demandnot.previous_year_value && demandnot.previous_year_value > 0) {
+      theauditTotal.push(parseFloat(demandnot.previous_year_value))
+    }
+  })
+  auditletter += `
+    <div class="flex justify-between mb-8">
+        <div class="font-medium">PSIRS/SCG/TAD/24/VOL2</div>
+        <div class="flex gap-2">
+          <span class="font-medium">Date:</span>
+          <div class="border-b border-black w-32">${demandInvoiceInfo[0].date_created.split(" ")[0]}</div>
+        </div>
+      </div>
+
+      <div class="mb-8 space-y-1">
+        <p>${demandInvoiceInfo[0].first_name}  ${demandInvoiceInfo[0].surname}</p>
+      </div>
+
+      <p class="mb-6 font-medium">Sir,</p>
+
+      <div class="mb-6 font-bold space-y-1">
+        <p>DEMAND NOTICE FOR THE PAYMENT OF THE SUM OF ${formatMoney(sumArray(theauditTotal))}</p>
+        <p>TAX AUDIT FOR THE PERIOD ${demandInvoiceInfo[0].date_created.split(" ")[0]} - ${add30Days(demandInvoiceInfo[0].date_created)}</p>
+      </div>
+
+      <div class="space-y-6 text-justify mb-8">
+        <p>
+          The Service in accordance with the provisions of the Personal Income Tax (Amended) Act 2011, reviewed your
+          organization's payrolls, documents and established the sum of ${formatMoney(sumArray(theauditTotal))} (amount in words) only as unremitted
+          Taxes. You are by this demand notice required to pay the above sum into the 
+          <span class="fontBold">
+            Plateau State Internal Revenue Service First Bank of Nigeria Plc. Account Number 2008769374
+          </span>
+          or the TSA Account of the Plateau State Government through the Tax Audit Liability Sub-Head of the Plateau
+          State Intelligent billing System Plat Form using your TIN as Account Number.
+        </p>
+
+        <p>
+          Kindly note that, the Service while carrying out the audit adhered strictly to the provisions of the Personal
+          Income Tax Act. In the event that your organisation disagrees with the attached audit report, you are allowed
+          by Law to make an objection within 30days on receipt of this demand notice. Where no objection is made within
+          the stipulated period, the above assessment will be deemed as final and conclusive.
+        </p>
+
+        <p>Please accept the assurance of my highest regards.</p>
+      </div>
+
+      <div class="text-center mt-16 space-y-1">
+        <p class="font-bold">Jim Pam Wayas PhD.</p>
+        <p class="font-bold">Executive Chairman</p>
+      </div>
+  `
+  return auditletter
+}
+
 async function openInvoice(invoicenum, price) {
   // console.log(price)
   invoicenum2 = invoicenum
@@ -393,7 +454,7 @@ async function openInvoice(invoicenum, price) {
 
       $("#invoiceCard").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED DEMAND NOTICE", normalDate, textDemand))
       $("#assessmentDemandNotice").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED NOTICE OF ASSESSMENT", add30Days(normalDate), textAssessment))
-
+      $("#auditLetter").html(displayAuditLetter(demandInvoiceInfo))
       $("#invoiceCardSecond").html(TotalInvoice)
 
     } else {
