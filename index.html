@@ -108,7 +108,9 @@
                   <iconify-icon icon="fa-solid:money-check-alt"></iconify-icon>
                   <p class="cardText">Generate Invoice</p>
                 </div>
-                <a href="generateinvoice.html" class="button w-full">Generate Invoice</a>
+                <a type="button" class="button w-full" data-bs-toggle="modal" data-bs-target="#invoice_type">
+                 Generate Invoice
+              </a>
               </a>
             </div>
 
@@ -259,7 +261,27 @@
     </div>
   </div>
 
+  <div class="modal fade" id="invoice_type" data-bs-backdrop="static" data-bs-keyboard="false" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title text-center" id="staticBackdropLabel">Invoice Type</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+            <iconify-icon icon="icon-park:close"></iconify-icon>
+          </button>
+        </div>
 
+        <div class="modal-body">
+          <label for="">Select the Invoice Type</label>
+          <div class="flex space-x-3 mt-3">
+            <a href="generateinvoice.html" class="button w-full text-[15px]">Generate Normal Invoice</a>
+            <a href="generatepresumptiveinvoice.html" class="button w-full text-[15px]">Generate Presumptive Tax</a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
   <section class="md:fixed bottom-0 md:mt-5 w-full" id="footer">
 
 
