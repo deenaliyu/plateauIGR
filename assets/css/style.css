@@ -29,7 +29,7 @@ body {
   width: 100vw !important;
   margin: 0 !important;
   overflow-x: hidden !important;
-  color: #00582675;
+  /* color: #00582675; */
 }
 
 .fontBold {

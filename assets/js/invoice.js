@@ -72,158 +72,124 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
   demandInvoice += `
       <div class="demanInvoiceBody w-fit bg-white">
           <!--header-->
-          <div class="flex justify-between mb-2">
-              <div class="flex gap-3 w-7/12">
-                  <div>
-                      <img src="./assets/img/logo.png" class='w-[80px] object-cover' alt="" />
-                      <h1 class="text-3xl text-center">TO</h1>
-                  </div>
-                  <div class="h-full border border-2" style="border-color: #000 !important"></div>
-                  <div class='w-[50%]'>
-                      <h1 class="fontBold text-base headingdeman">PLATEAU STATE<br /> INTERNAL REVENUE<br /> SERVICE (PSIRS)</h1>
-                      <div class="border border-2 p-2 w-full" style="border-color: #000 !important;">
-                          <p class="text-sm"><strong class='fontBold'>BUSINESS TYPE:</strong> <span class="text-xs">${demandInvoiceInfo[0].business_type ? demandInvoiceInfo[0].business_type : '-'}</span></p>
-                          <p class="text-sm"><strong class='fontBold'>NAME:</strong> <span class="text-xs">${demandInvoiceInfo[0].first_name} ${demandInvoiceInfo[0].surname}</span></p>
-                          <p class="text-sm"><strong class='fontBold'>PHONE:</strong> <span class="text-xss">${demandInvoiceInfo[0].phone}</span></p>
-                           <p class="text-sm"><strong class='fontBold'>ADDRESS:</strong> <span class="text-xss">${demandInvoiceInfo[0].address}</span></p>
-                      </div>
-                  </div>
-              </div>
-              
-              <div class="w-5/12" style="margin-right: 10px !important">
-                  <div class="flex justify-center">
-                      <img src="./assets/img/coa.png" alt="" />   
-                  </div>
-                  <h1 class="fontBold text-base text-center headingdeman">${heading}</h1>
-                  <div class="border border-2 p-2 md:pr-[80px] pr-[40px]" style="border-color: #000 !important;">
-                      <p class="text-sm"><strong class='fontBold'>TIN NO:</strong> <span class="text-xs">${demandInvoiceInfo[0].tin ? demandInvoiceInfo[0].tin : '-'}</span></p>
-                      <p class="text-sm"><strong class='fontBold'>FILE NO:</strong> <span class="text-xs">${demandInvoiceInfo[0].file_no ? demandInvoiceInfo[0].file_no : '-'}</span></p>
-                      <p class="text-sm"><strong class='fontBold'>DEMAND NOTICE NO:</strong> <span class="text-xs">${demandInvoiceInfo[0].invoice_number}</span></p>
-                      <p class="text-sm"><strong class='fontBold'>DATE:</strong> <span class="text-xs">${the_date}</span></p>
-                      
-                  </div>
-              </div>
+
+          <div>
+            <img src="./assets/img/psirs.png" class='w-[80px] object-cover' alt="" />
           </div>
           
-          <p class='p-1 bg-[#5B4242] text-white w-fit text-xs fontBold'>IN ACCORDANCE WITH THE PROVISIONS OF RELEVANT LAWS</p>
-          <div class="mt-3">
-              <p class="text-sm mb-2">Section 88(1a) and 11(f) of Personal Income Tax Act (PITA) 2011 and Section 142 & 143f State Consolidated Revenue Law 2020, as amended First,  Second, Third and Fourth Schedule Approved list of collections.</p>
-             
+          <h1 class="text-2xl fontBold text-center">Plateau State Internal Revenue Service</h1>
+          <p class="text-sm text-center">No. 6 Bank Road, P.M.B. 2061, JOS, PLATEAU STATE, NIGERIA Tel: 08031230301; 07056990777; 08089728808; 07055458779</p>
+          <p class="text-sm text-center">Website: www.psirs.gov.ng; E-mail: psirsjos@gmail.com</p>
+
+          <hr class="my-2"/>
+
+          <h1 class="fontBold text-lg mb-4">SECTOR</h1>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+            <div class="space-y-2">
+              <div class="flex gap-2">
+                <span class="fontBold">TO:</span>
+                <p>${demandInvoiceInfo[0].first_name} ${demandInvoiceInfo[0].surname}</p>
+              </div>
+              <div class="flex gap-2">
+                <span class="fontBold">ADDRESS:</span>
+                <p>${demandInvoiceInfo[0].address}</p>
+              </div>
+            </div>
+            <div class="space-y-2">
+              <div class="flex gap-2">
+                <span class="fontBold">NO:</span>
+                <p>${demandInvoiceInfo[0].invoice_number}</p>
+              </div>
+              <div class="flex gap-2">
+                <span class="fontBold">DATE:</span>
+                <p>${the_date}</p>
+              </div>
+              <div class="flex gap-2">
+                <span class="fontBold">TYPE OF BUSINESS/SOURCE OF INCOME:</span>
+                <p>${demandInvoiceInfo[0].business_type ? demandInvoiceInfo[0].business_type : '-'}</p>
+              </div>
+            </div>
           </div>
-          
-          <!--body-->
-          
-          
-          <table class="table table-bordered mt-3 invTable">
-              <thead>
-                  <tr>
-                      <th class='text-xs'>S/N</th>
-                      <th class='text-xs'>AGENCY</th>
-                      <th class='text-xs'>REVENUE ITEM</th>
-                      <th class='text-xs'>CURRENT YEAR (${demandInvoiceInfo[0].date_created.split('-')[0]})</th>
-                      <th class='text-xs'>OUTSTANDING YEAR (${demandInvoiceInfo[0].previous_year ? demandInvoiceInfo[0].previous_year : '-'})</th>
-                      <th class='text-xs'>AGENCY CODE</th>
-                      <th class='text-xs'>REVENUE CODE</th>
-                  </tr>
-              </thead>
-              <tbody>
+
+          <h1 class="text-2xl fontBold text-center mb-4 underline">${heading}</h1>
+
+          <p class="mb-6 text-sm text-center">
+            In line with Plateau State (Consolidation) Revenue Law, 2020, the Service hereby notifies you of the following
+            tax obligations due to the State MDAs, LGAs and administered by PSIRS.
+          </p>
+
+          <table class="table table-bordered invTable">
+            <thead>
+              <tr>
+                <th>S/N</th>
+                <th>REVENUE ITEM</th>
+                <th>AMOUNT PAYABLE (N)</th>
+                <th>STATE MDA/LGA</th>
+                <th colspan="3" class="text-center">
+                  YEAR OF ASSESSMENT
+                </th>
+              </tr>
+              <tr>
+                <th colspan="4"></th>
+                <th>${demandInvoiceInfo[0].previous_year ? demandInvoiceInfo[0].previous_year : '-'}</th>
+                <th>${demandInvoiceInfo[0].date_created.split('-')[0]}</th>
+              </tr>
+            </thead>
+            <tbody>
       `
   TheDemandTotal = []
   demandInvoiceInfo.forEach((demandnot, i) => {
-    demandInvoice += `            
-              <tr>
-                  <td class='text-xs'>${i + 1}</td>
-                  <td class='text-xs'>${demandnot.COL_3}</td>
-                  <td class='text-xs'>${demandnot.COL_4}</td>
-                  <td class='text-xs'>${formatMoney(parseFloat(demandnot.amount_paid))}</td>
-                  <td class='text-xs'>${demandnot.previous_year_value ? formatMoney(parseFloat(demandnot.previous_year_value)) : 'Nil'}</td>
-                  <td class='text-xs'>-</td>
-                  <td class='text-xs'>${demandnot['COL_2']}</td>
-              </tr>
-          `
+    demandInvoice += `
+          <tr>
+            <td class='text-xs'>${i + 1}</td>
+            <td class='text-xs'>${demandnot.COL_4}</td>
+            <td class='text-xs'>${demandnot.amount_paid}</td>
+            <td class='text-xs'>${demandnot.COL_3}</td>
+            <td class='text-xs'>${demandnot.previous_year_value ? formatMoney(parseFloat(demandnot.previous_year_value)) : 'Nil'}</td>
+            <td class='text-xs'>${demandnot.amount_paid}</td>
+          </tr>
+        `
+
     TheDemandTotal.push(parseFloat(demandnot.amount_paid))
     if (demandnot.previous_year_value && demandnot.previous_year_value > 0) {
       TheDemandTotal.push(parseFloat(demandnot.previous_year_value))
     }
-
   })
-  demandInvoice += `            
-                  <tr>
-                      <td colspan="8">
-                          <div class="flex justify-center">
-                              <p class=" text-center p-1 bg-[#5B4242] text-white w-[80%] text-xs fontBold">IMPORTANT NOTICE</p>    
-                          </div>
-                          
-                          <ol style='font-size:12px; list-style-type: decimal; padding-left: 20px'>
-                              <li> Unless the debt mentioned above is paid within one month from the date hereof, or proof of earlier payment of the said amount is produced as requested , an action will be commenced against you in a court of competent Jurisdiction.</li>
-                              <li>${the2item}</li>
-                              <li>You are required to obtain a teller from the bank, an E-receipt from the plateauigr portal or any ZIRS Tax Station close to you.</li>
-                          </ol>
-                      </td>
-                  </tr>
-              </tbody>
+  demandInvoice += `
+              <tr>
+                <td class="border border-gray-800 p-2 text-sm fontBold" colspan="2">
+                  TOTAL
+                </td>
+                <td>${formatMoney(sumArray(TheDemandTotal))}</td>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+            </tbody>
           </table>
-          
-          <p class="text-danger text-center fontBold -mt-2">IT IS AN OFFENSE TO PAY CASH TO ANYBODY</p>
-          
-          <table class="table table-bordered invTable">
-              <tbody>
-                  <tr>
-                      <td rowspan="2">
-                          <p class=" text-center p-1 bg-[#5B4242] text-white text-xs fontBold">MAKING PAYMENT VIA BANK BRANCH TRANSACTIONS</p> 
-                          
-                          <ol style='font-size:12px; list-style-type: decimal; padding-left: 20px'>
-                              <li>Visit any Bank Branch near you with the Consolidated Demand Notice.</li>
-                              <li>Present the consolidated demand notice number to the teller.</li>
-                              <li>The teller will enter the demand notice number to validate and load your details.</li>
-                              <li>Confirm your details in the preview page.</li>
-                              <li>Make your payments via cash or cheque, and ensure it is processed through any of the following gateways: PayDirect, Etransact and Remita.</li>
-                              <li>Ensure you obtain a receipt from the bank teller upon completing payment.</li>
-                              <li>Bring the receipt to the ZIRS head office or any of our Tax stations to obtain your official ZIRS hardcopy receipt. You can also retrieve your E-receipt on the plateauigr portal.</li>
-                          </ol>
-                      </td>
-                      <td>
-                          
-                          <h1 class="text-xl fontBold" id="theBal" data-money="${parseFloat(sumArray(TheDemandTotal))}">TOTAL ${formatMoney(parseFloat(sumArray(TheDemandTotal)))}</h1>    
-                      </td>
-                  </tr>
-                  <tr>
-                      <td>
-                          <p class=" text-center p-1 bg-[#5B4242] text-white text-xs fontBold">HOW TO PAY ONLINE</p> 
-                          <ol style='font-size:12px; list-style-type: decimal; padding-left: 20px'>
-                              <li>Visit <span class="underline text-[blue]">www.plateauigr.com</span> from your mobile or Computer.</li>
-                              <li>Click on “Pay Now” on the homepage.</li>
-                              <li>Enter your Demand Notice Number and click on proceed.</li>
-                              <li>Preview the Your CDN and proceed to pay.</li>
-                              <li>Select your preferred method and make payment.</li>
-                              <li>Your e-receipt is now available.</li>
-                          </ol>
-                      </td>
-                  </tr>
-              </tbody>
-          </table>
-          
-          <div class="flex justify-between items-center">
-              <div>
-                  <div class='flex justify-center'>
-                      <img src='./assets/img/rakiya_signature.png' class='w-[200px]' alt='' />
-                  </div>
-                  <div class="border border-2 w-[200px]" style="border-color: #000 !important"></div>
-                  <p class="fontBold text-sm text-center">Dr Jim Pam Wayas</p>
-                  <p class="fontBold text-sm text-center">Executive Chairman</p>
-              </div>
-              
-              <div class="border border-1 p-2  lg:pr-[100px] pr-[30px]" style="border-color: #000 !important;">
-                  <p class="text-xs fontBold text-center">HAVING ISSUES WITH YOUR  PAYMENT,</p>
-                  <p class="text-xs fontBold text-center">EMAIL OR CALL </p>
-                  <p class="text-xs fontBold text-center">ict@irs.zm.gov.ng</p>
-                  <p class="text-xs fontBold text-center">+2347060403146, +2349033509195</p>
-              </div>
+
+          <div class="space-y-4 mb-8 text-sm">
+            <p>
+              By this notice, the Service is making a demand on you for the payment of
+              ${formatMoney(sumArray(TheDemandTotal))} for the years stated above within 30 days from
+              today. Failure to comply will attract the necessary legal action to recover all tax liabilities against you.
+            </p>
+            <p>Thank you for your cooperation.</p>
+            <p>Yours faithfully,</p>
           </div>
-          
-          
-      </div>
-  `
+
+          <div class="mt-16">
+            <div class="border-t border-black w-48"></div>
+            <p class="font-bold mt-1">Executive Chairman</p>
+          </div>
+
+          <div class="border-t border-black w-full mt-5"></div>
+          <p class="text-sm text-center">KEY: MOC & I = Ministry of Commerce & Industry, TCOR = Tourism Corporation, MOL & S = Ministry of Lands, Survey & Town Planning, PSIRS = Plateau State Internal Revenue Service, MOENV = Ministry of Environment, LGOVT = Local Government</p>
+
+      `
+
 
   return demandInvoice
 }
@@ -425,8 +391,8 @@ async function openInvoice(invoicenum, price) {
 
 
 
-      $("#invoiceCard").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED <br/> DEMAND NOTICE", normalDate, textDemand))
-      $("#assessmentDemandNotice").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED NOTICE <br/> OF ASSESSMENT", add30Days(normalDate), textAssessment))
+      $("#invoiceCard").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED DEMAND NOTICE", normalDate, textDemand))
+      $("#assessmentDemandNotice").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED NOTICE OF ASSESSMENT", add30Days(normalDate), textAssessment))
 
       $("#invoiceCardSecond").html(TotalInvoice)
 

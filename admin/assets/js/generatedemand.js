@@ -2,6 +2,23 @@ let theRevs = {}
 let theCateg = ["", "Corporate", "Individual", "State Agency", "Federal Agency"]
 let AllRevs;
 
+const the_sectors = [
+  "Construction Sector",
+  "Education Sector",
+  "Agricultural Sector",
+  "Financial Institutions",
+  "Health Sector",
+  "Hospitality Sector",
+  "ICT Sector",
+  "Oil and Gas Sector",
+]
+
+the_sectors.forEach((sect) => {
+  $('#sectorSelect').append(`
+    <option value='${sect}'>${sect}</option>  
+  `)
+})
+
 function printInvoice(thecard) {
   var originalContent = document.body.innerHTML;
   var printContent = document.getElementById(thecard).innerHTML;
