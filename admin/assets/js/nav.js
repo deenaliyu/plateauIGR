@@ -1273,7 +1273,7 @@ if (stateSelect) {
     let selectedState = $(this).val()
 
     let arrStates = Object.values(lgaList)
-    let finalarrState = arrStates[stateSelect.selectedIndex - 1]
+    let finalarrState = arrStates[stateSelect.selectedIndex]
 
     lgaSelect.innerHTML = ''
 

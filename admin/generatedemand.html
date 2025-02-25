@@ -478,7 +478,7 @@
 
             <li class="nav-item" role="presentation">
               <a class="nav-link" id="profile-tab" data-bs-toggle="tab" href="#profile" role="tab"
-                aria-controls="profile" aria-selected="false">Invoice</a>
+                aria-controls="profile" aria-selected="false">Audit Letter</a>
             </li>
           </ul>
         </div>
@@ -534,30 +534,26 @@
 
 
           <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-            <section class="p-5">
-              <div class="invoiceContainer flex justify-center">
-                <div class="invoice bg-white lg:w-[60%] w-[90%] shadow-md md:-mt-12 mt-2" id="invoiceCardSecond">
-                  <!-- COMING FROM JS invoice.js -->
-                </div>
+            <div class="invoiceContainer flex justify-center">
+              <div class="invoice bg-white lg:w-[60%] w-[90%] shadow-md md:-mt-12 mt-2" id="auditLetter">
+                <!-- COMING FROM JS invoice.js -->
               </div>
+            </div>
 
-              <div class="flex justify-center px-4">
-                <div>
-                  <div class="flex justify-between mt-4 gap-3">
-                    <button class="outline-btn flex gap-3 items-center px-10"
-                      onclick="downloadInvoice('invoiceCardSecond')">
-                      <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
-                      <span>Download Invoice</span>
-                    </button>
-                    <button class="outline-btn flex gap-3 items-center px-10"
-                      onclick="printInvoice('invoiceCardSecond')">
-                      <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
-                      <span>Print Invoice</span>
-                    </button>
-                  </div>
+            <div class="flex justify-center px-4">
+              <div>
+                <div class="flex justify-between mt-4 gap-3">
+                  <button class="outline-btn flex gap-3 items-center px-10" onclick="downloadInvoice('auditLetter')">
+                    <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
+                    <span>Download Letter</span>
+                  </button>
+                  <button class="outline-btn flex gap-3 items-center px-10" onclick="printInvoice('auditLetter')">
+                    <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
+                    <span>Print Letter</span>
+                  </button>
                 </div>
               </div>
-            </section>
+            </div>
           </div>
         </div>
 
@@ -646,7 +642,7 @@
   </script>
 
 
-  <script src="assets/js/nav.js?v=2.0"></script>
+  <script src="assets/js/nav.js"></script>
   <!--<script src="assets/js/payment.js?v=1.6"></script>-->
   <script src="../assets/js/tabHandler.js"></script>
   <script src="../assets/js/invoice.js?v=8.0"></script>
