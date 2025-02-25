@@ -3,6 +3,8 @@ const category = urlParams.get('type');
 
 $("#pageName").html(category === "private" ? 'Private PAYE (PIT)' : 'Public PAYE')
 
+$("#bodyDrop").attr("href", `body-registration.html?type=${category}`)
+
 function formatMoney(amount) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
