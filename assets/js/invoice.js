@@ -98,7 +98,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
             </div>
             <div class="space-y-2">
               <div class="flex gap-2">
-                <span class="fontBold">NO:</span>
+                <span class="fontBold">Notice number:</span>
                 <p>${demandInvoiceInfo[0].invoice_number}</p>
               </div>
               <div class="flex gap-2">
@@ -206,11 +206,11 @@ function displayAuditLetter(demandInvoiceInfo) {
     }
   })
   auditletter += `
-    <div class="flex justify-between mb-8">
+      <div class="mb-8">
         <div class="font-medium">PSIRS/SCG/TAD/24/VOL2</div>
         <div class="flex gap-2">
           <span class="font-medium">Date:</span>
-          <div class="border-b border-black w-32">${demandInvoiceInfo[0].date_created.split(" ")[0]}</div>
+          <div>${demandInvoiceInfo[0].date_created.split(" ")[0]}</div>
         </div>
       </div>
 
@@ -221,27 +221,23 @@ function displayAuditLetter(demandInvoiceInfo) {
       <p class="mb-6 font-medium">Sir,</p>
 
       <div class="mb-6 font-bold space-y-1">
-        <p>DEMAND NOTICE FOR THE PAYMENT OF THE SUM OF ${formatMoney(sumArray(theauditTotal))}</p>
-        <p>TAX AUDIT FOR THE PERIOD ${demandInvoiceInfo[0].date_created.split(" ")[0]} - ${add30Days(demandInvoiceInfo[0].date_created)}</p>
+        <p class="fontBold">DEMAND NOTICE FOR THE PAYMENT OF THE SUM OF ${formatMoney(sumArray(theauditTotal))}</p>
+        <p class="fontBold">TAX AUDIT FOR THE PERIOD ${demandInvoiceInfo[0].date_created.split(" ")[0]} - ${add30Days(demandInvoiceInfo[0].date_created)}</p>
       </div>
 
       <div class="space-y-6 text-justify mb-8">
         <p>
           The Service in accordance with the provisions of the Personal Income Tax (Amended) Act 2011, reviewed your
           organization's payrolls, documents and established the sum of ${formatMoney(sumArray(theauditTotal))} (amount in words) only as unremitted
-          Taxes. You are by this demand notice required to pay the above sum into the 
+          Taxes. You are by this demand notice required to pay the above sum to Plateau State Government through the 
           <span class="fontBold">
-            Plateau State Internal Revenue Service First Bank of Nigeria Plc. Account Number 2008769374
-          </span>
-          or the TSA Account of the Plateau State Government through the Tax Audit Liability Sub-Head of the Plateau
-          State Intelligent billing System Plat Form using your TIN as Account Number.
+            Plateau State Intelligent billing System Platform (plateauigr.com)
+          </span>, or by visiting any <span class="fontBold">Bank Branch</span> using demand notice number <span class="fontBold">${demandInvoiceInfo[0].invoice_number}</span>
+          as your invoice number to make payments.
         </p>
 
         <p>
-          Kindly note that, the Service while carrying out the audit adhered strictly to the provisions of the Personal
-          Income Tax Act. In the event that your organisation disagrees with the attached audit report, you are allowed
-          by Law to make an objection within 30days on receipt of this demand notice. Where no objection is made within
-          the stipulated period, the above assessment will be deemed as final and conclusive.
+          Kindly note that, the Service while carrying out the audit adhered strictly to the provisions of the Personal Income Tax Act. In the event that your organisation disagrees with the attached audit report, you are allowed by Law to make an objection within 30days on receipt of this demand notice. Where no objection is made within the stipulated period, the above assessment will be deemed as final and conclusive.
         </p>
 
         <p>Please accept the assurance of my highest regards.</p>
