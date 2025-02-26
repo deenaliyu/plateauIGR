@@ -60,7 +60,7 @@ async function fetchInvoice() {
       },
       { data: 'tax_number' },
       { data: 'COL_3' },
-      { data: 'COL_4' },
+      // { data: 'COL_4' },
       {
         data: null,
         render: function (data, type, row) {

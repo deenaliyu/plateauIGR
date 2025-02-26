@@ -321,6 +321,126 @@
       </div>
     </div>
 
+    <div class="modal fade" id="editStaff" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header ">
+            <h5 class="modal-title" id="exampleModalCenterTitle">Edit Staff</h5>
+
+            <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+              aria-label="Close"><iconify-icon icon="fa6-solid:x"></iconify-icon></button>
+          </div>
+          <div class="modal-body">
+            <form action="">
+
+              <h1 class="fontBold text-xl">Add New Employee</h1>
+              <p class="mt-2 mb-4">Basic Information</p>
+
+
+              <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Full Name*</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="fullname" required>
+                </div>
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Email*</label>
+                  <input type="email" class="form-control w-full enumInput" data-name="email" required>
+                </div>
+
+              </div>
+
+              <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Phone*</label>
+                  <input type="tel" class="form-control w-full enumInput" data-name="phone" required>
+                </div>
+
+                <div class="form-group md:w-6/12">
+                  <label for="">TIN</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="payer_id">
+                </div>
+
+              </div>
+
+              <div class="form-group w-full mb-3">
+                <label for="">Annual Gross Income*</label>
+                <input type="text" class="form-control w-full enumInput" data-name="annual_gross_income" required>
+              </div>
+
+              <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Basic Salary*</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="basic_salary" required>
+                </div>
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Date Employed*</label>
+                  <input type="date" class="form-control w-full enumInput" data-name="date_employed" required>
+                </div>
+
+              </div>
+
+              <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Housing</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="housing">
+                </div>
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Transport</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="transport">
+                </div>
+
+              </div>
+
+              <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Utility</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="utility">
+                </div>
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Medical</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="medical">
+                </div>
+
+              </div>
+
+              <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Entertainment</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="entertainment">
+                </div>
+
+                <div class="form-group md:w-6/12">
+                  <label for="">Leave</label>
+                  <input type="text" class="form-control w-full enumInput" data-name="leaves">
+                </div>
+
+              </div>
+
+
+
+
+              <button class="button w-full mb-4" type="button" id="theButton" onclick="continueReg()">Continue</button>
+              <div id="msg_box"></div>
+
+            </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+
+
 
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>

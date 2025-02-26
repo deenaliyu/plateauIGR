@@ -89,7 +89,7 @@ function addInput() {
           </div>
     
           <div class="form-group w-4/12">
-            <label for="">Amount to be paid*</label>
+            <label for="">Amount*</label>
             <input type="text" class="form-control genInv thePaymentInput h-[40px] amountTopay" id="amountTopay">
           </div>
     
@@ -761,7 +761,7 @@ async function generateInvoiceNum(taxNumber) {
 
   let description = document.querySelector("#thedescripInput").value
   //   let previous_year = document.querySelector("#previous_year").value
-  let file_no = document.querySelector("#file_no").value
+  // let file_no = document.querySelector("#file_no").value
   let business_own = document.querySelector("#business_own").value
 
   // let lga = $("#LGAaas").val()
@@ -770,7 +770,7 @@ async function generateInvoiceNum(taxNumber) {
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&sector=${the_sector}&file_no=${file_no}&invoice_type=demand notice`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&sector=${the_sector}&file_no=0001&invoice_type=demand notice`,
     dataType: 'json',
     success: function (data) {
       console.log(data)

@@ -3,7 +3,7 @@ const payerID = urlParams.get('payerID');
 const fullname = urlParams.get('fullname');
 
 $("#payeID").html(payerID)
-
+let AllEmployees;
 
 
 async function fetchPayeUser() {
@@ -61,6 +61,7 @@ async function getStaffLists() {
     $('#dataTable').DataTable();
 
   } else {
+    AllEmployees = specialUsers.message
     specialUsers.message.reverse().forEach((rhUser, i) => {
 
       $("#stafflistTable").append(`
@@ -68,7 +69,7 @@ async function getStaffLists() {
             <td>${i + 1}</td>
             <td>${rhUser.payer_id}</td>
             <td>${rhUser.fullname}</td>
-            <td>${rhUser.annual_gross_income}</td>
+            <td>${formatMoney(parseFloat(rhUser.annual_gross_income))}</td>
             <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
             <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
             <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
@@ -76,7 +77,7 @@ async function getStaffLists() {
             <td>&#8358; 24,000,000</td>
             <td>
               <div class="flex items-center gap-2">
-                <button><iconify-icon class="fontBold text-lg"
+                <button onclick="editMDAFunc(this)" data-revid="${rhUser.id}" data-bs-toggle="modal" data-bs-target="#editStaff"><iconify-icon class="fontBold text-lg"
                     icon="basil:edit-outline"></iconify-icon></button>
                 <button><iconify-icon class="fontBold text-lg"
                     icon="fluent:delete-24-regular"></iconify-icon></button>
@@ -88,8 +89,81 @@ async function getStaffLists() {
   }
 }
 
+
+
 getStaffLists().then(tt => {
   $('#dataTable').DataTable();
+})
+
+function editMDAFunc(e) {
+  let editaID = e.dataset.revid
+  // console.log(editaID)
+  sessionStorage.setItem("userUpdate", editaID)
+
+  let theREV = AllEmployees.find(dd => dd.id === editaID)
+
+  let allInputs = document.querySelectorAll(".enumInput")
+
+  allInputs.forEach(theInpt => {
+    if (theREV[theInpt.dataset.name]) {
+      theInpt.value = theREV[theInpt.dataset.name]
+    }
+  })
+}
+
+$("#editRevenue").on("click", () => {
+  let theRevId = sessionStorage.getItem("userUpdate")
+  $("#msg_box").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  $("#theButton").addClass("hidden")
+
+  let allInputs = document.querySelectorAll(".enumInput")
+
+  let obj = {
+    data: {
+      id: theRevId,
+    }
+  }
+  allInputs.forEach(allInput => {
+    obj.data[allInput.dataset.name] = allInput.value
+  })
+  let queryString = $.param(obj.data);
+
+  $.ajax({
+    type: "GET",
+    url: `${HOST}?updateSpecialUsers&` + queryString,
+    dataType: "json",
+    success: function (data) {
+      console.log(data)
+      if (data.status === 2) {
+        $("#msg_box").html(`
+          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
+        `)
+        $("#theButton").removeClass("hidden")
+
+      } else if (data.status === 1) {
+        $("#msg_box").html(`
+          <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+        `)
+        $("#theButton").removeClass("hidden")
+        setTimeout(() => {
+          $('#theButton').modal('hide');
+          window.location.reload()
+        }, 1000);
+
+      }
+    },
+    error: function (request, error) {
+      $("#msg_box").html(`
+        <p class="text-danger text-center mt-4 text-lg">Something went wrong, Try again !</p>
+      `)
+      $("#theButton").removeClass("hidden")
+      console.log(error);
+    }
+  });
 })
 
 
