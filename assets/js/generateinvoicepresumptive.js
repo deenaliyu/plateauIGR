@@ -536,6 +536,7 @@ async function generateInvoiceNum(taxNumber) {
   let amt = parseFloat(document.querySelector("#amt").textContent.replace(/[^0-9.-]+/g, ""));
   console.log(amt)
   let the_id = 5306
+  invoice_type = "presumptive"
 
   let description = document.querySelector("#thedescripInput").value
 
@@ -555,7 +556,7 @@ async function generateInvoiceNum(taxNumber) {
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amt}&description=${description}`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amt}&description=${description}$invoice_type=${invoice_type}`,
     dataType: 'json',
     success: function (data) {
       clearTimeout(timer); // Clear the timer if the request succeeds
