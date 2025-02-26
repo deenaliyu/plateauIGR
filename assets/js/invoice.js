@@ -126,7 +126,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
                 <th>REVENUE ITEM</th>
                 <th>AMOUNT PAYABLE (N)</th>
                 <th>STATE MDA/LGA</th>
-                <th colspan="3" class="text-center">
+                <th colspan="2" class="text-center">
                   YEAR OF ASSESSMENT
                 </th>
               </tr>
@@ -140,13 +140,14 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
       `
   TheDemandTotal = []
   demandInvoiceInfo.forEach((demandnot, i) => {
+    let amountPayable = parseFloat(demandnot.amount_paid) + (demandnot.previous_year_value ? parseFloat(demandnot.previous_year_value) : 0)
     demandInvoice += `
           <tr>
             <td class='text-xs'>${i + 1}</td>
             <td class='text-xs'>${demandnot.COL_4}</td>
-            <td class='text-xs'>${demandnot.amount_paid}</td>
+            <td class='text-xs'>${formatMoney(amountPayable)}</td>
             <td class='text-xs'>${demandnot.COL_3}</td>
-            <td class='text-xs'>${demandnot.previous_year_value ? formatMoney(parseFloat(demandnot.previous_year_value)) : 'Nil'}</td>
+            <td class='text-xs'>${demandnot.previous_year_value ? parseFloat(demandnot.previous_year_value).toFixed(2) : 'Nil'}</td>
             <td class='text-xs'>${demandnot.amount_paid}</td>
           </tr>
         `
