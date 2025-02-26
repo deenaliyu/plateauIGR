@@ -556,7 +556,7 @@ async function generateInvoiceNum(taxNumber) {
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amt}&description=${description}$invoice_type=${invoice_type}`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amt}&description=${description}&invoice_type=${invoice_type}`,
     dataType: 'json',
     success: function (data) {
       clearTimeout(timer); // Clear the timer if the request succeeds
