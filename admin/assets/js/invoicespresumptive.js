@@ -85,7 +85,7 @@ async function fetchInvoice() {
       {
         data: null,
         render: function (data, type, row) {
-          return `<a href="./viewdemand.html?invnumber=${row.invoice_number}&load=true" class="btn btn-primary btn-sm viewUser">View CDM/Invoice</a>`;
+          return ` <a href="./viewinvoice.html?invnumber=${row.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Invoice</a>`;
         }
       },
     ],
