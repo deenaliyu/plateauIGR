@@ -57,7 +57,9 @@ async function fetchPayeUsers() {
 
 }
 
-fetchPayeUsers()
+fetchPayeUsers().then(e => {
+  $('#dataTable').DataTable();
+})
 
 
 async function getSpecialUsersDash1() {

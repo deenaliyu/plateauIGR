@@ -6,6 +6,7 @@ $("#payeID").html(payerID)
 let AllEmployees;
 
 
+
 async function fetchPayeUser() {
 
   const response = await fetch(`${HOST}/?getSpecialUsers&id=${payerID}`)
@@ -25,7 +26,7 @@ async function fetchPayeUser() {
       <p class="text-sm mb-2"><span class="fontBold">Address: </span> ${theInfo.address}</p>
     `)
 
-    $("#reg_staff").html(theInfo.staff_quota)
+    // $("#reg_staff").html(theInfo.staff_quota)
     $("#month_remm").html(formatMoney(parseFloat(theInfo.monthly_estimate)))
     $("#payeName").html(theInfo.name)
 
@@ -62,6 +63,7 @@ async function getStaffLists() {
 
   } else {
     AllEmployees = specialUsers.message
+    $("#reg_staff").html(AllEmployees.length)
     specialUsers.message.reverse().forEach((rhUser, i) => {
 
       $("#stafflistTable").append(`
@@ -111,7 +113,7 @@ function editMDAFunc(e) {
   })
 }
 
-$("#editRevenue").on("click", () => {
+$("#theButton").on("click", () => {
   let theRevId = sessionStorage.getItem("userUpdate")
   $("#msg_box").html(`
     <div class="flex justify-center items-center mt-4">
@@ -123,6 +125,7 @@ $("#editRevenue").on("click", () => {
   let allInputs = document.querySelectorAll(".enumInput")
 
   let obj = {
+    endpoint: "updateSpecialUsers",
     data: {
       id: theRevId,
     }
@@ -130,11 +133,11 @@ $("#editRevenue").on("click", () => {
   allInputs.forEach(allInput => {
     obj.data[allInput.dataset.name] = allInput.value
   })
-  let queryString = $.param(obj.data);
 
   $.ajax({
-    type: "GET",
-    url: `${HOST}?updateSpecialUsers&` + queryString,
+    type: "POST",
+    url: HOST,
+    data: JSON.stringify(obj),
     dataType: "json",
     success: function (data) {
       console.log(data)
