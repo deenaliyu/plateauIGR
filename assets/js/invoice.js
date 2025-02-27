@@ -224,10 +224,10 @@ function displayAuditLetter(demandInvoiceInfo) {
       </div>
 
       <div class="mb-8 space-y-1">
+        <span class="font-medium">The Managing Director,</span>
         <p>${demandInvoiceInfo[0].first_name}  ${demandInvoiceInfo[0].surname}</p>
+         <p class="font-medium">Sir,</p>
       </div>
-
-      <p class="mb-6 font-medium">Sir,</p>
 
       <div class="mb-6 font-bold space-y-1">
         <p class="fontBold">DEMAND NOTICE FOR THE PAYMENT OF THE SUM OF ${formatMoney(sumArray(theauditTotal))}</p>
