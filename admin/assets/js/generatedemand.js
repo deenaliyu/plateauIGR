@@ -99,12 +99,18 @@ function addInput() {
         <div class="flex items-center gap-2 mb-4">
             <div class="form-group w-full">
                 <label for="">Previous Year *</label>
-                <input type="text" class="form-control genInv prevYears" id="previous_year" placeholder="Previous Year" required>
+                <input type="text" class="form-control genInv prevYears" id="previous_year" placeholder="Year 1" required>
+
+                <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2"
+                  placeholder="Year 2" required>
             </div>
             
             <div class="form-group w-full">
                 <label for="">Previous Year Amount *</label>
-                <input type="text" class="form-control genInv prevAmounts" id="previous_year_value" placeholder="Previous Year Amount" required>
+                <input type="text" class="form-control genInv prevAmounts" id="previous_year_value" placeholder="Year 1 Amount" required>
+
+                <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2"
+                  id="previous_year_value2" placeholder="Year 2 Amount" required>
             </div>
             
             <iconify-icon icon="zondicons:minus-outline" class="cursor-pointer" id="${theStrng}" onclick="removeInpt(this)"></iconify-icon>
@@ -297,8 +303,8 @@ async function fetchRevHeads(categ) {
     revHeads.message.forEach((revHd, i) => {
       // if (revHd.COL_5 === categ) {
 
-        revenueArr.push(revHd)
-        $("#rev_heads").append(`
+      revenueArr.push(revHd)
+      $("#rev_heads").append(`
         <option value="${revHd["id"]}">${revHd["COL_4"]} (${revHd["COL_3"]}) - ${revHd.COL_5}</option>
         `)
       // }
@@ -542,12 +548,20 @@ document.getElementById("category").addEventListener("change", function () {
 let amountto = []
 let prevYears = []
 let prevYearsAmount = []
+
+let prevYears2 = []
+let prevYearsAmount2 = []
+
 let revenueHeader = []
 
 function goToPreviewPage() {
   amountto = []
   prevYears = []
   prevYearsAmount = []
+
+  prevYears2 = []
+  prevYearsAmount2 = []
+
   revenueHeader = []
 
   let payInputs = document.querySelectorAll(".payInputs")
@@ -557,11 +571,16 @@ function goToPreviewPage() {
   let thePayInputs = document.querySelectorAll(".thePaymentInput")
   let prevYearsAll = document.querySelectorAll(".prevYears")
   let prevYearsAllAmount = document.querySelectorAll(".prevAmounts")
+
+  let prevYearsAll2 = document.querySelectorAll(".prevYears2")
+  let prevYearsAllAmount2 = document.querySelectorAll(".prevAmounts2")
+
   let allTheRevenues = document.querySelectorAll(".revenueHeader")
 
   let revHeadsss = document.querySelectorAll(".revHeadsss")
   //let mdaSelected = document.querySelector("#mda").value
   let previewAmount = 0
+
   thePayInputs.forEach((payIn, i) => {
     let mm = payIn.value.replace(/,/g, '');
 
@@ -569,9 +588,15 @@ function goToPreviewPage() {
 
     previewAmount += parseFloat(mm)
     previewAmount += prevYearsAllAmount[i].value === "" ? 0 : parseFloat(prevYearsAllAmount[i].value)
+    previewAmount += prevYearsAllAmount2[i].value === "" ? 0 : parseFloat(prevYearsAllAmount2[i].value)
 
     prevYears.push(prevYearsAll[i].value)
     prevYearsAmount.push(prevYearsAllAmount[i].value === "" ? 0 : parseFloat(prevYearsAllAmount[i].value))
+
+    prevYears2.push(prevYearsAll2[i].value)
+    prevYearsAmount2.push(prevYearsAllAmount2[i].value === "" ? 0 : parseFloat(prevYearsAllAmount2[i].value))
+
+
     revenueHeader.push(allTheRevenues[i].value)
   })
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
@@ -770,7 +795,7 @@ async function generateInvoiceNum(taxNumber) {
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&sector=${the_sector}&file_no=0001&invoice_type=demand notice`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&previous_year2=${prevYears2.join(',')}&previous_year_value2=${prevYearsAmount2.join(',')}&sector=${the_sector}&file_no=0001&invoice_type=demand notice`,
     dataType: 'json',
     success: function (data) {
       console.log(data)

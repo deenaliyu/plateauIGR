@@ -126,13 +126,14 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
                 <th>REVENUE ITEM</th>
                 <th>AMOUNT PAYABLE (N)</th>
                 <th>STATE MDA/LGA</th>
-                <th colspan="2" class="text-center">
+                <th colspan="3" class="text-center">
                   YEAR OF ASSESSMENT
                 </th>
               </tr>
               <tr>
                 <th colspan="4"></th>
                 <th>${demandInvoiceInfo[0].previous_year ? demandInvoiceInfo[0].previous_year : '-'}</th>
+                <th>${demandInvoiceInfo[0].previous_year_2 ? demandInvoiceInfo[0].previous_year_2 : '-'}</th>
                 <th>${demandInvoiceInfo[0].date_created.split('-')[0]}</th>
               </tr>
             </thead>
@@ -140,7 +141,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
       `
   TheDemandTotal = []
   demandInvoiceInfo.forEach((demandnot, i) => {
-    let amountPayable = parseFloat(demandnot.amount_paid) + (demandnot.previous_year_value ? parseFloat(demandnot.previous_year_value) : 0)
+    let amountPayable = parseFloat(demandnot.amount_paid) + (demandnot.previous_year_value ? parseFloat(demandnot.previous_year_value) : 0) + (demandnot.previous_year_value_2 ? parseFloat(demandnot.previous_year_value_2) : 0)
     demandInvoice += `
           <tr>
             <td class='text-xs'>${i + 1}</td>
@@ -148,6 +149,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
             <td class='text-xs'>${formatMoney(amountPayable)}</td>
             <td class='text-xs'>${demandnot.COL_3}</td>
             <td class='text-xs'>${demandnot.previous_year_value ? parseFloat(demandnot.previous_year_value).toFixed(2) : 'Nil'}</td>
+            <td class='text-xs'>${demandnot.previous_year_value_2 ? parseFloat(demandnot.previous_year_value_2).toFixed(2) : 'Nil'}</td>
             <td class='text-xs'>${demandnot.amount_paid}</td>
           </tr>
         `
@@ -155,6 +157,9 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
     TheDemandTotal.push(parseFloat(demandnot.amount_paid))
     if (demandnot.previous_year_value && demandnot.previous_year_value > 0) {
       TheDemandTotal.push(parseFloat(demandnot.previous_year_value))
+    }
+    if (demandnot.previous_year_value_2 && demandnot.previous_year_value_2 > 0) {
+      TheDemandTotal.push(parseFloat(demandnot.previous_year_value_2))
     }
   })
   demandInvoice += `
@@ -205,6 +210,9 @@ function displayAuditLetter(demandInvoiceInfo) {
     if (demandnot.previous_year_value && demandnot.previous_year_value > 0) {
       theauditTotal.push(parseFloat(demandnot.previous_year_value))
     }
+    if (demandnot.previous_year_value2 && demandnot.previous_year_value2 > 0) {
+      theauditTotal.push(parseFloat(demandnot.previous_year_value2))
+    }
   })
   auditletter += `
       <div class="mb-8">
@@ -230,18 +238,18 @@ function displayAuditLetter(demandInvoiceInfo) {
         <p>
           The Service in accordance with the provisions of the Personal Income Tax (Amended) Act 2011, reviewed your
           organization's payrolls, documents and established the sum of ${formatMoney(sumArray(theauditTotal))} (amount in words) only as unremitted
-          Taxes. You are by this demand notice required to pay the above sum to Plateau State Government through the 
-          <span class="fontBold">
-            Plateau State Intelligent billing System Platform (plateauigr.com)
-          </span>, or by visiting any <span class="fontBold">Bank Branch</span> using demand notice number <span class="fontBold">${demandInvoiceInfo[0].invoice_number}</span>
-          as your invoice number to make payments.
+          Taxes. You are by this demand notice required to pay the above sum to Plateau State Government through the  following ways:
+          
+          <ul>
+            <li class="mb-2">1. Visit the <strong>Plateau State Intelligent billing System Platform (Plateauigr.com)</strong>, click on pay now, select any of the payment gateways, use your <strong>Notice Number</strong> as invoice number to proceed with payments.</li>
+            <li class="mb-2">2. Visit any <strong>Bank Branch</strong>, using demand notice number <strong>${demandInvoiceInfo[0].invoice_number}</strong> as your invoice number to make payments via quickteller, e-transact and paystack. And Request to make payments via paydirect.</li>
+          </ul>
+          
         </p>
 
-        <p>
-          Kindly note that, the Service while carrying out the audit adhered strictly to the provisions of the Personal Income Tax Act. In the event that your organisation disagrees with the attached audit report, you are allowed by Law to make an objection within 30days on receipt of this demand notice. Where no objection is made within the stipulated period, the above assessment will be deemed as final and conclusive.
-        </p>
+        <p>Kindly note that, the Service while carrying out the audit adhered strictly to the provisions of the Personal Income Tax Act. In the event that your organisation disagrees with the attached audit report, you are allowed by Law to make an objection within 30days on receipt of this demand notice. Where no objection is made within the stipulated period, the above assessment will be deemed as final and conclusive.</p>
 
-        <p>Please accept the assurance of my highest regards.</p>
+        <p class="mt-3">Please accept the assurance of my highest regards.</p>
       </div>
 
       <div class="text-center mt-16 space-y-1">
