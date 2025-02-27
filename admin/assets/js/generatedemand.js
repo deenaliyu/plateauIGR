@@ -812,7 +812,7 @@ async function generateInvoiceNum(taxNumber) {
           icon: 'success',
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Open Invoice',
+          confirmButtonText: 'Open Demand Notice',
           allowOutsideClick: false
         }).then((result) => {
           if (result.isConfirmed) {
