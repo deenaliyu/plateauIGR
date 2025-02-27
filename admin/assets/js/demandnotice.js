@@ -59,7 +59,7 @@ async function fetchInvoice() {
         },
       },
       { data: 'tax_number' },
-      { data: 'COL_3' },
+      // { data: 'COL_3' },
       // { data: 'COL_4' },
       {
         data: null,
@@ -71,7 +71,7 @@ async function fetchInvoice() {
       {
         data: null,
         render: function (data, type, row) {
-          return formatMoney(row.amount_paid);
+          return formatMoney(row.total_amount_paid);
         }
       },
       { data: 'date_created' },
