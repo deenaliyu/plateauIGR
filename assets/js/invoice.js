@@ -241,13 +241,25 @@ function displayAuditLetter(demandInvoiceInfo) {
           Taxes. You are by this demand notice required to pay the above sum to Plateau State Government through the  following ways:
           
           <ul>
-            <li class="mb-2">1. Visit the <strong>Plateau State Intelligent billing System Platform (Plateauigr.com)</strong>, click on pay now, select any of the payment gateways, use your <strong>Notice Number</strong> as invoice number to proceed with payments.</li>
-            <li class="mb-2">2. Visit any <strong>Bank Branch</strong>, using demand notice number <strong>${demandInvoiceInfo[0].invoice_number}</strong> as your invoice number to make payments via quickteller, e-transact and paystack. And Request to make payments via paydirect.</li>
+            <li class="mb-2 fontBold">1. Web Payment</li>
+            <li><span class="fontBold">Step 1</span> Visit www.plateauigr.com</li>
+            <li><span class="fontBold">Step 2</span> Click on Pay Now</li>
+            <li><span class="fontBold">Step 3</span> Use the Notice Number ${demandInvoiceInfo[0].invoice_number} as Invoice Number to proceed with payment.</li>
+            <li><span class="fontBold">Step 4</span> Select preferred payment gateway (Paystack, Credo, or Interswitch).</li>
+
+            <li class="my-2 fontBold">2. Bank Branch</li>
+            <li><span class="fontBold">Step 1</span> Visit any Bank Branch.</li>
+            <li><span class="fontBold">Step 2</span> Use the Notice Number ${demandInvoiceInfo[0].invoice_number} as your Invoice Number.</li>
+            <li><span class="fontBold">Step 3</span> Request to make payments via quickteller or e-transact.</li>
+            <li><span class="fontBold">Step 4</span> Retain receipt as proof of payment.</li>
           </ul>
           
         </p>
 
-        <p>Kindly note that, the Service while carrying out the audit adhered strictly to the provisions of the Personal Income Tax Act. In the event that your organisation disagrees with the attached audit report, you are allowed by Law to make an objection within 30days on receipt of this demand notice. Where no objection is made within the stipulated period, the above assessment will be deemed as final and conclusive.</p>
+        <p>Kindly note that, the Service while carrying out the audit adhered strictly to the provisions of the Personal Income Tax Act. 
+        In the event that your organisation disagrees with the attached audit report, you are allowed by Law to make an objection within 
+        30days on receipt of this demand notice. Where no objection is made within the stipulated period, the above assessment will be deemed
+         as final and conclusive.</p>
 
         <p class="mt-3">Please accept the assurance of my highest regards.</p>
       </div>
