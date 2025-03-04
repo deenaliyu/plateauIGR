@@ -343,8 +343,10 @@ function goToPreviewPage() {
 
         let business_type = data.message.business_type
         let amount = data.message.minimum
-        // console.log(taxNumber)
-        info(business_type, amount)
+        let categories = data.message.category
+        // console.log(categories)
+        info(business_type, amount, categories)
+
 
       }
     },
@@ -357,7 +359,7 @@ function goToPreviewPage() {
     }
   });
   
-  async function info(business_type, amount) {
+  async function info(business_type, amount, categories) {
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
 
   if (categOfTax === "Corporate") {
@@ -389,6 +391,10 @@ function goToPreviewPage() {
         <p>Amount:</p>
         <p id="amt">${amount}</p>
       </div>  
+       <div class="flex space-x-3 hidden">
+        <p>Category:</p>
+        <p id="business_class">${categories}</p>
+      </div>
   `
   $("#bill").html(theSpace)
   for (let i = 0; i < payInputs.length; i++) {
@@ -534,7 +540,7 @@ async function generateInvoiceNon() {
 
 async function generateInvoiceNum(taxNumber) {
   let amt = parseFloat(document.querySelector("#amt").textContent.replace(/[^0-9.-]+/g, ""));
-  console.log(amt)
+  let cati = document.querySelector("#business_class").textContent;
   let the_id = 5306
   invoice_type = "presumptive"
 
@@ -556,7 +562,7 @@ async function generateInvoiceNum(taxNumber) {
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amt}&description=${description}&invoice_type=${invoice_type}`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amt}&description=${description}&invoice_type=${invoice_type}&category_pre=${cati}`,
     dataType: 'json',
     success: function (data) {
       clearTimeout(timer); // Clear the timer if the request succeeds

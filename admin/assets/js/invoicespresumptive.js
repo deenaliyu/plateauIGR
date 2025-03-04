@@ -68,6 +68,7 @@ async function fetchInvoice() {
         }
       },
       { data: 'invoice_number' },
+      { data: 'business_cat' },
       {
         data: null,
         render: function (data, type, row) {
