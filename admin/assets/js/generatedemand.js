@@ -97,23 +97,23 @@ function addInput() {
         </div>
         
         <div class="flex items-center gap-2 mb-4">
-            <div class="form-group w-full">
-                <label for="">Previous Year *</label>
-                <input type="text" class="form-control genInv prevYears" id="previous_year" placeholder="Year 1" required>
+          <div class="form-group w-full">
+              <label for="">Previous Year *</label>
+              <input type="text" class="form-control genInv prevYears" id="previous_year" placeholder="Year 1" required>
 
-                <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2"
-                  placeholder="Year 2" required>
-            </div>
+              <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2"
+                placeholder="Year 2" required>
+          </div>
             
-            <div class="form-group w-full">
-                <label for="">Previous Year Amount *</label>
-                <input type="text" class="form-control genInv prevAmounts" id="previous_year_value" placeholder="Year 1 Amount" required>
+          <div class="form-group w-full">
+            <label for="">Previous Year Amount *</label>
+            <input type="text" class="form-control genInv prevAmounts" id="previous_year_value" placeholder="Year 1 Amount" required>
 
-                <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2"
-                  id="previous_year_value2" placeholder="Year 2 Amount" required>
-            </div>
+            <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2"
+              id="previous_year_value2" placeholder="Year 2 Amount" required>
+          </div>
             
-            <iconify-icon icon="zondicons:minus-outline" class="cursor-pointer" id="${theStrng}" onclick="removeInpt(this)"></iconify-icon>
+          <iconify-icon icon="zondicons:minus-outline" class="cursor-pointer" id="${theStrng}" onclick="removeInpt(this)"></iconify-icon>
         </div>
     `)
 
@@ -187,106 +187,14 @@ async function fetchZonalOffice(categ) {
 
 // fetchZonalOffice()
 
-let All15Items = [
-  "Fire safety fees",
-  "EIA/ gaseous Emission",
-  "Business premises Registration",
-  "Business Premises Renewals",
-  "Social Service",
-  "Development Levy",
-  "Water Rate",
-  "Signage & Advert Fees",
-  "Aiel Mast Charge",
-  "Tenement Rate",
-  "Wrong Parking Charges",
-  "Tenement Rate",
-  "Sign Board & Advert Permit Fees"
-]
+$("#sectorSelect").on("change", function () {
+  let theVal = $(this).val()
 
-// async function fetchRevHeads(categ) {
-//   const response = await fetch(`${HOST}/?getAllRevenueHeads`);
-//   const revHeads = await response.json();
+  fetchRevHeads(theVal)
+})
 
-//   if (revHeads.status !== 0) {
-//     const allowedRevs = new Set([
-//       "Fire safety certificates fee.",
-//       "gaseous Emission",
-//       "Business premises Registration",
-//       "Business Premises Renewals",
-//       "Social Services",
-//       "Development Levy",
-//       "Water charges",
-//       "Symbols & Signages",
-//       "Communication Mast",
-//       "Tenement Rate",
-//       "Wrong Parking Charges",
-//       "Sign Board & Advert Permit Fees"
-//     ].map(item => item.toLowerCase())); // Convert allowed items to lowercase
-
-//     let uniqueRevs = new Map(); // Use Map to store unique revenue heads
-
-//     revHeads.message.forEach(revHd => {
-//       let revName = revHd["COL_4"].toLowerCase(); // Normalize for comparison
-//       if (allowedRevs.has(revName) && !uniqueRevs.has(revName)) {
-//         uniqueRevs.set(revName, revHd); // Store the first occurrence
-//       }
-//     });
-
-//     $("#rev_heads").html(`
-//       <option disabled selected>Select--</option>
-//     `);
-
-//     uniqueRevs.forEach(revHd => {
-//       $("#rev_heads").append(`
-//         <option value="${revHd["id"]}">${revHd["COL_4"]} (${revHd["COL_3"]})</option>
-//       `);
-//     });
-
-//     AllRevs = Array.from(uniqueRevs.values()); // Store unique revenue heads
-//   }
-// }
-
-
-// async function fetchRevHeads(categ) {
-//   const response = await fetch(`${HOST}/?getAllRevenueHeads`);
-//   const revHeads = await response.json();
-
-//   if (revHeads.status !== 0) {
-//     const allowedRevs = [
-//       "Fire safety certificates fee",
-//       "gaseous Emission",
-//       "Business premises Registration",
-//       "Business Premises Renewals",
-//       "Social Service",
-//       "Development Levy",
-//       "Water charges",
-//       "Symbols & Signages",
-//       "Communication Mast",
-//       "Tenement Rate",
-//       "Wrong Parking Charges",
-//       "Sign Board & Advert Permit Fees"
-//     ].map(item => item.toLowerCase()); // Convert allowed items to lowercase for case insensitivity
-
-//     let filteredRevs = revHeads.message.filter(revHd =>
-//       allowedRevs.includes(revHd["COL_4"].toLowerCase()) // Check in lowercase
-//     );
-
-//     $("#rev_heads").html(`
-//       <option disabled selected>Select--</option>
-//     `);
-
-//     filteredRevs.forEach(revHd => {
-//       $("#rev_heads").append(`
-//         <option value="${revHd["id"]}">${revHd["COL_4"]} (${revHd["COL_3"]})</option>
-//       `);
-//     });
-
-//     AllRevs = filteredRevs;
-//   }
-// }
-
-async function fetchRevHeads(categ) {
-  const response = await fetch(`${HOST}/?getAllRevenueHeads&demand_notice=yes`)
+async function fetchRevHeads(sector) {
+  const response = await fetch(`${HOST}/?getAllRevenueHeads&demand_notice=yes&sector=${sector}`)
   const revHeads = await response.json()
 
   if (revHeads.status === 0) {
@@ -294,22 +202,54 @@ async function fetchRevHeads(categ) {
 
     theRevs = revHeads.message
     // console.log(theRevs)
-    $("#rev_heads").html(`
-      <option disabled selected>Select--</option>
-    `)
-
+    $("#revenueHeadItems").html("")
     let revenueArr = []
 
-    revHeads.message.forEach((revHd, i) => {
-      // if (revHd.COL_5 === categ) {
+    theRevs.forEach((dd, i) => {
+      revenueArr.push(dd)
 
-      revenueArr.push(revHd)
-      $("#rev_heads").append(`
-        <option value="${revHd["id"]}">${revHd["COL_4"]} (${revHd["COL_3"]}) - ${revHd.COL_5}</option>
-        `)
-      // }
+      $("#revenueHeadItems").append(`
+        <div class="mb-2 bg-white p-4 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Item - ${i+1}</h3>
+          <div class="flex items-center gap-2 mb-2">
 
-    });
+            <div class="form-group w-8/12">
+              <label for="">Assessment Informations*</label>
+              <select class="form-select genInv revHeadsss revenueHeader" required name="" >
+                <option value="${dd.id}" selected>${dd.COL_4} - (${dd.COL_5})</option>
+              </select>
+            </div>
+
+            <div class="form-group w-4/12">
+              <label for="">Amount*</label>
+              <input type="text" class="form-control genInv h-[40px] thePaymentInput amountTopay amountTopa"
+                id="amountTopay">
+            </div>
+
+          </div>
+
+          <div class="flex items-center gap-2">
+            <div class="form-group w-full">
+              <label for="">Previous Year *</label>
+              <input type="text" class="form-control form-control-sm genInv prevYears" id="previous_year"
+                placeholder="Year 1" required>
+
+              <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2"
+                placeholder="Year 2" required>
+            </div>
+
+            <div class="form-group w-full">
+              <label for="">Previous Year Amount *</label>
+              <input type="text" class="form-control form-control-sm genInv prevAmounts" id="previous_year_value"
+                placeholder="Year 1 Amount" required>
+
+              <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2"
+                id="previous_year_value2" placeholder="Year 2 Amount" required>
+            </div>
+          </div> 
+        </div> 
+      `)
+    })
 
     AllRevs = revenueArr
 
@@ -470,7 +410,7 @@ function continuePage() {
     if (i === genInv.length - 1) {
       let theCategValue = document.getElementById("category").value
       // console.log(theCateg[theCategValue])
-      fetchRevHeads(theCateg[theCategValue])
+      // fetchRevHeads(theCateg[theCategValue])
       $('#showcaseCateg').val(theCateg[theCategValue])
       nextPrev(1)
     }
