@@ -100,7 +100,9 @@
 
           <div class="container-xxl flex-grow-1 container-p-y taxes">
             <p class="font-bold text-2xl text-black">Presumptive Tax Report</p>
-
+            <div class="flex justify-content-end mt-3">
+              <a class="button" href="../generatepresumptiveinvoice.html">Generate Presumptive Tax </a>
+            </div>
             <div class="grid grid-cols-3 gap-3 mt-2" id="cardsForSummaray">
 
               <div class="card dashCards">
@@ -140,6 +142,7 @@
                       <th>Revenue Head</th>
                       <th>Name</th>
                       <th>Invoice Number</th>
+                      <th>Category</th>
                       <th>Amount</th>
                       <th>Date Created</th>
                       <th>Due Date</th>
@@ -192,35 +195,6 @@
 
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
-  </div>
-
-  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header ">
-          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
-            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
-        </div>
-        <div class="modal-body mb-5">
-
-          <h1 class="text-center text-2xl">TIN Status</h1>
-          <form action="">
-            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
-              Number.</p>
-
-            <select name="" id="selectInput" class="form-select mt-5">
-              <option disabled selected>update status</option>
-              <option value="0">Un-verfied</option>
-              <option value="1">Verified</option>
-            </select>
-
-            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
-            <div id="msg_box" class="w-full"></div>
-          </form>
-        </div>
-
-      </div>
-    </div>
   </div>
 
   <!-- build:js assets/vendor/js/core.js -->

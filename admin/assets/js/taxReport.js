@@ -60,11 +60,13 @@ async function fetchTaxPayers() {
           <div class="flex items-center gap-3">
        `
       showRe += `
-        <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser txView"><iconify-icon
-        icon="material-symbols:edit-square-outline"></iconify-icon></button>
+        <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txView"><iconify-icon
+        icon="material-symbols:edit-square-outline"></iconify-icon></a>
       `
+      
       showRe += `
       <a href="./taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
+
           </div>
       
         </tr>
@@ -142,6 +144,7 @@ async function fetchTaxPayers() {
 fetchTaxPayers().then(ee => {
 
 })
+{/* <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser btn btn-primary btn-s txView">Update</button> */}
 
 async function fetchEnutaxP() {
   $("#showreport2").html("")
@@ -203,6 +206,7 @@ async function fetchEnutaxP() {
 // <td>
 //   <img src="${txpayer.img}" class="w-[40px] rounded-full h-[40px] object-cover" alt="" />
 // </td>
+
 
 fetchEnutaxP().then(dd => {
   $('#dataTable2').DataTable();
