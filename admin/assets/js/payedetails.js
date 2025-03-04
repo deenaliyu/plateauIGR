@@ -27,7 +27,7 @@ async function fetchPayeUser() {
     `)
 
     // $("#reg_staff").html(theInfo.staff_quota)
-    $("#month_remm").html(formatMoney(parseFloat(theInfo.monthly_estimate)))
+    $("#month_remm").html(formatMoney(parseFloat(theInfo.total_remittance)))
     $("#payeName").html(theInfo.name)
 
     $("#pageName").html(theInfo.category === "Private" ? 'Private PAYE (PIT)' : 'Public PAYE')
@@ -60,7 +60,7 @@ async function getStaffLists() {
 
   if (specialUsers.status === 0) {
     $('#dataTable').DataTable();
-
+    $("#reg_staff").html(0)
   } else {
     AllEmployees = specialUsers.message
     $("#reg_staff").html(AllEmployees.length)

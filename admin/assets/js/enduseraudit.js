@@ -1,8 +1,8 @@
 $(document).ready(function () {
-  fetchAuditTrail()
+  fetchAuditTrail('login');
 });
 
-function fetchAuditTrail() {
+function fetchAuditTrail(categoryType) {
   if ($.fn.DataTable.isDataTable('#dataTable')) {
     $('#dataTable').DataTable().clear().destroy();
   }
@@ -12,13 +12,12 @@ function fetchAuditTrail() {
   const timeInTo = $('#filterDto').val();
 
   table = $('#dataTable').DataTable({
-    processing: true, // Show processing indicator
-    serverSide: true, // Enable server-side processing
-    paging: true,     // Enable pagination
-    searching: false,  // Enable search box
-    pageLength: 50,   // Number of items per page
-    ajax: function (data, callback, settings) {
-      // Convert DataTables page number to your API page number
+    processing: true,
+    serverSide: true,
+    paging: true,
+    searching: false,
+    pageLength: 50,
+    ajax: function (data, callback) {
       const pageNumber = Math.ceil(data.start / data.length) + 1;
 
       const filters = {
@@ -28,79 +27,79 @@ function fetchAuditTrail() {
         user_category: userCategory,
         timeIn_from: timeInFrom,
         timeIn_to: timeInTo,
+        category_type: categoryType
       };
 
-      // Call your API with the calculated page number
       $.ajax({
         url: HOST,
         type: 'GET',
         data: filters,
         success: function (response) {
-          // Map the API response to DataTables expected format
           callback({
-            draw: data.draw, // Pass through draw counter
-            recordsTotal: response.total, // Total records in your database
-            recordsFiltered: response.total, // Filtered records count
-            data: response.data, // The actual data array from your API
+            draw: data.draw,
+            recordsTotal: response.total,
+            recordsFiltered: response.total,
+            data: response.data
           });
         },
         error: function () {
           alert('Failed to fetch data.');
-        },
+        }
       });
     },
     columns: [
       {
         data: null,
-        orderable: false, // Disable ordering for the numbering column
+        orderable: false,
         render: function (data, type, row, meta) {
-          // Calculate the row number based on the page
           return meta.row + 1 + meta.settings._iDisplayStart;
-        },
+        }
       },
       {
         data: null,
         render: function (data, type, row) {
-          return `Name`;
+          switch (row.user_category) {
+            case 'Payer User': return row.payer_fullname;
+            case 'Admin User': return row.admin_fullname;
+            case 'Mda User': return row.mda_fullname;
+            default: return row.enumerator_fullname;
+          }
         }
       },
       { data: 'user_category' },
       { data: 'comment' },
       {
         data: null,
-        render: function (data, type, row) {
-          return `<span class="badge bg-success">success</span>`;
+        render: function () {
+          return '<span class="badge bg-success">success</span>';
         }
       },
       { data: 'timeIn' },
       {
         data: null,
         render: function (data, type, row) {
-          return `<button 
-          data-bs-toggle="modal" 
-          onclick="viewActii('${row.timeIn}', '${row.comment}','first Name', '${row.user_category}','Surname', '${row.session_id}',  '${row.ip_address}')" 
-          data-bs-target="#viewActivity" 
-          class="btn btn-primary btn-sm">View Activities</button>`;
+          const name = row.payer_fullname || row.admin_fullname || row.mda_fullname || row.enumerator_fullname;
+          return `<button data-bs-toggle="modal" onclick="viewActii('${row.timeIn}', '${row.comment}', '${name}', '${row.user_category}', '${row.session_id}', '${row.ip_address}')" data-bs-target="#viewActivity" class="btn btn-primary btn-sm">View Activities</button>`;
         }
-      },
-    ],
+      }
+    ]
   });
 }
 
 $('#filterBtn').on('click', function () {
-  fetchAuditTrail();
+  fetchAuditTrail('login');
 });
 
 async function fetchActivityMetrics() {
   try {
-    const response = await fetch('https://plateauigr.com/php/index.php?getActivityMetrics');
+    const response = await fetch(`${HOST}?getActivityMetrics`);
     const data = await response.json();
 
     if (data.status === 1) {
       const metrics = data.data;
 
-      document.getElementById('totalRegis').innerText = metrics.total_activities || '-';
-      document.getElementById('totalRegCateg').innerText = metrics.total_user_logins || '-';
+      document.getElementById('totalRegis').innerText = metrics.total_user_logins || '-';
+      // document.getElementById('totalRegCateg').innerText = metrics.total_user_logins || '-';
       document.getElementById('totalRegCategRege').innerText = metrics.total_errors || '-';
 
       document.querySelector('.total-activities-count').innerText = Number(metrics.total_activities).toLocaleString() || '0';
@@ -125,10 +124,10 @@ function setCurrentMonth() {
 }
 
 fetchActivityMetrics()
-setCurrentMonth()
+// setCurrentMonth()
 
-function viewActii(timeIn, comment, first_name, user_category, surname, session_id, ip_address) {
-  let names = first_name + " " + surname;
+function viewActii(timeIn, comment, first_name, user_category, session_id, ip_address) {
+  let names = first_name;
   $("#theRe").html(comment)
   $("#time").html(timeIn)
   $("#theName2").html(names)
