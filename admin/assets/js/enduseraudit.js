@@ -99,7 +99,7 @@ async function fetchActivityMetrics() {
       const metrics = data.data;
 
       document.getElementById('totalRegis').innerText = metrics.total_user_logins || '-';
-      // document.getElementById('totalRegCateg').innerText = metrics.total_user_logins || '-';
+      document.getElementById('totalRegCateg').innerText = metrics.total_change || '-';
       document.getElementById('totalRegCategRege').innerText = metrics.total_errors || '-';
 
       document.querySelector('.total-activities-count').innerText = Number(metrics.total_activities).toLocaleString() || '0';
