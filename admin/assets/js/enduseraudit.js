@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  fetchAuditTrail('login');
+  fetchAuditTrail('Logged');
 });
 
 function fetchAuditTrail(categoryType) {
@@ -27,7 +27,7 @@ function fetchAuditTrail(categoryType) {
         user_category: userCategory,
         timeIn_from: timeInFrom,
         timeIn_to: timeInTo,
-        category_type: categoryType
+        comment: categoryType
       };
 
       $.ajax({
@@ -87,7 +87,7 @@ function fetchAuditTrail(categoryType) {
 }
 
 $('#filterBtn').on('click', function () {
-  fetchAuditTrail('login');
+  fetchAuditTrail('Logged');
 });
 
 async function fetchActivityMetrics() {
