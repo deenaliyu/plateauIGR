@@ -22,6 +22,136 @@ function continueReg() {
 
 }
 
+async function fetchUserDetails() {
+  let tinOrEmail = document.querySelector("#tinOrEmail").value;
+
+  // Check if tinOrEmail is empty
+  if (!tinOrEmail) {
+    return;
+  }
+
+  $("#msg_box001").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  $("#theFetchBtns").addClass("hidden")
+
+  $.ajax({
+    type: "GET",
+    url: `${HOST}?checkUsers&data=${tinOrEmail}`,
+    dataType: 'json',
+    success: function (data) {
+
+      // console.log(data);
+      if (data.user) {
+        // if User details exists
+        $("#theFetchBtns").removeClass("hidden");
+        $("#msg_box001").html(``);
+
+        let allInputs = document.querySelectorAll(".enumInput")
+        let allInputs2 = document.querySelectorAll(".enumInputB")
+
+        $('.enumInput[data-name="fullname"]').val(data.user.first_name + " " + data.user.surname);
+        $('.enumInput[data-name="staff"]').val(data.user.number_of_staff);
+
+        function selectOptionByText(selectId, matchText) {
+          const selectElement = document.getElementById(selectId);
+
+          for (let i = 0; i < selectElement.options.length; i++) {
+            if (selectElement.options[i].text === matchText) {
+              selectElement.selectedIndex = i;
+              break;
+            }
+          }
+        }
+
+        allInputs.forEach((inputt, i) => {
+          let theValuee = data.user[inputt.dataset.name]
+          let theInputt = document.querySelector(`.enumInput[data-name='${inputt.dataset.name}']`)
+          if (theInputt && theValuee) {
+            theInputt.value = theValuee
+          }
+        });
+
+        allInputs2.forEach((inputt, i) => {
+          let theValuee = data.user[inputt.dataset.name]
+          let theInputt = document.querySelector(`.enumInputB[data-name='${inputt.dataset.name}']`)
+          if (theInputt && theValuee) {
+            theInputt.value = theValuee
+          }
+        });
+
+        if (data.user.old_user && data.user.category === "Individual") {
+          if (data.user.state === null) {
+            selectOptionByText('selectState', "Plateau");
+          }
+
+        } else if (data.user.old_user && data.user.category === "Corporate") {
+          document.querySelector(".enumInput[data-name='fullname']").value = data.user.company_name
+          document.querySelector(".enumInputB[data-name='email']").value = data.user.office_email
+          document.querySelector(".enumInputB[data-name='phone']").value = data.user.office_number
+
+          if (data.user.state === null) {
+            selectOptionByText('selectState', "Plateau");
+          }
+        }
+        nextPrev(1)
+
+
+
+
+      } else {
+        $("#theFetchBtns").removeClass("hidden");
+        $("#msg_box001").html(``);
+        Swal.fire({
+          title: 'Not Found',
+          text: "User detail not found in the database! please go back and fill your details manually",
+          icon: 'error',
+          confirmButtonColor: '##CDA545',
+          cancelButtonColor: '##CDA545',
+          confirmButtonText: 'Fill In Manually',
+          allowOutsideClick: true
+        }).then((result) => {
+          if (result.isConfirmed) {
+            nextPrev(1);
+          }
+        });
+      }
+    },
+    error: function (request, error) {
+      $("#msg_box001").html(`
+          <p class="text-danger text-center mt-4 text-lg">Something went wrong, Try Again or Fill Details Manually.</p>
+        `);
+      $("#theFetchBtns").removeClass("hidden");
+      Swal.fire({
+        title: 'Not Found',
+        text: "User detail not found in the database! please go back and fill your details manually",
+        icon: 'error',
+        confirmButtonColor: '##CDA545',
+        cancelButtonColor: '##CDA545',
+        confirmButtonText: 'Fill In Manually',
+        allowOutsideClick: true
+      }).then((result) => {
+        if (result.isConfirmed) {
+          nextPrev(1);
+        }
+      });
+      console.log(error);
+    }
+  });
+}
+
+function fillManually() {
+  const inputs = document.querySelectorAll('.payInputs');
+
+  inputs.forEach(input => {
+    input.value = '';
+  });
+
+  nextPrev(1)
+}
+
 function continueReg2() {
   let allInputs = document.querySelectorAll(".enumInputB")
 
@@ -90,7 +220,7 @@ function registerUser() {
   })
 
 
-  console.log(EnumData)
+  // console.log(EnumData)
   // console.log(JSON.stringify(EnumData))
 
   async function sendToDB() {
@@ -119,6 +249,24 @@ function registerUser() {
           window.location.href = `./paye-management.html?type=${category}`
         })
 
+      } else if (data.status === 2) {
+        $("#theButton").removeClass("hidden")
+        $("#msg_box").html("")
+        Swal.fire({
+          title: 'Success',
+          text: "This email is already registered, Please go Staff manager to register staffs!",
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#CDA545',
+          allowOutsideClick: false,
+          confirmButtonText: 'Go to Staff manager'
+
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `payedetails.html?payerID=${data.data.payer_id}`
+          }
+
+        })
       } else {
         $("#theButton").removeClass("hidden")
         $("#msg_box").html(`

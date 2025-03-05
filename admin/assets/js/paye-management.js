@@ -64,7 +64,7 @@ fetchPayeUsers().then(e => {
 
 async function getSpecialUsersDash1() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersDash1`)
+  const response = await fetch(`${HOST}/?getSpecialUsersDash1&category=${category}`)
   const getDashData = await response.json()
 
 
