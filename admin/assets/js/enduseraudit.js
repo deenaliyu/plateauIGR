@@ -69,8 +69,10 @@ function fetchAuditTrail(categoryType) {
       { data: 'user_category' },
       { data: 'comment' },
       {
-        data: null,
-        render: function () {
+        data: 'comment',
+        render: function (data, type, row) {
+          if (data.includes('Successfully')) return '<span class="badge bg-primary">success</span>';
+          if (data.includes('Error') || data.includes('Incorrect')) return '<span class="badge bg-danger">Error</span>';
           return '<span class="badge bg-success">success</span>';
         }
       },
