@@ -187,6 +187,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
           </div>
 
           <div class="mt-16">
+          <img src="./assets/img/sign.png" alt="" class="pb-2">
             <div class="border-t border-black w-48"></div>
             <p class="font-bold mt-1">Executive Chairman</p>
           </div>
@@ -265,6 +266,9 @@ function displayAuditLetter(demandInvoiceInfo) {
       </div>
 
       <div class="text-center mt-16 space-y-1">
+        <div class="flex justify-center">
+          <img src="./assets/img/sign.png" alt="" class="pb-2">
+        </div>
         <p class="font-bold">Jim Pam Wayas PhD.</p>
         <p class="font-bold">Executive Chairman</p>
       </div>
