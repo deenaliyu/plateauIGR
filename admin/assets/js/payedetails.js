@@ -8,7 +8,6 @@ let AllEmployees;
 
 
 async function fetchPayeUser() {
-
   const response = await fetch(`${HOST}/?getSpecialUsers&id=${payerID}`)
   const specialUsers = await response.json()
 
