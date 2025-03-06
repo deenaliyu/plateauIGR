@@ -43,7 +43,8 @@ async function fetchPayeUsers() {
           <td>${formatMoney(annual)}</td>
           <td>${formatMoney(monthly)}</td>
           <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
-          <td><span class="badge bg-danger rounded-pill">Defaulter</span></td>
+          <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+          <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>
       `
