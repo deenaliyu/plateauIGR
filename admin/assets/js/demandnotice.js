@@ -7,6 +7,7 @@ function formatMoney(amount) {
 }
 
 let AllDemanData = {}
+let dataToExport;
 
 async function fetchInvoice() {
   if ($.fn.DataTable.isDataTable('#dataTable')) {
@@ -37,6 +38,7 @@ async function fetchInvoice() {
         data: filters,
         success: function (response) {
           // Map the API response to DataTables expected format
+          dataToExport = response.data
           callback({
             draw: data.draw, // Pass through draw counter
             recordsTotal: response.total, // Total records in your database
@@ -96,15 +98,6 @@ async function fetchInvoice() {
 fetchInvoice()
 
 async function fetchAnalytics() {
-
-  let config = {
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  };
   try {
     const response = await fetch(
       `${HOST}/php/index.php?dashboardAnalyticsAdminDemandNotice`
@@ -128,3 +121,31 @@ async function fetchAnalytics() {
 }
 
 fetchAnalytics()
+
+function exportData() {
+  // console.log(dataToExport)
+  const csvRows = [];
+
+  // Extract headers (keys) excluding 'id'
+  const headers = Object.keys(dataToExport[0]).filter((key) => key !== "id");
+  csvRows.push(headers.join(",")); // Join headers with commas
+
+  // Loop through the data to create CSV rows
+  for (const row of dataToExport) {
+    const values = headers.map((header) => {
+      const value = row[header];
+      return `"${value}"`; // Escape values with quotes
+    });
+    csvRows.push(values.join(","));
+  }
+
+  // Combine all rows into a single string
+  const csvString = csvRows.join("\n");
+
+  // Export to a downloadable file
+  const blob = new Blob([csvString], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "demand_notice.csv";
+  a.click();
+}
