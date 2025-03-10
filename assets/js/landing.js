@@ -7,6 +7,20 @@ $(".landing_cards").on("mouseover", function () {
 })
 
 
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
+
+if (userInfo) {
+  let payeBtnns = document.querySelectorAll('.payeBtnn')
+  payeBtnns.forEach((thebtn) => {
+    thebtn.setAttribute('href', 'dashboard/payee-corporate.html')
+  })
+} else {
+  let payeBtnns = document.querySelectorAll('.payeBtnn')
+  payeBtnns.forEach((thebtn) => {
+    thebtn.setAttribute('href', 'signin.html')
+  })
+}
+
 
 // $("#verifyInv").on("click", function () {
 //   let invoiceNumber = document.querySelector("#invNumm").value
