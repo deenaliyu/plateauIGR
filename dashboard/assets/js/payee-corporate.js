@@ -16,7 +16,7 @@ async function getStaffLists() {
   } else {
     $('#yesUsers').removeClass("hidden")
 
-
+    $("#reg_staffs").html(specialUsers.message.length)
     specialUsers.message.reverse().forEach((rhUser, i) => {
 
       $("#stafflistTable").append(`
@@ -69,7 +69,7 @@ async function getSpecialUsersDash1() {
     let dashData = getDashData.message[0]
 
     $("#reg_bodies").html(dashData.Total_Special_Users)
-    $("#reg_staffs").html(dashData.Total_Staff)
+    
 
   }
 
