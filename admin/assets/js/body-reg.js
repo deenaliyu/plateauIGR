@@ -193,18 +193,13 @@ function previewPage() {
   nextPrev(1)
 }
 
-function registerUser() {
-  $("#theButton").addClass("hidden")
-  $("#msg_box").html(`
-    <div class="flex justify-center items-center mb-4">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-    </div>
-  `)
+function registerUser(payer_id) {
 
   let EnumData = {
     "endpoint": "createSpecialUser",
     "data": {
-      "category": category === "private" ? 1 : 2
+      "category": category === "private" ? 1 : 2,
+      "payer_id": payer_id
     }
   }
 
@@ -286,6 +281,85 @@ function registerUser() {
 
   sendToDB()
 
+}
+
+async function createUserFirst() {
+  $("#theButton").addClass("hidden")
+  $("#msg_box").html(`
+    <div class="flex justify-center items-center mb-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+
+  let fullname = $(".enumInput2[data-name='fullname']").val()
+  let email = $(".enumInput2[data-name='email']").val()
+  let phone = $(".enumInputB[data-name='phone']").val()
+  let state = $(".enumInput2[data-name='state']").val()
+  let lga = $(".enumInput2[data-name='lga']").val()
+  let address = $(".enumInput2[data-name='address']").val()
+  let tin = $(".enumInput2[data-name='tin']").val()
+  let staff = $(".enumInput[data-name='staff']").val()
+
+  let obj = {
+    "endpoint": "createPayerAccount",
+    "data": {
+      "category": "Corporate",
+      "first_name": fullname,
+      "surname": "",
+      "email": email,
+      "phone": phone,
+      "state": state,
+      "lga": lga,
+      "address": address,
+      "employment_status": "",
+      "business_type": "",
+      "numberofstaff": staff,
+      "id_type": "1",
+      "id_number": "",
+      "img": "assets/img/userprofile.png",
+      "tin": tin,
+      "password": "12345",
+      "verification_status": "grfdses",
+      "business_own": "2",
+      "industry": "",
+      "bvn": "",
+      "nin": "",
+      "annual_revenue": "",
+      "value_business": "",
+      "rep_firstname": "",
+      "rep_surname": "",
+      "rep_email": "",
+      "rep_phone": "",
+      "rep_position": "",
+      "rep_state": "",
+      "rep_state": "",
+      "rep_lga": "",
+      "rep_address": "",
+    }
+  }
+
+
+  let StringedData = JSON.stringify(obj)
+  // console.log(obj, StringedData)
+
+  $.ajax({
+    type: "POST",
+    url: HOST,
+    dataType: 'json',
+    data: StringedData,
+    success: function (data) {
+      // console.log(data)
+      
+      registerUser(data.data.tax_number)
+    },
+    error: function (request, error) {
+      console.log(error);
+      $("#theButton").removeClass("hidden")
+      $("#msg_box").html(`
+        <p class="text-danger text-center text-lg">Something went wrong ! try again.</p>
+      `)
+    }
+  });
 }
 
 async function getIndustriesSectors() {

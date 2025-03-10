@@ -43,6 +43,7 @@ async function fetchPayeUsers() {
           <td>${i + 1}</td>
           <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
           <td>${rhUser.name}</td>
+          <td>${rhUser.email}</td>
           <td>${rhUser.category}</td>
           <td>${rhUser.staff_quota}</td>
           <td>${formatMoney(annual)}</td>
@@ -59,6 +60,7 @@ async function fetchPayeUsers() {
               <td>${i + 1}</td>
               <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
               <td>${rhUser.name}</td>
+              <td>${rhUser.email}</td>
               <td>${rhUser.category}</td>
               <td>${rhUser.staff_quota}</td>
               <td>${formatMoney(annual)}</td>
@@ -76,6 +78,7 @@ async function fetchPayeUsers() {
             <td>${i + 1}</td>
             <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
             <td>${rhUser.name}</td>
+            <td>${rhUser.email}</td>
             <td>${rhUser.category}</td>
             <td>${rhUser.staff_quota}</td>
             <td>${formatMoney(annual)}</td>
