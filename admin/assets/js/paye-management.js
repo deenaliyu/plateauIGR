@@ -32,6 +32,8 @@ async function fetchPayeUsers() {
       let monthly = parseFloat(rhUser.monthly_estimate)
 
       let htmlData = ""
+      let defaultersData = ""
+      let currentData = ""
 
       htmlData = `
         <tr>
@@ -48,8 +50,44 @@ async function fetchPayeUsers() {
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>
       `
+      if (rhUser.status === 'defaulter') {
+        defaultersData = `
+            <tr>
+              <td>${i + 1}</td>
+              <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
+              <td>${rhUser.name}</td>
+              <td>${rhUser.category}</td>
+              <td>${rhUser.staff_quota}</td>
+              <td>${formatMoney(annual)}</td>
+              <td>${formatMoney(monthly)}</td>
+              <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
+              <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+              <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
+              <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
+            </tr>
+        `
+      }
+      if (rhUser.status === 'paid') {
+        currentData = `
+          <tr>
+            <td>${i + 1}</td>
+            <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
+            <td>${rhUser.name}</td>
+            <td>${rhUser.category}</td>
+            <td>${rhUser.staff_quota}</td>
+            <td>${formatMoney(annual)}</td>
+            <td>${formatMoney(monthly)}</td>
+            <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
+            <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+            <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
+            <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
+          </tr>
+        `
+      }
 
       $("#payeMTabAll").append(htmlData)
+      $("#payeMTabAll2").append(defaultersData)
+      $("#payeMTabAll3").append(currentData)
     });
 
 
