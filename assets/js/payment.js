@@ -443,10 +443,10 @@ function makePaymentRemita2() {
                 }
 
               },
-              error: function (request, error) {
-                console.log(error)
+              error: function (request) {
+                let error = request.responseJSON
                 $("#makePBtn").removeClass("hidden")
-                $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+                $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">${error.error.amount ? error.error.amount : error.error.message} - Try another payment gateway.</p>`)
               }
             });
 

@@ -8,7 +8,6 @@ let AllEmployees;
 
 
 async function fetchPayeUser() {
-
   const response = await fetch(`${HOST}/?getSpecialUsers&id=${payerID}`)
   const specialUsers = await response.json()
 
@@ -76,7 +75,6 @@ async function getStaffLists() {
             <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
             <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
             <td>${rhUser.timeIn}</td>
-            <td>&#8358; 24,000,000</td>
             <td>
               <div class="flex items-center gap-2">
                 <button onclick="editMDAFunc(this)" data-revid="${rhUser.id}" data-bs-toggle="modal" data-bs-target="#editStaff"><iconify-icon class="fontBold text-lg"

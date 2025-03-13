@@ -286,55 +286,18 @@
               </select>
             </div>
 
-            <div class="flex items-center gap-2 mb-4">
-
-              <div class="form-group w-8/12">
-                <label for="">Assessment Informations*</label>
-                <select onchange="updateSelectedOption()"
-                  class="revHeadInputSel h-[40px] form-select genInv revHeadsss revenueHeader" required name=""
-                  id="rev_heads">
-
-                </select>
-              </div>
-
-              <div class="form-group w-4/12">
-                <label for="">Amount*</label>
-                <input type="text" class="form-control genInv h-[40px] thePaymentInput amountTopay amountTopa"
-                  id="amountTopay">
-              </div>
-
-            </div>
-
-            <div></div>
-            <div class="flex items-center gap-2">
-              <div class="form-group w-full">
-                <label for="">Previous Year *</label>
-                <input type="text" class="form-control form-control-sm genInv prevYears" id="previous_year"
-                  placeholder="Year 1" required>
-
-                <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2"
-                  placeholder="Year 2" required>
-              </div>
-
-              <div class="form-group w-full">
-                <label for="">Previous Year Amount *</label>
-                <input type="text" class="form-control form-control-sm genInv prevAmounts" id="previous_year_value"
-                  placeholder="Year 1 Amount" required>
-
-                <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2"
-                  id="previous_year_value2" placeholder="Year 2 Amount" required>
-              </div>
-            </div>
+            <div id="revenueHeadItems"></div>
+            
 
 
             <div id="moreInput" class="mb-2 mt-4">
 
             </div>
 
-            <div class="flex justify-end" id="otherSec">
+            <!-- <div class="flex justify-end" id="otherSec">
               <button onclick="addInput()" type="button" class="textPrimary flex gap-2 items-center"><iconify-icon
                   icon="ic:outline-plus"></iconify-icon> Add Item</button>
-            </div>
+            </div> -->
 
             <div class="form-group w-full mb-4">
               <label for="">Business Type*</label>
@@ -483,7 +446,7 @@
         <div class="tab-content" id="myTabContent">
           <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
             <div class="invoiceContainer flex justify-center">
-              <div class="invoice bg-white lg:w-[60%] w-[90%] shadow-md md:-mt-12 mt-2" id="invoiceCard">
+              <div class="invoice bg-white lg:w-[70%] w-[90%] shadow-md md:-mt-12 mt-2" id="invoiceCard">
                 <!-- COMING FROM JS invoice.js -->
               </div>
             </div>
@@ -506,7 +469,7 @@
 
           <div class="tab-pane fade" id="sencondTab" role="tabpanel" aria-labelledby="home-tab">
             <div class="invoiceContainer flex justify-center">
-              <div class="invoice bg-white lg:w-[60%] w-[90%] shadow-md md:-mt-12 mt-2" id="assessmentDemandNotice">
+              <div class="invoice bg-white lg:w-[70%] w-[90%] shadow-md md:-mt-12 mt-2" id="assessmentDemandNotice">
                 <!-- COMING FROM JS invoice.js -->
               </div>
             </div>
@@ -532,7 +495,7 @@
 
           <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
             <div class="invoiceContainer flex justify-center">
-              <div class="invoice bg-white lg:w-[60%] w-[90%] shadow-md md:-mt-12 mt-2" id="auditLetter">
+              <div class="invoice bg-white lg:w-[70%] w-[90%] shadow-md md:-mt-12 mt-2" id="auditLetter">
                 <!-- COMING FROM JS invoice.js -->
               </div>
             </div>
@@ -607,7 +570,7 @@
   <script>
     const amountInput = document.getElementById('amountTopay');
 
-    amountInput.addEventListener('input', function (e) {
+    amountInput?.addEventListener('input', function (e) {
       let inputVal = e.target.value;
 
       // Immediately return if the first character is a dot to allow ".xx" inputs
@@ -642,7 +605,7 @@
   <script src="assets/js/nav.js"></script>
   <!--<script src="assets/js/payment.js?v=1.6"></script>-->
   <script src="../assets/js/tabHandler.js"></script>
-  <script src="../assets/js/invoice.js?v=8.0"></script>
+  <script src="../assets/js/invoice.js"></script>
   <script src="assets/js/generatedemand.js?v=29.0"></script>
 
 </body>

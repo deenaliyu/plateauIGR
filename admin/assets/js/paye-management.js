@@ -1,6 +1,8 @@
 const urlParams = new URLSearchParams(window.location.search);
 const category = urlParams.get('type');
 
+let dataToExport;
+
 $("#pageName").html(category === "private" ? 'Private PAYE (PIT)' : 'Public PAYE')
 
 $("#bodyDrop").attr("href", `body-registration.html?type=${category}`)
@@ -26,29 +28,72 @@ async function fetchPayeUsers() {
   } else {
 
     let theRightUSers = specialUsers.message.reverse().filter(rihuser => rihuser.category.toLowerCase() === category)
+    dataToExport = theRightUSers
 
     theRightUSers.forEach((rhUser, i) => {
       let annual = parseFloat(rhUser.monthly_estimate * 12)
       let monthly = parseFloat(rhUser.monthly_estimate)
 
       let htmlData = ""
+      let defaultersData = ""
+      let currentData = ""
 
       htmlData = `
         <tr>
           <td>${i + 1}</td>
           <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
           <td>${rhUser.name}</td>
+          <td>${rhUser.email}</td>
           <td>${rhUser.category}</td>
           <td>${rhUser.staff_quota}</td>
           <td>${formatMoney(annual)}</td>
           <td>${formatMoney(monthly)}</td>
           <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
-          <td><span class="badge bg-danger rounded-pill">Defaulter</span></td>
+          <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+          <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>
       `
+      if (rhUser.status === 'defaulter') {
+        defaultersData = `
+            <tr>
+              <td>${i + 1}</td>
+              <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
+              <td>${rhUser.name}</td>
+              <td>${rhUser.email}</td>
+              <td>${rhUser.category}</td>
+              <td>${rhUser.staff_quota}</td>
+              <td>${formatMoney(annual)}</td>
+              <td>${formatMoney(monthly)}</td>
+              <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
+              <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+              <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
+              <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
+            </tr>
+        `
+      }
+      if (rhUser.status === 'paid') {
+        currentData = `
+          <tr>
+            <td>${i + 1}</td>
+            <td><a class="textPrimary" href="payedetails.html?payerID=${rhUser.payer_id}&fullname=${rhUser.name}">${rhUser.payer_id}</a></td>
+            <td>${rhUser.name}</td>
+            <td>${rhUser.email}</td>
+            <td>${rhUser.category}</td>
+            <td>${rhUser.staff_quota}</td>
+            <td>${formatMoney(annual)}</td>
+            <td>${formatMoney(monthly)}</td>
+            <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
+            <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+            <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
+            <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
+          </tr>
+        `
+      }
 
       $("#payeMTabAll").append(htmlData)
+      $("#payeMTabAll2").append(defaultersData)
+      $("#payeMTabAll3").append(currentData)
     });
 
 
@@ -64,7 +109,7 @@ fetchPayeUsers().then(e => {
 
 async function getSpecialUsersDash1() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersDash1`)
+  const response = await fetch(`${HOST}/?getSpecialUsersDash1&category=${category}`)
   const getDashData = await response.json()
 
 
@@ -157,4 +202,32 @@ function displayEstimate() {
   var selectedMonth = $("#monthSelect").val();
   var selectedEstimate = finalJson.find(item => item.Year_Month === selectedMonth).Total_Monthly_Estimate;
   $("#monthlyEstimate").text(formatMoney(parseFloat(selectedEstimate)));
+}
+
+function exportData() {
+  // console.log(dataToExport)
+  const csvRows = [];
+
+  // Extract headers (keys) excluding 'id'
+  const headers = Object.keys(dataToExport[0]).filter((key) => key !== "id");
+  csvRows.push(headers.join(",")); // Join headers with commas
+
+  // Loop through the data to create CSV rows
+  for (const row of dataToExport) {
+    const values = headers.map((header) => {
+      const value = row[header];
+      return `"${value}"`; // Escape values with quotes
+    });
+    csvRows.push(values.join(","));
+  }
+
+  // Combine all rows into a single string
+  const csvString = csvRows.join("\n");
+
+  // Export to a downloadable file
+  const blob = new Blob([csvString], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "paye-list.csv";
+  a.click();
 }

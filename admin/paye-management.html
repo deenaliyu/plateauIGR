@@ -148,9 +148,9 @@
 
                   <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
                     <select class="form-select form-select-sm" required name="" id="selYear">
-                      <option value="2023" selected>2023</option>
+                      <option value="2023">2023</option>
                       <option value="2024">2024</option>
-                      <option value="2025">2025</option>
+                      <option value="2025" selected>2025</option>
                     </select>
 
                     <p class="text-base fontBold">
@@ -171,6 +171,8 @@
                   <div class="flex items-center w-full gap-2" style="margin-top: 30px;">
                     <select class="form-select form-select-sm" required name="" id="">
                       <option value="2023">2023</option>
+                      <option value="2024">2024</option>
+                      <option value="2025" selected>2025</option>
                     </select>
 
                     <p class="text-base fontBold">
@@ -228,18 +230,18 @@
               <section class="mt-4 card px-2">
                 <div class="flex justify-end mt-4">
                   <div class="flex gap-4">
-                    <button class="button btn-prime-outline rounded-md flex items-center gap-3">
+                    <button class="button btn-prime-outline rounded-md flex items-center gap-3" onclick="exportData()">
                       <iconify-icon icon="humbleicons:download" class="text-xl"></iconify-icon>
                       <span>Download</span>
                     </button>
-                    <select class="form-select form-select-sm">
+                    <!-- <select class="form-select form-select-sm">
                       <option value="January">January</option>
                     </select>
-                    <button class="button">Apply</button>
+                    <button class="button">Apply</button> -->
                   </div>
                 </div>
 
-                <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-2 border-b -mt-10" id="pills-tab" role="tablist">
+                <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-2 border-b" id="pills-tab" role="tablist">
 
                   <li class="nav-item text-center" role="presentation">
                     <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#allPaye" type="button"
@@ -274,12 +276,14 @@
                             <th></th>
                             <th>Payer ID</th>
                             <th>Name of User</th>
+                            <th>Email</th>
                             <th>User Type</th>
                             <th>Number of Staffs</th>
                             <th>Annual Estimate</th>
                             <th>Monthly Estimate</th>
                             <th>Total Remittance</th>
                             <th>Status</th>
+                            <th>Last Payment</th>
                             <th></th>
                           </tr>
                         </thead>
@@ -307,12 +311,14 @@
                             <th></th>
                             <th>Payer ID</th>
                             <th>Name of User</th>
+                            <th>Email</th>
                             <th>User Type</th>
                             <th>Number of Staffs</th>
                             <th>Annual Estimate</th>
                             <th>Monthly Estimate</th>
                             <th>Total Remittance</th>
                             <th>Status</th>
+                            <th>Last Payment</th>
                             <th></th>
                           </tr>
                         </thead>
@@ -334,12 +340,14 @@
                             <th></th>
                             <th>Payer ID</th>
                             <th>Name of User</th>
+                            <th>Email</th>
                             <th>User Type</th>
                             <th>Number of Staffs</th>
                             <th>Annual Estimate</th>
                             <th>Monthly Estimate</th>
                             <th>Total Remittance</th>
                             <th>Status</th>
+                            <th>Last Payment</th>
                             <th></th>
                           </tr>
                         </thead>

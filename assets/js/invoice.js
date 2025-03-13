@@ -88,25 +88,25 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
             <div class="space-y-2">
               <div class="flex gap-2">
-                <span class="fontBold">TO:</span>
+                <span class="fontBold text-sm">TO:</span>
                 <p>${demandInvoiceInfo[0].first_name} ${demandInvoiceInfo[0].surname}</p>
               </div>
               <div class="flex gap-2">
-                <span class="fontBold">ADDRESS:</span>
+                <span class="fontBold text-sm">ADDRESS:</span>
                 <p>${demandInvoiceInfo[0].address}</p>
               </div>
             </div>
             <div class="space-y-2">
               <div class="flex gap-2">
-                <span class="fontBold">Notice number:</span>
+                <span class="fontBold text-sm">Notice number:</span>
                 <p>${demandInvoiceInfo[0].invoice_number}</p>
               </div>
               <div class="flex gap-2">
-                <span class="fontBold">DATE:</span>
+                <span class="fontBold text-sm">DATE:</span>
                 <p>${the_date}</p>
               </div>
               <div class="flex gap-2">
-                <span class="fontBold">TYPE OF BUSINESS/SOURCE OF INCOME:</span>
+                <span class="fontBold text-sm">TYPE OF BUSINESS/SOURCE OF INCOME:</span>
                 <p>${demandInvoiceInfo[0].business_type ? demandInvoiceInfo[0].business_type : '-'}</p>
               </div>
             </div>
@@ -187,6 +187,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
           </div>
 
           <div class="mt-16">
+          <img src="./assets/img/sign.png" alt="" class="pb-2">
             <div class="border-t border-black w-48"></div>
             <p class="font-bold mt-1">Executive Chairman</p>
           </div>
@@ -230,8 +231,8 @@ function displayAuditLetter(demandInvoiceInfo) {
       </div>
 
       <div class="mb-6 font-bold space-y-1">
-        <p class="fontBold">DEMAND NOTICE FOR THE PAYMENT OF THE SUM OF ${formatMoney(sumArray(theauditTotal))}</p>
-        <p class="fontBold">TAX AUDIT FOR THE PERIOD ${demandInvoiceInfo[0].date_created.split(" ")[0]} - ${add30Days(demandInvoiceInfo[0].date_created)}</p>
+        <p class="fontBold text-center">DEMAND NOTICE FOR THE PAYMENT OF THE SUM OF ${formatMoney(sumArray(theauditTotal))}</p>
+        <p class="fontBold text-center">TAX AUDIT FOR THE PERIOD ${demandInvoiceInfo[0].date_created.split(" ")[0]} to ${add30Days(demandInvoiceInfo[0].date_created)}</p>
       </div>
 
       <div class="space-y-6 text-justify mb-8">
@@ -265,6 +266,9 @@ function displayAuditLetter(demandInvoiceInfo) {
       </div>
 
       <div class="text-center mt-16 space-y-1">
+        <div class="flex justify-center">
+          <img src="./assets/img/sign.png" alt="" class="pb-2">
+        </div>
         <p class="font-bold">Jim Pam Wayas PhD.</p>
         <p class="font-bold">Executive Chairman</p>
       </div>

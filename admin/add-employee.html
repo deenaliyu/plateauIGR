@@ -79,10 +79,10 @@
             </div>
 
             <div class="mt-4 flex gap-x-5">
-              <div class="flex items-center gap-3" id="theCms">
+              <!-- <div class="flex items-center gap-3" id="theCms">
 
                 <a href="add-employee.html" class="button">Add a Staff</a>
-              </div>
+              </div> -->
 
 
               <div class="avatar avatar-online">
@@ -103,7 +103,7 @@
 
           <div class="container-xxl flex-grow-1 container-p-y">
             <section class="w-full main_section">
-              <a href="javascript(void)" onclick="history.go(-1)" class="text-[#CDA545] mb-5">Go Back</a>
+              <a href="#" onclick="history.go(-1)" class="text-[#CDA545] mb-5">Go Back</a>
 
               <div class="card p-4 mt-2">
                 <div class="flex justify-between">
@@ -121,9 +121,11 @@
 
                   <div class="form-group flex items-center gap-4">
 
-                    <input class="form-control flex-1" type="file" />
-                    <button class="button" type="button">Upload List</button>
+                    <input class="form-control flex-1" type="file" id="csvFile" />
+                    <button class="button" type="button" id="uploadTheList" onclick="handleFileButtonClick()">Upload List</button>
                   </div>
+
+                  <div id="msg_box"></div>
                 </form>
 
               </div>

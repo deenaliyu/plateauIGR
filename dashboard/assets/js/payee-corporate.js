@@ -1,4 +1,5 @@
 let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
+let dataToExport;
 
 async function getStaffLists() {
 
@@ -16,7 +17,9 @@ async function getStaffLists() {
   } else {
     $('#yesUsers').removeClass("hidden")
 
+    $("#reg_staffs").html(specialUsers.message.length)
 
+    dataToExport = specialUsers.message.reverse()
     specialUsers.message.reverse().forEach((rhUser, i) => {
 
       $("#stafflistTable").append(`
@@ -69,7 +72,7 @@ async function getSpecialUsersDash1() {
     let dashData = getDashData.message[0]
 
     $("#reg_bodies").html(dashData.Total_Special_Users)
-    $("#reg_staffs").html(dashData.Total_Staff)
+
 
   }
 
@@ -181,4 +184,32 @@ function getMonthInWordFromDate(dateString) {
   const monthInWord = months[monthNumber];
 
   return monthInWord;
+}
+
+function exportData() {
+  // console.log(dataToExport)
+  const csvRows = [];
+
+  // Extract headers (keys) excluding 'id'
+  const headers = Object.keys(dataToExport[0]).filter((key) => key !== "id");
+  csvRows.push(headers.join(",")); // Join headers with commas
+
+  // Loop through the data to create CSV rows
+  for (const row of dataToExport) {
+    const values = headers.map((header) => {
+      const value = row[header];
+      return `"${value}"`; // Escape values with quotes
+    });
+    csvRows.push(values.join(","));
+  }
+
+  // Combine all rows into a single string
+  const csvString = csvRows.join("\n");
+
+  // Export to a downloadable file
+  const blob = new Blob([csvString], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "staff-list.csv";
+  a.click();
 }

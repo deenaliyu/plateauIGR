@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  fetchAuditTrail('login');
+  fetchAuditTrail('Logged');
 });
 
 function fetchAuditTrail(categoryType) {
@@ -27,7 +27,7 @@ function fetchAuditTrail(categoryType) {
         user_category: userCategory,
         timeIn_from: timeInFrom,
         timeIn_to: timeInTo,
-        category_type: categoryType
+        comment: categoryType
       };
 
       $.ajax({
@@ -69,8 +69,10 @@ function fetchAuditTrail(categoryType) {
       { data: 'user_category' },
       { data: 'comment' },
       {
-        data: null,
-        render: function () {
+        data: 'comment',
+        render: function (data, type, row) {
+          if (data.includes('Successfully')) return '<span class="badge bg-primary">success</span>';
+          if (data.includes('Error') || data.includes('Incorrect')) return '<span class="badge bg-danger">Error</span>';
           return '<span class="badge bg-success">success</span>';
         }
       },
@@ -87,7 +89,7 @@ function fetchAuditTrail(categoryType) {
 }
 
 $('#filterBtn').on('click', function () {
-  fetchAuditTrail('login');
+  fetchAuditTrail('Logged');
 });
 
 async function fetchActivityMetrics() {
@@ -99,7 +101,7 @@ async function fetchActivityMetrics() {
       const metrics = data.data;
 
       document.getElementById('totalRegis').innerText = metrics.total_user_logins || '-';
-      // document.getElementById('totalRegCateg').innerText = metrics.total_user_logins || '-';
+      document.getElementById('totalRegCateg').innerText = metrics.total_change || '-';
       document.getElementById('totalRegCategRege').innerText = metrics.total_errors || '-';
 
       document.querySelector('.total-activities-count').innerText = Number(metrics.total_activities).toLocaleString() || '0';

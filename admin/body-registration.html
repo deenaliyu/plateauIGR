@@ -47,6 +47,28 @@
   <script src="./assets/js/config.js"></script>
   <script src="https://cdn.tiny.cloud/1/a2nnryhuz1r1qtqf4ap5nkr1msakmeqobebopr1d2o3nfx1h/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
+
+  <style>
+    #last-button {
+      background: white;
+      width: 380px;
+      color: #000;
+      border: 3px solid #CDA545;
+      border-radius: 100px;
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    #lastly-button {
+      background-color: #CDA545;
+      width: 380px;
+      color: #000 !important;
+      border: 3px solid var(--primaryCol);
+      border-radius: 100px;
+      padding: 10px 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 
 <body>
@@ -85,6 +107,37 @@
     </div>
 
     <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
+
+      <section class="formTabs h-full">
+
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="history.go(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="" class="md:w-[60%] w-[80%]">
+          <div id="text-color">
+            <h1 class="fontBold text-3xl">Register</h1>
+            <h1 class="mb-10 mt-3">Personal Details</h1>
+          </div>
+
+          <div class="form-group mb-3">
+            <label for="tin/email">Enter Tin or Email*</label>
+            <input type="text" class="form-control" id="tinOrEmail" required>
+          </div>
+
+          <div class="form-group flex gap-4 mt-10" id="theFetchBtns">
+            <button type="button" id="last-button" onclick="fillManually()">Fill Manually</button>
+            <button id="lastly-button" onclick="fetchUserDetails()" class="btn-only" type="button">Fetch
+              Details</button>
+          </div>
+          <div id="msg_box001"></div>
+
+        </form>
+
+      </section>
 
       <section class="formTabs h-full">
 
@@ -175,8 +228,8 @@
 
           <div class="form-group mb-3">
             <label for="">Local Government Area*</label>
-            <select class="form-select w-full enumInputB" data-name="lga"  id="LGAs" required>
-              
+            <select class="form-select w-full enumInputB" data-name="lga" id="LGAs" required>
+
             </select>
           </div>
 
@@ -285,7 +338,10 @@
 
 
 
-            <button class="button w-full mb-4" id="theButton" type="button" onclick="registerUser()">Verify</button>
+            <!-- <button class="button w-full mb-4" id="theButton" type="button" onclick="registerUser()">Verify</button> -->
+            <button class="button w-full mb-4" id="theButton" type="button" onclick="createUserFirst()">Verify</button>
+
+            
 
             <div id="msg_box"></div>
           </form>

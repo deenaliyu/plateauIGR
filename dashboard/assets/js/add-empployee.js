@@ -1,11 +1,4 @@
-const urlParams = new URLSearchParams(window.location.search);
-const category = urlParams.get('categ_id');
-
-let singleLinking = document.querySelector("#singleLinking")
-
-if (singleLinking) {
-  singleLinking.href = `create-employee.html?categ_id=${category}`
-}
+let userInfo = JSON.parse(window.localStorage.getItem("userDataPrime"));
 
 document.querySelector('#downloadTemplate').addEventListener('click', () => {
   const headers = [
@@ -14,7 +7,7 @@ document.querySelector('#downloadTemplate').addEventListener('click', () => {
     'utility', 'medical', 'entertainment', 'leaves', 'category_id'
   ];
 
-  const categoryId = new URLSearchParams(window.location.search).get('categ_id');
+  const categoryId = userInfo.tax_number;
 
   const csvContent = [headers.join(',')];
 
@@ -36,10 +29,10 @@ document.querySelector('#downloadTemplate').addEventListener('click', () => {
 
 function registerUsersFromCSV(file) {
   $("#msg_box").html(`
-    <div class="flex justify-center items-center mt-4">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-    </div>  
-  `)
+      <div class="flex justify-center items-center mt-4">
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+      </div>  
+    `)
   const reader = new FileReader();
   const successfulRegistrations = [];
   const failedRegistrations = [];
@@ -64,10 +57,10 @@ function registerUsersFromCSV(file) {
       };
 
       $("#msg_box").html(`
-        <div class="flex justify-center items-center mt-4">
-          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-        </div>  
-      `)
+          <div class="flex justify-center items-center mt-4">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div>  
+        `)
 
       try {
         const response = await fetch(HOST, {
@@ -94,20 +87,20 @@ function registerUsersFromCSV(file) {
     }
 
     $("#msg_box").html(`
-      <div class="mt-4 flex justify-center items-center flex-col">
-        <p>Registration Summary:</p>
-        <p>Successful registrations: ${successfulRegistrations.length}</p>
-        <p>${successfulRegistrations.join(', ')}</p>
-      </div>
-    `)
+        <div class="mt-4 flex justify-center items-center flex-col">
+          <p>Registration Summary:</p>
+          <p>Successful registrations: ${successfulRegistrations.length}</p>
+          <p>${successfulRegistrations.join(', ')}</p>
+        </div>
+      `)
 
     if (failedRegistrations.length > 0) {
       $("#msg_box").append(`
-          <div class="mt-4 flex justify-center items-center flex-col">
-          <p>Failed registrations: ${failedRegistrations.length}</p>
-          <p>${failedRegistrations.map(fail => `${fail.email}: ${fail.error}`).join('<br>')}</p>
-        </div>
-      `);
+            <div class="mt-4 flex justify-center items-center flex-col">
+            <p>Failed registrations: ${failedRegistrations.length}</p>
+            <p>${failedRegistrations.map(fail => `${fail.email}: ${fail.error}`).join('<br>')}</p>
+          </div>
+        `);
     }
   };
 

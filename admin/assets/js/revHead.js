@@ -8,6 +8,23 @@ let adminInfo2 = JSON.parse(localStorage.getItem("adminDataPrime"))
 
 // console.log(mdn)
 
+const the_sectors = [
+  "Construction Sector",
+  "Education Sector",
+  "Agricultural Sector",
+  "Financial Institutions",
+  "Health Sector",
+  "Hospitality Sector",
+  "ICT Sector",
+  "Oil and Gas Sector",
+]
+
+the_sectors.forEach((sect) => {
+  $('#sectorSelect').append(`
+    <option value='${sect}'>${sect}</option>  
+  `)
+})
+
 async function fetchRevHeads() {
   $("#revHeadsShow").html("")
   $("#loader").css("display", "flex")
@@ -33,6 +50,7 @@ async function fetchRevHeads() {
           <td>${revHd["COL_4"]}</td>
           <td>${revHd["COL_5"]}</td>
           <td>${revHd["demand_notice"]}</td>
+          <td>${revHd["sector"]}</td>
           <td>${revHd["frequency"]}</td>
           <td>&#8358; ${revHd["COL_6"]}</td>
           
@@ -185,8 +203,9 @@ function editRevFunc(e) {
   allInputss[1].value = theREV["COL_6"]
   allInputss[2].value = theREV["COL_5"]
   allInputss[3].value = theREV["demand_notice"]
-  allInputss[4].value = theREV["status"]
-  allInputss[5].value = theREV["frequency"]
+  allInputss[4].value = theREV["sector"]
+  allInputss[5].value = theREV["status"]
+  allInputss[6].value = theREV["frequency"]
   // allInputss[6].value = theREV["due_date"]
 }
 
