@@ -44,38 +44,38 @@ async function fetchTaxfillers() {
                     addd += `
                         <tr class="relative">
                             <td>Form Assessment Upload</td>
-                          <td><a href="${userInvoice.form_assessment_upload}" target="_blank">View File</a></td>
+                          <td><a href="${userInvoice.form_assessment_upload}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                         <tr class="relative">
                             <td>Tax Income Upload</td>
-                         <td><a href="${userInvoice.tax_income_upload}" target="_blank">View File</a></td>
+                         <td><a href="${userInvoice.tax_income_upload}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                         <tr class="relative">
                             <td>Evidence of Tax Payment</td>
-                   <td><a href="${userInvoice.evidence_of_tax_payment}" target="_blank">View File</a></td>
+                   <td><a href="${userInvoice.evidence_of_tax_payment}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                     `;
                 } else {
                     addd += `
                         <tr class="relative">
                             <td>Form Assessment Upload</td>
-                            <td><a href="${userInvoice.form_assessment_upload}" target="_blank">View File</a></td>
+                            <td><a href="${userInvoice.form_assessment_upload}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                         <tr class="relative">
                             <td>Tax Income Upload</td>
-                            <td><a href="${userInvoice.tax_income_upload}" target="_blank">View File</a></td>
+                            <td><a href="${userInvoice.tax_income_upload}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                         <tr class="relative">
                             <td>Evidence of Tax Payment</td>
-                            <td><a href="${userInvoice.evidence_of_tax_payment}" target="_blank">View File</a></td>
+                            <td><a href="${userInvoice.evidence_of_tax_payment}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                         <tr class="relative">
                             <td>Form H1</td>
-                            <td><a href="${userInvoice.form_upload_4}" target="_blank">View File</a></td>
+                            <td><a href="${userInvoice.form_upload_4}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                         <tr class="relative">
                             <td>Schedule of Tax Deduction</td>
-                            <td><a href="${userInvoice.form_upload_5}" target="_blank">View File</a></td>
+                            <td><a href="${userInvoice.form_upload_5}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                     `;
                 }
