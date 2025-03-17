@@ -212,55 +212,55 @@ async function fetchRevHeads(sector) {
     $("#revenueHeadItems").html("")
     let revenueArr = []
     let theItemNo = 0
-    theRevs.forEach((dd, i) => {
-      revenueArr.push(dd)
 
-      if (dd.sector === sector) {
-        theItemNo++
-        $("#revenueHeadItems").append(`
-          <div class="mb-2 bg-white p-4 rounded-lg shadow-md">
-            <h3 class="text-xl font-semibold text-gray-800 mb-4">Item - ${theItemNo}</h3>
-            <div class="flex items-center gap-2 mb-2">
-  
-              <div class="form-group w-8/12">
-                <label for="">Assessment Informations*</label>
-                <select class="form-select genInv revHeadsss revenueHeader" required name="" >
-                  <option value="${dd.id}" selected>${dd.COL_4} - (${dd.COL_5})</option>
-                </select>
-              </div>
-  
-              <div class="form-group w-4/12">
-                <label for="">Amount*</label>
-                <input type="text" class="form-control genInv h-[40px] thePaymentInput amountTopay amountTopa"
-                  id="amountTopay">
-              </div>
-  
+    let lgaInputValue = document.querySelector(".payInputs[data-name='lga']").value.toLowerCase();
+    if (lgaInputValue === 'qua an pan') {
+      lgaInputValue = 'qua?an'
+    }
+    console.log(lgaInputValue)
+
+    const sectorFiltered = theRevs.filter(dd => dd.sector === sector && !dd.COL_3.toLowerCase().includes("local government"));
+    const sectorAndCol3Filtered = theRevs.filter(dd => dd.sector === sector && dd.COL_3.toLowerCase().includes(lgaInputValue));
+
+
+    console.log(sectorAndCol3Filtered, sectorFiltered)
+    // Merge both filtered results
+    const filteredItems = [...new Set([...sectorFiltered, ...sectorAndCol3Filtered])];
+
+    filteredItems.forEach((dd, i) => {
+      revenueArr.push(dd);
+      theItemNo++;
+
+      $("#revenueHeadItems").append(`
+        <div class="mb-2 bg-white p-4 rounded-lg shadow-md">
+          <h3 class="text-xl font-semibold text-gray-800 mb-4">Item - ${theItemNo}</h3>
+          <div class="flex items-center gap-2 mb-2">
+            <div class="form-group w-8/12">
+              <label for="">Assessment Informations*</label>
+              <select class="form-select genInv revHeadsss revenueHeader" required>
+                <option value="${dd.id}" selected>${dd.COL_4} - (${dd.COL_5})</option>
+              </select>
             </div>
-  
-            <div class="flex items-center gap-2">
-              <div class="form-group w-full">
-                <label for="">Previous Year *</label>
-                <input type="text" class="form-control form-control-sm genInv prevYears" id="previous_year"
-                  placeholder="Year 1" required>
-  
-                <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2"
-                  placeholder="Year 2" required>
-              </div>
-  
-              <div class="form-group w-full">
-                <label for="">Previous Year Amount *</label>
-                <input type="text" class="form-control form-control-sm genInv prevAmounts" id="previous_year_value"
-                  placeholder="Year 1 Amount" required>
-  
-                <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2"
-                  id="previous_year_value2" placeholder="Year 2 Amount" required>
-              </div>
-            </div> 
-          </div> 
-        `)
-      }
-
-    })
+            <div class="form-group w-4/12">
+              <label for="">Amount*</label>
+              <input type="text" class="form-control genInv h-[40px] thePaymentInput amountTopay amountTopa" id="amountTopay">
+            </div>
+          </div>
+          <div class="flex items-center gap-2">
+            <div class="form-group w-full">
+              <label for="">Previous Year *</label>
+              <input type="text" class="form-control form-control-sm genInv prevYears" id="previous_year" placeholder="Year 1" required>
+              <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2" placeholder="Year 2" required>
+            </div>
+            <div class="form-group w-full">
+              <label for="">Previous Year Amount *</label>
+              <input type="text" class="form-control form-control-sm genInv prevAmounts" id="previous_year_value" placeholder="Year 1 Amount" required>
+              <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2" id="previous_year_value2" placeholder="Year 2 Amount" required>
+            </div>
+          </div>
+        </div>
+      `);
+    });
 
     AllRevs = revenueArr
 
