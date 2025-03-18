@@ -122,6 +122,14 @@ $(".aside").html(`
           <div data-i18n="Basic">Audit Trail</div>
         </a>
       </li>
+
+      <li class="menu-item">
+        <a href="direct-assessment.html" class="menu-link direct-assessment">
+          <iconify-icon icon="fluent-mdl2:assessment-group" class="menu-icon"></iconify-icon>
+          <div data-i18n="Basic">Direct Assessment</div>
+        </a>
+      </li>
+
       <li class="menu-item">
         <a href="cms.html" class="menu-link mdo">
         <i class='menu-icon tf-icons bx bxs-group' ></i>

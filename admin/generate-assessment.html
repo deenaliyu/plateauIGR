@@ -8,13 +8,14 @@
   <title>PlateauIGR</title>
 
   <!-- FAVION ICON -->
-  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
+  <link rel="shortcut icon" href="../assets/img/favicon.png" type="image/x-icon" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
-  <link rel="stylesheet" href="assets/css/style.css" />
-  <link rel="stylesheet" href="assets/css/responsive.css" />
-  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
-  <link rel="stylesheet" href="assets/js/aos-master/dist/aos.css" />
+  <link rel="stylesheet" href="../assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="../assets/css/style.css" />
+  <link rel="stylesheet" href="../assets/css/responsive.css" />
+  <link rel="stylesheet" href="../assets/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="../assets/js/aos-master/dist/aos.css" />
+  <link ref="stylesheet" href="./assets/css/print2.css" media="print" />
   <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
   <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
   <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
@@ -29,49 +30,78 @@
       display: none;
     }
 
+    table.invTable {
+      border-collapse: collapse;
+    }
+
+    table.invTable th,
+    table.invTable td {
+      border: 1px solid #000;
+    }
+
     .invTa tr td {
       padding-left: 0;
       padding-bottom: 0px;
       font-size: 14px;
     }
 
+    #lastly-button {
+      background-color: #fff;
+      width: 380px;
+      color: #CDA545 !important;
+      border: 3px solid #CDA545;
+      border-radius: 100px;
+      padding: 10px 20px;
+      text-align: center;
+    }
+
+    /* .demanInvoiceBody {
+      background: url('./assets/img/demandbg.png');
+      background-size: cover;
+      background-position: center;
+    } */
+
     .select2.select2-container {
       width: 100% !important;
+    }
+
+    #myTab .nav-link.active {
+      background: #CDA545 !important;
     }
   </style>
 </head>
 
 <body>
-  <header class="flex justify-between px-10 bg-white py-3" id="theHeader"></header>
 
-  <section class="flex h-[89vh] overflow-y-scroll headerBeginner">
+
+  <section class="flex h-[100vh] overflow-y-scroll">
 
     <div class="md:block hidden w-3/12 bg-[#F9FAFB] p-3">
 
       <div class="flex px-1 h-full">
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/geninv1.png" />
+          <img src="./assets/img/dmdimg1.png" />
         </div>
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/geninv2.png" />
+          <img src="./assets/img/dmdimg2.png" />
         </div>
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/geninv2.png" />
+          <img src="./assets/img/dmdimg3.png" />
         </div>
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/geninv3.png" />
+          <img src="./assets/img/dmdimg4.png" />
         </div>
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/geninv4.png" />
+          <img src="./assets/img/dmdimg5.png" />
         </div>
         <div class="mt-5 imgTabs">
-          <img src="./assets/img/geninv5.png" />
+          <img src="./assets/img/dmdimg5.png" />
         </div>
       </div>
 
     </div>
 
-    <div class="md:w-9/12 w-full bg-[url('./assets/img/slideimg.png')] bg-center overflow-y-scroll">
+    <div class="md:w-9/12 w-full bg-[url('../assets/img/slideimg.png')] bg-center overflow-y-scroll">
 
       <section class="formTabs h-full">
 
@@ -79,7 +109,7 @@
 
           <form action="" class="md:w-[60%] w-[80%]">
             <div id="text-color">
-              <h1 class="fontBold text-3xl">Generate Invoice</h1>
+              <h1 class="fontBold text-3xl">Generate Direct Assessment</h1>
               <h1 class="mb-10 mt-3">Personal Details</h1>
             </div>
 
@@ -111,7 +141,7 @@
         <div class="flex justify-center items-center h-full">
 
           <form action="" class="md:w-[60%] w-[80%] ">
-            <h1 class="fontBold text-2xl">Generate Invoice</h1>
+            <h1 class="fontBold text-2xl">Generate Direct Assessment</h1>
             <h1 class="mb-3 mt-3">Personal Details</h1>
 
             <div class="form-group mb-4">
@@ -157,29 +187,21 @@
               <label for="">TIN <span class="text-danger">*</span></label>
               <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN"
                 required>
-              <div class="flex justify-between mt-1">
-                <p class="text-sm text-black font-bold">Don't have TIN?<a href="#popUpModal" data-bs-toggle="modal"
-                    class="fontBold text-[#CDA545]">
-                    Click here</a></p>
-
-                <p class="text-sm font-bold text-black">Can't remember TIN?<a href="#forgotTinModal"
-                    data-bs-toggle="modal" class="fontBold text-danger">
-                    Forgot TIN</a></p>
-              </div>
+              
 
             </div>
 
             <div class="flex items-center mb-4 gap-2">
               <div class="form-group w-full">
                 <label for="">State*</label>
-                <select name="" id="selectState" class="form-select payInputs" data-name="state">
+                <select name="" id="STATES" class="form-select payInputs" data-name="state">
                   <option value="Akwa Ibom">Akwa Ibom</option>
                 </select>
               </div>
 
               <div class="form-group w-full">
                 <label for="">LGA*</label>
-                <select name="" id="selectLGA" class="form-select payInputs" required data-name="lga">
+                <select name="" id="LGAs" class="form-select payInputs" required data-name="lga">
                 </select>
               </div>
 
@@ -209,7 +231,7 @@
         <div class="flex justify-center items-center h-full -mt-10">
 
           <form action="" class="md:w-[70%] secondForm">
-            <h1 class="fontBold text-2xl">Generate Invoice</h1>
+            <h1 class="fontBold text-2xl">Generate Direct Assessment</h1>
             <h1 class="mb-3 mt-3">Billing Information</h1>
 
 
@@ -252,6 +274,15 @@
             </div>
 
             <div class="form-group mb-3">
+              <label for="description">Sector*</label>
+              <select class="form-select genInv" id="thesector" required>
+                <option value="" selected disabled>Select --</option>
+                <option value="Formal">Formal Sector</option>
+                <option value="Informal">Informal Sector</option>
+              </select>
+            </div>
+
+            <div class="form-group mb-3">
               <label for="description">Description*</label>
               <input type="text" class="form-control genInv" id="thedescripInput" required>
             </div>
@@ -275,7 +306,7 @@
 
         <div class="flex justify-center items-center h-full">
           <form action="" class="md:w-[70%] secondForm">
-            <!-- <h1 class="fontBold text-2xl">Generate Invoice</h1> -->
+            <!-- <h1 class="fontBold text-2xl">Generate Direct Assessment</h1> -->
 
             <h1 class="mb-3 mt-3">Billing Details</h1>
             <div class="shadow-md p-3 bg-[#E9ECEF]" id="bill">
@@ -379,7 +410,7 @@
                 </button>
               </div>
 
-              <button class="button flex gap-3 items-center px-10" onclick="goToPayment2()">
+              <button class="button flex gap-3 items-center px-10" onclick="history.go(-1)">
                 <span>Proceed</span>
                 <iconify-icon icon="eva:arrow-forward-outline" class="text-xl"></iconify-icon>
               </button>
@@ -455,28 +486,54 @@
 
   </section>
 
-  <div id="ModalsContainer"></div>
 
 
 
-
-  <script src="assets/js/jquery.js"></script>
-  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="../assets/js/jquery.js"></script>
+  <script src="../assets/bootstrap/js/bootstrap.bundle.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
-  <script src="assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/gh/Joe12387/detectIncognito@main/dist/es5/detectIncognito.min.js"></script>
   <script>
     $(document).ready(function () {
       //change selectboxes to selectize mode to be searchable
       $(".revHeadInputSel").select2();
     });
   </script>
-
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
   <script>
+    function downloadInvoice(thecard) {
+      const element = document.getElementById(thecard);
 
-    const amountInp = document.querySelector('.amountTopay');
+      var HTML_Width = $("#" + thecard).width();
+      var HTML_Height = $("#" + thecard).height();
+      var top_left_margin = 15;
+      var PDF_Width = HTML_Width + (top_left_margin * 2);
+      var PDF_Height = (PDF_Width * 1.5) + (top_left_margin * 2);
+      var canvas_image_width = HTML_Width;
+      var canvas_image_height = HTML_Height;
 
-    amountInp.addEventListener('input', function (e) {
+      var totalPDFPages = Math.ceil(HTML_Height / PDF_Height) - 1;
+
+      html2canvas($("#" + thecard)[0]).then(function (canvas) {
+        var imgData = canvas.toDataURL("image/jpeg", 1.0);
+        var pdf = new jsPDF('p', 'pt', [PDF_Width, PDF_Height]);
+        pdf.addImage(imgData, 'JPG', top_left_margin, top_left_margin, canvas_image_width, canvas_image_height);
+        for (var i = 1; i <= totalPDFPages; i++) {
+          pdf.addPage(PDF_Width, PDF_Height);
+          pdf.addImage(imgData, 'JPG', top_left_margin, -(PDF_Height * i) + (top_left_margin * 4), canvas_image_width, canvas_image_height);
+        }
+        pdf.save(thecard + ".pdf");
+      });
+
+    }
+  </script>
+  <script>
+    const amountInput = document.getElementById('amountTopay');
+
+    amountInput?.addEventListener('input', function (e) {
       let inputVal = e.target.value;
 
       // Immediately return if the first character is a dot to allow ".xx" inputs
@@ -504,16 +561,16 @@
       // Reconstruct the formatted value
       e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
     });
+
   </script>
 
 
-  <script src="assets/js/nav.js?v=1.2"></script>
-  <script src="assets/js/payment.js?v=3.0"></script>
-  <script src="assets/js/tabHandler.js"></script>
-  <script src="assets/js/hadleTinGen.js"></script>
-  <script src="assets/js/generateinvoice.js"></script>
-  <script src="assets/js/invoice.js"></script>
-  <script src="assets/js/landingcms.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <!--<script src="assets/js/payment.js?v=1.6"></script>-->
+  <script src="../assets/js/tabHandler.js"></script>
+  <script src="../assets/js/invoice.js"></script>
+  <script src="assets/js/generate-assessment.js"></script>
+
 </body>
 
 </html>

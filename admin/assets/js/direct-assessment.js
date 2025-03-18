@@ -1,5 +1,3 @@
-let dataToExport;
-
 function formatMoney(amount) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
@@ -9,6 +7,7 @@ function formatMoney(amount) {
 }
 
 let AllDemanData = {}
+let dataToExport;
 
 async function fetchInvoice() {
   if ($.fn.DataTable.isDataTable('#dataTable')) {
@@ -27,9 +26,13 @@ async function fetchInvoice() {
       const pageNumber = Math.ceil(data.start / data.length) + 1;
 
       const filters = {
-        getAllPresumptive: true,
+        getAllDirectAssessment: true,
         page: pageNumber,
         limit: data.length,
+        invoice_number: $('#invnumberInput').val(),
+        payment_status: $('#paymentStatusSelect').val(),
+        date_from: $('#fromDateInput').val(),
+        date_to: $('#toDateInput').val()
       };
 
       // Call your API with the calculated page number
@@ -38,8 +41,8 @@ async function fetchInvoice() {
         type: 'GET',
         data: filters,
         success: function (response) {
-          dataToExport = response.data
           // Map the API response to DataTables expected format
+          dataToExport = response.data
           callback({
             draw: data.draw, // Pass through draw counter
             recordsTotal: response.total, // Total records in your database
@@ -64,14 +67,15 @@ async function fetchInvoice() {
       { data: 'tax_number' },
       { data: 'COL_3' },
       { data: 'COL_4' },
+      { data: 'sector' },
       {
         data: null,
         render: function (data, type, row) {
           return row.first_name + " " + row.surname;
         }
       },
+      // { data: 'email' },
       { data: 'invoice_number' },
-      { data: 'business_cat' },
       {
         data: null,
         render: function (data, type, row) {
@@ -89,7 +93,7 @@ async function fetchInvoice() {
       {
         data: null,
         render: function (data, type, row) {
-          return ` <a href="./viewinvoice.html?invnumber=${row.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Invoice</a>`;
+          return `<a href="./viewinvoice.html?invnumber=${row.invoice_number}&load=true" class="btn btn-primary btn-sm viewUser">View Invoice</a>`;
         }
       },
     ],
@@ -98,6 +102,11 @@ async function fetchInvoice() {
 }
 
 fetchInvoice()
+
+$("#filterDemand").on('click', function () {
+  $("#filterInvoice").modal('hide')
+  fetchInvoice()
+})
 
 async function fetchAnalytics() {
 
@@ -111,7 +120,7 @@ async function fetchAnalytics() {
   };
   try {
     const response = await fetch(
-      `${HOST}/php/index.php?getDashboardAnalyticsPresumptive`
+      `${HOST}?getDashboardAnalyticsDirect`
     );
 
     const userAnalytics = await response.json();
@@ -155,6 +164,6 @@ function exportData() {
   const blob = new Blob([csvString], { type: "text/csv" });
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob);
-  a.download = "presumptive_reports.csv";
+  a.download = "direct-assessment.csv";
   a.click();
 }

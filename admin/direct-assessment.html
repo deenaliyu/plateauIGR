@@ -32,15 +32,13 @@
   <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="./assets/css/demo.css" />
-  <link rel="stylesheet" href="./assets/css/style.css">
+  <link rel="stylesheet" href="./assets/css/style.css?v=1.2">
   <!-- Vendors CSS -->
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
   <script src="./assets/vendor/js/helpers.js"></script>
   <script src="./assets/js/config.js"></script>
 
-
   <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
-
 </head>
 
 <body class="taxpayer">
@@ -69,8 +67,8 @@
 
           <div class="navbar-nav-right relative flex items-center gap-x-5" id="navbar-collapse">
             <div class="">
-              <p class="text-sm text-black">Date: <span id="datei"> </span></p>
-              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Reports</h1>
+              <p class="text-sm text-black">Date: <span class="datei" id="datei"> </span></p>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Direct Assessment</h1>
             </div>
 
             <div class="mt-4 flex gap-x-5 absolute right-24">
@@ -98,11 +96,19 @@
         <!-- Content wrapper -->
         <section class="content-wrapper">
 
-          <div class="container-xxl flex-grow-1 container-p-y taxes">
-            <p class="font-bold text-2xl text-black">Presumptive Tax Report</p>
-            <div class="flex justify-content-end mt-3">
-              <a class="button" href="../generatepresumptiveinvoice.html">Generate Presumptive Tax </a>
+
+          <!--<div class="flex justify-center items-center mt-4" id="theLoader">-->
+          <!--  <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>-->
+          <!--</div>-->
+
+          <div class="container-xxl flex-grow-1 container-p-y taxes" id="reportDisplay">
+
+            <div class="flex justify-between  items-center mb-5">
+              <p class="font-bold text-2xl text-black">Direct Assessment</p>
+              <a href="generate-assessment.html" class="button items-center flex gap-x-1" id="newDemandNotice">Generate
+                Assessment</a>
             </div>
+
             <div class="grid grid-cols-3 gap-3 mt-2" id="cardsForSummaray">
 
               <div class="card dashCards">
@@ -140,9 +146,10 @@
                       <th>Payer ID</th>
                       <th>MDA</th>
                       <th>Revenue Head</th>
+                      <th>Sector</th>
                       <th>Name</th>
+                      <!-- <th>Email</th> -->
                       <th>Invoice Number</th>
-                      <th>Category</th>
                       <th>Amount</th>
                       <th>Date Created</th>
                       <th>Due Date</th>
@@ -197,8 +204,37 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
 
+  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body mb-5">
+
+          <h1 class="text-center text-2xl">TIN Status</h1>
+          <form action="">
+            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
+              Number.</p>
+
+            <select name="" id="selectInput" class="form-select mt-5">
+              <option disabled selected>update status</option>
+              <option value="0">Un-verfied</option>
+              <option value="1">Verified</option>
+            </select>
+
+            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
+            <div id="msg_box" class="w-full"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
   <!-- build:js assets/vendor/js/core.js -->
-  <div class="modal fade" id="filterInvoice" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="filterInvoice" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header ">
@@ -206,29 +242,52 @@
           <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
             aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
         </div>
-        <div class="modal-body" style="overflow:hidden;">
+
+        <div class="modal-body">
           <div class="flex justify-end">
-            <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
+            <button class="btn btn-primary btn-sm" onclick="clearfilter3()">clear filter</button>
           </div>
-          <div class="row">
-            <div class="col mb-3" id="mdass">
-              <label for="defaultSelect" class="form-label">MDA</label>
-              <div class="form-group">
-                <select name="" id="getMDAs" class="form-select">
-                  <option selected value="">--- All ---</option>
-                </select>
-              </div>
-            </div>
-          </div>
-          <div class="row">
+
+          <div class="row  mb-4">
             <div class="col mb-0" id="the_rev">
-              <label for="defaultSelect" class="form-label">Revenue Head</label>
+              <label for="defaultSelect" class="form-label">Sector</label>
               <div class="form-group">
-                <select name="" id="getRevs" class="form-select">
-                  <option selected value="">All</option>
+                <select id="sectorFil" class="form-select">
+                  <option disabled selected value="">--- Select Sector ---</option>
+                  <option value="Formal">Formal</option>
+                  <option value="Informal">Informal</option>
+
                 </select>
               </div>
             </div>
+          </div>
+
+          <!-- <div class="row  mb-4">
+            <div class="col mb-0" id="the_rev">
+              <label for="defaultSelect" class="form-label">Tax Office</label>
+              <div class="form-group">
+                <select name="" id="getOffice" class="form-select">
+                  <option disabled selected value="">--- Select Tax Office ---</option>
+                  <option value="KAURA NAMODA ZONAL">KAURA NAMODA ZONAL</option>
+                  <option value="TSAFE ZONE">TSAFE ZONE</option>
+                  <option value="GUMMI ZONE">GUMMI ZONE</option>
+                  <option value="TALATA MAFARA ZONE">TALATA MAFARA ZONE</option>
+                  <option value="ZIRS Headquarters">ZIRS Headquarters</option>
+                </select>
+              </div>
+            </div>
+          </div> -->
+
+          <!--  -->
+
+          <div class="row mb-2">
+            <div class="col mb-0">
+              <label for="invoiceNumber" class="form-label">Invoice Number</label>
+              <input type="text" class="form-control" id="invnumberInput">
+            </div>
+          </div>
+
+          <div class="row mb-2">
             <div class="col mb-0">
               <label for="paymentStatusSelect" class="form-label">Payment status</label>
               <select id="paymentStatusSelect" class="form-select">
@@ -238,6 +297,7 @@
               </select>
             </div>
           </div>
+
           <div class="row g-2">
             <label for="" class="mt-3">Date</label>
             <div class="col mb-0">
@@ -250,9 +310,11 @@
             </div>
           </div>
         </div>
+
         <div class="modal-footer ">
-          <button type="button" class="btn btn-prime w-full" id="filterMda">Apply</button>
+          <button type="button" class="btn btn-prime w-full" id="filterDemand">Apply</button>
         </div>
+
       </div>
     </div>
   </div>
@@ -271,9 +333,10 @@
       table.search($(this).val()).draw();
     });
   </script>
+  <script src="https://cdn.jsdelivr.net/gh/Joe12387/detectIncognito@main/dist/es5/detectIncognito.min.js"></script>
   <script src="./assets/js/nav.js"></script>
   <script>
-    let theAtivo = document.querySelector(".presump")
+    let theAtivo = document.querySelector(".direct-assessment")
     theAtivo.parentElement.classList.add("active")
   </script>
 
@@ -296,15 +359,11 @@
     })
   </script>
   <!-- Main JS -->
-  <script src="./assets/js/accessLevel.js"></script>
-  <script src="./assets/js/invoicespresumptive.js"></script>
-  <script src="./assets/js/filterInv.js?v=2.0"></script>
+  <script src="./assets/js/accessLevel.js?v1.2"></script>
+  <script src="./assets/js/direct-assessment.js"></script>
+  <script src="./assets/js/filterInv.js?v=3.0"></script>
   <script src="./assets/js/main.js"></script>
 
-  <!-- Page JS -->
-
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>
