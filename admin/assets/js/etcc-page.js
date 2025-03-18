@@ -4,7 +4,7 @@ async function getEtccRequests() {
 
   const response = await fetch(`${HOST}/?getETCC&type=`)
   const etccReqs = await response.json()
-  
+
   $("#loader").css("display", "none")
 
   //   Accepted: 1
@@ -27,7 +27,7 @@ async function getEtccRequests() {
       let etccStatus = ""
 
       if (etcReq.app_status === "Declined") {
-          ii++
+        ii++
         etccStatus = `<span class="badge bg-danger">Declined</span>`
         $("#etccTable5").append(`
           <tr>
@@ -42,13 +42,16 @@ async function getEtccRequests() {
           </tr>
         `)
       } else if (etcReq.app_status === "Accepted") {
-        iii++  
+        iii++
         etccStatus = `<span class="badge bg-success">Approved</span>`
         $("#etccTable4").append(`
           <tr>
             <td>${iii}</td>
             <td>${etcReq.timeIn}</td>
             <td>${etcReq.refe}</td>
+            <td>${etcReq.fullname}</td>
+            <td>${etcReq.email}</td>
+            <td>${etcReq.category}</td>
             <td>${etccStatus}</td>
             <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
             <td>
@@ -65,6 +68,9 @@ async function getEtccRequests() {
             <td>${iiii}</td>
             <td>${etcReq.timeIn}</td>
             <td>${etcReq.refe}</td>
+            <td>${etcReq.fullname}</td>
+            <td>${etcReq.email}</td>
+            <td>${etcReq.category}</td>
             <td>${etccStatus}</td>
             <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
             <td>
@@ -73,13 +79,16 @@ async function getEtccRequests() {
           </tr>
         `)
       } else if (etcReq.app_status === "Second Review") {
-        iiiii++  
+        iiiii++
         etccStatus = `<span class="badge bg-warning">Second Review</span>`
         $("#etccTable2").append(`
           <tr>
             <td>${iiiii}</td>
             <td>${etcReq.timeIn}</td>
             <td>${etcReq.refe}</td>
+            <td>${etcReq.fullname}</td>
+            <td>${etcReq.email}</td>
+            <td>${etcReq.category}</td>
             <td>${etccStatus}</td>
             <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
             <td>
@@ -95,6 +104,9 @@ async function getEtccRequests() {
             <td>${iiiiii}</td>
             <td>${etcReq.timeIn}</td>
             <td>${etcReq.refe}</td>
+            <td>${etcReq.fullname}</td>
+            <td>${etcReq.email}</td>
+            <td>${etcReq.category}</td>
             <td>${etccStatus}</td>
             <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
             <td>
