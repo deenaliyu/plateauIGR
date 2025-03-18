@@ -60,7 +60,7 @@ async function fetchTaxPayers() {
           <div class="flex items-center gap-3">
        `
       showRe += `
-        <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txView"><iconify-icon
+        <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txEdit"><iconify-icon
         icon="material-symbols:edit-square-outline"></iconify-icon></a>
       `
       
@@ -117,7 +117,7 @@ async function fetchTaxPayers() {
             <div class="flex items-center gap-3">
          `
         showRe += `
-          <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser txView"><iconify-icon
+          <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser txEdit"><iconify-icon
           icon="material-symbols:edit-square-outline"></iconify-icon></button>
         `
         showRe += `
@@ -188,7 +188,7 @@ async function fetchEnutaxP() {
       <td>${txpayer.timeIn.split(" ")[0]}</td>
       <td>
         <div class="flex gap-3 items-center">
-          <button data-theid="${txpayer.tax_number}" onclick="editThis(this)" data-usertype="enumerator_tax_payers" class="txView EditUser"><iconify-icon
+          <button data-theid="${txpayer.tax_number}" onclick="editThis(this)" data-usertype="enumerator_tax_payers" class="txEdit EditUser"><iconify-icon
           icon="material-symbols:edit-square-outline"></iconify-icon></button>
 
             <a href="./taxpayerlist.html?id=${txpayer.tax_number}&enumerated=true" class="btn txView btn-primary btn-sm viewUser">View</a>

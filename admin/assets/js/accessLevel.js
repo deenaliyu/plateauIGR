@@ -144,6 +144,7 @@ async function getRolesAdmin() {
     let acti_taxpayer = taxPayers.find(ff => ff === "acti_taxpayer")
     let allocate_appli = taxPayers.find(ff => ff === "allocate_appli")
     let download_report = taxPayers.find(ff => ff === "download_report")
+    let edit_tax_detail = taxPayers.find(ff => ff === "edit_tax_detail")
 
     if (download_report === undefined) {
       $("#txdReport").addClass("disabled")
@@ -163,6 +164,12 @@ async function getRolesAdmin() {
     if (view_tax_detail === undefined) {
       let txViews = document.querySelectorAll(".txView")
       txViews.forEach(dd => {
+        dd.classList.add("disabled")
+      })
+    }
+    if (edit_tax_detail === undefined) {
+      let txEdit = document.querySelectorAll(".txEdit")
+      txEdit.forEach(dd => {
         dd.classList.add("disabled")
       })
     }

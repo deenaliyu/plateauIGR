@@ -48,13 +48,13 @@ async function getTaxPayer() {
         <div class="flex justify-between">
           <label class="w-4/12">First Name</label>
           <div class="form-group w-8/12">
-            <input class="form-control mt-1 updtProf" name="first_name"x type="text" value="${taxPayerData.first_name}" />
+            <input class="form-control mt-1 updtProf" name="first_name"x type="text" data-name="first_name" value="${taxPayerData.first_name}" />
           </div>
         </div>
          <div class="flex justify-between">
           <label class="w-4/12">Surname</label>
           <div class="form-group w-8/12">
-            <input class="form-control mt-1 updtProf" name="surname" type="text" value="${taxPayerData.surname}" />
+            <input class="form-control mt-1 updtProf" name="surname" data-name="surname" type="text" value="${taxPayerData.surname}" />
           </div>
         </div>
       `;
@@ -63,7 +63,7 @@ async function getTaxPayer() {
       <div class="flex justify-between">
         <label class="w-4/12">First Name</label>
         <div class="form-group w-8/12">
-          <input class="form-control mt-1 updtProf" name="first_name" type="text" value="${taxPayerData.first_name}" />
+          <input class="form-control mt-1 updtProf" name="first_name" data-name="first_name" type="text" value="${taxPayerData.first_name}" />
         </div>
       </div>
     `;
@@ -73,7 +73,7 @@ async function getTaxPayer() {
      <div class="flex justify-between mt-2">
           <label class="w-4/12">Tax Identification Number</label>
           <div class="form-group w-8/12">
-            <input class="form-control mt-1 updtProf" type="text" name="new_tin" value="${taxPayerData.tin}" maxlength="15" />
+            <input class="form-control mt-1 updtProf" type="text" name="tin" data-name="tin" value="${taxPayerData.tin}" maxlength="15" />
           </div>
         </div>
       <div class="flex justify-between mt-2 items-center">
@@ -91,11 +91,11 @@ async function getTaxPayer() {
         <label class="w-4/12">Are you a business owner?</label>
         <div class='flex gap-x-2 w-8/12'>
           <div class="form-check">
-            <input class="form-check-input" type="radio" value="yes" name="businessOwner" id="businessOwnerYes" ${taxPayerData.business_own === 'Yes' ? 'checked' : ''}>
+            <input class="form-check-input" type="radio" value="yes" name="businessOwner" data-name="business_own" id="businessOwnerYes" ${taxPayerData.business_own === 'Yes' ? 'checked' : ''}>
             <label class="form-check-label" for="businessOwnerYes">Yes</label>
           </div>
           <div class="form-check">
-            <input class="form-check-input" type="radio" value="no" name="businessOwner" id="businessOwnerNo" ${taxPayerData.business_own === 'No' ? 'checked' : ''}>
+            <input class="form-check-input" type="radio" value="no" name="businessOwner" data-name="business_own" id="businessOwnerNo" ${taxPayerData.business_own === 'No' ? 'checked' : ''}>
             <label class="form-check-label" for="businessOwnerNo">No</label>
           </div>
         </div>
@@ -177,7 +177,6 @@ async function getTaxPayer() {
     });
 
     toggleBusinessType();
-    let stateSelect = document.querySelector("#selectState");
     let lgaSelect = document.querySelector('#selectLGA');
 
     lgaList["Plateau"].forEach(lga => {
@@ -266,39 +265,39 @@ $("#updateProfile").on("click", function (e) {
   let queryString = new URLSearchParams(obj).toString();
   console.log(queryString)
 
-  // $.ajax({
-  //   type: "GET",
-  //   url: `${HOST}?updateTaxPayer&${queryString}`,
-  //   dataType: 'json',
-  //   success: function (data) {
-  //     console.log(data)
-  //     if (data.status === 2) {
-  //       $("#msg_box").html(`
-  //         <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
-  //       `)
-  //       $("#updateProfile").removeClass("hidden")
+  $.ajax({
+    type: "GET",
+    url: `${HOST}?updateTaxPayer&${queryString}`,
+    dataType: 'json',
+    success: function (data) {
+      console.log(data)
+      if (data.status === 2) {
+        $("#msg_box").html(`
+          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
+        `)
+        $("#updateProfile").removeClass("hidden")
 
-  //     } else if (data.status === 1) {
-  //       $("#msg_box").html(`
-  //         <p class="text-success text-center mt-4 text-lg">${data.message}</p>
-  //       `)
-  //       let newObj = obj
-  //       localStorage.setItem("singleUser", JSON.stringify(obj))
+      } else if (data.status === 1) {
+        $("#msg_box").html(`
+          <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+        `)
+        let newObj = obj
+        localStorage.setItem("singleUser", JSON.stringify(obj))
 
-  //       setTimeout(() => {
-  //         window.location.reload()
-  //       }, 1000);
+        setTimeout(() => {
+          window.location.href = "./taxpayer.html";
+        }, 1000);
 
-  //     }
-  //   },
-  //   error: function (request, error) {
-  //     console.log(error);
-  //     $("#msg_box").html(`
-  //       <p class="text-danger text-center mt-4 text-lg">An error occured !</p>
-  //     `)
-  //     $("#updateProfile").removeClass("hidden")
-  //   }
-  // });
+      }
+    },
+    error: function (request, error) {
+      console.log(error);
+      $("#msg_box").html(`
+        <p class="text-danger text-center mt-4 text-lg">An error occured !</p>
+      `)
+      $("#updateProfile").removeClass("hidden")
+    }
+  });
 
 })
 
