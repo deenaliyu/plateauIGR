@@ -473,8 +473,8 @@ async function openInvoice(invoicenum, price) {
 
 
 
-      $("#invoiceCard").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED DEMAND NOTICE", normalDate, textDemand))
-      $("#assessmentDemandNotice").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED NOTICE OF ASSESSMENT", add30Days(normalDate), textAssessment))
+      $("#invoiceCard").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED DEMAND NOTICE", add30Days(normalDate), textDemand))
+      $("#assessmentDemandNotice").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED NOTICE OF ASSESSMENT", normalDate, textAssessment))
       $("#auditLetter").html(displayAuditLetter(demandInvoiceInfo))
       $("#invoiceCardSecond").html(TotalInvoice)
 
