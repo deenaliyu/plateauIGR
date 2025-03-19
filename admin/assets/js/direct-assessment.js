@@ -31,6 +31,7 @@ async function fetchInvoice() {
         limit: data.length,
         invoice_number: $('#invnumberInput').val(),
         payment_status: $('#paymentStatusSelect').val(),
+        sector: $('#sectorFil').val(),
         date_from: $('#fromDateInput').val(),
         date_to: $('#toDateInput').val()
       };
@@ -166,4 +167,15 @@ function exportData() {
   a.href = URL.createObjectURL(blob);
   a.download = "direct-assessment.csv";
   a.click();
+}
+
+function clearfilter3() {
+  $('#sectorFil').val('')
+  $('#invnumberInput').val('')
+  $('#paymentStatusSelect').val('')
+  $('#fromDateInput').val('')
+  $('#toDateInput').val('')
+
+  $('#filterInvoice').modal('hide')
+  fetchInvoice()
 }
