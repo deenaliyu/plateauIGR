@@ -80,25 +80,26 @@ async function getSpecialUsersDash1() {
 
 getSpecialUsersDash1()
 
-// async function getSpecialUsersss() {
+async function fetchPayeUser() {
+  const response = await fetch(`${HOST}/?getSpecialUsers&id=${userInfo.tax_number}`)
+  const specialUsers = await response.json()
 
-//   const response = await fetch(`${HOST}/?getSpecialUsers&id=${userInfo.tax_number}`)
-//   const getDashData = await response.json()
+  $("#loader").css("display", "none")
 
+  if (specialUsers.status === 0) {
 
-//   if (getDashData.status === 0) {
-//     // $('#dataTable').DataTable();
+  } else {
 
-//   } else {
-//     let dashData = getDashData.message[0]
+    let theInfo = specialUsers.message[0]
 
-//     $("#total_remitance").html(formatMoney(dashData.total_remittance))
+    // $("#reg_staff").html(theInfo.staff_quota)
+    $("#total_remitance").html(theInfo.total_remittance ? formatMoney(parseFloat(theInfo.total_remittance)) : formatMoney(0))
 
-//   }
+  }
 
-// }
+}
 
-// getSpecialUsersss()
+fetchPayeUser()
 
 
 

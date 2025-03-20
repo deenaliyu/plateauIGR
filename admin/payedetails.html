@@ -140,7 +140,7 @@
                     </div>
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
-                      <p class="text-gray-500 impMetrics text-xs">TOTAL REMITTANCE</p>
+                      <p class="text-gray-500 impMetrics text-xs">TOTAL REMITANCE</p>
 
                       <p class="zanumbers" style="margin-top: 30px;">
                         <span id="month_remm">-</span>
@@ -187,10 +187,19 @@
                 <div class="tab-content" id="pills-tabContent">
                   <div class="tab-pane fade show active" id="stafflist" role="tabpanel">
 
+                    <div class="mb-4">
+                      <button class="button mt-3" type="button" id="generating_inv">Generate Invoice</button>
+                      <div id="msg_box2"></div>
+                    </div>
+
                     <div class="table-responsive">
                       <table class="table payeTable" id="dataTable">
                         <thead>
                           <tr>
+                            <th>
+                              <input class="form-check-input selAll" type="checkbox" value=""
+                                onchange="selectAll(this)">
+                            </th>
                             <th></th>
                             <th>TIN</th>
                             <th>Name</th>

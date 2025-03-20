@@ -55,16 +55,7 @@ async function fetchUserDetails() {
         $('.enumInput[data-name="fullname"]').val(data.user.first_name + " " + data.user.surname);
         $('.enumInput[data-name="staff"]').val(data.user.number_of_staff);
 
-        function selectOptionByText(selectId, matchText) {
-          const selectElement = document.getElementById(selectId);
 
-          for (let i = 0; i < selectElement.options.length; i++) {
-            if (selectElement.options[i].text === matchText) {
-              selectElement.selectedIndex = i;
-              break;
-            }
-          }
-        }
 
         allInputs.forEach((inputt, i) => {
           let theValuee = data.user[inputt.dataset.name]
@@ -83,18 +74,13 @@ async function fetchUserDetails() {
         });
 
         if (data.user.old_user && data.user.category === "Individual") {
-          if (data.user.state === null) {
-            selectOptionByText('selectState', "Plateau");
-          }
+          
 
         } else if (data.user.old_user && data.user.category === "Corporate") {
           document.querySelector(".enumInput[data-name='fullname']").value = data.user.company_name
           document.querySelector(".enumInputB[data-name='email']").value = data.user.office_email
           document.querySelector(".enumInputB[data-name='phone']").value = data.user.office_number
 
-          if (data.user.state === null) {
-            selectOptionByText('selectState', "Plateau");
-          }
         }
         nextPrev(1)
 

@@ -43,7 +43,7 @@ function registerUser() {
   allInputs.forEach((inputt, i) => {
     EnumData.data[inputt.dataset.name] = inputt.value
   })
-  console.log(JSON.stringify(EnumData))
+  // console.log(JSON.stringify(EnumData))
 
   async function sendToDB() {
     try {
@@ -88,6 +88,6 @@ function registerUser() {
     }
   }
 
-  // sendToDB()
+  sendToDB()
 
 }

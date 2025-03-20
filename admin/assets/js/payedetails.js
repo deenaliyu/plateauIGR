@@ -27,7 +27,7 @@ async function fetchPayeUser() {
     `)
 
     // $("#reg_staff").html(theInfo.staff_quota)
-    $("#month_remm").html(formatMoney(parseFloat(theInfo.total_remittance)))
+    $("#month_remm").html(theInfo.total_remittance ? formatMoney(parseFloat(theInfo.total_remittance)) : formatMoney(0))
     $("#payeName").html(theInfo.name)
 
     $("#pageName").html(theInfo.category === "Private" ? 'Private PAYE (PIT)' : 'Public PAYE')
@@ -51,6 +51,24 @@ function formatMoney(amount) {
   });
 }
 
+function selectAll(eee) {
+
+  const checkboxes = document.querySelectorAll('.taxChecks');
+
+  checkboxes.forEach(checkbox => {
+    checkbox.checked = eee.checked;
+  });
+
+}
+
+function formatMoney(amount) {
+  return amount.toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 0,
+  });
+}
+
 async function getStaffLists() {
 
   const response = await fetch(`${HOST}/?getSpecialUsersEmplyees&payer_id=${payerID}`)
@@ -69,6 +87,7 @@ async function getStaffLists() {
 
       $("#stafflistTable").append(`
           <tr>
+            <td><input class="form-check-input taxChecks" data-amount="${rhUser.monthly}" type="checkbox" value="" onchange="checkTax(this)"></td>
             <td>${i + 1}</td>
             <td>${rhUser.payer_id}</td>
             <td>${rhUser.fullname}</td>
@@ -169,6 +188,87 @@ $("#theButton").on("click", () => {
   });
 })
 
+function generateInv(amount) {
+  Swal.fire({
+    title: "Generating Invoice",
+    icon: "info",
+    backdrop: true,
+    allowOutsideClick: false,
+    showCancelButton: true,
+    confirmButtonText: "Generate Invoice",
+    showLoaderOnConfirm: true,
+    preConfirm: async () => {
+      try {
+        const response = await fetch(
+          `${HOST}?generateSingleInvoices&tax_number=${payerID}&price=${amount}&revenue_head_id=1359&invoice_type=invoice`
+        );
+        if (!response.ok) {
+          throw new Error(response.statusText);
+        }
+        return await response.json();
+      } catch (error) {
+        Swal.showValidationMessage(`Request failed: ${error}`);
+      }
+    },
+    allowOutsideClick: () => !Swal.isLoading(),
+  }).then((result) => {
+    console.log(result.value);
+    if (result.isConfirmed) {
+      Swal.fire({
+        icon: "success",
+        title: `Invoice Generated successfully !`,
+        confirmButtonText: "Open Invoice",
+      }).then((result3) => {
+        if (result.isConfirmed) {
+          window.open(`../viewinvoice.html?invnumber=${result.value.invoice_number}&load=true`, '_blank')
+        }
+      });
+    }
+  });
+
+}
+
+$("#generating_inv").on("click", function () {
+  let allSelected = document.querySelectorAll(".taxChecks");
+
+  // let  = document.querySelectorAll(".")
+  let theArray = [];
+  allSelected.forEach((slt) => {
+    if (slt.checked) {
+      theArray.push(parseFloat(slt.dataset.amount));
+      // console.log(slt)
+    }
+  });
+  // console.log()
+
+  // console.log(theArray)
+  if (theArray.length === 0) {
+    alert('Please select atleast one Staff')
+  } else {
+    generateInv(sumArray(theArray));
+  }
+
+});
+
+
+function checkTax(input) {
+  let selectedCheck = document.querySelector(".taxChecks:checked");
+  // if (selectedCheck) {
+  //   // showButton
+  //   $("#generating_inv").removeClass("hidden");
+  // } else {
+  //   // hideButton
+  //   $("#generating_inv").addClass("hidden");
+  // }
+}
+
+function sumArray(arr) {
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum += arr[i];
+  }
+  return sum;
+}
 
 async function getPaymentHistory() {
 
@@ -204,6 +304,7 @@ async function getPaymentHistory() {
 getPaymentHistory().then(tt => {
   $('#dataTable2').DataTable();
 })
+
 function getMonthInWordFromDate(dateString) {
   const months = [
     "January", "February", "March", "April", "May", "June",
