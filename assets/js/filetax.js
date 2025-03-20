@@ -150,10 +150,10 @@ $("#generateReferenceNum").on("click", async function () {
         $("#refNumberModal").modal("show");
     
         // Close modal and redirect after 100 seconds
-        setTimeout(function () {
-            $("#refNumberModal").modal("hide");
-            window.location.href = "/";
-        }, 1000); // 100 seconds
+        // setTimeout(function () {
+        //     $("#refNumberModal").modal("hide");
+        //     window.location.href = "/";
+        // }, 1000); // 100 seconds
     },
       error: function () {
         $("#msg_box").html(`<p class="text-danger text-center mt-4 text-lg">Something went wrong!</p>`);

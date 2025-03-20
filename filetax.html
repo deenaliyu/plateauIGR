@@ -205,20 +205,17 @@
             <div class="md:flex gap-3 mt-3">
               <div class="form-group md:w-6/12  w-full">
                 <label class="">Self-assessment form upload *</label>
-                <input class="form-control mt-1 taxFInput2" data-name="form_assessment_upload"
-                  accept=".pdf,.png,.jpg,.jpeg" required type="file" />
+                <input class="form-control mt-1 taxFInput2" data-name="form_assessment_upload" required type="file" />
               </div>
               <div class="form-group md:w-6/12 w-full">
                 <label class="">Income tax form *</label>
-                <input class="form-control mt-1 taxFInput2" data-name="tax_income_upload" accept=".pdf,.png,.jpg,.jpeg"
-                  required type="file" />
+                <input class="form-control mt-1 taxFInput2" data-name="tax_income_upload" required type="file" />
               </div>
             </div>
             <div class="md:flex gap-3 mt-3">
               <div class="form-group md:w-6/12 w-full">
                 <label class="">Evidence of tax payment *</label>
-                <input class="form-control mt-1 taxFInput2" data-name="evidence_of_tax_payment"
-                  accept=".pdf,.png,.jpg,.jpeg" required type="file" />
+                <input class="form-control mt-1 taxFInput2" data-name="evidence_of_tax_payment" required type="file" />
               </div>
             </div>
 
@@ -227,8 +224,7 @@
           <div class="flex items-center gap-3 mt-4">
             <div class="form-group md:w-6/12 w-full">
               <label for="">Start date*</label>
-              <input type="date" class="form-control taxFInput" data-name="start_date" required
-                >
+              <input type="date" class="form-control taxFInput" data-name="start_date" required>
             </div>
 
             <div class="form-group  md:w-6/12 w-full">
@@ -253,14 +249,12 @@
     </section>
 
     <!-- Modal -->
-    <div class="modal fade" id="refNumberModal" tabindex="-1">
+    <div class="modal fade" id="refNumberModal" tabindex="-1" data-bs-backdrop="static" data-bs-keyboard="false">
       <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-md">
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="text-md">Tax filing reference</h1>
-            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
-              <iconify-icon icon="fluent-mdl2:cancel"></iconify-icon>
-            </button>
+
           </div>
           <div class="modal-body px-5">
 
@@ -268,6 +262,9 @@
             <p class="text-center mt-5 text-[#555555]">Thanks for using Intelligent Billing System.</p>
             <p class="text-center text-[#555555]">Kindly check back later to know your application
               status.</p>
+
+
+            <a href="index.html" class="btn mt-5 button w-full">Go Home</a>
           </div>
         </div>
       </div>
@@ -289,9 +286,7 @@
   <script src="assets/js/aos-master/dist/aos.js"></script>
   <script src="assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
-  <script>
-    AOS.init();
-  </script>
+
   <script src="./assets/node_modules/publitio_js_sdk/build/publitio-api.min.js"></script>
   <script src="assets/js/nav.js"></script>
   <script src="assets/js/filetax.js"></script>
