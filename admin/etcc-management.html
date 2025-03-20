@@ -170,7 +170,20 @@
 
 
               <section class="mt-4 card px-2">
-                <div class="flex justify-end mt-4 mb-2">
+                <div class="flex justify-end gap-3 items-center mt-4 mb-2">
+                  <div class="flex items-center gap-3">
+                    <div class="-mt-5">
+                      <label for="etccFrom">From</label>
+                      <input type="date" class="form-control" id="etccFrom">
+                    </div>
+                    <div class="-mt-5">
+                      <label for="etccTo">To</label>
+                      <input type="date" class="form-control" id="etccTo">
+                    </div>
+                    <button class="button flex items-center gap-3" onclick="applyFilter()">
+                      Apply
+                    </button>
+                  </div>
                   <div class="flex gap-4">
                     <button class="button flex items-center gap-3" onclick="exportData()">
                       <iconify-icon icon="humbleicons:download" class="text-xl"></iconify-icon>

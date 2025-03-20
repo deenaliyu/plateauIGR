@@ -52,8 +52,10 @@ async function fetchTaxPayers() {
           <td class="text-success">${taxPayer.tin_status}</td>
         `
       }
-
-
+      showRe += `
+      <td>₦ ${taxPayer.annual_income ? parseFloat(taxPayer.annual_income).toLocaleString() : 0}</td>
+      <td>${taxPayer.annual_income && parseFloat(taxPayer.annual_income) >= 20000000 ? `<span class='badge bg-success'>High Income</span>` : `<span class='badge bg-warning'>Low Income</span>`}</td>
+      `
       showRe += `
           <td>${taxPayer.timeIn}</td>
           <td>
@@ -63,7 +65,7 @@ async function fetchTaxPayers() {
         <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txEdit"><iconify-icon
         icon="material-symbols:edit-square-outline"></iconify-icon></a>
       `
-      
+
       showRe += `
       <a href="./taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
 
@@ -144,7 +146,7 @@ async function fetchTaxPayers() {
 fetchTaxPayers().then(ee => {
 
 })
-{/* <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser btn btn-primary btn-s txView">Update</button> */}
+{/* <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser btn btn-primary btn-s txView">Update</button> */ }
 
 async function fetchEnutaxP() {
   $("#showreport2").html("")

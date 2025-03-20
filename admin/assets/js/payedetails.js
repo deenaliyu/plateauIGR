@@ -5,6 +5,7 @@ const fullname = urlParams.get('fullname');
 $("#payeID").html(payerID)
 let AllEmployees;
 
+let dataToExport;
 
 
 async function fetchPayeUser() {
@@ -62,6 +63,7 @@ async function getStaffLists() {
     $("#reg_staff").html(0)
   } else {
     AllEmployees = specialUsers.message
+    dataToExport = specialUsers.message
     $("#reg_staff").html(AllEmployees.length)
     specialUsers.message.reverse().forEach((rhUser, i) => {
 
@@ -170,7 +172,7 @@ $("#theButton").on("click", () => {
 
 async function getPaymentHistory() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersPayments&offset=0&payer_id=${payerID}`)
+  const response = await fetch(`${HOST}/?getSpecialUsersPayments&payer_id=${payerID}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")
@@ -218,4 +220,32 @@ function getMonthInWordFromDate(dateString) {
   const monthInWord = months[monthNumber];
 
   return monthInWord;
+}
+
+function exportData() {
+  // console.log(dataToExport)
+  const csvRows = [];
+
+  // Extract headers (keys) excluding 'id'
+  const headers = Object.keys(dataToExport[0]).filter((key) => key !== "id");
+  csvRows.push(headers.join(",")); // Join headers with commas
+
+  // Loop through the data to create CSV rows
+  for (const row of dataToExport) {
+    const values = headers.map((header) => {
+      const value = row[header];
+      return `"${value}"`; // Escape values with quotes
+    });
+    csvRows.push(values.join(","));
+  }
+
+  // Combine all rows into a single string
+  const csvString = csvRows.join("\n");
+
+  // Export to a downloadable file
+  const blob = new Blob([csvString], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "staff_list.csv";
+  a.click();
 }

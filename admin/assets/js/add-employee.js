@@ -109,6 +109,10 @@ function registerUsersFromCSV(file) {
         </div>
       `);
     }
+
+    setTimeout(() => {
+      window.location.href = `./payedetails.html?payerID=${category}`
+    }, 1500);
   };
 
   reader.onerror = () => {

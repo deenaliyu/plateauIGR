@@ -58,7 +58,7 @@ async function getTaxPayer() {
           </div>
         </div>
       `;
-    }else {
+    } else {
       profilo += `
       <div class="flex justify-between">
         <label class="w-4/12">First Name</label>
@@ -135,6 +135,13 @@ async function getTaxPayer() {
       </div>
 
       <div class="flex justify-between mt-2 items-center">
+        <label class="w-4/12">Annual Income</label>
+        <div class="form-group w-8/12">
+          <input class="form-control mt-1 updtProf" data-name="annual_income" type="text" value="${taxPayerData.annual_income}" maxlength="15" />
+        </div>
+      </div>
+
+      <div class="flex justify-between mt-2 items-center">
         <label class="w-4/12">State</label>
         <select class="form-select mt-1 w-8/12 updtProf" id="selectState" data-name="state" required>
           <option value="${taxPayerData.state}">${taxPayerData.state}</option>
@@ -155,7 +162,7 @@ async function getTaxPayer() {
       </div>
     `;
 
-    
+
 
     $("#updtProfile").html(profilo);
 
@@ -165,9 +172,9 @@ async function getTaxPayer() {
       const businessTypeContainer = document.getElementById("businessTypeContainer");
 
       if (businessOwnerYes.checked) {
-        businessTypeContainer.style.display = "flex"; 
+        businessTypeContainer.style.display = "flex";
       } else {
-        businessTypeContainer.style.display = "none"; 
+        businessTypeContainer.style.display = "none";
       }
     }
 

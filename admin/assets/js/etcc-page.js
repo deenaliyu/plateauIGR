@@ -1,8 +1,8 @@
 let dataToExport;
 
-async function getEtccRequests() {
+async function getEtccRequests(fromDate, toDate) {
 
-  const response = await fetch(`${HOST}/?getETCC&type=`)
+  const response = await fetch(`${HOST}/?getETCC&type=&fromDate=${fromDate}&toDate=${toDate}`)
   const etccReqs = await response.json()
 
   $("#loader").css("display", "none")
@@ -123,7 +123,7 @@ async function getEtccRequests() {
   }
 }
 
-getEtccRequests().then(tt => {
+getEtccRequests(null, null).then(tt => {
   $('#dataTable').DataTable();
   $('#dataTable2').DataTable();
   $('#dataTable3').DataTable();
@@ -131,7 +131,12 @@ getEtccRequests().then(tt => {
   $('#dataTable5').DataTable();
 })
 
+function applyFilter() {
+  let fromDate = document.querySelector('#etccFrom').value
+  let toDate = document.querySelector('#etccTo').value
 
+  getEtccRequests(fromDate, toDate)
+}
 
 
 $("#checkStatus").on("click", function () {

@@ -319,7 +319,7 @@ async function createUserFirst() {
       "img": "assets/img/userprofile.png",
       "tin": tin,
       "password": "12345",
-      "verification_status": "grfdses",
+      "verification_status": "1",
       "business_own": "2",
       "industry": "",
       "bvn": "",
