@@ -92,7 +92,7 @@
           </button>
         </div>
 
-        <form action="" class="mt-4 w-8/12">
+        <form action="" class="mt-4 w-full">
 
           <h1 class="fontBold text-xl">Add New Employee</h1>
           <p class="mt-2 mb-4">Basic Information</p>
@@ -149,22 +149,39 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Housing</label>
-              <input type="text" class="form-control w-full enumInput" data-name="housing">
+              <input type="number" class="form-control w-full enumInput" data-name="housing">
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">Transport</label>
-              <input type="text" class="form-control w-full enumInput" data-name="transport">
+              <input type="number" class="form-control w-full enumInput" data-name="transport">
             </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
 
             <div class="form-group md:w-6/12">
-              <label for="">Utility</label>
-              <input type="text" class="form-control w-full enumInput" data-name="utility">
+              <label for="">Others</label>
+              <input type="number" class="form-control w-full enumInput" data-name="others">
             </div>
+          </div>
+
+          <div>
+            <div class="form-check form-check-inline col-md-3">
+              <input class="form-check-input" type="checkbox" id="Pension" value="pension">
+              <label class="form-check-label font-bold" for="Pension">Pension</label>
+            </div>
+            <div class="form-check form-check-inline col-md-3">
+              <input class="form-check-input" type="checkbox" id="NHS" value="nhs">
+              <label class="form-check-label font-bold" for="NHS">NHS</label>
+            </div>
+            <div class="form-check form-check-inline col-md-3">
+              <input class="form-check-input" type="checkbox" id="NHI" value="nhi">
+              <label class="form-check-label font-bold" for="NHI">NHI</label>
+            </div>
+          </div>
+
+
+          <!-- <div class="flex gap-3 md:flex-row flex-col mb-3">
+
+
 
             <div class="form-group md:w-6/12">
               <label for="">Medical</label>
@@ -177,20 +194,20 @@
 
             <div class="form-group md:w-6/12">
               <label for="">Entertainment</label>
-              <input type="text" class="form-control w-full enumInput" data-name="entertainment" >
+              <input type="text" class="form-control w-full enumInput" data-name="entertainment">
             </div>
 
             <div class="form-group md:w-6/12">
               <label for="">Leave</label>
-              <input type="text" class="form-control w-full enumInput" data-name="leaves" >
+              <input type="text" class="form-control w-full enumInput" data-name="leaves">
             </div>
 
-          </div>
+          </div> -->
 
 
 
 
-          <button class="button w-full mb-4" type="button" id="theButton" onclick="continueReg()">Continue</button>
+          <button class="button w-full my-4" type="button" id="theButton" onclick="continueReg()">Continue</button>
           <div id="msg_box"></div>
 
         </form>

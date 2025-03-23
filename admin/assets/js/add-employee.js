@@ -11,15 +11,14 @@ document.querySelector('#downloadTemplate').addEventListener('click', () => {
   const headers = [
     'fullname', 'email', 'phone', 'tin', 'annual_gross_income',
     'basic_salary', 'date_employed', 'housing', 'transport',
-    'utility', 'medical', 'entertainment', 'leaves', 'category_id'
+    'others', 'pension', 'nhf', 'nhis', 'Life Premium', 'Voluntary Contribution', 'Percentage if yes', 'is_cons', 'consolidated amount'
   ];
 
-  const categoryId = new URLSearchParams(window.location.search).get('categ_id');
 
   const csvContent = [headers.join(',')];
 
   // Add an empty row for template purposes
-  const emptyRow = headers.map(header => header === 'category_id' ? categoryId : '').join(',');
+  const emptyRow = headers.map(() => '').join(',');
   csvContent.push(emptyRow);
 
   const blob = new Blob([csvContent.join('\n')], { type: 'text/csv' });
@@ -60,7 +59,10 @@ function registerUsersFromCSV(file) {
       const user = users[i];
       const EnumData = {
         endpoint: "createSpecialUserEmployee",
-        data: user
+        data: {
+          category_id: category,
+          ...user
+        }
       };
 
       $("#msg_box").html(`

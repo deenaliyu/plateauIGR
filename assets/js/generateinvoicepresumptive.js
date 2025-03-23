@@ -45,6 +45,20 @@ async function fetchBusiness() {
 
 fetchBusiness()
 
+$("#developmentLevy").on('change', function () {
+  if ($(this).is(":checked")) {
+    $("#devLevyContainer").html(`
+      <div class="col-md-6">
+        <input type="text" class="form-control developlevyInput" value="Development Levy" readonly>
+      </div>
+      <div class="col-md-6">
+        <input type="number" class="form-control developlevyAmount enumInputB" placeholder="Enter Amount" required>
+      </div>  
+    `); // Show element
+  } else {
+    $("#devLevyContainer").html(''); // Hide element
+  }
+})
 // function addBusiness() {
 //   $("#businessCnt").append(`
 //     <div class="businessNums mt-3">
@@ -77,7 +91,7 @@ fetchBusiness()
 //       <hr>
 //     </div>
 
-    
+
 //   `)
 // }
 
@@ -317,7 +331,13 @@ document.getElementById("category").addEventListener("change", function () {
 });
 
 
-function goToPreviewPage() { 
+function goToPreviewPage() {
+  let developlevyAmount = document.querySelector('.developlevyAmount')
+  if (developlevyAmount && developlevyAmount.value === "") {
+    alert("Amount cannot be empty")
+    return;
+  }
+
   let payInputs = document.querySelectorAll(".payInputs")
   let revHeadsss = document.querySelector("#busiType")
   let mdaSelected = document.querySelector("#staffQuota").value
@@ -345,7 +365,7 @@ function goToPreviewPage() {
         let amount = data.message.minimum
         let categories = data.message.category
         // console.log(categories)
-        info(business_type, amount, categories)
+        displayInfo(business_type, amount, categories)
 
 
       }
@@ -358,12 +378,13 @@ function goToPreviewPage() {
       $("#generating_inv").removeClass("hidden")
     }
   });
-  
-  async function info(business_type, amount, categories) {
-  let categOfTax = document.querySelector(".selCateg option:checked").textContent
 
-  if (categOfTax === "Corporate") {
-    $("#theName2").html(`
+  async function displayInfo(business_type, amount, categories) {
+    let categOfTax = document.querySelector(".selCateg option:checked").textContent
+    let developmentLevyAmount = document.querySelector(".developlevyAmount")
+
+    if (categOfTax === "Corporate") {
+      $("#theName2").html(`
         <div class="form-group w-full">
           <label for="">Organization Name *</label>
           <input type="text" class="form-control payInputs2" readonly data-name="first_name"
@@ -376,14 +397,14 @@ function goToPreviewPage() {
           placeholder="" value="">
         </div>
     `)
-  }
+    }
 
-  let theSpace = `
+    let theSpace = `
     <div class="flex space-x-4">
       <p>Category of Tax:</p>
       <p>${categOfTax}</p>
     </div>
-    <div class="flex space-x-3">
+      <div class="flex space-x-3">
         <p>Name of Business:</p>
         <p>${business_type}</p>
       </div>
@@ -395,30 +416,40 @@ function goToPreviewPage() {
         <p>Category:</p>
         <p id="business_class">${categories}</p>
       </div>
-  `
-  $("#bill").html(theSpace)
-  for (let i = 0; i < payInputs.length; i++) {
-    const payinput = payInputs[i];
 
-    if (payinput.required && payinput.value === "") {
-      alert("Please fill all required field");
-      break;
+  `
+    if (developmentLevyAmount) {
+      theSpace += `
+        <div class="flex space-x-3">
+          <p>Development Levy:</p>
+          <p>${formatMoney(parseFloat(developmentLevyAmount.value))}</p>
+        </div>
+      `
     }
 
-    if (i === payInputs.length - 1) {
-      let allInputs = document.querySelectorAll(".payInputs")
+    $("#bill").html(theSpace)
+    for (let i = 0; i < payInputs.length; i++) {
+      const payinput = payInputs[i];
 
-      allInputs.forEach((inputt, i) => {
-        let theInputt = document.querySelector(`.payInputs2[data-name='${inputt.dataset.name}']`)
-        if (theInputt) {
-          theInputt.value = inputt.value
-        }
-      });
-      nextPrev(1)
+      if (payinput.required && payinput.value === "") {
+        alert("Please fill all required field");
+        break;
+      }
 
+      if (i === payInputs.length - 1) {
+        let allInputs = document.querySelectorAll(".payInputs")
+
+        allInputs.forEach((inputt, i) => {
+          let theInputt = document.querySelector(`.payInputs2[data-name='${inputt.dataset.name}']`)
+          if (theInputt) {
+            theInputt.value = inputt.value
+          }
+        });
+        nextPrev(1)
+
+      }
     }
   }
-}
 
 
 }
@@ -452,7 +483,7 @@ async function generateInvoiceNon() {
       let allInputs = document.querySelectorAll(".payInputs")
       let categ = document.querySelector("#category").value
       let tin = document.querySelector("#tin").value
-     
+
       $("#msg_box").html(`
           <div class="flex justify-center items-center mt-4">
             <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
@@ -545,6 +576,8 @@ async function generateInvoiceNum(taxNumber) {
   invoice_type = "presumptive"
 
   let description = document.querySelector("#thedescripInput").value
+  let developmentLevyAmount = document.querySelector(".developlevyAmount")
+
 
   let timer;
 
@@ -560,9 +593,24 @@ async function generateInvoiceNum(taxNumber) {
     $("#generating_inv").removeClass("hidden");
   }, 15000);
 
+  let dataToSendOut = {
+    generateSingleInvoices: true,
+    tax_number: taxNumber,
+    revenue_head_id: the_id,
+    price: amt,
+    description: description,
+    invoice_type: invoice_type,
+    category_pre: cati
+  }
+  if (developmentLevyAmount && developmentLevyAmount.value !== "") {
+    dataToSendOut.revenue_head_id = `${the_id},800`
+    dataToSendOut.price = `${amt},${developmentLevyAmount.value}`
+  }
+
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amt}&description=${description}&invoice_type=${invoice_type}&category_pre=${cati}`,
+    url: `${HOST}`,
+    data: dataToSendOut,
     dataType: 'json',
     success: function (data) {
       clearTimeout(timer); // Clear the timer if the request succeeds

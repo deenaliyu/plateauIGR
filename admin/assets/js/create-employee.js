@@ -39,11 +39,18 @@ function registerUser() {
   }
 
   let allInputs = document.querySelectorAll(".enumInput")
+  let allFormInputs = document.querySelectorAll(".form-check-input")
 
   allInputs.forEach((inputt, i) => {
     EnumData.data[inputt.dataset.name] = inputt.value
   })
+
+  allFormInputs.forEach(inpt => {
+    EnumData.data[inpt.value] = inpt.checked ? 'yes' : 'no'
+  })
   // console.log(JSON.stringify(EnumData))
+  console.log(EnumData)
+
 
   async function sendToDB() {
     try {
