@@ -272,7 +272,7 @@ function sumArray(arr) {
 
 async function getPaymentHistory() {
 
-  const response = await fetch(`${HOST}/?getSpecialUsersPayments&payer_id=${payerID}`)
+  const response = await fetch(`${HOST}/?getSpecialUsersPayments&offset=0&payer_id=${payerID}`)
   const specialUsers = await response.json()
 
   $("#loader").css("display", "none")

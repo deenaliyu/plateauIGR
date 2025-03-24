@@ -14,6 +14,10 @@ async function fetchInvoice() {
     $('#dataTable').DataTable().clear().destroy();
   }
 
+  if ($.fn.DataTable.isDataTable('#dataTable2')) {
+    $('#dataTable2').DataTable().clear().destroy();
+  }
+
 
   table = $('#dataTable').DataTable({
     processing: true, // Show processing indicator
@@ -31,7 +35,6 @@ async function fetchInvoice() {
         limit: data.length,
         invoice_number: $('#invnumberInput').val(),
         payment_status: $('#paymentStatusSelect').val(),
-        sector: $('#sectorFil').val(),
         date_from: $('#fromDateInput').val(),
         date_to: $('#toDateInput').val()
       };
@@ -68,7 +71,6 @@ async function fetchInvoice() {
       { data: 'tax_number' },
       { data: 'COL_3' },
       { data: 'COL_4' },
-      { data: 'sector' },
       {
         data: null,
         render: function (data, type, row) {
@@ -97,6 +99,100 @@ async function fetchInvoice() {
           return `<a href="./viewinvoice.html?invnumber=${row.invoice_number}&load=true" class="btn btn-primary btn-sm viewUser">View Invoice</a>`;
         }
       },
+    ],
+  });
+
+  table2 = $('#dataTable2').DataTable({
+    processing: true, // Show processing indicator
+    serverSide: true, // Enable server-side processing
+    paging: true,     // Enable pagination
+    searching: false,  // Enable search box
+    pageLength: 50,   // Number of items per page
+    ajax: function (data, callback, settings) {
+      // Convert DataTables page number to your API page number
+      const pageNumber = Math.ceil(data.start / data.length) + 1;
+
+      const filters = {
+        getAllDirectAssessmentss: true,
+        page: pageNumber,
+        limit: data.length,
+        payment_status: $('#paymentStatusSelect').val(),
+        date_from: $('#fromDateInput').val(),
+        date_to: $('#toDateInput').val()
+      };
+
+      // Call your API with the calculated page number
+      $.ajax({
+        url: HOST,
+        type: 'GET',
+        data: filters,
+        success: function (response) {
+          // Map the API response to DataTables expected format
+          dataToExport = response.data
+          callback({
+            draw: data.draw, // Pass through draw counter
+            recordsTotal: response.total_records, // Total records in your database
+            recordsFiltered: response.total_records, // Filtered records count
+            data: response.direct_assessments, // The actual data array from your API
+          });
+        },
+        error: function (error) {
+          console.log(error, 'Failed to fetch data.')
+          // alert('Failed to fetch data.');
+          callback({
+            draw: data.draw, // Pass through draw counter
+            recordsTotal: 0, // Total records in your database
+            recordsFiltered: 0, // Filtered records count
+            data: [], // The actual data array from your API
+          });
+          $("#dataTable2 tbody").html(`
+            <tr>
+              <td colspan="11" class="text-center">Failed to fetch Data.</td>
+            </tr>   
+          `)
+        },
+      });
+    },
+    columns: [
+      {
+        data: null,
+        orderable: false, // Disable ordering for the numbering column
+        render: function (data, type, row, meta) {
+          // Calculate the row number based on the page
+          return meta.row + 1 + meta.settings._iDisplayStart;
+        },
+      },
+      { data: 'tax_number' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(row.basic_salary);
+        }
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(row.annual_gross_income);
+        }
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(row.new_gross);
+        }
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(row.monthly_tax_payable);
+        }
+      },
+      { data: 'housing' },
+      { data: 'transport' },
+      { data: 'utility' },
+      { data: 'medical' },
+      { data: 'leaves' },
+      { data: 'date_created' }
     ],
   });
 

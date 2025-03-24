@@ -137,62 +137,97 @@
 
             </div>
 
-            <div class="card py-4 mt-6">
-              <div class="table-responsive p-2">
-                <table class="table invoiceTable" id="dataTable">
-                  <thead>
-                    <tr class="text-center">
-                      <th></th>
-                      <th>Payer ID</th>
-                      <th>MDA</th>
-                      <th>Revenue Head</th>
-                      <th>Sector</th>
-                      <th>Name</th>
-                      <!-- <th>Email</th> -->
-                      <th>Invoice Number</th>
-                      <th>Amount</th>
-                      <th>Date Created</th>
-                      <th>Due Date</th>
-                      <th>Payment Status</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody class="table-border-bottom-0" id="showThem">
+            <div class="card card-body mt-5">
+              <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-2 border-b " id="pills-tab" role="tablist">
 
-                  </tbody>
-                </table>
+                <li class="nav-item text-center" role="presentation">
+                  <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#direct_invoices" type="button"
+                    role="tab">
+                    Direct Assessment Invoices
+                  </button>
+                </li>
+                <li class="nav-item text-center" role="presentation">
+                  <button class="nav-link" data-bs-toggle="pill" data-bs-target="#direct_assessmentso" type="button"
+                    role="tab">
+                    Direct Assessments
+                  </button>
+                </li>
+              </ul>
+
+              <div class="tab-content" id="pills-tabContent">
+                <div class="tab-pane fade show active" id="direct_invoices" role="tabpanel">
+                  <div class="py-4">
+                    <div class="table-responsive">
+                      <table class="table invoiceTable" id="dataTable">
+                        <thead>
+                          <tr class="text-center">
+                            <th></th>
+                            <th>Payer ID</th>
+                            <th>MDA</th>
+                            <th>Revenue Head</th>
+                            <th>Name</th>
+                            <!-- <th>Email</th> -->
+                            <th>Invoice Number</th>
+                            <th>Amount</th>
+                            <th>Date Created</th>
+                            <th>Due Date</th>
+                            <th>Payment Status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0" id="showThem">
+
+                        </tbody>
+                      </table>
 
 
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="tab-pane fade" id="direct_assessmentso" role="tabpanel">
+                  <div class="py-4">
+                    <div class="table-responsive">
+                      <table class="table invoiceTable" id="dataTable2">
+                        <thead>
+                          <tr class="text-center">
+                            <th></th>
+                            <th>Payer ID</th>
+                            <th>Basic Salary</th>
+                            <th>Date Employed</th>
+                            <th>Annual Gross Income</th>
+                            <th>New Gross</th>
+                            <th>Monthly Tax Payable</th>
+                            <th>Housing</th>
+                            <th>Transport</th>
+                            <th>Utility</th>
+                            <th>Medical</th>
+                            <th>Entertainment</th>
+                            <th>Leaves</th>
+                            <th>Date Created</th>
+                          </tr>
+                        </thead>
+                        <tbody class="table-border-bottom-0" id="showThem">
+
+                        </tbody>
+                      </table>
+
+
+                    </div>
+
+                  </div>
+                </div>
               </div>
-
             </div>
 
+
+            <div class="content-backdrop fade"></div>
           </div>
 
-          <table class="table invoiceTable hidden" id="invoiceTableFull">
-            <thead>
-              <tr class="text-center">
-                <th></th>
-                <th>Payer ID</th>
-                <th>MDA</th>
-                <th>Revenue Head</th>
-                <th>Name</th>
-                <th>Office</th>
-                <th>Invoice Number</th>
-                <th>Amount</th>
-                <th>Date Created</th>
-                <th>Due Date</th>
-                <th>Payment Status</th>
-              </tr>
-            </thead>
-            <tbody class="table-border-bottom-0" id="showThem2">
-
-            </tbody>
-          </table>
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">
 
           </section>
-          <div class="content-backdrop fade"></div>
         </section>
 
         <!-- Content wrapper -->
