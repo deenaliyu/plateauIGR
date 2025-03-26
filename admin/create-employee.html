@@ -163,20 +163,22 @@
             </div>
           </div>
 
-          <div>
+          <div class="mb-4">
             <div class="form-check form-check-inline col-md-3">
               <input class="form-check-input" type="checkbox" id="Pension" value="pension">
               <label class="form-check-label font-bold" for="Pension">Pension</label>
             </div>
             <div class="form-check form-check-inline col-md-3">
-              <input class="form-check-input" type="checkbox" id="NHS" value="nhs">
-              <label class="form-check-label font-bold" for="NHS">NHS</label>
+              <input class="form-check-input" type="checkbox" id="NHF" value="nhf">
+              <label class="form-check-label font-bold" for="NHF">NHF</label>
             </div>
             <div class="form-check form-check-inline col-md-3">
-              <input class="form-check-input" type="checkbox" id="NHIS" value="nhis">
+              <input class="form-check-input" type="checkbox" onchange="nhisSelect(this)" id="NHIS" value="nhis">
               <label class="form-check-label font-bold" for="NHIS">NHIS</label>
             </div>
           </div>
+
+          <div class="mb-4" id="employeeNhis"></div>
 
 
           <!-- <div class="flex gap-3 md:flex-row flex-col mb-3">

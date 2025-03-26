@@ -81,6 +81,49 @@ async function getAllRevH(theVal) {
   }
 }
 
+async function getIndustriesSectors() {
+  try {
+    const response = await fetch(`${HOST}?getIndustriesSectors`);
+    const resdata = await response.json();
+
+    if (resdata.status === 1) {
+      const data = resdata.message;
+
+      const sectors = [...new Set(data.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect');
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        sectorSelect.appendChild(option);
+      });
+
+      sectorSelect.addEventListener('change', () => {
+        const selectedSector = sectorSelect.value;
+
+        const filteredIndustries = data.filter(
+          item => item.SectorName === selectedSector
+        );
+
+        const industrySelect = document.getElementById('industrySelect');
+        industrySelect.innerHTML = '<option value="">Select</option>';
+
+        filteredIndustries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry.IndustryName;
+          option.textContent = industry.IndustryName;
+          industrySelect.appendChild(option);
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+getIndustriesSectors();
+
 // console.log(AllRevs)
 function addInput() {
 
@@ -440,14 +483,11 @@ function goToPreviewPage() {
 
 
   $('#bill').html(`
-    <p>Basic Salary: ${formatMoney(parseFloat(BasicSalry.value))}</p>  
-    <p>Date Employed: ${$(".directInputs[data-name='date_employed']").val()}</p>
-    <p>Transport: ${$(".directInputs[data-name='transport']").val()}</p>
-    <p>Housing: ${$(".directInputs[data-name='housing']").val()}</p>
-    <p>Utility: ${$(".directInputs[data-name='utility']").val()}</p>
-    <p>Medical: ${$(".directInputs[data-name='medical']").val()}</p>
-    <p>Entertainment: ${$(".directInputs[data-name='entertainment']").val()}</p>
-    <p>Leaves: ${$(".directInputs[data-name='leaves']").val()}</p>
+    <p>Monthly Gross Income: ${formatMoney(parseFloat(BasicSalry.value))}</p>  
+    <p>Category: ${$("#category_pre").val()}</p>
+    <p>Sector: ${$("#sectorSelect").val()}</p>
+    <p>Industry: ${$("#industrySelect").val()}</p>
+    <p>Description: ${$("#description").val()}</p>
   `)
   for (let i = 0; i < payInputs.length; i++) {
     const payinput = payInputs[i];
@@ -477,19 +517,18 @@ async function calculateAssessment(tax_number) {
   let dataToSend = {
     endpoint: "registerEmployeeDirectAssessment",
     data: {
-      tax_number: tax_number
+      tax_number: tax_number,
+      housing: 0,
+      transport: 0,
+      utility: 0,
+      medical: 0,
+      entertainment: 0,
+      leaves: 0,
+      date_employed: "",
+      basic_salary: $(".directInputs[data-name='basic_salary']").val(),
     },
   }
 
-  let allTheInputs = document.querySelectorAll(".directInputs")
-  allTheInputs.forEach((alInpt => {
-    if (alInpt.value === "") {
-      dataToSend.data[alInpt.dataset.name] = 0
-    } else {
-      dataToSend.data[alInpt.dataset.name] = alInpt.value
-    }
-
-  }))
 
   $.ajax({
     type: "POST",
@@ -660,9 +699,16 @@ async function generateInvoiceNum(taxNumber, amountCal) {
     $("#generating_inv").removeClass("hidden");
   }, 15000);
 
+  let category_pre = $("#category_pre").val();
+  let sectorSelect = $("#sectorSelect").val();
+  let industrySelect = $("#industrySelect").val();
+
+  let sectorAndIndustry = `${sectorSelect} - ${industrySelect}`;
+  let descriptionVal = $("#description").val();
+
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=1359&price=${amountCal}&description=Direct Assessment&invoice_type=direct`,
+    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=328&price=${amountCal}&category_pre=${category_pre}&sector=${sectorAndIndustry}&description=${descriptionVal}&invoice_type=direct`,
     dataType: 'json',
     success: function (data) {
       clearTimeout(timer); // Clear the timer if the request succeeds

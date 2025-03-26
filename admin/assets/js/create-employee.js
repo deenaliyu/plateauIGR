@@ -22,6 +22,16 @@ function continueReg() {
 
 }
 
+function nhisSelect(e) {
+  if (e.checked) {
+    $("#employeeNhis").html(`
+      <input type="number" class="form-control enumInput" data-name="nhis" placeholder="NHIS amount" />
+    `)
+  } else {
+    $("#employeeNhis").html("")
+  }
+}
+
 function registerUser() {
   $("#theButton").addClass("hidden")
   $("#msg_box").html(`
