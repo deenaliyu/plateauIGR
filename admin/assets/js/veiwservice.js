@@ -35,6 +35,10 @@ async function fetchTaxfillers() {
                         <td>${userInvoice.category}</td>
                     </tr>
                     <tr class="relative">
+                        <td>Tax Type</td>
+                        <td>${userInvoice.tax_type}</td>
+                    </tr>
+                    <tr class="relative">
                         <td>Tax to File</td>
                         <td>${userInvoice.tax_to_file}</td>
                     </tr>

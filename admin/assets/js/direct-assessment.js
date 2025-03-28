@@ -82,9 +82,11 @@ async function fetchInvoice() {
       {
         data: null,
         render: function (data, type, row) {
-          return formatMoney(row.amount_paid);
+          return formatMoney(parseFloat(row.amount_paid));
         }
       },
+      { data: 'sector' },
+      { data: 'business_cat' },
       { data: 'date_created' },
       { data: 'due_date' },
       {
@@ -114,11 +116,6 @@ async function fetchInvoice() {
 
       const filters = {
         getAllDirectAssessmentss: true,
-        page: pageNumber,
-        limit: data.length,
-        payment_status: $('#paymentStatusSelect').val(),
-        date_from: $('#fromDateInput').val(),
-        date_to: $('#toDateInput').val()
       };
 
       // Call your API with the calculated page number
@@ -128,12 +125,11 @@ async function fetchInvoice() {
         data: filters,
         success: function (response) {
           // Map the API response to DataTables expected format
-          dataToExport = response.data
           callback({
             draw: data.draw, // Pass through draw counter
-            recordsTotal: response.total_records, // Total records in your database
-            recordsFiltered: response.total_records, // Filtered records count
-            data: response.direct_assessments, // The actual data array from your API
+            recordsTotal: response.data.total_records, // Total records in your database
+            recordsFiltered: response.data.total_records, // Filtered records count
+            data: response.data.direct_assessments, // The actual data array from your API
           });
         },
         error: function (error) {
@@ -166,33 +162,28 @@ async function fetchInvoice() {
       {
         data: null,
         render: function (data, type, row) {
-          return formatMoney(row.basic_salary);
+          return formatMoney(parseFloat(row.basic_salary));
         }
       },
       {
         data: null,
         render: function (data, type, row) {
-          return formatMoney(row.annual_gross_income);
+          return formatMoney(parseFloat(row.annual_gross_income));
         }
       },
       {
         data: null,
         render: function (data, type, row) {
-          return formatMoney(row.new_gross);
+          return formatMoney(parseFloat(row.new_gross));
         }
       },
       {
         data: null,
         render: function (data, type, row) {
-          return formatMoney(row.monthly_tax_payable);
+          return formatMoney(parseFloat(row.monthly_tax_payable));
         }
       },
-      { data: 'housing' },
-      { data: 'transport' },
-      { data: 'utility' },
-      { data: 'medical' },
-      { data: 'leaves' },
-      { data: 'date_created' }
+      { data: 'created_date' }
     ],
   });
 
