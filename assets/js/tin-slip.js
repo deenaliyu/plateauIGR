@@ -99,7 +99,6 @@ function printSlip(thecard) {
   var originalContent = document.body.innerHTML;
   var printContent = document.getElementById(thecard).innerHTML;
 
-
   document.body.innerHTML = printContent;
   window.print();
   document.body.innerHTML = originalContent;
