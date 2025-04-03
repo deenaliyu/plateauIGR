@@ -183,6 +183,13 @@ async function fetchInvoice() {
           return formatMoney(parseFloat(row.monthly_tax_payable));
         }
       },
+
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(parseFloat(row.monthly_tax_payable * 12));
+        }
+      },
       { data: 'created_date' }
     ],
   });

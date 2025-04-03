@@ -81,6 +81,23 @@ async function getAllRevH(theVal) {
   }
 }
 
+$("input[name='grossInptt']").on("change", function () {
+  let val = $(this).val()
+  if (val === "monthly") {
+    $("#grossContainer").html(`
+      <label for="basic_salary">Monthly Gross Income*</label>
+      <input type="number" placeholder="Input the monthly gross income" class="form-control genInv directInputs"
+        id="basic_salary" required data-name="basic_salary" data-version="monthly">  
+    `)
+  } else {
+    $("#grossContainer").html(`
+      <label for="basic_salary">Annual Gross Income*</label>
+      <input type="number" placeholder="Input the annual gross income" class="form-control genInv directInputs"
+        id="basic_salary" required data-name="basic_salary" data-version="annual">  
+    `)
+  }
+})
+
 async function getIndustriesSectors() {
   try {
     const response = await fetch(`${HOST}?getIndustriesSectors`);
@@ -358,15 +375,10 @@ function fillManually() {
 }
 
 function continuePage() {
-  let genInv = document.querySelectorAll(".payInputs")
+  let genInv = document.querySelectorAll(".payInputsSec")
 
   let phonenumber = document.querySelector("#phonenumber")
   let tin = document.querySelector("#tin")
-
-  if (tin.value === "") {
-    $("#popUpModal").modal("show")
-    return;
-  }
 
   if (phonenumber.value.length !== 11) {
     alert("Phone number should be equal to 11")
@@ -483,7 +495,7 @@ function goToPreviewPage() {
 
 
   $('#bill').html(`
-    <p>Monthly Gross Income: ${formatMoney(parseFloat(BasicSalry.value))}</p>  
+    <p>Gross Income: ${formatMoney(parseFloat(BasicSalry.value))}</p>  
     <p>Category: ${$("#category_pre").val()}</p>
     <p>Sector: ${$("#sectorSelect").val()}</p>
     <p>Industry: ${$("#industrySelect").val()}</p>
@@ -514,6 +526,9 @@ function goToPreviewPage() {
 }
 
 async function calculateAssessment(tax_number) {
+
+  let basicSalary = document.querySelector(".directInputs[data-name='basic_salary']")
+
   let dataToSend = {
     endpoint: "registerEmployeeDirectAssessment",
     data: {
@@ -525,11 +540,11 @@ async function calculateAssessment(tax_number) {
       entertainment: 0,
       leaves: 0,
       date_employed: "",
-      basic_salary: $(".directInputs[data-name='basic_salary']").val(),
+      basic_salary: basicSalary.dataset.version === "monthly" ? parseFloat(basicSalary.value) * 12 : basicSalary.value,
     },
   }
 
-
+  console.log(dataToSend)
   $.ajax({
     type: "POST",
     url: HOST,

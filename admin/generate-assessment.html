@@ -144,9 +144,9 @@
             <h1 class="fontBold text-2xl">Generate Direct Assessment</h1>
             <h1 class="mb-3 mt-3">Personal Details</h1>
 
-            <div class="form-group mb-4">
+            <div class="form-group mb-2">
               <label for="">Select your category*</label>
-              <select class="form-select payInputs selCateg" required id="category">
+              <select class="form-select payInputs payInputsSec selCateg" required id="category">
                 <option disabled selected>Select--</option>
                 <option value="2">Individual</option>
                 <option value="1">Corporate</option>
@@ -155,64 +155,89 @@
               </select>
             </div>
 
-            <div class="flex items-center mb-4 gap-2" id="theName">
+            <div class="flex items-center mb-2 gap-2" id="theName">
               <div class="form-group w-full">
                 <label for="">First name *</label>
-                <input type="text" class="form-control payInputs" required data-name="first_name"
+                <input type="text" class="form-control payInputs payInputsSec" required data-name="first_name"
                   placeholder="Enter your first name">
               </div>
 
               <div class="form-group w-full">
                 <label for="">Surname *</label>
-                <input type="text" class="form-control payInputs" required data-name="surname"
+                <input type="text" class="form-control payInputs payInputsSec" required data-name="surname"
                   placeholder="Enter your surname">
               </div>
             </div>
 
-            <div class="flex items-center mb-4 gap-2" id="theEmail">
+            <div class="flex items-center mb-2 gap-2" id="theEmail">
               <div class="form-group w-full">
                 <label for="">Email *</label>
-                <input type="text" class="form-control payInputs" required data-name="email"
+                <input type="text" class="form-control payInputs payInputsSec" required data-name="email"
                   placeholder="Enter your Email Address">
               </div>
 
               <div class="form-group w-full">
                 <label for="">Phone number *</label>
-                <input type="number" class="form-control payInputs" id="phonenumber" minlength="11" maxlength="11"
+                <input type="number" class="form-control payInputs payInputsSec" id="phonenumber" minlength="11" maxlength="11"
                   required data-name="phone" placeholder="Your 11-digits phone number">
               </div>
             </div>
 
-            <div class="form-group w-full mb-4" id="theTin">
+            <div class="form-group w-full mb-2" id="theTin">
               <label for="">TIN <span class="text-danger">*</span></label>
-              <input type="text" class="form-control payInputs" id="tin" data-name="tin" placeholder="Enter your TIN"
+              <input type="text" class="form-control payInputs payInputsSec" id="tin" data-name="tin" placeholder="Enter your TIN"
                 required>
 
 
             </div>
 
-            <div class="flex items-center mb-4 gap-2">
+            <div class="flex items-center mb-2 gap-2">
               <div class="form-group w-full">
                 <label for="">State*</label>
-                <select name="" id="STATES" class="form-select payInputs" data-name="state">
+                <select name="" id="STATES" class="form-select payInputs payInputsSec" data-name="state">
                   <option value="Plateau">Plateau</option>
                 </select>
               </div>
 
               <div class="form-group w-full">
                 <label for="">LGA*</label>
-                <select name="" id="LGAs" class="form-select payInputs" required data-name="lga">
+                <select name="" id="LGAs" class="form-select payInputs payInputsSec" required data-name="lga">
                 </select>
               </div>
 
               <div class="form-group w-full" id="theLga">
                 <label for="">Address*</label>
-                <input type="text" class="form-control payInputs" minlength="10" required data-name="address"
+                <input type="text" class="form-control payInputs payInputsSec" minlength="10" required data-name="address"
                   placeholder=" Enter your address">
               </div>
             </div>
 
+            <h1 class="mb-10 my-3">Secondary Details</h1>
 
+            <div class="form-group mb-2">
+              <label for="category_pre">Select Tax Category*</label>
+
+              <select class="form-select payInputsSec" name="category_pre" id="category_pre">
+                <option value="Formal">Formal</option>
+                <option value="Informal">Informal</option>
+              </select>
+            </div>
+
+            <div class="flex mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Sector*</label>
+                <select class="form-select payInputsSec" id="sectorSelect" data-name="sector" required>
+                  <option value="" selected>Select</option>
+                </select>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Industry*</label>
+                <select name="" class="form-select payInputsSec" id="industrySelect" data-name="industry" required>>
+                  <option value="" selected>Select</option>
+                </select>
+              </div>
+            </div>
 
 
             <button class="button w-full" type="button" onclick="continuePage()">Continue</button>
@@ -234,40 +259,33 @@
             <h1 class="fontBold text-2xl">Generate Direct Assessment</h1>
             <h1 class="mb-3 mt-3">Billing Information</h1>
 
-            <div class="form-group mb-4">
-              <label for="basic_salary">Monthly Gross Income*</label>
-              <input type="number" placeholder="Input the monthly gross income" class="form-control genInv directInputs"
-                id="basic_salary" required data-name="basic_salary">
-            </div>
-
-            <div class="form-group mb-4">
-              <label for="category_pre">Select Category*</label>
-
-              <select class="form-select genInv" name="category_pre" id="category_pre">
-                <option value="Formal">Formal</option>
-                <option value="Informal">Informal</option>
-              </select>
-            </div>
-
-            <div class="flex mb-4 gap-2">
-              <div class="form-group w-full">
-                <label for="">Sector*</label>
-                <select class="form-select genInv" id="sectorSelect" data-name="sector" required>
-                  <option value="" selected>Select</option>
-                </select>
+            <div class="flex gap-3 mb-3">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="grossInptt" id="monthlyGrossInput" value="monthly">
+                <label class="form-check-label" for="monthlyGrossInput">
+                  Monthly Gross Income
+                </label>
               </div>
-
-              <div class="form-group w-full">
-                <label for="">Industry*</label>
-                <select name="" class="form-select genInv" id="industrySelect" data-name="industry" required>>
-                  <option value="" selected>Select</option>
-                </select>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="grossInptt" id="AnnualGrossInput" value="annual"
+                  checked>
+                <label class="form-check-label" for="AnnualGrossInput">
+                  Annual Gross Income
+                </label>
               </div>
             </div>
+
+            <div class="form-group mb-4" id="grossContainer">
+              <label for="basic_salary">Annual Gross Income*</label>
+              <input type="number" placeholder="Input the annual gross income" class="form-control genInv directInputs"
+                id="basic_salary" required data-name="basic_salary" data-version="annual">
+            </div>
+
+
 
             <div class="form-group mb-4">
               <label for="description">Description*</label>
-              <input type="text" class="form-control genInv" id="description" required data-name="description">
+              <textarea class="form-control genInv" id="description" required data-name="description"></textarea>
             </div>
 
             <button class="button w-full" type="button" onclick="goToPreviewPage()">Continue</button>
