@@ -31,8 +31,8 @@ async function fetchPayeUsers() {
     dataToExport = theRightUSers
 
     theRightUSers.forEach((rhUser, i) => {
-      let annual = parseFloat(rhUser.monthly_estimate * 12)
-      let monthly = parseFloat(rhUser.monthly_estimate)
+      let annual = parseFloat(rhUser.monthly_estimate * 12) || 0
+      let monthly = parseFloat(rhUser.monthly_estimate) || 0
 
       let htmlData = ""
       let defaultersData = ""

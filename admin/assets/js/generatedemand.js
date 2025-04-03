@@ -79,6 +79,8 @@ function updateSelectedOption() {
 function addInput() {
 
   let theStrng = generateRandomString()
+  let dateCurrent = new Date();
+  let yearCurrent = dateCurrent.getFullYear();
 
   $("#moreInput").append(`
         <div class="flex items-center gap-3 mb-4">
@@ -99,18 +101,16 @@ function addInput() {
         <div class="flex items-center gap-2 mb-4">
           <div class="form-group w-full">
               <label for="">Previous Year *</label>
-              <input type="text" class="form-control genInv prevYears" id="previous_year" placeholder="Year 1" required>
+              <input type="text" class="form-control genInv prevYears" id="previous_year" value="${yearCurrent - 1}" readonly required>
 
-              <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2"
-                placeholder="Year 2" required>
+              <input type="text" class="form-control genInv prevYears2" id="previous_year2" value="${yearCurrent - 2}" readonly required>
           </div>
             
           <div class="form-group w-full">
             <label for="">Previous Year Amount *</label>
-            <input type="text" class="form-control genInv prevAmounts" id="previous_year_value" placeholder="Year 1 Amount" required>
+            <input type="text" class="form-control genInv prevAmounts" id="previous_year_value" placeholder="${yearCurrent - 1} Amount" required>
 
-            <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2"
-              id="previous_year_value2" placeholder="Year 2 Amount" required>
+            <input type="text" class="form-control genInv prevAmounts2" id="previous_year_value2" placeholder="${yearCurrent - 2} Amount" required>
           </div>
             
           <iconify-icon icon="zondicons:minus-outline" class="cursor-pointer" id="${theStrng}" onclick="removeInpt(this)"></iconify-icon>
@@ -227,6 +227,9 @@ async function fetchRevHeads(sector) {
     // Merge both filtered results
     const filteredItems = [...new Set([...sectorFiltered, ...sectorAndCol3Filtered])];
 
+    let dateCurrent = new Date();
+    let yearCurrent = dateCurrent.getFullYear();
+
     filteredItems.forEach((dd, i) => {
       revenueArr.push(dd);
       theItemNo++;
@@ -234,7 +237,7 @@ async function fetchRevHeads(sector) {
       $("#revenueHeadItems").append(`
         <div class="mb-2 bg-white p-4 rounded-lg shadow-md">
           <h3 class="text-xl font-semibold text-gray-800 mb-4">Item - ${theItemNo}</h3>
-          <div class="flex items-center gap-2 mb-2">
+          <div class="flex items-center gap-2 mb-5">
             <div class="form-group w-8/12">
               <label for="">Assessment Informations*</label>
               <select class="form-select genInv revHeadsss revenueHeader" required>
@@ -248,17 +251,21 @@ async function fetchRevHeads(sector) {
           </div>
           <div class="flex items-center gap-2">
             <div class="form-group w-full">
-              <label for="">Previous Year *</label>
-              <input type="text" class="form-control form-control-sm genInv prevYears" id="previous_year" placeholder="Year 1" required>
-              <input type="text" class="form-control mt-2 form-control-sm genInv prevYears2" id="previous_year2" placeholder="Year 2" required>
+                <label for="">Previous Year *</label>
+                <input type="text" class="form-control genInv prevYears" id="previous_year" value="${yearCurrent - 1}" readonly required>
+
+                <input type="text" class="form-control genInv prevYears2 mt-2" id="previous_year2" value="${yearCurrent - 2}" readonly required>
             </div>
+            
             <div class="form-group w-full">
               <label for="">Previous Year Amount *</label>
-              <input type="text" class="form-control form-control-sm genInv prevAmounts" id="previous_year_value" placeholder="Year 1 Amount" required>
-              <input type="text" class="form-control mt-2 form-control-sm genInv prevAmounts2" id="previous_year_value2" placeholder="Year 2 Amount" required>
+              <input type="text" class="form-control genInv prevAmounts" id="previous_year_value" placeholder="${yearCurrent - 1} Amount" required>
+
+              <input type="text" class="form-control genInv prevAmounts2 mt-2" id="previous_year_value2" placeholder="${yearCurrent - 2} Amount" required>
             </div>
           </div>
         </div>
+        
       `);
     });
 

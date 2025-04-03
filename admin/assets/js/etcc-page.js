@@ -26,6 +26,32 @@ async function getEtccRequests(fromDate, toDate) {
     etccReqs.message.forEach((etcReq, i) => {
       let etccStatus = ""
 
+      let allStatusTable = ""
+      if (etcReq.app_status === "Accepted") {
+        allStatusTable = `<span class="badge bg-success">Approved</span>`
+      } else if (etcReq.app_status === "Declined") {
+        allStatusTable = `<span class="badge bg-danger">Declined</span>`
+      } else {
+        allStatusTable = `<span class="badge bg-warning">${etcReq.app_status}</span>`
+      }
+      console.log(allStatusTable)
+      $("#etccTable6").append(`
+        <tr>
+          <td>${i + 1}</td>
+          <td>${etcReq.timeIn}</td>
+          <td>${etcReq.refe}</td>
+          <td>${etcReq.fullname}</td>
+          <td>${etcReq.email}</td>
+          <td>${etcReq.category}</td>
+          <td>${allStatusTable}</td>
+          <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
+          <td>
+            <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
+          </td>
+          <td>${etcReq.app_status === "Accepted" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
+        </tr>
+      `)
+
       if (etcReq.app_status === "Declined") {
         ii++
         etccStatus = `<span class="badge bg-danger">Declined</span>`
@@ -118,7 +144,6 @@ async function getEtccRequests(fromDate, toDate) {
         etccStatus = `<span class="badge bg-warning">Pending</span>`
       }
 
-
     });
   }
 }
@@ -129,6 +154,7 @@ getEtccRequests(null, null).then(tt => {
   $('#dataTable3').DataTable();
   $('#dataTable4').DataTable();
   $('#dataTable5').DataTable();
+  $('#dataTable6').DataTable();
 })
 
 function applyFilter() {

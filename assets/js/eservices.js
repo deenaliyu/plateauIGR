@@ -19,7 +19,7 @@ $("#checkStatus").on("click", function () {
 
   async function getStatus() {
     try {
-      const response = await fetch(`${HOST}?getETCC&type=ref&id=${therefNumber}`)
+      const response = await fetch(`${HOST}?getETCC&type=cert_no&id=${therefNumber}`)
       const statusData = await response.json()
 
       console.log(statusData)

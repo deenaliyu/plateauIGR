@@ -154,10 +154,10 @@
                       <th></th>
                       <th>Payer ID</th>
                       <!-- <th>MDA</th> -->
-                      <!-- <th>Revenue Head</th> -->
                       <th>Name</th>
                       <th>Invoice Number</th>
                       <th>Amount</th>
+                      <th>Sector</th>
                       <th>Date Created</th>
                       <th>Due Date</th>
                       <th>Payment Status</th>
@@ -255,32 +255,21 @@
             <button class="btn btn-primary btn-sm" onclick="clearfilter3()">clear filter</button>
           </div>
 
-          <div class="row  mb-4">
-            <div class="col mb-0" id="the_rev">
-              <label for="defaultSelect" class="form-label">Revenue Head</label>
-              <div class="form-group">
-                <select name="" id="getRevs" class="form-select">
-                  <option disabled selected value="">--- Select RevHead ---</option>
-                </select>
-              </div>
+          <div class="row mb-2">
+            <div class="col mb-0">
+              <label for="invnumberInput" class="form-label">Search</label>
+              <input type="text" id="invnumberInput" class="form-control" placeholder="Search by invoice number" />
             </div>
           </div>
 
-          <!-- <div class="row  mb-4">
-            <div class="col mb-0" id="the_rev">
-              <label for="defaultSelect" class="form-label">Tax Office</label>
-              <div class="form-group">
-                <select name="" id="getOffice" class="form-select">
-                  <option disabled selected value="">--- Select Tax Office ---</option>
-                  <option value="KAURA NAMODA ZONAL">KAURA NAMODA ZONAL</option>
-                  <option value="TSAFE ZONE">TSAFE ZONE</option>
-                  <option value="GUMMI ZONE">GUMMI ZONE</option>
-                  <option value="TALATA MAFARA ZONE">TALATA MAFARA ZONE</option>
-                  <option value="ZIRS Headquarters">ZIRS Headquarters</option>
-                </select>
-              </div>
+          <div class="row mb-2">
+            <div class="col mb-0">
+              <label for="sectorSelect" class="form-label">Sector</label>
+              <select id="sectorSelect" class="form-select">
+                <option value="">Select --</option>
+              </select>
             </div>
-          </div> -->
+          </div>
 
           <div class="row">
             <div class="col mb-0">
