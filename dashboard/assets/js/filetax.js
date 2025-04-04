@@ -1,19 +1,61 @@
 const urlParams = new URLSearchParams(window.location.search);
 const userIdo = urlParams.get('id');
 
+
+async function getTaxFiling() {
+  let userDATA = JSON.parse(localStorage.getItem("userDataPrime"))
+
+
+  try {
+    const response = await fetch(`${HOST}?getTaxFilingByUser&id=${userDATA.id}`)
+    const data = await response.json()
+
+    $("#loader").remove()
+    if (data.status === 0) {
+
+    } else {
+      data.message.forEach(element => {
+        $("#eservicesTable").append(`
+            <tr>
+              <td>${element.created_at.split(" ")[0]}</td>
+              <td>${element.created_at.split(" ")[0]}</td>
+              <td>${element.tax_filling_refrence}</td>
+              <td>${element.tax_to_file}</td>
+              <td><a href="taxfiling-view.html?id=${element.id}&load=true" class="button text-xs py-1  px-2">View</a></td>
+            </tr>
+          `)
+      });
+
+    }
+
+
+  } catch (error) {
+    console.log(error)
+    $("#loader").remove()
+  }
+
+
+}
+
+getTaxFiling().then(() => {
+  $("#dataTable").DataTable();
+})
+
+
+
 async function fetchTaxfillers() {
-    $("#showdetails").html("");
-    $("#loader").css("display", "flex");
+  $("#showdetails").html("");
+  $("#loader").css("display", "flex");
 
-    try {
-        const response = await fetch(`${HOST}?getTaxFilingById&id=${userIdo}`);
-        const userInvoices = await response.json();
+  try {
+    const response = await fetch(`${HOST}?getTaxFilingById&id=${userIdo}`);
+    const userInvoices = await response.json();
 
-        $("#loader").css("display", "none");
+    $("#loader").css("display", "none");
 
-        if (userInvoices.status === 1) {
-            userInvoices.message.reverse().forEach((userInvoice, i) => {
-                let addd = `
+    if (userInvoices.status === 1) {
+      userInvoices.message.reverse().forEach((userInvoice, i) => {
+        let addd = `
                     <tr class="relative">
                         <td>First Name</td>
                         <td>${userInvoice.first_name}</td>
@@ -44,8 +86,8 @@ async function fetchTaxfillers() {
                     </tr>
                 `;
 
-                if (userInvoice.category === "Individual") {
-                    addd += `
+        if (userInvoice.category === "Individual") {
+          addd += `
                         <tr class="relative">
                             <td>Form Assessment Upload</td>
                           <td><a href="${userInvoice.form_assessment_upload}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
@@ -59,8 +101,8 @@ async function fetchTaxfillers() {
                    <td><a href="${userInvoice.evidence_of_tax_payment}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                     `;
-                } else {
-                    addd += `
+        } else {
+          addd += `
                         <tr class="relative">
                             <td>Form Assessment Upload</td>
                             <td><a href="${userInvoice.form_assessment_upload}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
@@ -82,71 +124,21 @@ async function fetchTaxfillers() {
                             <td><a href="${userInvoice.form_upload_5}" target="_blank" class="btn btn-primary btn-sm">View File</a></td>
                         </tr>
                     `;
-                }
-
-                $("#showdetails").append(addd);
-
-                if (userInvoice.application_status === "pending") {
-                    // $("#showbtn").html(`
-                    //     <button class="w-54 bg-green-600 text-white rounded-md p-2 mt-2" id="approveApp">Approve</button>
-                    //     <button class="w-54 bg-red-600 text-white rounded-md p-2 mt-2" id="rejectApp">Reject</button>
-                    // `);
-                }
-            });
-
-            // Attach event listeners after rendering buttons
-            $("#approveApp").on("click", function () {
-                updateApplicationStatus("approved");
-            });
-
-            $("#rejectApp").on("click", function () {
-                updateApplicationStatus("rejected");
-            });
-
-        } else {
-            $("#dataTable").DataTable();
         }
-    } catch (error) {
-        console.error("Error fetching data:", error);
-    }
-}
 
-async function updateApplicationStatus(status) {
-    $("#msg_box").html(`
-        <div class="flex justify-center items-center mt-4">
-            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-        </div>
-    `);
+        $("#showdetails").append(addd);
 
-    $("#approveApp, #rejectApp").addClass("hidden");
+      });
 
-    try {
-        const response = await fetch(`${HOST}/?updateTaxFilingStatus&id=${userIdo}&status=${status}`, {
-            method: "GET",
-        });
 
-        const data = await response.json();
-
-        if (data.status === 1) {
-            $("#msg_box").html(`
-                <p class="text-success text-center mt-4 text-lg">${status === "approved" ? "Approved" : "Rejected"} Successfully</p>
-            `);
-            setTimeout(() => {
-                window.location.href = "./service.html";
-            }, 1000);
-        } else {
-            $("#msg_box").html(`
-                <p class="text-warning text-center mt-4 text-base">${data.message}</p>
-            `);
-            $("#approveApp, #rejectApp").removeClass("hidden");
-        }
-    } catch (error) {
-        console.error("Error updating status:", error);
-        $("#msg_box").html(`
-            <p class="text-danger text-center mt-4 text-lg">Something went wrong, try again!</p>
+    } else {
+      $("#showdetails").html(`
+        <p class="p-4">Not Found</p>
         `);
-        $("#approveApp, #rejectApp").removeClass("hidden");
     }
+  } catch (error) {
+    console.error("Error fetching data:", error);
+  }
 }
 
-fetchTaxfillers();
+fetchTaxfillers()
