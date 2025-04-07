@@ -159,6 +159,7 @@ async function fetchInvoice() {
         },
       },
       { data: 'tax_number' },
+      { data: 'fullname' },
       {
         data: null,
         render: function (data, type, row) {
@@ -169,6 +170,18 @@ async function fetchInvoice() {
         data: null,
         render: function (data, type, row) {
           return formatMoney(parseFloat(row.annual_gross_income));
+        }
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(parseFloat(row.consolidated_relief));
+        }
+      },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return formatMoney(parseFloat(row.chargeable_income));
         }
       },
       {

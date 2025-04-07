@@ -137,28 +137,46 @@ async function calculateTaxLiability(version) {
     if (resdata.status === "success") {
       let data = resdata.data;
       taxCalculation = data;
-      
+
       $("#previewBtn").removeClass("hidden")
 
       let annualTax = parseFloat(data.monthlyTaxPayable) * 12 || 0
       let monthlyTax = parseFloat(data.monthlyTaxPayable).toLocaleString() || 0
       let consolidatedRelief = parseFloat(data.consolidatedRelief).toLocaleString() || 0
       let chargeableIncome = parseFloat(data.chargeableIncome).toLocaleString() || 0
+      let annualGrossIncome = parseFloat(data.annualGrossIncome).toLocaleString() || 0
+      let monthlyGrossIncome = parseFloat(data.annualGrossIncome) / 12 || 0
+
 
       $("#theCalDisContainer").html(`
         <p class="text-lg font-bold mb-4">Tax Calculation</p>
 
-        <div class="flex items-center mb-2 gap-2">
-          <div class="form-group w-full">
-            <label for="">Monthly Tax Liabilty</label>
-            <input type="text" class="form-control" readonly value="${monthlyTax}">
-          </div>
+        ${version === "tax_liability" ? `
+            <div class="flex items-center mb-2 gap-2">
+              <div class="form-group w-full">
+                <label for="">Monthly Gross Income</label>
+                <input type="text" class="form-control" readonly value="${monthlyGrossIncome.toLocaleString()}">
+              </div>
 
-          <div class="form-group w-full">
-            <label for="">Annual Tax Liabilty</label>
-            <input type="text" class="form-control" readonly value="${annualTax.toLocaleString()}">
-          </div>
-        </div>
+              <div class="form-group w-full">
+                <label for="">Annual Gross Income</label>
+                <input type="text" class="form-control" readonly value="${annualGrossIncome}">
+              </div>
+            </div>
+          ` : `
+            <div class="flex items-center mb-2 gap-2">
+              <div class="form-group w-full">
+                <label for="">Monthly Tax Liabilty</label>
+                <input type="text" class="form-control" readonly value="${monthlyTax}">
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Annual Tax Liabilty</label>
+                <input type="text" class="form-control" readonly value="${annualTax.toLocaleString()}">
+              </div>
+            </div>
+          `}
+        
 
         <div class="flex items-center mb-2 gap-2">
           <div class="form-group w-full">
@@ -625,7 +643,7 @@ async function calculateAssessment(tax_number) {
   } else if (basicSalary.dataset.version === "annual") {
     basicSalaryVal = parseFloat(basicSalary.value)
   } else {
-    basicSalaryVal = taxCalculation?.monthlyTaxPayable
+    basicSalaryVal = taxCalculation?.annualGrossIncome
   }
   let dataToSend = {
     endpoint: "registerEmployeeDirectAssessment",
@@ -642,7 +660,7 @@ async function calculateAssessment(tax_number) {
     },
   }
 
-  console.log(dataToSend)
+  // console.log(dataToSend, taxCalculation)
   $.ajax({
     type: "POST",
     url: HOST,
