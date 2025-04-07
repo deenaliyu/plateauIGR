@@ -87,16 +87,107 @@ $("input[name='grossInptt']").on("change", function () {
     $("#grossContainer").html(`
       <label for="basic_salary">Monthly Gross Income*</label>
       <input type="number" placeholder="Input the monthly gross income" class="form-control genInv directInputs"
-        id="basic_salary" required data-name="basic_salary" data-version="monthly">  
+        id="basic_salary" required data-name="basic_salary" onblur="calculateTaxLiability('monthly')" data-version="monthly">  
     `)
-  } else {
+  } else if (val === "annual") {
     $("#grossContainer").html(`
       <label for="basic_salary">Annual Gross Income*</label>
       <input type="number" placeholder="Input the annual gross income" class="form-control genInv directInputs"
-        id="basic_salary" required data-name="basic_salary" data-version="annual">  
+        id="basic_salary" required data-name="basic_salary" onblur="calculateTaxLiability('yearly')" data-version="annual">  
+    `)
+  } else {
+    $("#grossContainer").html(`
+      <label for="basic_salary">Tax Liability*</label>
+      <input type="number" placeholder="Enter proposed tax liability" class="form-control genInv directInputs"
+        id="basic_salary" required data-name="basic_salary" onblur="calculateTaxLiability('tax_liability')" data-version="liability">  
     `)
   }
 })
+
+let taxCalculation = null;
+async function calculateTaxLiability(version) {
+
+  let requestUrl;
+  let basicSalary = document.querySelector(".directInputs[data-name='basic_salary']").value
+
+  if (basicSalary === "") {
+    return
+  }
+
+  if (version === "yearly") {
+    requestUrl = `${HOST}?getMonthlyTaxPay&income=${basicSalary}`
+  } else if (version === "monthly") {
+    requestUrl = `${HOST}?getMonthlyTaxPay&income=${parseFloat(basicSalary) * 12}`
+
+  } else {
+    requestUrl = `${HOST}?getMonthlyTaxPayReverse&monthlyIncome=${basicSalary}`
+  }
+
+  //loader
+  $("#theCalDisContainer").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+
+  try {
+    const response = await fetch(requestUrl);
+    const resdata = await response.json();
+
+    if (resdata.status === "success") {
+      let data = resdata.data;
+      taxCalculation = data;
+      
+      $("#previewBtn").removeClass("hidden")
+
+      let annualTax = parseFloat(data.monthlyTaxPayable) * 12 || 0
+      let monthlyTax = parseFloat(data.monthlyTaxPayable).toLocaleString() || 0
+      let consolidatedRelief = parseFloat(data.consolidatedRelief).toLocaleString() || 0
+      let chargeableIncome = parseFloat(data.chargeableIncome).toLocaleString() || 0
+
+      $("#theCalDisContainer").html(`
+        <p class="text-lg font-bold mb-4">Tax Calculation</p>
+
+        <div class="flex items-center mb-2 gap-2">
+          <div class="form-group w-full">
+            <label for="">Monthly Tax Liabilty</label>
+            <input type="text" class="form-control" readonly value="${monthlyTax}">
+          </div>
+
+          <div class="form-group w-full">
+            <label for="">Annual Tax Liabilty</label>
+            <input type="text" class="form-control" readonly value="${annualTax.toLocaleString()}">
+          </div>
+        </div>
+
+        <div class="flex items-center mb-2 gap-2">
+          <div class="form-group w-full">
+            <label for="">Consolidated Tax Relief</label>
+            <input type="text" class="form-control" readonly value="${consolidatedRelief}">
+          </div>
+
+          <div class="form-group w-full">
+            <label for="">Taxable Income</label>
+            <input type="text" class="form-control" readonly value="${chargeableIncome}">
+          </div>
+        </div>
+        `)
+
+
+
+
+    } else {
+      $("#theCalDisContainer").html(`
+        <p class="text-danger text-center mt-4 text-lg">Failed to get calculation.</p>
+      `);
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    $("#theCalDisContainer").html(`
+      <p class="text-danger text-center mt-4 text-lg">Failed to get calculation.</p>
+    `);
+  }
+}
 
 async function getIndustriesSectors() {
   try {
@@ -495,7 +586,6 @@ function goToPreviewPage() {
 
 
   $('#bill').html(`
-    <p>Gross Income: ${formatMoney(parseFloat(BasicSalry.value))}</p>  
     <p>Category: ${$("#category_pre").val()}</p>
     <p>Sector: ${$("#sectorSelect").val()}</p>
     <p>Industry: ${$("#industrySelect").val()}</p>
@@ -528,7 +618,15 @@ function goToPreviewPage() {
 async function calculateAssessment(tax_number) {
 
   let basicSalary = document.querySelector(".directInputs[data-name='basic_salary']")
+  let basicSalaryVal;
 
+  if (basicSalary.dataset.version === "monthly") {
+    basicSalaryVal = parseFloat(basicSalary.value) * 12
+  } else if (basicSalary.dataset.version === "annual") {
+    basicSalaryVal = parseFloat(basicSalary.value)
+  } else {
+    basicSalaryVal = taxCalculation?.monthlyTaxPayable
+  }
   let dataToSend = {
     endpoint: "registerEmployeeDirectAssessment",
     data: {
@@ -540,7 +638,7 @@ async function calculateAssessment(tax_number) {
       entertainment: 0,
       leaves: 0,
       date_employed: "",
-      basic_salary: basicSalary.dataset.version === "monthly" ? parseFloat(basicSalary.value) * 12 : basicSalary.value,
+      basic_salary: basicSalaryVal,
     },
   }
 
