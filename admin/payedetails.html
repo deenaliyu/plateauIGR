@@ -175,6 +175,13 @@
                   </li>
 
                   <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#invoiceHistory" type="button"
+                      role="tab">
+                      Invoices
+                    </button>
+                  </li>
+
+                  <li class="nav-item text-center" role="presentation">
                     <button class="nav-link" data-bs-toggle="pill" data-bs-target="#paymentHistory" type="button"
                       role="tab">
                       Payment History
@@ -223,6 +230,34 @@
 
                     <div class="flex justify-center items-center mt-4" id="loader">
                       <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                    </div>
+
+                  </div>
+
+                  <div class="tab-pane fade" id="invoiceHistory" role="tabpanel">
+
+                    <div class="table-responsive">
+                      <table class="table payeTable" id="dataTable3">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Payer ID</th>
+                            <th>Invoice No.</th>
+                            <th>Revenue Head</th>
+                            <th>Invoice Amount</th>
+                            <th>Amount paid</th>
+                            <th>Invoice date</th>
+                            <th>Due date</th>
+                            <th>status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody id="invoiceHistoryTable">
+
+
+
+                        </tbody>
+                      </table>
                     </div>
 
                   </div>
@@ -441,6 +476,42 @@
               <div id="msg_box"></div>
 
             </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="invoiceStaffModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header ">
+            <h5 class="modal-title" id="exampleModalCenterTitle">List of Staffs</h5>
+
+            <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+              aria-label="Close"><iconify-icon icon="fa6-solid:x"></iconify-icon></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>TIN</th>
+                    <th>Name</th>
+                    <th>Annual Gross Income</th>
+                    <th>Basic Salary</th>
+                    <th>Annual Tax Payable</th>
+                    <th>Monthly Tax Payable</th>
+                    <th>Date Added</th>
+                  </tr>
+                </thead>
+                <tbody id="staffListInvoices">
+
+                </tbody>
+              </table>
+            </div>
+
           </div>
 
         </div>

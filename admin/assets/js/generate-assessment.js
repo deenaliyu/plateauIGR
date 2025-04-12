@@ -144,6 +144,7 @@ async function calculateTaxLiability(version) {
       let monthlyTax = parseFloat(data.monthlyTaxPayable).toLocaleString() || 0
       let consolidatedRelief = parseFloat(data.consolidatedRelief).toLocaleString() || 0
       let chargeableIncome = parseFloat(data.chargeableIncome).toLocaleString() || 0
+      
       let annualGrossIncome = parseFloat(data.annualGrossIncome).toLocaleString() || 0
       let monthlyGrossIncome = parseFloat(data.annualGrossIncome) / 12 || 0
 

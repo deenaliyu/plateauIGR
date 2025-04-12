@@ -38,6 +38,14 @@ async function fetchPayeUsers() {
       let defaultersData = ""
       let currentData = ""
 
+      let theStatus = ""
+      if (rhUser.status === "defaulter") {
+        theStatus = `<span class="badge bg-danger rounded-pill">Defaulter</span>`
+      } else if (rhUser.status === "current") {
+        theStatus = `<span class="badge bg-success rounded-pill">Current</span>`
+      } else {
+        theStatus = `<span class="badge bg-info rounded-pill">${rhUser.status}</span>`
+      }
       htmlData = `
         <tr>
           <td>${i + 1}</td>
@@ -49,7 +57,7 @@ async function fetchPayeUsers() {
           <td>${formatMoney(annual)}</td>
           <td>${formatMoney(monthly)}</td>
           <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
-          <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+          <td>${theStatus}</td>
           <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>

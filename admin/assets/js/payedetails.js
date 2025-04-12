@@ -87,7 +87,7 @@ async function getStaffLists() {
 
       $("#stafflistTable").append(`
           <tr>
-            <td><input class="form-check-input taxChecks" data-amount="${rhUser.monthly}" type="checkbox" value="" onchange="checkTax(this)"></td>
+            <td><input class="form-check-input taxChecks" data-staffid="${rhUser.id}" data-amount="${rhUser.monthly}" type="checkbox" value="" onchange="checkTax(this)"></td>
             <td>${i + 1}</td>
             <td>${rhUser.payer_id}</td>
             <td>${rhUser.fullname}</td>
@@ -188,7 +188,7 @@ $("#theButton").on("click", () => {
   });
 })
 
-function generateInv(amount) {
+function generateInv(amount, staff_id) {
   Swal.fire({
     title: "Generating Invoice",
     icon: "info",
@@ -212,14 +212,16 @@ function generateInv(amount) {
     },
     allowOutsideClick: () => !Swal.isLoading(),
   }).then((result) => {
-    console.log(result.value);
+    // console.log(result.value);
     if (result.isConfirmed) {
+      registerEmployeesInvoice(amount, result.value.invoice_number, staff_id)
+
       Swal.fire({
         icon: "success",
         title: `Invoice Generated successfully !`,
         confirmButtonText: "Open Invoice",
       }).then((result3) => {
-        if (result.isConfirmed) {
+        if (result3.isConfirmed) {
           window.open(`../viewinvoice.html?invnumber=${result.value.invoice_number}&load=true`, '_blank')
         }
       });
@@ -228,14 +230,42 @@ function generateInv(amount) {
 
 }
 
+async function registerEmployeesInvoice(amount, invoice_num, staff_id) {
+  let dataToSend = {
+    endpoint: "registerPayeInvoiceStaff",
+    data: {
+      invoice_number: invoice_num,
+      staff_id: staff_id,
+      associated_special_user_id: payerID,
+      monthly_tax_payable: amount,
+    }
+  }
+  try {
+    const response = await fetch(HOST, {
+      method: "POST",
+      body: JSON.stringify(dataToSend),
+      headers: {
+        "Content-Type": "application/json"
+      }
+    })
+    const data = await response.json()
+    console.log(data)
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 $("#generating_inv").on("click", function () {
   let allSelected = document.querySelectorAll(".taxChecks");
 
   // let  = document.querySelectorAll(".")
   let theArray = [];
+  let staffArr = []
   allSelected.forEach((slt) => {
     if (slt.checked) {
       theArray.push(parseFloat(slt.dataset.amount));
+      staffArr.push(slt.dataset.staffid)
       // console.log(slt)
     }
   });
@@ -245,7 +275,7 @@ $("#generating_inv").on("click", function () {
   if (theArray.length === 0) {
     alert('Please select atleast one Staff')
   } else {
-    generateInv(sumArray(theArray));
+    generateInv(sumArray(theArray), staffArr.join(","));
   }
 
 });
@@ -278,7 +308,7 @@ async function getPaymentHistory() {
   $("#loader").css("display", "none")
 
   if (specialUsers.status === 0) {
-    $('#dataTable').DataTable();
+    $('#dataTable2').DataTable();
 
   } else {
     specialUsers.message.reverse().forEach((rhUser, i) => {
@@ -293,7 +323,12 @@ async function getPaymentHistory() {
             <td>${rhUser.payment_channel}</td>
             <td>${rhUser.timeIn}</td>
             <td><span class="badge bg-success rounded-pill">paid</span></td>
-            <td><a href="./viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-sm button-3">View receipt</a></td>
+            <td>
+              <div class="flex gap-2">
+                <a href="./viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-sm button-3">View</a>
+                <button class="btn btn-sm button-3" onclick="fetchTheStaffs('${rhUser.invoice_number}')">View Staffs</button>
+              </div>
+            </td>
           </tr>
 
       `)
@@ -304,6 +339,95 @@ async function getPaymentHistory() {
 getPaymentHistory().then(tt => {
   $('#dataTable2').DataTable();
 })
+
+async function getInvoiceHistory() {
+
+  const response = await fetch(`${HOST}/?userInvoices&payer_id=${payerID}`)
+  const specialUsers = await response.json()
+
+  $("#loader").css("display", "none")
+
+  if (specialUsers.status === 0) {
+    $('#dataTable3').DataTable();
+
+  } else {
+    specialUsers.message.reverse().forEach((rhUser, i) => {
+
+      $("#invoiceHistoryTable").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>${rhUser.payer_id}</td>
+            <td>${rhUser.invoice_number}</td>
+            <td>${rhUser.COL_4}</td>
+            <td>${rhUser.amount_paid}</td>
+            <td>${rhUser.amount_paid}</td>
+            <td>${rhUser.date_created.split(' ')[0]}</td>
+            <td>${rhUser["due_date"]}</td>
+            <td>${rhUser.status === "paid" ? `<span class='badge bg-success'>Paid</span>` : `<span class='badge bg-danger'>Un-paid</span>`}</td>
+            <td>
+              <div class="flex gap-2">
+                <a href="../viewinvoice.html?invnumber=${rhUser.invoice_number}&load=true" class="button">View</a>
+                <button class="button" onclick="fetchTheStaffs('${rhUser.invoice_number}')">View Staffs</button>
+              </div>
+            </td>
+            
+          </tr>
+
+      `)
+    });
+  }
+}
+
+getInvoiceHistory().then(tt => {
+  $('#dataTable3').DataTable();
+})
+
+
+async function fetchTheStaffs(invNumber) {
+  $("#invoiceStaffModal").modal('show')
+  $("#staffListInvoices").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  try {
+    const response = await fetch(`${HOST}/?getStaffInvoices&invoice_number=${invNumber}`)
+    const data = await response.json()
+
+    if (data.status === 0) {
+      $('#staffListInvoices').html(`
+        <tr colspan="9">
+          <td colspan="9"><p class="text-center">No Staff Lists Found</p><td>
+        </tr>  
+      `);
+    } else {
+      $("#staffListInvoices").html("")
+      data.message.staff_details.forEach((rhUser, i) => {
+        $("#staffListInvoices").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>${rhUser.payer_id}</td>
+            <td>${rhUser.fullname}</td>
+            <td>${formatMoney(parseFloat(rhUser.annual_gross_income))}</td>
+            <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
+            <td>${rhUser.timeIn}</td>
+          </tr>
+        `)
+      })
+    }
+
+  } catch (error) {
+    console.log(error)
+    $('#staffListInvoices').html(`
+      <tr colspan="9">
+        <td colspan="9"><p class="text-center">No Staff Lists Found</p><td>
+      </tr>  
+    `);
+  }
+}
+
 
 function getMonthInWordFromDate(dateString) {
   const months = [

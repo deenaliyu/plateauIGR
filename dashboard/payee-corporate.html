@@ -260,6 +260,13 @@
                   </li>
 
                   <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#invoiceHistory" type="button"
+                      role="tab">
+                      Invoices
+                    </button>
+                  </li>
+
+                  <li class="nav-item text-center" role="presentation">
                     <button class="nav-link" data-bs-toggle="pill" data-bs-target="#paymentHistory" type="button"
                       role="tab">
                       Payment History
@@ -295,6 +302,34 @@
 
 
                     </div>
+                  </div>
+
+                  <div class="tab-pane fade" id="invoiceHistory" role="tabpanel">
+
+                    <div class="table-responsive">
+                      <table class="table payeTable" id="dataTable3">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Payer ID</th>
+                            <th>Invoice No.</th>
+                            <th>Revenue Head</th>
+                            <th>Invoice Amount</th>
+                            <th>Amount paid</th>
+                            <th>Invoice date</th>
+                            <th>Due date</th>
+                            <th>status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody id="invoiceHistoryTable">
+
+
+
+                        </tbody>
+                      </table>
+                    </div>
+
                   </div>
 
                   <div class="tab-pane fade" id="paymentHistory" role="tabpanel">
