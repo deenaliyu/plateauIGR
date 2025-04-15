@@ -39,12 +39,14 @@ async function fetchPayeUsers() {
       let currentData = ""
 
       let theStatus = ""
-      if (rhUser.status === "defaulter") {
+      if (rhUser.status === "Defaulter") {
         theStatus = `<span class="badge bg-danger rounded-pill">Defaulter</span>`
-      } else if (rhUser.status === "current") {
+      } else if (rhUser.status === "Current") {
         theStatus = `<span class="badge bg-success rounded-pill">Current</span>`
-      } else {
+      } else if (rhUser.status === "Assessed") {
         theStatus = `<span class="badge bg-info rounded-pill">${rhUser.status}</span>`
+      } else {
+        theStatus = `<span class="badge bg-warning rounded-pill">${rhUser.status}</span>`
       }
       htmlData = `
         <tr>

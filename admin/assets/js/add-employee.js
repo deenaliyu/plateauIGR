@@ -57,6 +57,17 @@ function registerUsersFromCSV(file) {
 
     for (let i = 0; i < users.length; i++) {
       const user = users[i];
+
+      if (user.annual_gross_income === '' && user.basic_salary === '') {
+        failedRegistrations.push({ email: user.email, error: 'Both annual gross income and basic salary are empty' });
+        continue;
+      }
+      if (user.annual_gross_income === '' && user.basic_salary !== '') {
+        user.annual_gross_income = parseFloat(user.basic_salary) * 12;
+      } else if (user.annual_gross_income !== '' && user.basic_salary === '') {
+        user.basic_salary = parseFloat(user.annual_gross_income) / 12;
+      }
+
       const EnumData = {
         endpoint: "createSpecialUserEmployee",
         data: {
@@ -112,9 +123,11 @@ function registerUsersFromCSV(file) {
       `);
     }
 
-    setTimeout(() => {
-      window.location.href = `./payedetails.html?payerID=${category}`
-    }, 1500);
+    $("#msg_box").append(`
+      <div class="flex justify-center mt-4">
+        <a class="button" href="./payedetails.html?payerID=${category}">Go Back</a>
+      </div>
+    `)
   };
 
   reader.onerror = () => {

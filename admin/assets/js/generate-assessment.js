@@ -144,7 +144,7 @@ async function calculateTaxLiability(version) {
       let monthlyTax = parseFloat(data.monthlyTaxPayable).toLocaleString() || 0
       let consolidatedRelief = parseFloat(data.consolidatedRelief).toLocaleString() || 0
       let chargeableIncome = parseFloat(data.chargeableIncome).toLocaleString() || 0
-      
+
       let annualGrossIncome = parseFloat(data.annualGrossIncome).toLocaleString() || 0
       let monthlyGrossIncome = parseFloat(data.annualGrossIncome) / 12 || 0
 
@@ -165,6 +165,12 @@ async function calculateTaxLiability(version) {
               </div>
             </div>
           ` : `
+
+            <div class="form-group w-full mb-2">
+              <label for="">${version === 'monthly' ? 'Annual Gross Income' : 'Monthly Gross Income'}</label>
+              <input type="text" class="form-control" readonly value="${version === 'monthly' ? annualGrossIncome : monthlyGrossIncome.toLocaleString()}">
+            </div>
+
             <div class="flex items-center mb-2 gap-2">
               <div class="form-group w-full">
                 <label for="">Monthly Tax Liabilty</label>
@@ -853,11 +859,11 @@ async function generateInvoiceNum(taxNumber, amountCal) {
         $("#msg_box").html(``);
         Swal.fire({
           title: 'Generated',
-          text: "Invoice has been generated successfully. Invoice details will be sent to your email and phone number! Check your spam/junk folder if you can't find the mail.",
+          text: "Direct Assessment has been generated successfully. Assessment Details will be sent to your mail and phone number. Check your spam junk folder if you can't find the mail.",
           icon: 'success',
           confirmButtonColor: '#3085d6',
           cancelButtonColor: '#3085d6',
-          confirmButtonText: 'Open Invoice',
+          confirmButtonText: 'Open Assessment',
           allowOutsideClick: false
         }).then((result) => {
           if (result.isConfirmed) {
