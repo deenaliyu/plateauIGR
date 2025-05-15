@@ -1,4 +1,4 @@
-let HOST = "https://plateauigr.com/php1/index.php"
+let HOST = "https://plateauigr.com/php/index.php"
 
 $(".aside").html(`
 <div class="app-brand demo">
@@ -131,7 +131,7 @@ const currentYear = new Date().getFullYear()
 $(".footer").html(`
 <div class="flex justify-between">
 <div class="flex items-center gap-x-3">
-  <p class="text-[#1E1E1E] text-[16px]">Copyright 2021 - ${currentYear} Primegauge</p>
+  <p class="text-[#1E1E1E] text-[16px]">Copyright 2021 - ${currentYear} Primeguage Solutions Limited </p>
   <img src="../assets/img/logo1.png" width="50px" alt="">
 </div>
 <div class="flex items-center gap-x-3">
@@ -148,19 +148,19 @@ $(".datem").html(currentDate.toLocaleDateString());
 let logoutTimeout;
 
 function startLogoutTimer() {
-    // Set the timeout to 10 minutes (600,000 milliseconds)
-    logoutTimeout = setTimeout(logout, 600000);
+  // Set the timeout to 10 minutes (600,000 milliseconds)
+  logoutTimeout = setTimeout(logout, 600000);
 }
 
 function resetLogoutTimer() {
-    clearTimeout(logoutTimeout);
-    startLogoutTimer();
+  clearTimeout(logoutTimeout);
+  startLogoutTimer();
 }
 
 function logout() {
   localStorage.removeItem("adminDataPrime");
-    // alert('You have been logged out due to inactivity.');
-    window.location.href = "./index.html";
+  // alert('You have been logged out due to inactivity.');
+  window.location.href = "./index.html";
 }
 
 // Attach event listeners to reset the logout timer on user activity
@@ -1117,12 +1117,12 @@ if (stateSelect) {
   stateSelect.innerHTML = STATES
 }
 
-
 // if (stateSelect) {
 lgaList["Plateau"].forEach(lga => {
-  lgaSelect.innerHTML += `
-      <option value="${lga}">${lga}</option>
-    `
+  $("#LGAs").append(`
+    <option value="${lga}">${lga}</option>
+  `)
+
 })
 // stateSelect.addEventListener('change', function () {
 //   let selectedState = $(this).val()

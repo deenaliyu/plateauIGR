@@ -1,32 +1,94 @@
-let USERINFO = JSON.parse(window.localStorage.getItem("enumDataPrime"));
+// let USERINFO = JSON.parse(window.localStorage.getItem("enumDataPrime"));
+const urlParams = new URLSearchParams(window.location.search);
+
+let myParam = urlParams.get('category');
+let userTypo = urlParams.get('user');
+
+if (myParam == "individual") {
+  myParam = 2;
+} else if (myParam == "corporate") {
+  myParam = 1;
+} else if (myParam == "state") {
+  myParam = 3;
+} else {
+  myParam = 4;
+}
 
 
-let theIDD
+let theIDDphonenumber
+let selectedValue = "";
+
+document.addEventListener('DOMContentLoaded', (event) => {
+  const inputField = document.getElementById('phonenumber');
+
+  inputField.addEventListener('input', function (e) {
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digit characters
+    if (value.length > 11) {
+      value = value.slice(0, 11); // Restrict to 11 digits
+    }
+    e.target.value = value;
+  });
+
+  inputField.addEventListener('blur', function (e) {
+    if (e.target.value.length !== 11) {
+      alert('Phone number must be exactly 11 digits.');
+    }
+  });
+});
+
+
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
+  let radioInputs = document.querySelectorAll(".radiInpu");
 
+  let tin = document.querySelector("#tin")
+
+  if (tin.value === "") {
+    $("#popUpModal").modal("show")
+    return;
+  }
 
   // check for empty fileds
+  let phonenumber = document.querySelector("#phonenumber")
 
-  for (let i = 0; i < allInputs.length; i++) {
-    const inpt = allInputs[i];
+  if (phonenumber.value.length !== 11) {
 
-    if (inpt.required && inpt.value === "") {
-      alert("Please fill all required fields")
-      inpt.scrollIntoView()
-      break;
+    alert("phone number must be equals to 11 digits")
+  } else {
+    for (var i = 0; i < radioInputs.length; i++) {
+      if (radioInputs[i].checked) {
+        selectedValue = radioInputs[i].value;
+        break; // Exit the loop once a selected radio input is found
+      }
     }
 
-    if (i === allInputs.length - 1) {
-      let theTxCateg = document.querySelector("#theTxCateg")
-      if (theTxCateg.value === "Presumptive tax") {
-        nextPrev(1)
-      } else {
-        nextPrev(2)
-      }
+    if (selectedValue !== "") {
+      for (let i = 0; i < allInputs.length; i++) {
+        const inpt = allInputs[i];
 
+        if (inpt.required && inpt.value === "") {
+          alert("Please fill all required fields")
+          inpt.scrollIntoView()
+          break;
+        }
+
+        if (i === allInputs.length - 1) {
+          if (selectedValue === "1") {
+            nextPrev(1)
+          } else {
+            nextPrev(1)
+            previewPage()
+          }
+
+        }
+      }
+    } else {
+      alert("Please select your business status");
     }
   }
+
+
+
 }
 
 function continueReg2() {
@@ -45,7 +107,7 @@ function continueReg2() {
     }
 
     if (i === allInputs.length - 1) {
-      nextPrev(1)
+      previewPage()
     }
   }
 }
@@ -80,18 +142,29 @@ function registerUser() {
   `)
 
   let EnumData = {
-    "endpoint": "createEnumTaxPayer",
-    "data": [{
-      // "password": generateRandomString(),
-      "account_type": "1",
-      "by_account": USERINFO.id,
+    "endpoint": "createPayerAccount",
+    "data": {
+      "img": "assets/img/userprofile.png",
       "business_type": "",
-      "img": "",
-      "revenue_return": "",
-      "valuation": "",
-      "staff_quota": "",
-      "business_status": "1"
-    }]
+      "annual_revenue": "",
+      "value_business": "",
+      "numberofstaff": "",
+      "password": "",
+      "rep_firstname": "",
+      "rep_surname": "",
+      "rep_email": "",
+      "rep_phone": "",
+      "rep_position": "",
+      "rep_state": "",
+      "rep_state": "",
+      "rep_lga": "",
+      "rep_address": "",
+      "category": myParam,
+      "industry": "",
+      "business_own": selectedValue,
+      "created_by": "enumerator",
+      "by_account": userInfo2?.id
+    }
   }
 
   let allInputs = document.querySelectorAll(".enumInput")
@@ -99,7 +172,7 @@ function registerUser() {
   let businessNums = document.querySelectorAll(".businessNums")
 
   allInputs.forEach((inputt, i) => {
-    EnumData.data[0][inputt.dataset.name] = inputt.value
+    EnumData.data[inputt.dataset.name] = inputt.value
   })
 
   businessNums.forEach((busines, ii) => {
@@ -109,44 +182,16 @@ function registerUser() {
 
       if (ii === businessNums.length - 1) {
 
-        EnumData.data[0][inputt.dataset.name] += inputt.value
+        EnumData.data[inputt.dataset.name] += inputt.value
       } else {
-        EnumData.data[0][inputt.dataset.name] += inputt.value + `~`
+        EnumData.data[inputt.dataset.name] += inputt.value + `~`
       }
 
     })
 
   })
 
-  console.log(EnumData)
-  // console.log(JSON.stringify(EnumData))
-  const publitio = new PublitioAPI('ksWdvJ3JjfV5JZnHyRqv', 'ruxLmts4NiupnoddqVi1Z70tnoMmf5yT')
-  let theImageSrc = document.querySelector("#theImageThing").src
-  let fileInput = document.querySelector(".imgUpl")
-
-  if (fileInput.value === "") {
-    EnumData.data[0]["img"] = theImageSrc
-    sendToDB()
-
-  } else {
-    let fileUrl = fileInput.files[0]
-    const reader = new FileReader()
-    reader.readAsBinaryString(fileUrl);
-
-    publitio.uploadFile(fileUrl, 'file', {
-      title: `ENUMTAXPAYER - ${EnumData.data[0].first_name} ${EnumData.data[0].last_name}`,
-      public_id: `${EnumData.data[0].email}`,
-
-    }).then((data) => {
-      EnumData.data[0]["img"] = data.url_preview
-      // console.log(data.url_preview)
-      sendToDB()
-    }).catch((error) => {
-      sendToDB()
-    })
-  }
-
-
+  // console.log(EnumData)
 
   async function sendToDB() {
     try {
@@ -158,20 +203,47 @@ function registerUser() {
         }
       })
       const data = await response.json()
-
-      if (data.status === 1) {
-        // $("#theButton").addClass("hidden")
-        if (data.id) {
-          theIDD = data.id
-        }
-
-        nextPrev(1)
-      } else {
-        $("#theButton").removeClass("hidden")
+      // console.log(data)
+      if (data.status === 2) {
         $("#msg_box").html(`
-          <p class="text-warning text-center text-lg">${data.message}</p>
+          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
         `)
+        $("#theButton").removeClass("hidden")
+
+      } else {
+
+        $("#msg_box").html(`
+          <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+        `)
+        // $("#theButton").removeClass("hidden")
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Account successfully created!',
+          showConfirmButton: true,
+          confirmButtonText: 'Go to Taxpayers',
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `taxpayer.html`;
+          }
+        });
+
       }
+
+      // if (data.status === 1) {
+      //   // $("#theButton").addClass("hidden")
+      //   if (data.id) {
+      //     theIDD = data.id
+      //   }
+
+      //   nextPrev(1)
+      // } else {
+      //   $("#theButton").removeClass("hidden")
+      //   $("#msg_box").html(`
+      //     <p class="text-warning text-center text-lg">${data.message}</p>
+      //   `)
+      // }
 
 
     } catch (error) {
@@ -182,6 +254,7 @@ function registerUser() {
       `)
     }
   }
+  sendToDB()
 
 }
 
@@ -376,7 +449,7 @@ let businessTypes = ``
 
 async function fetchBusiness() {
   try {
-    const response = await fetch(`${HOST}?getPresumptiveTax`)
+    const response = await fetch(`${HOST}/?getPresumptiveTax`)
     const data = await response.json()
 
     // console.log(data)
@@ -403,6 +476,26 @@ fetchBusiness()
 
 function addBusiness() {
   $("#businessCnt").append(`
+  <div class="form-group mb-3">
+            <label for="">Industry*</label>
+            <select class="form-select enumInput" data-name="industry" required>
+              <option value="">Select</option>
+              <option value="Mining">Mining</option>
+              <option value="Commerce">Commerce</option>
+              <option value="Banking">Banking</option>
+              <option value="Agriculture">Agriculture</option>
+              <option value="Engineering">Engineering</option>
+              <option value="Construction">Construction</option>
+              <option value="Government Institution">Government Institution</option>
+              <option value="NGO">NGO</option>
+              <option value="Religious Institutions">Religious Institutions</option>
+              <option value="General Merchandise">General Merchandise</option>
+               <option value="General Contractor">General Contractor</option>
+                 <option value="Private Schools"> Private Schools</option>
+                   <option value="Public Schools">Public Schools</option>
+                     <option value="Hospitals">Hospitals</option>
+            </select>
+          </div>
     <div class="businessNums mt-3">
       <div class="flex justify-end">
         <button onclick="deleteBusiness(this)">
@@ -421,7 +514,7 @@ function addBusiness() {
 
         <div class="form-group md:w-6/12">
           <label for="">No of Employees*</label>
-          <select class="form-select enumInputB" data-name="staff_quota" required>
+          <select class="form-select enumInputB" data-name="numberofstaff" required>
             <option value=""></option>
             <option value="1-9">1-9</option>
             <option value="10-29">10-29</option>
@@ -467,3 +560,4 @@ function deleteBusiness(e) {
   parentss.remove()
 
 }
+
