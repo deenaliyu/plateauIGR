@@ -41,6 +41,12 @@ $(".aside").html(`
         </a>
       </li>
 
+      <li class="menu-item">
+        <a href="invoices.html" class="menu-link mddd">
+          <i class='menu-icon tf-icons bx bxs-file'></i>
+          <div data-i18n="Basic">Invoice</div>
+        </a>
+      </li>
 
       <li class="menu-item">
         <a href="user.html" class="menu-link mdoc">
