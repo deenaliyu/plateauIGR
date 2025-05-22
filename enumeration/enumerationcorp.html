@@ -403,6 +403,52 @@
 
       </section>
 
+      <section class="formTabs h-full">
+
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="" class="mt-4 w-8/12">
+
+          <h1 class="fontBold text-lg">Register</h1>
+          <p class="mt-2 mb-4">Capture</p>
+
+
+          <div class="form-group mb-4">
+            <label for="">Profile Picture*</label>
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+              <!-- Preview Box -->
+              <div class="w-32 h-32 border-2 border-gray-300 rounded-lg overflow-hidden mb-2 md:mb-0">
+                <img id="imagePreview" src="assets/img/userprofile.png" alt="Preview"
+                  class="w-full h-full object-cover">
+              </div>
+
+              <!-- Capture/Upload Buttons -->
+              <div class="flex flex-col gap-2">
+                <button type="button" onclick="openCamera()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+                  Capture from Camera
+                </button>
+                <button type="button" onclick="document.getElementById('fileInput').click()"
+                  class="button bg-green-600 hover:bg-green-700 text-white">
+                  Upload from Device
+                </button>
+                <input type="file" id="fileInput" accept="image/*" class="hidden"
+                  onchange="handleFileUpload(this.files)">
+              </div>
+            </div>
+            <input type="hidden" id="imageUrl" data-name="img" required>
+          </div>
+
+
+          <button class="button w-full mb-4" id="uploaderContinua" type="button"
+            onclick="previewPage()">Continue</button>
+        </form>
+
+      </section>
 
 
 
@@ -710,7 +756,24 @@
   <!-- MODAL FOR TIN -->
   <div id="ModalsContainer"></div>
 
-
+  <!-- Camera Modal -->
+  <div id="cameraModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-4 w-11/12 md:w-1/2">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">Take a Photo</h3>
+        <button onclick="closeCamera()" class="text-2xl">&times;</button>
+      </div>
+      <video id="video" width="100%" autoplay class="bg-gray-200"></video>
+      <div class="flex justify-center mt-4 gap-4">
+        <button onclick="capturePhoto()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+          Capture
+        </button>
+        <button onclick="closeCamera()" class="button bg-gray-600 hover:bg-gray-700 text-white">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
 
 
   <script src="assets/js/jquery.js"></script>

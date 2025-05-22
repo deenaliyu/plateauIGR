@@ -14,9 +14,100 @@ if (myParam == "individual") {
   myParam = 4;
 }
 
+// Camera variables
+let stream = null;
+const video = document.getElementById('video');
+const imagePreview = document.getElementById('imagePreview');
+const imageUrlInput = document.getElementById('imageUrl');
 
-let theIDDphonenumber
-let selectedValue = "";
+// Open camera
+function openCamera() {
+  const cameraModal = document.getElementById('cameraModal');
+  cameraModal.classList.remove('hidden');
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (mediaStream) {
+      stream = mediaStream;
+      video.srcObject = stream;
+    })
+    .catch(function (err) {
+      console.error("Error accessing camera: ", err);
+      alert("Could not access the camera. Please check permissions.");
+    });
+}
+
+// Close camera
+function closeCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+  document.getElementById('cameraModal').classList.add('hidden');
+}
+
+// Capture photo from camera
+function capturePhoto() {
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  canvas.toBlob(async function (blob) {
+    try {
+      await uploadImageToPublitio(blob);
+    } catch (error) {
+      alert(error.message);
+    }
+  }, 'image/jpeg', 0.95);
+
+  closeCamera();
+}
+
+// Handle file upload
+async function handleFileUpload(files) {
+  if (files && files[0]) {
+    if (files[0].size > 5 * 1024 * 1024) { // 5MB limit
+      alert('Image size should be less than 5MB');
+      return;
+    }
+
+    try {
+      await uploadImageToPublitio(files[0]);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+}
+
+// Upload to Publitio
+const publitio = new PublitioAPI(publitioKey1, publitioKey2);
+
+async function uploadImageToPublitio(file) {
+  // Show loading state
+  imagePreview.src = 'https://i.gifer.com/ZZ5H.gif'; // Online loading GIF
+  $("#uploaderContinua").prop("disabled", true)
+
+  try {
+    // Upload using SDK
+    const uploadResponse = await publitio.uploadFile(file, 'file', {
+      folder: 'taxpayer_profiles',
+      public_id: 'profile_' + Date.now(),
+      title: 'Profile Picture'
+    });
+
+    // Update preview and hidden input
+    imagePreview.src = uploadResponse.url_preview;
+    imageUrlInput.value = uploadResponse.url_preview;
+
+    $("#uploaderContinua").prop("disabled", false)
+    return uploadResponse.url_preview;
+  } catch (error) {
+     $("#uploaderContinua").prop("disabled", false)
+    console.error('Upload error:', error);
+    imagePreview.src = 'assets/img/userprofile.png';
+    throw new Error('Failed to upload image: ' + error.message);
+  }
+}
 
 document.addEventListener('DOMContentLoaded', (event) => {
   const inputField = document.getElementById('phonenumber');
@@ -36,6 +127,8 @@ document.addEventListener('DOMContentLoaded', (event) => {
   });
 });
 
+let theIDDphonenumber
+let selectedValue = "";
 
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
@@ -76,8 +169,8 @@ function continueReg() {
           if (selectedValue === "1") {
             nextPrev(1)
           } else {
-            nextPrev(1)
-            previewPage()
+            nextPrev(2)
+
           }
 
         }
@@ -144,7 +237,7 @@ function registerUser() {
   let EnumData = {
     "endpoint": "createPayerAccount",
     "data": {
-      "img": "assets/img/userprofile.png",
+      "img": imageUrlInput.value || "assets/img/userprofile.png",
       "business_type": "",
       "annual_revenue": "",
       "value_business": "",
