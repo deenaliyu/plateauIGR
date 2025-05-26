@@ -103,7 +103,7 @@ async function uploadImageToPublitio(file) {
     $("#uploaderContinua").prop("disabled", false)
     return uploadResponse.url_preview;
   } catch (error) {
-     $("#uploaderContinua").prop("disabled", false)
+    $("#uploaderContinua").prop("disabled", false)
     console.error('Upload error:', error);
     imagePreview.src = 'assets/img/userprofile.png';
     throw new Error('Failed to upload image: ' + error.message);
@@ -258,6 +258,8 @@ function registerUser() {
       "rep_state": "",
       "rep_lga": "",
       "rep_address": "",
+      "enumlatitude": $("#latitudeInput").val(),
+      "enumlongitude": $("#longitudeInput").val(),
       "category": myParam,
       "industry": "",
       "business_own": "2",

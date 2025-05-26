@@ -252,6 +252,8 @@ function registerUser() {
       "rep_state": "",
       "rep_lga": "",
       "rep_address": "",
+      "enumlatitude": $("#latitudeInput").val(),
+      "enumlongitude": $("#longitudeInput").val(),
       "category": myParam,
       "industry": "",
       "business_own": selectedValue,
