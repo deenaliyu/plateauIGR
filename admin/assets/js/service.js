@@ -21,6 +21,8 @@ async function fetchInvoice() {
       addd += `
         <tr class="relative">
         <td>${userInvoice.first_name} ${userInvoice.surname}</td>
+        <td>${userInvoice.email}</td>
+        <td>${userInvoice.tax_type || '-'}</td>
         <td>${userInvoice.tax_to_file}</td>
         <td>${userInvoice.tax_filling_refrence}</td>
         <td>${userInvoice.start_date}</td>

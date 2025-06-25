@@ -35,6 +35,10 @@ async function fetchTaxfillers() {
                         <td>${userInvoice.category}</td>
                     </tr>
                     <tr class="relative">
+                        <td>Tax Type</td>
+                        <td>${userInvoice.tax_type}</td>
+                    </tr>
+                    <tr class="relative">
                         <td>Tax to File</td>
                         <td>${userInvoice.tax_to_file}</td>
                     </tr>
@@ -83,10 +87,10 @@ async function fetchTaxfillers() {
                 $("#showdetails").append(addd);
 
                 if (userInvoice.application_status === "pending") {
-                    $("#showbtn").html(`
-                        <button class="w-54 bg-green-600 text-white rounded-md p-2 mt-2" id="approveApp">Approve</button>
-                        <button class="w-54 bg-red-600 text-white rounded-md p-2 mt-2" id="rejectApp">Reject</button>
-                    `);
+                    // $("#showbtn").html(`
+                    //     <button class="w-54 bg-green-600 text-white rounded-md p-2 mt-2" id="approveApp">Approve</button>
+                    //     <button class="w-54 bg-red-600 text-white rounded-md p-2 mt-2" id="rejectApp">Reject</button>
+                    // `);
                 }
             });
 

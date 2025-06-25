@@ -9,6 +9,23 @@ function formatMoney(amount) {
 let AllDemanData = {}
 let dataToExport;
 
+const the_sectors = [
+  "Construction Sector",
+  "Education Sector",
+  "Agricultural Sector",
+  "Financial Institutions",
+  "Health Sector",
+  "Hospitality Sector",
+  "ICT Sector",
+  "Oil and Gas Sector",
+]
+
+the_sectors.forEach((sect) => {
+  $('#sectorSelect').append(`
+    <option value='${sect}'>${sect}</option>  
+  `)
+})
+
 async function fetchInvoice() {
   if ($.fn.DataTable.isDataTable('#dataTable')) {
     $('#dataTable').DataTable().clear().destroy();
@@ -29,6 +46,11 @@ async function fetchInvoice() {
         getAllDemandNotice: true,
         page: pageNumber,
         limit: data.length,
+        sector: $('#sectorSelect').val(),
+        invoice_number: $('#invnumberInput').val(),
+        payment_status: $('#paymentStatusSelect').val(),
+        date_from: $('#fromDateInput').val(),
+        date_to: $('#toDateInput').val()
       };
 
       // Call your API with the calculated page number
@@ -76,6 +98,7 @@ async function fetchInvoice() {
           return formatMoney(row.total_amount_paid);
         }
       },
+      { data: 'sector' },
       { data: 'date_created' },
       { data: 'due_date' },
       {
@@ -96,6 +119,22 @@ async function fetchInvoice() {
 }
 
 fetchInvoice()
+
+$("#filterDemand").on('click', function () {
+  $("#filterInvoice").modal('hide')
+  fetchInvoice()
+})
+
+function clearfilter3() {
+  $('#sectorSelect').val('')
+  $('#invnumberInput').val('')
+  $('#paymentStatusSelect').val('')
+  $('#fromDateInput').val('')
+  $('#toDateInput').val('')
+
+  $('#filterInvoice').modal('hide')
+  fetchInvoice()
+}
 
 async function fetchAnalytics() {
   try {

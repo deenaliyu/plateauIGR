@@ -11,15 +11,14 @@ document.querySelector('#downloadTemplate').addEventListener('click', () => {
   const headers = [
     'fullname', 'email', 'phone', 'tin', 'annual_gross_income',
     'basic_salary', 'date_employed', 'housing', 'transport',
-    'utility', 'medical', 'entertainment', 'leaves', 'category_id'
+    'others', 'pension', 'nhf', 'nhis', 'Life Premium', 'Voluntary Contribution', 'Percentage if yes', 'is_cons', 'consolidated amount'
   ];
 
-  const categoryId = new URLSearchParams(window.location.search).get('categ_id');
 
   const csvContent = [headers.join(',')];
 
   // Add an empty row for template purposes
-  const emptyRow = headers.map(header => header === 'category_id' ? categoryId : '').join(',');
+  const emptyRow = headers.map(() => '').join(',');
   csvContent.push(emptyRow);
 
   const blob = new Blob([csvContent.join('\n')], { type: 'text/csv' });
@@ -58,9 +57,23 @@ function registerUsersFromCSV(file) {
 
     for (let i = 0; i < users.length; i++) {
       const user = users[i];
+
+      if (user.annual_gross_income === '' && user.basic_salary === '') {
+        failedRegistrations.push({ email: user.email, error: 'Both annual gross income and basic salary are empty' });
+        continue;
+      }
+      if (user.annual_gross_income === '' && user.basic_salary !== '') {
+        user.annual_gross_income = parseFloat(user.basic_salary) * 12;
+      } else if (user.annual_gross_income !== '' && user.basic_salary === '') {
+        user.basic_salary = parseFloat(user.annual_gross_income) / 12;
+      }
+
       const EnumData = {
         endpoint: "createSpecialUserEmployee",
-        data: user
+        data: {
+          category_id: category,
+          ...user
+        }
       };
 
       $("#msg_box").html(`
@@ -109,6 +122,12 @@ function registerUsersFromCSV(file) {
         </div>
       `);
     }
+
+    $("#msg_box").append(`
+      <div class="flex justify-center mt-4">
+        <a class="button" href="./payedetails.html?payerID=${category}">Go Back</a>
+      </div>
+    `)
   };
 
   reader.onerror = () => {

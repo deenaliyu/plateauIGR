@@ -80,25 +80,26 @@ async function getSpecialUsersDash1() {
 
 getSpecialUsersDash1()
 
-// async function getSpecialUsersss() {
+async function fetchPayeUser() {
+  const response = await fetch(`${HOST}/?getSpecialUsers&id=${userInfo.tax_number}`)
+  const specialUsers = await response.json()
 
-//   const response = await fetch(`${HOST}/?getSpecialUsers&id=${userInfo.tax_number}`)
-//   const getDashData = await response.json()
+  $("#loader").css("display", "none")
 
+  if (specialUsers.status === 0) {
 
-//   if (getDashData.status === 0) {
-//     // $('#dataTable').DataTable();
+  } else {
 
-//   } else {
-//     let dashData = getDashData.message[0]
+    let theInfo = specialUsers.message[0]
 
-//     $("#total_remitance").html(formatMoney(dashData.total_remittance))
+    // $("#reg_staff").html(theInfo.staff_quota)
+    $("#total_remitance").html(theInfo.total_remittance ? formatMoney(parseFloat(theInfo.total_remittance)) : formatMoney(0))
 
-//   }
+  }
 
-// }
+}
 
-// getSpecialUsersss()
+fetchPayeUser()
 
 
 
@@ -157,7 +158,12 @@ async function getPaymentHistory() {
             <td>${rhUser.payment_channel}</td>
             <td>${rhUser.timeIn}</td>
             <td><span class="badge bg-success rounded-pill">paid</span></td>
-            <td><a href="../viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="btn btn-primary btn-sm">view receipt</a></td>
+            <td>
+              <div class="flex gap-2">
+                <a href="../viewreceipt.html?invnumber=${rhUser.invoice_number}&load=true" class="button">view receipt</a>
+                <button class="button" onclick="fetchTheStaffs('${rhUser.invoice_number}')">View Staffs</button>
+              </div>
+            </td>
           </tr>
 
       `)
@@ -168,6 +174,94 @@ async function getPaymentHistory() {
 getPaymentHistory().then(tt => {
   $('#dataTable2').DataTable();
 })
+
+async function getInvoiceHistory() {
+
+  const response = await fetch(`${HOST}/?userInvoices&payer_id=${userInfo.tax_number}`)
+  const specialUsers = await response.json()
+
+  $("#loader").css("display", "none")
+
+  if (specialUsers.status === 0) {
+    $('#dataTable3').DataTable();
+
+  } else {
+    specialUsers.message.reverse().forEach((rhUser, i) => {
+
+      $("#invoiceHistoryTable").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>${rhUser.payer_id}</td>
+            <td>${rhUser.invoice_number}</td>
+            <td>${rhUser.COL_4}</td>
+            <td>${rhUser.amount_paid}</td>
+            <td>${rhUser.amount_paid}</td>
+            <td>${rhUser.date_created.split(' ')[0]}</td>
+            <td>${rhUser["due_date"]}</td>
+            <td>${rhUser.status === "paid" ? `<span class='badge bg-success'>Paid</span>` : `<span class='badge bg-danger'>Un-paid</span>`}</td>
+            <td>
+              <div class="flex gap-2">
+                <a href="../viewinvoice.html?invnumber=${rhUser.invoice_number}&load=true" class="button">View</a>
+                <button class="button" onclick="fetchTheStaffs('${rhUser.invoice_number}')">View Staffs</button>
+              </div>
+            </td>
+            
+          </tr>
+
+      `)
+    });
+  }
+}
+
+getInvoiceHistory().then(tt => {
+  $('#dataTable3').DataTable();
+})
+
+async function fetchTheStaffs(invNumber) {
+  $("#invoiceStaffModal").modal('show')
+  $("#staffListInvoices").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `)
+  try {
+    const response = await fetch(`${HOST}/?getStaffInvoices&invoice_number=${invNumber}`)
+    const data = await response.json()
+
+    if (data.status === 0) {
+      $('#staffListInvoices').html(`
+        <tr colspan="9">
+          <td colspan="9"><p class="text-center">No Staff Lists Found</p><td>
+        </tr>  
+      `);
+    } else {
+      $("#staffListInvoices").html("")
+      data.message.staff_details.forEach((rhUser, i) => {
+        $("#staffListInvoices").append(`
+          <tr>
+            <td>${i + 1}</td>
+            <td>${rhUser.payer_id}</td>
+            <td>${rhUser.fullname}</td>
+            <td>${formatMoney(parseFloat(rhUser.annual_gross_income))}</td>
+            <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
+            <td>${rhUser.timeIn}</td>
+          </tr>
+        `)
+      })
+    }
+
+  } catch (error) {
+    console.log(error)
+    $('#staffListInvoices').html(`
+      <tr colspan="9">
+        <td colspan="9"><p class="text-center">No Staff Lists Found</p><td>
+      </tr>  
+    `);
+  }
+}
+
 function getMonthInWordFromDate(dateString) {
   const months = [
     "January", "February", "March", "April", "May", "June",

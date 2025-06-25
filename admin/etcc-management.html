@@ -170,9 +170,22 @@
 
 
               <section class="mt-4 card px-2">
-                <div class="flex justify-end mt-4 mb-2">
+                <div class="flex justify-end gap-3 items-center mt-4 mb-2">
+                  <div class="flex items-center gap-3">
+                    <div class="-mt-5">
+                      <label for="etccFrom">From</label>
+                      <input type="date" class="form-control" id="etccFrom">
+                    </div>
+                    <div class="-mt-5">
+                      <label for="etccTo">To</label>
+                      <input type="date" class="form-control" id="etccTo">
+                    </div>
+                    <button class="button flex items-center gap-3" onclick="applyFilter()">
+                      Apply
+                    </button>
+                  </div>
                   <div class="flex gap-4">
-                    <button class="button flex items-center gap-3">
+                    <button class="button flex items-center gap-3" onclick="exportData()">
                       <iconify-icon icon="humbleicons:download" class="text-xl"></iconify-icon>
                       <span>Download Report</span>
                     </button>
@@ -209,6 +222,13 @@
                       Declined
                     </button>
                   </li>
+
+                  <li class="nav-item text-center" role="presentation" id="all_etcc_one">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#all_etcc" type="button"
+                      role="tab">
+                      All
+                    </button>
+                  </li>
                 </ul>
 
                 <div class="tab-content" id="pills-tabContent">
@@ -221,6 +241,9 @@
                             <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
@@ -251,6 +274,9 @@
                             <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
@@ -274,6 +300,9 @@
                             <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
@@ -296,6 +325,9 @@
                             <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Date Approved</th>
                             <th>Action</th>
@@ -309,6 +341,7 @@
                     </div>
 
                   </div>
+
                   <div class="tab-pane fade declined" id="declined_one" role="tabpanel">
                     <div class="table-responsive">
                       <table class="table payeTable" id="dataTable5">
@@ -317,6 +350,9 @@
                             <th>S/N</th>
                             <th>Date Sent</th>
                             <th>Reference Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Category</th>
                             <th>Status</th>
                             <th>Date Declined</th>
                             <th>Action</th>
@@ -329,6 +365,31 @@
                     </div>
 
                   </div>
+
+                  <div class="tab-pane fade all_etcc_one" id="all_etcc" role="tabpanel">
+                    <div class="table-responsive">
+                      <table class="table payeTable" id="dataTable6">
+                        <thead>
+                          <tr>
+                            <th>S/N</th>
+                            <th>Date Sent</th>
+                            <th>Reference Number</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Date Declined</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="etccTable6">
+
+                        </tbody>
+                      </table>
+                    </div>
+
+                  </div>
+
                 </div>
 
               </section>

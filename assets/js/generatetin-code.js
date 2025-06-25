@@ -171,13 +171,14 @@ async function generateTin(accountType) {
       $("#generateTinBtn").removeClass("hidden")
 
       $("#tinNumber").html(resdata.tin)
-
+      $("#printSlipBtn").attr('href', `./tin-slip.html?tin=${resdata.tin}`)
       if (callbackParam) {
         $("#goHomeBtnCont").html(`
           <a href="${callbackParam}" class="button" id="goHomeBtn">Continue</a> 
         `)
       }
-
+      
+      
       nextPrev(1)
     } else {
       $("#msg_box").html(`<p class="text-warning text-center mt-4 text-lg">${resdata.error}.</p>`)

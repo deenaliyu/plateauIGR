@@ -22,6 +22,16 @@ function continueReg() {
 
 }
 
+function nhisSelect(e) {
+  if (e.checked) {
+    $("#employeeNhis").html(`
+      <input type="number" class="form-control enumInput" data-name="nhis" placeholder="NHIS amount" />
+    `)
+  } else {
+    $("#employeeNhis").html("")
+  }
+}
+
 function registerUser() {
   $("#theButton").addClass("hidden")
   $("#msg_box").html(`
@@ -39,11 +49,18 @@ function registerUser() {
   }
 
   let allInputs = document.querySelectorAll(".enumInput")
+  let allFormInputs = document.querySelectorAll(".form-check-input")
 
   allInputs.forEach((inputt, i) => {
     EnumData.data[inputt.dataset.name] = inputt.value
   })
+
+  allFormInputs.forEach(inpt => {
+    EnumData.data[inpt.value] = inpt.checked ? 'yes' : 'no'
+  })
   // console.log(JSON.stringify(EnumData))
+  console.log(EnumData)
+
 
   async function sendToDB() {
     try {

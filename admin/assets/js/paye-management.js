@@ -31,13 +31,23 @@ async function fetchPayeUsers() {
     dataToExport = theRightUSers
 
     theRightUSers.forEach((rhUser, i) => {
-      let annual = parseFloat(rhUser.monthly_estimate * 12)
-      let monthly = parseFloat(rhUser.monthly_estimate)
+      let annual = parseFloat(rhUser.monthly_estimate * 12) || 0
+      let monthly = parseFloat(rhUser.monthly_estimate) || 0
 
       let htmlData = ""
       let defaultersData = ""
       let currentData = ""
 
+      let theStatus = ""
+      if (rhUser.status === "Defaulter") {
+        theStatus = `<span class="badge bg-danger rounded-pill">Defaulter</span>`
+      } else if (rhUser.status === "Current") {
+        theStatus = `<span class="badge bg-success rounded-pill">Current</span>`
+      } else if (rhUser.status === "Assessed") {
+        theStatus = `<span class="badge bg-info rounded-pill">${rhUser.status}</span>`
+      } else {
+        theStatus = `<span class="badge bg-warning rounded-pill">${rhUser.status}</span>`
+      }
       htmlData = `
         <tr>
           <td>${i + 1}</td>
@@ -49,7 +59,7 @@ async function fetchPayeUsers() {
           <td>${formatMoney(annual)}</td>
           <td>${formatMoney(monthly)}</td>
           <td>${formatMoney(parseFloat(rhUser.total_remittance))}</td>
-          <td>${rhUser.status === 'defaulter' ? '<span class="badge bg-danger rounded-pill">Defaulter</span>' : '<span class="badge bg-success rounded-pill">Current</span>'}</td>
+          <td>${theStatus}</td>
           <td>${rhUser.last_payment ? rhUser.last_payment.split(' ')[0] : '-'}</td>
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>

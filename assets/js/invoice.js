@@ -132,8 +132,8 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
               </tr>
               <tr>
                 <th colspan="4"></th>
-                <th>${demandInvoiceInfo[0].previous_year ? demandInvoiceInfo[0].previous_year : '-'}</th>
                 <th>${demandInvoiceInfo[0].previous_year_2 ? demandInvoiceInfo[0].previous_year_2 : '-'}</th>
+                <th>${demandInvoiceInfo[0].previous_year ? demandInvoiceInfo[0].previous_year : '-'}</th> 
                 <th>${demandInvoiceInfo[0].date_created.split('-')[0]}</th>
               </tr>
             </thead>
@@ -148,8 +148,8 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
             <td class='text-xs'>${demandnot.COL_4}</td>
             <td class='text-xs'>${formatMoney(amountPayable)}</td>
             <td class='text-xs'>${demandnot.COL_3}</td>
-            <td class='text-xs'>${demandnot.previous_year_value ? parseFloat(demandnot.previous_year_value).toFixed(2) : 'Nil'}</td>
             <td class='text-xs'>${demandnot.previous_year_value_2 ? parseFloat(demandnot.previous_year_value_2).toFixed(2) : 'Nil'}</td>
+            <td class='text-xs'>${demandnot.previous_year_value ? parseFloat(demandnot.previous_year_value).toFixed(2) : 'Nil'}</td>    
             <td class='text-xs'>${demandnot.amount_paid}</td>
           </tr>
         `
@@ -474,7 +474,7 @@ async function openInvoice(invoicenum, price) {
 
 
       $("#invoiceCard").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED DEMAND NOTICE", normalDate, textDemand))
-      $("#assessmentDemandNotice").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED NOTICE OF ASSESSMENT", add30Days(normalDate), textAssessment))
+      $("#assessmentDemandNotice").html(displayDemandNotice(demandInvoiceInfo, "CONSOLIDATED NOTICE OF ASSESSMENT", normalDate, textAssessment))
       $("#auditLetter").html(displayAuditLetter(demandInvoiceInfo))
       $("#invoiceCardSecond").html(TotalInvoice)
 

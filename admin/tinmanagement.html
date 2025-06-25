@@ -37,6 +37,9 @@
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
   <script src="./assets/vendor/js/helpers.js"></script>
   <script src="./assets/js/config.js"></script>
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+  <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
 </head>
 
 <body class="taxpayer">
@@ -414,8 +417,7 @@
         </div>
 
         <div class="modal-footer ">
-          <button type="button" class="btn btn-prime w-full" id="editTinModule"
-            onclick="editTinModule()">Edit</button>
+          <button type="button" class="btn btn-prime w-full" id="editTinModule" onclick="editTinModule()">Edit</button>
           <div id="msg_boxeredit"></div>
         </div>
       </div>
@@ -464,7 +466,7 @@
             <div class="col mb-3">
               <label for="defaultSelect" class="form-label">Industry</label>
               <div class="form-group">
-                <select name="" id="industrySelect2"  class="form-select payInputs" data-name="industry">
+                <select name="" id="industrySelect2" class="form-select payInputs" data-name="industry">
                   <option value="">All ---</option>
                 </select>
               </div>
@@ -519,6 +521,14 @@
 
 
             <h1 class="text-center text-2xl mb-4">User Data</h1>
+            <div class="flex justify-center items-center mb-3">
+              <div>
+                <img src="./assets/img/logo.png" alt="">
+              </div>
+              <div>
+                <img src="./assets/img/psirs.png" width="80" alt="">
+              </div>
+            </div>
             <table class="table" id="userDataID">
 
             </table>
@@ -527,9 +537,9 @@
         </div>
 
         <div class="modal-footer">
-          <div class="flex justify-center mt-5">
-            <button class="button" onclick="printSlip('userDataTabView')">Print</button>
-          </div>
+          <button class="button" onclick="downloadSlip('userDataTabView')">Download</button>
+          <button class="button" onclick="printSlip('userDataTabView')">Print</button>
+
         </div>
 
       </div>

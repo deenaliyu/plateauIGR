@@ -140,7 +140,7 @@
                     </div>
 
                     <div class="dashCards card w-full flex-col space-y-2  ">
-                      <p class="text-gray-500 impMetrics text-xs">TOTAL REMITTANCE</p>
+                      <p class="text-gray-500 impMetrics text-xs">TOTAL REMITANCE</p>
 
                       <p class="zanumbers" style="margin-top: 30px;">
                         <span id="month_remm">-</span>
@@ -157,7 +157,7 @@
               <section class="mt-4 card px-2">
                 <div class="flex justify-end mt-4">
                   <div class="flex gap-4">
-                    <button class="button rounded-md flex items-center gap-3">
+                    <button class="button rounded-md flex items-center gap-3" onclick="exportData()">
                       <iconify-icon icon="humbleicons:download" class="text-xl"></iconify-icon>
                       <span>Download Report</span>
                     </button>
@@ -165,12 +165,19 @@
                   </div>
                 </div>
 
-                <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-2 border-b -mt-10" id="pills-tab" role="tablist">
+                <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-2 border-b" id="pills-tab" role="tablist">
 
                   <li class="nav-item text-center" role="presentation">
                     <button class="nav-link active" data-bs-toggle="pill" data-bs-target="#stafflist" type="button"
                       role="tab">
                       Staff List
+                    </button>
+                  </li>
+
+                  <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link" data-bs-toggle="pill" data-bs-target="#invoiceHistory" type="button"
+                      role="tab">
+                      Invoices
                     </button>
                   </li>
 
@@ -187,10 +194,19 @@
                 <div class="tab-content" id="pills-tabContent">
                   <div class="tab-pane fade show active" id="stafflist" role="tabpanel">
 
+                    <div class="mb-4">
+                      <button class="button mt-3" type="button" id="generating_inv">Generate Invoice</button>
+                      <div id="msg_box2"></div>
+                    </div>
+
                     <div class="table-responsive">
                       <table class="table payeTable" id="dataTable">
                         <thead>
                           <tr>
+                            <th>
+                              <input class="form-check-input selAll" type="checkbox" value=""
+                                onchange="selectAll(this)">
+                            </th>
                             <th></th>
                             <th>TIN</th>
                             <th>Name</th>
@@ -214,6 +230,34 @@
 
                     <div class="flex justify-center items-center mt-4" id="loader">
                       <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                    </div>
+
+                  </div>
+
+                  <div class="tab-pane fade" id="invoiceHistory" role="tabpanel">
+
+                    <div class="table-responsive">
+                      <table class="table payeTable" id="dataTable3">
+                        <thead>
+                          <tr>
+                            <th></th>
+                            <th>Payer ID</th>
+                            <th>Invoice No.</th>
+                            <th>Revenue Head</th>
+                            <th>Invoice Amount</th>
+                            <th>Amount paid</th>
+                            <th>Invoice date</th>
+                            <th>Due date</th>
+                            <th>status</th>
+                            <th></th>
+                          </tr>
+                        </thead>
+                        <tbody id="invoiceHistoryTable">
+
+
+
+                        </tbody>
+                      </table>
                     </div>
 
                   </div>
@@ -432,6 +476,42 @@
               <div id="msg_box"></div>
 
             </form>
+          </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="invoiceStaffModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable" role="document">
+        <div class="modal-content">
+          <div class="modal-header ">
+            <h5 class="modal-title" id="exampleModalCenterTitle">List of Staffs</h5>
+
+            <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+              aria-label="Close"><iconify-icon icon="fa6-solid:x"></iconify-icon></button>
+          </div>
+          <div class="modal-body">
+            <div class="table-responsive">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th>TIN</th>
+                    <th>Name</th>
+                    <th>Annual Gross Income</th>
+                    <th>Basic Salary</th>
+                    <th>Annual Tax Payable</th>
+                    <th>Monthly Tax Payable</th>
+                    <th>Date Added</th>
+                  </tr>
+                </thead>
+                <tbody id="staffListInvoices">
+
+                </tbody>
+              </table>
+            </div>
+
           </div>
 
         </div>

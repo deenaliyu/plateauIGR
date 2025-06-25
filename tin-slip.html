@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlateauIGR</title>
+
+  <!-- FAVION ICON -->
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <link rel="stylesheet" href="assets/css/responsive.css" />
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="assets/js/aos-master/dist/aos.css" />
+
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+  <script type="text/javascript" src="https://html2canvas.hertzen.com/dist/html2canvas.js"></script>
+
+
+  <style>
+    .formTabs {
+      display: none;
+    }
+
+    .invTa tr td {
+      padding-left: 0;
+      padding-bottom: 0px;
+      font-size: 14px;
+    }
+
+    .imgTabs {
+      display: none;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="flex justify-between px-10 bg-white py-3" id="theHeader"></header>
+
+  <div class="md:pt-14 pt-5 md:px-10 px-4" id="thePay">
+
+  </div>
+
+  <div class="invoiceContainer flex justify-center items-center pt-20">
+
+    <div class="invoice bg-white md:w-[80%] w-[90%] shadow-md md:-mt-12 mt-2" id="invoiceCard">
+      <!-- COMING FROM JS invoice.js -->
+      <div class="flex justify-center items-center mt-4">
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+      </div>
+    </div>
+
+    
+  </div>
+  <div class="flex justify-center gap-2 mt-5">
+    <button class="outline-btn" onclick="downloadSlip('invoiceCard')">
+      <span class="flex items-center gap-2">
+        <iconify-icon icon="eva:download-outline"></iconify-icon>
+        Download
+      </span>
+    </button>
+    <button class="button" onclick="printSlip('invoiceCard')">
+      <span class="flex items-center gap-2">
+        <iconify-icon icon="eva:printer-outline"></iconify-icon>
+        Print
+      </span>
+    </button>
+  </div>
+
+
+
+
+  <script src="assets/js/jquery.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="assets/js/aos-master/dist/aos.js"></script>
+  <script src="assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/tin-slip.js"></script>
+</body>
+
+</html>

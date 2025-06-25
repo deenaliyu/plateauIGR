@@ -14,12 +14,14 @@ async function getTaxPayers() {
           <tr>
             <td>${i + 1}</td>
             <td>${txpayer.tax_number}</td>
-            <td>${txpayer.first_name} ${txpayer.last_name}</td>
-            <td>${txpayer.account_type}</td>
-            <td>${txpayer.timeIn.split(" ")[0]}</td>
+            <td>${txpayer.first_name} ${txpayer.surname}</td>
+            <td>${txpayer.email}</td>
+            <td>${txpayer.phone}</td>
+            <td>${txpayer.category}</td>
             <td>${txpayer.timeIn.split(" ")[0]}</td>
             <td><span class="badge bg-success">verified</span></td>
             <td><span class="badge bg-danger">unverified</span></td>
+            <td><a class="btn btn-primary btn-sm" href="taxpayerlist.html?id=${txpayer.tax_number}">View</a></td>
           </tr>
         `)
       });

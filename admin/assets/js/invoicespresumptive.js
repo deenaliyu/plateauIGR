@@ -1,3 +1,5 @@
+let dataToExport;
+
 function formatMoney(amount) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
@@ -36,6 +38,7 @@ async function fetchInvoice() {
         type: 'GET',
         data: filters,
         success: function (response) {
+          dataToExport = response.data
           // Map the API response to DataTables expected format
           callback({
             draw: data.draw, // Pass through draw counter
@@ -127,3 +130,31 @@ async function fetchAnalytics() {
 }
 
 fetchAnalytics()
+
+function exportData() {
+  // console.log(dataToExport)
+  const csvRows = [];
+
+  // Extract headers (keys) excluding 'id'
+  const headers = Object.keys(dataToExport[0]).filter((key) => key !== "id");
+  csvRows.push(headers.join(",")); // Join headers with commas
+
+  // Loop through the data to create CSV rows
+  for (const row of dataToExport) {
+    const values = headers.map((header) => {
+      const value = row[header];
+      return `"${value}"`; // Escape values with quotes
+    });
+    csvRows.push(values.join(","));
+  }
+
+  // Combine all rows into a single string
+  const csvString = csvRows.join("\n");
+
+  // Export to a downloadable file
+  const blob = new Blob([csvString], { type: "text/csv" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = "presumptive_reports.csv";
+  a.click();
+}

@@ -1,9 +1,124 @@
-let USERINFO2 = JSON.parse(window.localStorage.getItem("enumDataPrime"));
 let theIDD
+
+const urlParams = new URLSearchParams(window.location.search);
+
+let myParam = urlParams.get('category');
+let userTypo = urlParams.get('user');
+
+if (myParam == "individual") {
+  myParam = 2;
+} else if (myParam == "corporate") {
+  myParam = 1;
+} else if (myParam == "state") {
+  myParam = 3;
+} else {
+  myParam = 4;
+}
+
+// Camera variables
+let stream = null;
+const video = document.getElementById('video');
+const imagePreview = document.getElementById('imagePreview');
+const imageUrlInput = document.getElementById('imageUrl');
+
+// Open camera
+function openCamera() {
+  const cameraModal = document.getElementById('cameraModal');
+  cameraModal.classList.remove('hidden');
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (mediaStream) {
+      stream = mediaStream;
+      video.srcObject = stream;
+    })
+    .catch(function (err) {
+      console.error("Error accessing camera: ", err);
+      alert("Could not access the camera. Please check permissions.");
+    });
+}
+
+// Close camera
+function closeCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+  document.getElementById('cameraModal').classList.add('hidden');
+}
+
+// Capture photo from camera
+function capturePhoto() {
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  canvas.toBlob(async function (blob) {
+    try {
+      await uploadImageToPublitio(blob);
+    } catch (error) {
+      alert(error.message);
+    }
+  }, 'image/jpeg', 0.95);
+
+  closeCamera();
+}
+
+// Handle file upload
+async function handleFileUpload(files) {
+  if (files && files[0]) {
+    if (files[0].size > 5 * 1024 * 1024) { // 5MB limit
+      alert('Image size should be less than 5MB');
+      return;
+    }
+
+    try {
+      await uploadImageToPublitio(files[0]);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+}
+
+// Upload to Publitio
+const publitio = new PublitioAPI(publitioKey1, publitioKey2);
+
+async function uploadImageToPublitio(file) {
+  // Show loading state
+  imagePreview.src = 'https://i.gifer.com/ZZ5H.gif'; // Online loading GIF
+  $("#uploaderContinua").prop("disabled", true)
+
+  try {
+    // Upload using SDK
+    const uploadResponse = await publitio.uploadFile(file, 'file', {
+      folder: 'taxpayer_profiles',
+      public_id: 'profile_' + Date.now(),
+      title: 'Profile Picture'
+    });
+
+    // Update preview and hidden input
+    imagePreview.src = uploadResponse.url_preview;
+    imageUrlInput.value = uploadResponse.url_preview;
+
+    $("#uploaderContinua").prop("disabled", false)
+    return uploadResponse.url_preview;
+  } catch (error) {
+    $("#uploaderContinua").prop("disabled", false)
+    console.error('Upload error:', error);
+    imagePreview.src = 'assets/img/userprofile.png';
+    throw new Error('Failed to upload image: ' + error.message);
+  }
+}
 
 function continueReg() {
   let allInputs = document.querySelectorAll(".enumInput")
 
+  let tin = document.querySelector("#tin")
+
+  if (tin.value === "") {
+    $("#popUpModal").modal("show")
+    return;
+  }
 
   // check for empty fileds
 
@@ -32,20 +147,30 @@ function continueReg2() {
 
 
   // check for empty fileds
+  let phonenumber = document.querySelector("#phonenumber")
 
-  for (let i = 0; i < allInputs.length; i++) {
-    const inpt = allInputs[i];
+  if (phonenumber.value.length !== 11) {
 
-    if (inpt.required && inpt.value === "") {
-      alert("Please fill all required fields")
-      inpt.scrollIntoView()
-      break;
-    }
+    alert("phone number must be equals to 11 digits")
 
-    if (i === allInputs.length - 1) {
-      nextPrev(1)
+  } else {
+    for (let i = 0; i < allInputs.length; i++) {
+      const inpt = allInputs[i];
+
+      if (inpt.required && inpt.value === "") {
+        alert("Please fill all required fields")
+        inpt.scrollIntoView()
+        break;
+      }
+
+      if (i === allInputs.length - 1) {
+
+        nextPrev(1)
+      }
     }
   }
+
+
 }
 
 function continueReg3() {
@@ -114,22 +239,35 @@ function registerUser() {
       </div>
     `)
 
+
   let EnumData = {
-    "endpoint": "createEnumTaxPayer",
-    "data": [
-      {
-        "category": "corporate",
-        "business_type": "",
-        "staff_quota": "",
-        "revenue_return": "",
-        "valuation": ""
-      },
-      {
-        "account_type": "2",
-        "by_account": USERINFO2.id
-      }
-    ]
+    "endpoint": "createPayerAccount",
+    "data": {
+      "img": imageUrlInput.value || "assets/img/userprofile.png",
+      "business_type": "",
+      "annual_revenue": "",
+      "value_business": "",
+      "numberofstaff": "",
+      "password": "",
+      "rep_firstname": "",
+      "rep_surname": "",
+      "rep_email": "",
+      "rep_phone": "",
+      "rep_position": "",
+      "rep_state": "",
+      "rep_state": "",
+      "rep_lga": "",
+      "rep_address": "",
+      "enumlatitude": $("#latitudeInput").val(),
+      "enumlongitude": $("#longitudeInput").val(),
+      "category": myParam,
+      "industry": "",
+      "business_own": "2",
+      "created_by": "enumerator",
+      "by_account": userInfo2?.id
+    }
   }
+
 
   let allInputs = document.querySelectorAll(".enumInput")
   let allInputs2 = document.querySelectorAll(".enumInput2")
@@ -137,12 +275,12 @@ function registerUser() {
   let businessNums = document.querySelectorAll(".businessNums")
 
   allInputs.forEach((inputt, i) => {
-    EnumData.data[0][inputt.dataset.name] = inputt.value
+    EnumData.data[inputt.dataset.name] = inputt.value
   })
 
 
   allInputs2.forEach((inputt, i) => {
-    EnumData.data[1][inputt.dataset.name] = inputt.value
+    EnumData.data[inputt.dataset.name] = inputt.value
   })
 
   businessNums.forEach((busines, ii) => {
@@ -152,42 +290,24 @@ function registerUser() {
 
       if (ii === businessNums.length - 1) {
 
-        EnumData.data[0][inputt.dataset.name] += inputt.value
+        EnumData.data[inputt.dataset.name] += inputt.value
       } else {
-        EnumData.data[0][inputt.dataset.name] += inputt.value + `~`
+        EnumData.data[inputt.dataset.name] += inputt.value + `~`
       }
 
     })
 
   })
 
-  // console.log(EnumData)
+  console.log(EnumData)
 
-  const publitio = new PublitioAPI('ksWdvJ3JjfV5JZnHyRqv', 'ruxLmts4NiupnoddqVi1Z70tnoMmf5yT')
-  let theImageSrc = document.querySelector("#theImageThing").src
-  let fileInput = document.querySelector(".imgUpl")
 
-  if (fileInput.value === "") {
-    EnumData.data[0]["img"] = theImageSrc
-    sendToDB()
 
-  } else {
-    let fileUrl = fileInput.files[0]
-    const reader = new FileReader()
-    reader.readAsBinaryString(fileUrl);
 
-    publitio.uploadFile(fileUrl, 'file', {
-      title: `ENUMTAXPAYER - ${EnumData.data[0].first_name} ${EnumData.data[0].last_name}`,
-      public_id: `${EnumData.data[0].email}`,
 
-    }).then((data) => {
-      EnumData.data[0]["img"] = data.url_preview
-      // console.log(data.url_preview)
-      sendToDB()
-    }).catch((error) => {
-      sendToDB()
-    })
-  }
+
+
+  // sendToDB()
 
   async function sendToDB() {
     try {
@@ -200,18 +320,44 @@ function registerUser() {
       })
       const data = await response.json()
 
-      if (data.status === 1) {
-        // $("#theButton").addClass("hidden")
-        if (data.id) {
-          theIDD = data.id
-        }
-        nextPrev(1)
-      } else {
-        $("#theButton").removeClass("hidden")
+      if (data.status === 2) {
         $("#msg_box").html(`
-          <p class="text-warning text-center text-lg">${data.message}</p>
+          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
         `)
+        $("#theButton").removeClass("hidden")
+
+      } else {
+        $("#msg_box").html(`
+           <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+          `)
+
+        Swal.fire({
+          icon: 'success',
+          title: 'Success',
+          text: 'Account successfully created!',
+          showConfirmButton: true,
+          confirmButtonText: 'Go to Taxpayers',
+          allowOutsideClick: false
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.location.href = `taxpayer.html`;
+          }
+        });
+
       }
+
+      // if (data.status === 1) {
+      //   // $("#theButton").addClass("hidden")
+      //   if (data.id) {
+      //     theIDD = data.id
+      //   }
+      //   nextPrev(1)
+      // } else {
+      //   $("#theButton").removeClass("hidden")
+      //   $("#msg_box").html(`
+      //     <p class="text-warning text-center text-lg">${data.message}</p>
+      //   `)
+      // }
 
 
     } catch (error) {
@@ -222,7 +368,7 @@ function registerUser() {
         `)
     }
   }
-  // sendToDB()
+  sendToDB()
 }
 
 function generateRandomString() {
@@ -432,6 +578,14 @@ async function fetchBusiness() {
           <option value="${busness.business_type}">${busness.business_type}</option>
         `)
       })
+
+      businessTypes += `
+          <option value="others">Others</option>
+        `
+
+      $("#busiType").append(`
+          <option value="others">Others</option>
+        `)
     }
 
   } catch (error) {
@@ -454,7 +608,7 @@ function addBusiness() {
 
         <div class="form-group md:w-6/12">
           <label for="">Type of Business*</label>
-          <select class="form-select enumInputB" id="busiType" data-name="business_type" required>
+          <select class="form-select enumInputB" id="busiType" data-name="business_type" onchange="selectBusiness(this)" required>
             ${businessTypes}
           </select>
         </div>
@@ -506,4 +660,9 @@ function deleteBusiness(e) {
   let parentss = e.parentElement.parentElement
   parentss.remove()
 
+}
+
+function selectBusiness(e) {
+  let value = e.target.value
+  console.log(value)
 }

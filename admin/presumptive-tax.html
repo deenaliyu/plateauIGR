@@ -101,7 +101,7 @@
           <div class="container-xxl flex-grow-1 container-p-y taxes">
             <p class="font-bold text-2xl text-black">Presumptive Tax Report</p>
             <div class="flex justify-content-end mt-3">
-              <a class="button" href="../generatepresumptiveinvoice.html">Generate Presumptive Tax </a>
+              <a class="button" href="../generatepresumptiveinvoice.html" target="_blank">Generate Presumptive Tax </a>
             </div>
             <div class="grid grid-cols-3 gap-3 mt-2" id="cardsForSummaray">
 
@@ -131,7 +131,7 @@
 
             </div>
 
-            <div class="card py-4 mt-6"> 
+            <div class="card py-4 mt-6">
               <div class="table-responsive p-2">
                 <table class="table invoiceTable" id="dataTable">
                   <thead>
@@ -154,34 +154,34 @@
 
                   </tbody>
                 </table>
-                
-                
+
+
               </div>
-              
+
             </div>
 
           </div>
-          
-            <table class="table invoiceTable hidden" id="invoiceTableFull">
-              <thead>
-                <tr class="text-center">
-                  <th></th>
-                  <th>Payer ID</th>
-                  <th>MDA</th>
-                  <th>Revenue Head</th>
-                  <th>Name</th>
-                  <th>Office</th> 
-                  <th>Invoice Number</th>
-                  <th>Amount</th>
-                  <th>Date Created</th>
-                  <th>Due Date</th>
-                  <th>Payment Status</th>
-                </tr>
-              </thead>
-              <tbody class="table-border-bottom-0" id="showThem2">
 
-              </tbody>
-            </table>
+          <table class="table invoiceTable hidden" id="invoiceTableFull">
+            <thead>
+              <tr class="text-center">
+                <th></th>
+                <th>Payer ID</th>
+                <th>MDA</th>
+                <th>Revenue Head</th>
+                <th>Name</th>
+                <th>Office</th>
+                <th>Invoice Number</th>
+                <th>Amount</th>
+                <th>Date Created</th>
+                <th>Due Date</th>
+                <th>Payment Status</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0" id="showThem2">
+
+            </tbody>
+          </table>
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">
 
           </section>
@@ -276,45 +276,7 @@
     let theAtivo = document.querySelector(".presump")
     theAtivo.parentElement.classList.add("active")
   </script>
-  <script>
 
-    function exportData() {
-      var csv = [];
-      var table = document.getElementById("invoiceTableFull");
-
-      // Add header to CSV
-      var header = [];
-      for (var h = 0; h < table.rows[0].cells.length; h++) {
-        header.push(table.rows[0].cells[h].innerText);
-      }
-      csv.push(header.join(','));
-
-      // Add rows to CSV
-      for (var i = 1; i < table.rows.length; i++) {
-        var row = [], cols = table.rows[i].querySelectorAll('td, th');
-
-        for (var j = 0; j < cols.length; j++) {
-          row.push(cols[j].innerText);
-        }
-
-        csv.push(row.join(','));
-      }
-
-      // Download CSV file
-      var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'invoice_report');
-      document.body.appendChild(link);
-      link.click();
-    }
-
-  </script>
-
-
-
-  </script>
   <!-- <script src="./assets/js/session.js"></script> -->
   <script src="./assets/vendor/js/menu.js"></script>
   <!-- endbuild -->
@@ -346,5 +308,3 @@
 </body>
 
 </html>
-
-
