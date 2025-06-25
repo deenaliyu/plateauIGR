@@ -172,7 +172,7 @@
 
                       <div class="row gy-4 mt-4">
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                           <div class="card card-body">
                             <div class="card-title text-[#000]">TOTAL TAXPAYER ENUMERATED</div>
                             <p class="text-sm text-gray-400 -mt-4">By taxpayer category</p>
@@ -209,9 +209,9 @@
 
 
                           </div>
-                        </div>
+                        </div> -->
 
-                        <div class="col-md-6">
+                        <!-- <div class="col-md-6">
                           <div class="card card-body">
                             <div class="card-title text-[#000]">TOTAL TAXPAYER ENUMERATED</div>
                             <p class="text-sm text-gray-400 -mt-4">By tax category</p>
@@ -247,14 +247,14 @@
                             </div>
 
                           </div>
-                        </div>
+                        </div> -->
 
                         <div class="col-md-6">
                           <div class="card card-body">
                             <div class="card-title text-[#000]">TOTAL TAXPAYERS REGISTERED (BY FIELD AGENTS)</div>
 
                             <div class="theChart">
-                              <canvas id="totalTaxPayer"></canvas>
+                              <canvas id="taxpayerCategoryChart"></canvas>
                             </div>
 
                           </div>
@@ -265,7 +265,7 @@
                             <div class="card-title text-[#000]">TOTAL TAXPAYER ENUMERATED BY BUSINESS TYPE</div>
 
                             <div class="theChart">
-                              <canvas id="totalRegis"></canvas>
+                              <canvas id="businessTypeChart"></canvas>
                             </div>
 
                           </div>
@@ -287,10 +287,11 @@
                         <th>S/N</th>
                         <th>Agent ID</th>
                         <th>Agent Name</th>
-                        <th>Contact</th>
+                        <th>Email</th>
+                         <th>Phone</th>
                         <th>No of Taxpayers Registered</th>
                         <th>Manage</th>
-                        <th></th>
+                        <th>Action</th>
                       </thead>
                       <tbody class="table-border-bottom-0" id="showEnumerators">
 
@@ -331,7 +332,7 @@
   <script src="./assets/vendor/libs/echarts/echarts.js"></script>
   <script src="./assets/js/jquery.datatables.min.js"></script>
   <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
-  <script src="./assets/vendor/libs/chartjs/dist/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>

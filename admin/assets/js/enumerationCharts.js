@@ -5,6 +5,7 @@ async function getEnumerators() {
   try {
     const response = await fetch(`${HOST}?getEnumUser`)
     const data = await response.json()
+    console.log(data)
 
     $("#totalField").html(data.message.length)
     if (data.status === 1) {
@@ -18,24 +19,15 @@ async function getEnumerators() {
             <td>${i + 1}</td>
             <td>${txpayer.agent_id}</td>
             <td>${txpayer.fullname}</td>
+            <td>${txpayer.email}</td>
             <td>${txpayer.phone}</td>
-            <td>0</td>
+            <td>${txpayer.taxpayer_count}</td>
             <td id="enumEdit">
-        `
-        aaa += `
-            <div class="flex items-center gap-3 updtFF">
-
-            <a href="viewagent.html"><iconify-icon icon="material-symbols:edit-square-outline"
-                style="font-size: 20px;"></iconify-icon></a>
-          </div>
-          `
-
-        aaa += `     
+                <div class="flex items-center gap-3 updtFF">
+                    <a href="viewagent.html?id=${txpayer.id}"><iconify-icon icon="material-symbols:edit-square-outline" style="font-size: 20px;"></iconify-icon></a>
+                </div>   
             </td>
-            <td>
-            ${theInfo.enumeration_access === "full" ? `<a href="manageagent.html" class="btn btn-primary btn-sm">View</a>` : ''}
-              
-            </td>
+            <td><a href="manageagent.html?id=${txpayer.id}" class="btn btn-primary btn-sm">View</a></td>
           </tr>
         `
 
@@ -61,13 +53,13 @@ async function fetchMDAs() {
 
   const response = await fetch(`${HOST}/?getEnumCount`)
   const MDAs = await response.json()
-// console.log(MDAs.message[0].total)
+  // console.log(MDAs.message[0].total)
   $("#totalField").html(MDAs.message[0].total)
 
 
 }
 
-fetchMDAs() 
+fetchMDAs()
 
 
 function calculatePercentage(number, total) {
@@ -78,392 +70,173 @@ function calculatePercentage(number, total) {
 
   return (number / total) * 100;
 }
-async function getEnumerationCategoryDashboard() {
+
+
+
+async function loadDashboardData() {
   try {
-    const response = await fetch(`${HOST}?getEnumerationCategoryDashboard`)
-    const data = await response.json()
+    const response = await fetch(`${HOST}?getEnumerationCategoryDashboard`);
+    const data = await response.json();
 
-    // TOTAL TAXPAYER ENUMERATED
+    // 1. Display totals
+    document.getElementById('theTotal').textContent = data.total_taxpayers[0].total;
+    document.getElementById('totalField').textContent = data.total_enumerators[0].total;
 
-    let tt = 0
-    data[0].forEach((guage, i) => {
-      tt += parseInt(guage.count)
-    })
-    $("#theTotal").html(tt)
-    $("#total1").html(tt)
-    data[0].forEach((guage, i) => {
-      if (guage.tax_category !== null) {
-        GuageChart(guage.count, guage.tax_category)
-        document.querySelectorAll(".countss")[i].textContent = guage.count
-        document.querySelectorAll(".percent")[i].textContent = calculatePercentage(parseInt(guage.count), tt) + "%"
-      }
+    // 2. Prepare business type data
+    const businessData = data.taxpayers_by_business
+      .filter(item => item.business_type && item.business_type !== "" && item.business_type !== "null")
+      .reduce((acc, item) => {
+        const key = item.business_type.trim();
+        acc[key] = (acc[key] || 0) + parseInt(item.count);
+        return acc;
+      }, {});
 
-    })
+    const businessLabels = Object.keys(businessData);
+    const businessValues = Object.values(businessData);
 
-    // TOTAL TAXPAYER ENUMERATED
+    // 3. Create business type chart (top 10)
+    const top10 = businessLabels
+      .map((label, i) => ({label, value: businessValues[i]}))
+      .sort((a,b) => b.value - a.value)
+      .slice(0,10);
 
-    let obj = {
-      "Formal": "formalTax",
-      "Informal": "inFormaltax",
-      "Presumptive tax": "PresumptiveTax"
-    }
+    pieCharts(
+      top10.map(item => item.label),
+      "Top 10 Business Types",
+      top10.map(item => item.value),
+      "businessTypeChart"
+    );
 
-    let tt2 = 0
-    data[3].forEach((guage, i) => {
-      tt2 += parseInt(guage.number)
-    })
-    $("#total2").html(tt2)
-    data[3].forEach((guage, i) => {
-      if (guage.category !== null) {
-        GuageChart(guage.number, obj[guage.category])
-        document.querySelectorAll(".countss2")[i].textContent = guage.number
-        document.querySelectorAll(".percent2")[i].textContent = parseInt(calculatePercentage(parseInt(guage.number), tt2)) + "%"
-      }
+    // 4. Create taxpayer category chart
+    const categoryData = data.taxpayers_by_business.reduce((acc, item) => {
+      acc[item.category] = (acc[item.category] || 0) + parseInt(item.count);
+      return acc;
+    }, {});
 
-    })
-
-    // TOTAL TAXPAYERS REGISTERED (BY FIELD AGENTS)
-    let labelss = []
-    let numberrs = []
-    data[1].forEach(dta => {
-      labelss.push(dta.by_account)
-      numberrs.push(parseInt(dta.count))
-    })
-
-    // console.log(labelss)
-    pieCharts(labelss, "TOTAL TAXPAYERS REGISTERED (BY FIELD AGENTS)", numberrs, "totalTaxPayer")
-
-    // TOTAL TAXPAYER ENUMERATED BY BUSINESS TYPE
-    let labelss2 = []
-    let numberrs2 = []
-    data[2].forEach(dta => {
-      if (dta.business_type !== "") {
-        labelss2.push(dta.business_type)
-        numberrs2.push(parseInt(dta.count))
-      }
-
-    })
-    pieCharts(labelss2, "TOTAL TAXPAYER ENUMERATED BY BUSINESS TYPE", numberrs2, "totalRegis")
+    pieCharts(
+      Object.keys(categoryData).map(k => k.charAt(0).toUpperCase() + k.slice(1)),
+      "Taxpayers by Category",
+      Object.values(categoryData),
+      "taxpayerCategoryChart"
+    );
 
   } catch (error) {
-    console.log(error)
+    console.error("Dashboard error:", error);
+    alert("Failed to load dashboard data");
   }
 }
 
-getEnumerationCategoryDashboard()
-// ENUMERATIONNN
-var months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+// Initialize when page loads
+document.addEventListener('DOMContentLoaded', loadDashboardData);
 
-// TOTAL TAXPAYERS REGISTERED (BY FIELD AGENTS)
+
 function pieCharts(labels, title, theData, theId) {
-  const ctx = document.getElementById(theId).getContext('2d');
-  const chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'pie',
+  // Check if the element exists
+  const element = document.getElementById(theId);
+  if (!element) {
+    console.error(`Element with ID ${theId} not found`);
+    return;
+  }
 
-    // The data for our dataset
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: title,
-          backgroundColor: ['#CDA545', '#EA4335', '#63B967', '#3A37D0', '#7AD0C7', '#242424'],
-          data: theData
-        }
-      ]
-    },
+  // Destroy previous chart instance if it exists
+  if (element.chart) {
+    element.chart.destroy();
+  }
 
-    // Configuration options go here
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: "right",
-          align: "middle"
-        }
-      }
+  const ctx = element.getContext('2d');
+  
+  // Generate distinct colors for each segment
+  const generateColors = (count) => {
+    const colors = [];
+    const baseColors = [
+      '#CDA545', '#EA4335', '#63B967', '#3A37D0', 
+      '#7AD0C7', '#242424', '#FF9F40', '#4BC0C0',
+      '#9966FF', '#FF6384', '#36A2EB', '#FFCE56'
+    ];
+    
+    for (let i = 0; i < count; i++) {
+      colors.push(baseColors[i % baseColors.length]);
     }
-  });
-
-}
-
-// pieCharts(["Commercial", "Education", "Pool Betting", "Hospitality", "Retail", "Legal"], "TOTAL TAXPAYER ENUMERATED BY BUSINESS TYPE", [100, 130, 120, 70, 200, 230], "totalRegis")
-
-function GuageChart(valuee, theId) {
-  var chartDom = document.getElementById(theId);
-  var myChart = echarts.init(chartDom);
-  var option;
-
-  option = {
-    series: [
-      {
-        type: 'gauge',
-        progress: {
-          show: true,
-          width: 5
-        },
-        axisLine: {
-          // show: false,
-          lineStyle: {
-            width: 5
-          }
-        },
-        axisTick: {
-          show: false
-        },
-        splitLine: {
-          show: false
-        },
-        axisLabel: {
-          show: false
-        },
-        anchor: {
-          show: false,
-        },
-        title: {
-          show: false
-        },
-        detail: {
-          show: false,
-        },
-        pointer: {
-          show: false
-        },
-        data: [
-          {
-            value: valuee
-          }
-        ]
-      }
-    ]
+    return colors;
   };
 
-  option && myChart.setOption(option);
-}
-
-// GuageChart(70, "individual")
-// GuageChart(20, "corporate")
-// GuageChart(10, "properties")
-
-// GuageChart(70, "formalTax")
-// GuageChart(20, "inFormaltax")
-// GuageChart(10, "PresumptiveTax")
-
-
-function barCharts(labels, title, theData, theId) {
-  const ctx = document.getElementById(theId).getContext('2d');
-  const chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'bar',
-
-    // The data for our dataset
+  // Create the chart
+  element.chart = new Chart(ctx, {
+    type: 'pie',
     data: {
       labels: labels,
-      datasets: [
-        {
-          label: title,
-          backgroundColor: ['#3A37D0'],
-          data: theData
-        }
-      ]
+      datasets: [{
+        label: title,
+        backgroundColor: generateColors(labels.length),
+        borderColor: '#fff',
+        borderWidth: 1,
+        data: theData
+      }]
     },
-
-    // Configuration options go here
     options: {
-      scales: {
-        yAxis: {
-          title: {
-            display: true,
-            text: title,
-            font: {
-              weight: 'bold',
-              size: 14
-            },
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        title: {
+          display: true,
+          text: title,
+          font: {
+            size: 16
+          },
+          padding: {
+            top: 10,
+            bottom: 20
           }
         },
-        xAxis: {
-          barPercentage: 0.5, // Adjust this value to control the bar width
-          categoryPercentage: 0.8 // Adjust this value to control the spacing between bars
-        }
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
         legend: {
-          position: "top",
-          align: "middle"
-        }
-      }
-    }
-  });
-
-}
-// barCharts(["Ikot Abasi", "Ikot Akpan Essein", "Ikot Ntuen", "Ikot Akpa Nkuk", "Ikot Ekpene Town", "Ikot Ekpene Road"], "Total Taxpayers Enumerate", [300, 200, 150, 100, 60, 220, 100], "totalTaxPayerCluster")
-
-function lineCharts(labels, title, theData, theId) {
-  const ctx = document.getElementById(theId).getContext('2d');
-  const chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'line',
-
-    // The data for our dataset
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: title,
-          backgroundColor: ['#CDA545'],
-          borderColor: "#CDA545",
-          data: theData
-        }
-      ]
-    },
-
-    // Configuration options go here
-    options: {
-      scales: {
-        yAxis: {
-          beginAtZero: true,
-          title: {
-            display: true,
-            text: title,
+          position: 'right',
+          align: 'center',
+          labels: {
+            boxWidth: 12,
+            padding: 20,
             font: {
-              weight: 'bold',
-              size: 14
+              size: 12
             },
-          }
-        }
-      },
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: "top",
-          align: "middle"
-        }
-      }
-    }
-  });
-
-}
-
-// lineCharts(["Week 1", "Week 2", "Week 3", "week 4"], "Average Registration Time (in minutes)", [250, 200, 280, 100], "averageRegisTime")
-
-function barChartsColored(labels, title, theData, theId) {
-  const ctx = document.getElementById(theId).getContext('2d');
-  const chart = new Chart(ctx, {
-    // The type of chart we want to create
-    type: 'bar',
-
-    // The data for our dataset
-    data: {
-      labels: labels,
-      datasets: [
-        {
-          label: title,
-          backgroundColor: ['#CDA545', '#EA4335', '#63B967', '#3A37D0', '#7AD0C7'],
-          data: theData
-        }
-      ]
-    },
-
-    // Configuration options go here
-    options: {
-      scales: {
-        yAxis: {
-          title: {
-            display: true,
-            text: title,
-            font: {
-              weight: 'bold',
-              size: 14
-            },
+            generateLabels: function(chart) {
+              const data = chart.data;
+              if (data.labels.length && data.datasets.length) {
+                return data.labels.map((label, i) => {
+                  const value = data.datasets[0].data[i];
+                  const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                  const percentage = Math.round((value / total) * 100);
+                  
+                  return {
+                    text: `${label}: ${value} (${percentage}%)`,
+                    fillStyle: data.datasets[0].backgroundColor[i],
+                    hidden: false,
+                    index: i
+                  };
+                });
+              }
+              return [];
+            }
           }
         },
-        xAxis: {
-          barPercentage: 0.5, // Adjust this value to control the bar width
-          categoryPercentage: 0.8 // Adjust this value to control the spacing between bars
+        tooltip: {
+          callbacks: {
+            label: function(context) {
+              const label = context.label || '';
+              const value = context.raw || 0;
+              const total = context.dataset.data.reduce((a, b) => a + b, 0);
+              const percentage = Math.round((value / total) * 100);
+              return `${label}: ${value} (${percentage}%)`;
+            }
+          }
+        },
+        datalabels: {
+          display: false
         }
       },
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: {
-          position: "top",
-          align: "middle"
-        }
+      // Add animation configuration
+      animation: {
+        animateScale: true,
+        animateRotate: true
       }
     }
   });
-
 }
-
-barChartsColored(["Dan", "Okon", "Ali", "Samu", "Nike"], "Total Taxpayers Enumerated", [250, 200, 280, 100, 50], "lest5Agents")
-barChartsColored(["Basheer", "Jasmine", "Kachi", "Cynthia", "Madu"], "Total Taxpayers Enumerated", [100, 150, 180, 200, 130], "top5Agents")
-
-// lineCharts(months, "Total Taxpayers Enumerated", [250, 200, 280, 100, 120, 100, 150, 170, 180, 200, 130, 110], "totalTaxEnummm")
-// function doughnutCharts(labels, title, theData, theId) {
-//   const ctx = document.getElementById(theId).getContext('2d');
-//   const chart = new Chart(ctx, {
-//     // The type of chart we want to create
-//     type: 'doughnut',
-
-//     // The data for our dataset
-//     data: {
-//       labels: labels,
-//       datasets: [
-//         {
-//           label: title,
-//           backgroundColor: ['#CDA545', '#EA4335', '#63B967', '#3A37D0', '#7AD0C7', '#242424'],
-//           data: theData
-//         }
-//       ]
-//     },
-
-//     // Configuration options go here
-//     options: {
-//       responsive: true,
-//       maintainAspectRatio: false,
-//       plugins: {
-//         legend: {
-//           position: "right",
-//           align: "middle"
-//         }
-//       }
-//     }
-//   });
-
-// }
-// doughnutCharts(["Individual", "Corporate", "Properties"], "TOTAL TAXPAYER ENUMERATED", [200, 109, 90], "taxPayerEnum")
-// doughnutCharts(["Formal Tax", "In-Formal Tax", "Presumptive tax"], "TOTAL TAXPAYER ENUMERATED", [300, 199, 120], "taxCategEnum")
-
-// % of TAXPAYERS REGISTERED(BY CATEGORY)
-
-// function totalRegis() {
-//   const ctx = document.getElementById("totalRegis").getContext('2d');
-//   const chart = new Chart(ctx, {
-//     // The type of chart we want to create
-//     type: 'doughnut',
-
-//     // The data for our dataset
-//     data: {
-//       labels: ["Individual", "Corporate", "Properties"],
-//       datasets: [
-//         {
-//           label: "% of TAXPAYERS REGISTERED(BY CATEGORY)",
-//           backgroundColor: ['#63B967', "#E8E8E8", "#EA4335"],
-//           data: [80, 20, 69]
-//         }
-//       ]
-//     },
-
-//     // Configuration options go here
-//     options: {
-//       responsive: true,
-//       maintainAspectRatio: false
-//     }
-//   });
-
-// }
-// totalRegis()

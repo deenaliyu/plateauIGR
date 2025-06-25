@@ -70,12 +70,6 @@
             </div>
 
             <div class="mt-4 flex gap-x-5 ms-auto">
-              <div class="input-group input-group-merge md:w-72 hidden md:flex">
-                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
-                <input type="text" class="form-control" placeholder="Search..." aria-label="Search..."
-                  aria-describedby="basic-addon-search31">
-              </div>
-              <a href="newagent.html" class="button">Create New Field Agent</a>
               <div class="avatar avatar-online flex gap-x-2 items-center">
                 <img src="" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
                 <p class="adminName">-</p>
@@ -97,169 +91,60 @@
             </div>
             <div class="card">
 
-              <div class="p-3 mt-2 md:mx-10">
-                <div class="flex gap-x-2">
-                    <img src="./assets/img/avatars/1.png" class="h-[70px] w-[70px] object-cover rounded-full" />
-                    <div class="mt-2">
-                    <h6 class="font-bold text-[20px]">Akpan Uwana</h6>
-                    <p><span class="font-bold">Agent ID: 165646464</span></p>
-                    </div>
-                    </div>
-                       
-                        <div class="flex flex-wrap gap-x-5 gap-y-3 mt-2">
-                          <p><span class="font-bold">Email address: akpan@gmail.com</span></p>
-                          <p><span class="font-bold">Contact: 0803 499 7575</span></p>
-                          <p><span class="font-bold">State: Akwaibom</span>/p>
-                          <p><span class="font-bold">LGA: Ikot</span></p>
-                          <p><span class="font-bold">Total Taxpayers Registered: 100</span></p>
-                          <p><span class="font-bold">Address: Block 1, Idongesit Nkanga Secretariat complex, Uyo, Akwa Ibom State.</span></p>
-                        </div>
+            <div id="user-profile" class="p-3 mt-2 md:mx-10">
+              <div class="flex gap-x-2">
+                <img id="avatar" src="./assets/img/avatars/1.png" class="h-[70px] w-[70px] object-cover rounded-full" />
+                <div class="mt-2">
+                  <h6 id="fullname" class="font-bold text-[20px]">Loading...</h6>
+                  <p><span class="font-bold">Agent ID: <span id="agent-id">---</span></span></p>
+                </div>
               </div>
+            
+              <div class="flex flex-wrap gap-x-5 gap-y-3 mt-2">
+                <p><span class="font-bold">Email address: <span id="email">---</span></span></p>
+                <p><span class="font-bold">Contact: <span id="contact">---</span></span></p>
+                <p><span class="font-bold">State: <span id="state">---</span></span></p>
+                <p><span class="font-bold">LGA: <span id="lga">---</span></span></p>
+                <p><span class="font-bold">Total Taxpayers Registered: <span id="taxpayers">---</span></span></p>
+                <p><span class="font-bold">Address: <span id="address">---</span></span></p>
+              </div>
+            </div>
 
               <div class="px-4">
                 <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-3" id="pills-tab" role="tablist">
                   <li class="nav-item text-center" role="presentation">
-                    <button class="nav-link active" id="pills-home-tab" data-bs-toggle="pill"
-                      data-bs-target="#pills-home" type="button" role="tab" aria-controls="pills-home"
-                      aria-selected="true">
-                      Activity log
-                    </button>
-                  </li>
-                  <li class="nav-item text-center" role="presentation">
-                    <button class="nav-link" id="pills-app-tab" data-bs-toggle="pill" data-bs-target="#pills-app"
+                    <button class="nav-link active" id="pills-app-tab" data-bs-toggle="pill" data-bs-target="#pills-app"
                       type="button" role="tab" aria-controls="pills-app" aria-selected="true">
                       Registered tax payers
                     </button>
                   </li>
-                  </li>
                 </ul>
                 <div class="tab-content" id="pills-tabContent">
-                  <div class="tab-pane fade show active" id="pills-home" role="tabpanel"
-                    aria-labelledby="pills-home-tab">
-                    <div class="table-responsive -mt-6 md:w-8/12">
-                      <table class="table" id="dataTable77">
-                        <thead>
-                          <tr>
-                            <th>Date and time</th>
-                            <th>Description</th>
-                          </tr>
-                        </thead>
-                        <tbody >
-                            <tr>
-                                <td>14/02/2023, 1.50PM</td>
-                                <td>Logged out</td>
-                            </tr>
-                            <tr>
-                                <td>14/02/2023, 1.50PM</td>
-                                <td>Edited taxpayer information </td>
-                            </tr>
-                            <tr>
-                                <td>14/02/2023, 1.50PM</td>
-                                <td>Registered a new tax payer</td>
-                            </tr>
-                            <tr>
-                                <td>14/02/2023, 1.50PM</td>
-                                <td>Logged in</td>
-                            </tr>
-                            <tr>
-                                <td>14/02/2023, 1.50PM</td>
-                                <td>Changed password</td>
-                            </tr>
-                        </tbody>
-                        <div class="flex justify-center items-center mt-4" id="loader">
-                          <!-- <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div> -->
-                        </div>
-                      </table>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="pills-app" role="tabpanel" aria-labelledby="pills-app-tab">
-                    <div class="table-responsive -mt-6">
-                        <table class="table " id="dataTable3">
-                          <thead>
-                            <thead>
-                                <th></th>
-                                <th>Payer ID</th>
-                                <th>Name of Tax payer</th>
-                                <th>Category</th>
-                                <th>TIN</th>
-                                <th>Contact</th>
-                                <th>TIN Status</th>
-                                <th>Date created</th>
-                                <th>Manage</th>
-                                <th></th>
-                              </thead>
-                          </thead>
-                          <tbody class="table-border-bottom-0" id="">
-                            <tr>
-                                <td>1</td>
-                                <td>1654648584</td>
-                                <td>David Adebola</td>
-                                <td>0803 499 7575</td>
-                                <td>hshshhs</td>
-                                <td>wywywy</td>
-                                <td>hshhshs</td>
-                                <td>1000</td>
-                                <td>
-                                  <div class="flex items-center gap-3">
-                               
-                              <a href="manageagent.html"><iconify-icon icon="material-symbols:delete-outline-rounded" style="font-size: 20px;"></iconify-icon></a>
-                              <button onclick="" data-bs-toggle="modal" data-bs-target="#editRev"><iconify-icon 
-                                  icon="material-symbols:edit-square-outline"  style="font-size: 20px;"></iconify-icon></button>
-                                  </div>
-                                </td>
-                                <td>
-                                  <a href="manageagent.html" class="btn btn-primary btn-sm" >View</a>
-                              </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>56535353463</td>
-                                <td>David Adebola</td>
-                                <td>039393993</td>
-                                <td>shshsh</td>
-                                <td>shshsh</td>
-                                <td>shshs</td>
-                                <td>2000</td>
-                                <td>
-                                  <div class="flex items-center gap-3">
-                               
-                              <a href=""><iconify-icon icon="material-symbols:delete-outline-rounded" style="font-size: 20px;"></iconify-icon></a>
-                              <button onclick="" data-bs-toggle="modal" data-bs-target="#editRev"><iconify-icon 
-                                  icon="material-symbols:edit-square-outline"  style="font-size: 20px;"></iconify-icon></button>
-                                  </div>
-                                </td>
-                                <td>
-                                  <a href="manageagent.html" class="btn btn-primary btn-sm" >View</a>
-                              </td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>255225148</td>
-                                <td>David Adebola</td>
-                                <td>353563</td>
-                                <td>etetet</td>
-                                <td>tettwtw</td>
-                                <td>sgsgsggs</td>
-                                <td>2208</td>
-                                <td>
-                                  <div class="flex items-center gap-3">
-                               
-                              <a href=""><iconify-icon icon="material-symbols:delete-outline-rounded" style="font-size: 20px;"></iconify-icon></a>
-                              <button onclick="" data-bs-toggle="modal" data-bs-target="#editRev"><iconify-icon 
-                                  icon="material-symbols:edit-square-outline"  style="font-size: 20px;"></iconify-icon></button>
-                                  </div>
-                                </td>
-                                <td>
-                                  <a href="manageagent.html" class="btn btn-primary btn-sm" >View</a>
-                             </td>
-                               
-                            </tr>
-                          </tbody>
-                          <div class="flex justify-center items-center mt-4" id="loader">
-                            <!-- <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div> -->
-                          </div>
-                        </table>
-                      </div>
+                  <div class="tab-pane fade show active" id="pills-app" role="tabpanel" aria-labelledby="pills-app-tab">
+                    <div class="table-responsive">
+                <table class="table invoiceTable" id="dataTable">
+                  <thead>
+                    <tr>  
+                        <th>S/N</th>
+                        <th>Payer ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Date created</th>
+                        <th>Date verified</th>
+                        <th>Account status</th>
+                        <th>TIN Status</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="showTaxPayers">
+
+
+
+
+                  </tbody>
+                </table>
+
+              </div>
                    
                   </div>
                
@@ -284,34 +169,6 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
 
-  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header ">
-          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
-            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
-        </div>
-        <div class="modal-body mb-5">
-
-          <h1 class="text-center text-2xl">TIN Status</h1>
-          <form action="">
-            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
-              Number.</p>
-
-            <select name="" id="selectInput" class="form-select mt-5">
-              <option disabled selected>update status</option>
-              <option value="0">Un-verfied</option>
-              <option value="1">Verified</option>
-            </select>
-
-            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
-            <div id="msg_box" class="w-full"></div>
-          </form>
-        </div>
-
-      </div>
-    </div>
-  </div>
 
   <!-- build:js assets/vendor/js/core.js -->
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
@@ -328,7 +185,7 @@
   <script src="./assets/vendor/libs/export-table/src/tableHTMLExport.js"></script>
   <!-- <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script> -->
   <!-- <script src="./assets/js/session.js"></script> -->
-  <script src="./assets/js/taxpayerlist.js"></script>
+  <script src="./assets/js/manageagent.js"></script>
   <script src="./assets/js/table2CSV.js"></script>
   <!-- endbuild -->
   <script>
