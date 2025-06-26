@@ -9,7 +9,7 @@ async function getEnumerators() {
 
     $("#totalField").html(data.message.length)
     if (data.status === 1) {
-      // con sole.log(data)
+      // console.log(data)
 
 
       data.message.reverse().forEach((txpayer, i) => {
