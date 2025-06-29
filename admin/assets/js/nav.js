@@ -37,11 +37,11 @@ $(".aside").html(`
         </a>
       </li>
       <li class="menu-item">
-      <a href="mda.html" class="menu-link mddd">
-        <i class='menu-icon tf-icons bx bx-buildings' ></i>
-        <div data-i18n="Basic">MDAs</div>
-      </a>
-    </li>
+        <a href="mda.html" class="menu-link mddd">
+          <i class='menu-icon tf-icons bx bx-buildings' ></i>
+          <div data-i18n="Basic">MDAs</div>
+        </a>
+      </li>
 
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle dggg">
@@ -108,14 +108,28 @@ $(".aside").html(`
         </a>
       </li>
 
-      
-
       <li class="menu-item">
-        <a href="enumeration.html" class="menu-link enu">
-        <i class='menu-icon tf-icons bx bxs-group' ></i>
-          <div data-i18n="Basic">Enumeration</div>
+        <a href="javascript:void(0);" class="menu-link menu-toggle enu">
+          <i class='menu-icon tf-icons bx bxs-group'></i>
+          <div data-i18n="Form Elements">Enumeration</div>
         </a>
+
+        <ul class="menu-sub">
+          <li class="menu-item">
+            <a href="enumeration.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Enumeration</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="enumeration-map.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Enumeration Map</div>
+            </a>
+          </li>
+
+        </ul>
       </li>
+
       <li class="menu-item">
         <a href="enduseraudit.html" class="menu-link auditt">
         <i class='menu-icon tf-icons bx bxs-group' ></i>

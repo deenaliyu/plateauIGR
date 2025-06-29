@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+
+
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="./assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>PlateauIGR</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+
+  <!-- Fonts -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="./assets/css/dataTable.css">
+  <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <script src="./assets/vendor/js/helpers.js"></script>
+  <script src="./assets/js/config.js"></script>
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.css" />
+
+  <style>
+    /* Minimal custom CSS */
+    #map {
+      height: calc(100vh - 200px);
+      width: 100%;
+    }
+
+    .legend {
+      position: absolute;
+      bottom: 20px;
+      right: 20px;
+      z-index: 1000;
+      background: white;
+      padding: 10px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .legend-color {
+      display: inline-block;
+      width: 20px;
+      height: 20px;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    .stats-panel {
+      position: absolute;
+      top: 70px;
+      right: 20px;
+      z-index: 1000;
+      background: white;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+      max-width: 250px;
+    }
+
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.7);
+      z-index: 2000;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .filter-section {
+      background: #f8f9fa;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+    }
+
+    .filter-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+
+<body class="taxpayer">
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside id="layout-menu" class="aside layout-menu menu-vertical menu bg-menu-theme">
+
+      </aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav
+          class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          id="layout-navbar">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+              <i class="bx bx-menu bx-sm"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right flex justify-content-between" id="navbar-collapse">
+            <div class="">
+              <p class="text-sm text-black">Date: <span class="datei" id="datei"> </span></p>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Enumeration Map</h1>
+            </div>
+
+            <div class="mt-4 flex gap-x-5 ms-auto">
+              <div></div>
+
+              <div class="avatar avatar-online">
+                <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
+
+              </div>
+              <h4 class="text-sm text-black self-center hidden md:flex adminName">System Admin</h4>
+            </div>
+
+          </div>
+        </nav>
+
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <section class="content-wrapper">
+          <div class="container-xxl flex-grow-1 container-p-y">
+
+
+            <div class="row">
+              <div class="col-md-12">
+                <div class="filter-section">
+                  <div class="row g-3">
+                    <div class="col-md-2">
+                      <label class="fw-bold">Time Range</label>
+                      <select id="timeRange" class="form-select">
+                        <option value="all">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="custom">Custom Range</option>
+                      </select>
+                      <div id="customRangeContainer" class="mt-2 d-none">
+                        <input type="date" id="startDate" class="form-control mb-2">
+                        <input type="date" id="endDate" class="form-control">
+                      </div>
+                    </div>
+
+                    <div class="col-md-2">
+                      <label class="fw-bold">Enumerator</label>
+                      <select id="enumeratorFilter" class="form-select">
+                        <option value="all">All Enumerators</option>
+                        <option value="EN001">EN001</option>
+                        <option value="EN002">EN002</option>
+                        <option value="EN003">EN003</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <label class="fw-bold">Entity Type</label>
+                      <select id="entityTypeFilter" class="form-select">
+                        <option value="all">All Entities</option>
+                        <option value="individual">Individuals</option>
+                        <option value="business">Businesses</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <label class="fw-bold">LGA</label>
+                      <select id="lgaFilter" class="form-select">
+                        <option value="all">All LGAs</option>
+                        <option value="Barkin Ladi">Barkin Ladi</option>
+                        <option value="Bassa">Bassa</option>
+                        <option value="Bokkos">Bokkos</option>
+                        <option value="Jos East">Jos East</option>
+                        <option value="Jos North">Jos North</option>
+                        <option value="Jos South">Jos South</option>
+                        <option value="Kanam">Kanam</option>
+                        <option value="Kanke">Kanke</option>
+                        <option value="Langtang North">Langtang North</option>
+                        <option value="Langtang South">Langtang South</option>
+                        <option value="Mangu">Mangu</option>
+                        <option value="Mikang">Mikang</option>
+                        <option value="Pankshin">Pankshin</option>
+                        <option value="Qua'an Pan">Qua'an Pan</option>
+                        <option value="Riyom">Riyom</option>
+                        <option value="Shendam">Shendam</option>
+                        <option value="Wase">Wase</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2">
+                      <label class="fw-bold">View Type</label>
+                      <select id="visualizationType" class="form-select">
+                        <option value="heatmap">Heat Map</option>
+                        <option value="clusters">Clusters</option>
+                        <option value="pins">Individual Pins</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end">
+                      <button id="applyFilters" class="btn btn-primary me-2 w-100">Apply</button>
+                      <button id="resetFilters" class="btn btn-outline-secondary w-100">Reset</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Map Container -->
+            <div class="container-fluid">
+              <div class="row">
+                <div class="col-md-12 position-relative">
+                  <div id="map"></div>
+
+                  <!-- Stats Panel -->
+                  <div class="stats-panel">
+                    <h6 class="fw-bold">Enumeration Statistics</h6>
+                    <div class="mb-2">Total: <span id="totalCount" class="fw-bold">0</span></div>
+                    <div class="mb-2">Individuals: <span id="individualCount" class="fw-bold">0</span></div>
+                    <div class="mb-2">Businesses: <span id="businessCount" class="fw-bold">0</span></div>
+                    <div class="mb-2">Selected LGA: <span id="selectedLGA" class="fw-bold">None</span></div>
+                    <div>LGA Count: <span id="lgaCount" class="fw-bold">0</span></div>
+                  </div>
+
+                  <!-- Legend -->
+                  <div class="legend">
+                    <div class="mb-1"><span class="legend-color" style="background: blue;"></span> Low Density</div>
+                    <div class="mb-1"><span class="legend-color" style="background: lime;"></span> Medium Density</div>
+                    <div><span class="legend-color" style="background: red;"></span> High Density</div>
+                  </div>
+
+                  <!-- Loading Overlay -->
+                  <div id="loadingIndicator" class="loading-overlay d-none">
+                    <div class="spinner-border text-primary" role="status">
+                      <span class="visually-hidden">Loading...</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
+          <div class="content-backdrop fade"></div>
+        </section>
+
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
+
+  <!-- Core JS -->
+  <!-- build:js assets/vendor/js/core.js -->
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
+  <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="./assets/vendor/libs/popper/popper.js"></script>
+  <script src="./assets/vendor/js/bootstrap.js"></script>
+  <script src="./assets/vendor/libs/echarts/echarts.js"></script>
+  <script src="./assets/js/jquery.datatables.min.js"></script>
+  <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.heat/0.2.0/leaflet-heat.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.4.1/leaflet.markercluster.js"></script>
+  <script src="./assets/js/nav.js"></script>
+  <!-- <script src="./assets/js/session.js"></script> -->
+  <script src="assets/js/adminDash.js"></script>
+  <script>
+    let theAtivo = document.querySelector(`.enu`);
+    theAtivo.parentElement.classList.add("active");
+  </script>
+  <script src="./assets/vendor/js/menu.js"></script>
+  <!-- endbuild -->
+
+  <!-- Vendors JS -->
+
+  <!-- Main JS -->
+  <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/dashboard.js"></script>
+  <script src="./assets/js/accessLevel.js"></script>
+  <script src="./assets/js/enumeration-map.js"></script>
+</body>
+
+</html>
