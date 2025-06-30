@@ -127,6 +127,12 @@ $(".aside").html(`
             </a>
           </li>
 
+          <li class="menu-item">
+            <a href="hospital-report.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Health Sectors</div>
+            </a>
+          </li>
+
         </ul>
       </li>
 

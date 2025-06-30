@@ -176,7 +176,7 @@
                       </div>
                     </div>
 
-                    <div class="col-md-2">
+                    <!-- <div class="col-md-2">
                       <label class="fw-bold">Enumerator</label>
                       <select id="enumeratorFilter" class="form-select">
                         <option value="all">All Enumerators</option>
@@ -184,14 +184,17 @@
                         <option value="EN002">EN002</option>
                         <option value="EN003">EN003</option>
                       </select>
-                    </div>
+                    </div> -->
 
                     <div class="col-md-2">
-                      <label class="fw-bold">Entity Type</label>
+                      <label class="fw-bold">Category</label>
                       <select id="entityTypeFilter" class="form-select">
-                        <option value="all">All Entities</option>
-                        <option value="individual">Individuals</option>
-                        <option value="business">Businesses</option>
+                        <option value="all">All</option>
+                        <option value="Individual">Individuals</option>
+                        <option value="Corporate">Businesses</option>
+                        <option value="State Agency">State Agency</option>
+                        <option value="Federal Agency">State Agency</option>
+                        <option value="Hospital">Healthcare Facility</option>
                       </select>
                     </div>
 
@@ -248,7 +251,10 @@
                     <h6 class="fw-bold">Enumeration Statistics</h6>
                     <div class="mb-2">Total: <span id="totalCount" class="fw-bold">0</span></div>
                     <div class="mb-2">Individuals: <span id="individualCount" class="fw-bold">0</span></div>
-                    <div class="mb-2">Businesses: <span id="businessCount" class="fw-bold">0</span></div>
+                    <div class="mb-2">Corporates: <span id="corpCount" class="fw-bold">0</span></div>
+                    <div class="mb-2">State Agency: <span id="stateAgncCount" class="fw-bold">0</span></div>
+                    <div class="mb-2">Federal Agency: <span id="federalAgncCount" class="fw-bold">0</span></div>
+                    <div class="mb-2">Healthcare Facilites: <span id="hospitalCount" class="fw-bold">0</span></div>
                     <div class="mb-2">Selected LGA: <span id="selectedLGA" class="fw-bold">None</span></div>
                     <div>LGA Count: <span id="lgaCount" class="fw-bold">0</span></div>
                   </div>
