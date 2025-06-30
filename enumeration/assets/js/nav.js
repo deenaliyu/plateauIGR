@@ -44,6 +44,13 @@ $(".aside").html(`
       </li>
 
       <li class="menu-item">
+        <a href="hospital-reports.html" class="menu-link mddd">
+          <i class='menu-icon tf-icons bx bxs-building' ></i>
+          <div data-i18n="Basic">Health Sectors</div>
+        </a>
+      </li>
+
+      <li class="menu-item">
         <a href="invoice.html" class="menu-link invv">
           <i class='menu-icon tf-icons bx bxs-file'></i>
           <div data-i18n="Basic">Invoice</div>
