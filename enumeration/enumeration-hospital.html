@@ -41,8 +41,13 @@
     }
 
     .progress {
-      height: 20px;
+      height: 10px;
       margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #CDA545;
     }
 
     .invalid-feedback {
@@ -108,13 +113,19 @@
 
 
   <header>
-    <div class="flex justify-between p-3 border-b items-center">
+    <div class="flex justify-between p-3 border-b items-center flex-wrap gap-4">
       <div class="flex gap-2 items-center">
         <img src="./assets/img/logo.png" class="w-[50px]" alt="">
         <p class="text-md fontBold">Plateau IGR</p>
       </div>
 
-      <p class="text-xl">Healthcare Facilities Registration</p>
+      
+      <div>
+        <a href="enumeration.html" class="textPrimary flex items-center gap-2">
+          <i class="fas fa-arrow-left"></i> Go Back
+        </a>
+        <p class="text-xl">Healthcare Facilities Registration</p>
+      </div>
     </div>
   </header>
 
@@ -147,10 +158,10 @@
               <label for="facilityType" class="form-label">Facility Type</label>
               <select class="form-select" id="facilityType" required>
                 <option value="">Select facility type</option>
-                <option value="Primary Healthcare Facility (Hospital)">Primary Healthcare Facility (Hospital)</option>
-                <option value="Secondary Healthcare Facility (General Hospitals)">Secondary Healthcare Facility (General
+                <option value="Primary Healthcare Facility">Primary Healthcare Facility (Hospital)</option>
+                <option value="Secondary Healthcare Facility">Secondary Healthcare Facility (General
                   Hospitals)</option>
-                <option value="Tertiary Healthcare Facilities (Specialist/Teaching Hospitals)">Tertiary Healthcare
+                <option value="Tertiary Healthcare Facilities">Tertiary Healthcare
                   Facilities (Specialist/Teaching Hospitals)</option>
                 <option value="Private Hospitals/Clinics">Private Hospitals/Clinics</option>
                 <option value="Maternity Home / Clinic">Maternity Home / Clinic</option>
@@ -308,8 +319,9 @@
               <div class="invalid-feedback">Please provide a phone number.</div>
             </div>
             <div class="col-md-6">
-              <label for="email" class="form-label">Email Address (optional)</label>
-              <input type="email" class="form-control" id="email">
+              <label for="email" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="email" required>
+              <div class="invalid-feedback">Please provide an email address.</div>
             </div>
           </div>
 
@@ -398,8 +410,9 @@
 
           <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-secondary prev-section">Previous</button>
-            <button type="submit" class="btn btn-success">Submit</button>
+            <button type="submit" class="button" id="SubmitButton">Submit</button>
           </div>
+          <div id="msg_box"></div>
         </div>
       </form>
     </div>
