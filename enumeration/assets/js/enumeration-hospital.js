@@ -1169,7 +1169,7 @@ function getLocationAndSubmit() {
 
 function getLocationFromIP() {
   // Using ip-api.com's free service (no API key needed)
-  fetch('http://ip-api.com/json/?fields=lat,lon')
+  fetch('https://ip-api.com/json/?fields=lat,lon')
     .then(response => response.json())
     .then(data => {
       if (data.lat && data.lon) {

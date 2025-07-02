@@ -46,7 +46,7 @@ async function getTaxPayers() {
                 <td>${i + 1}</td>
                 <td>${txpayer.tax_number}</td>
                 <td>${txpayer.first_name} ${txpayer.last_name}</td>
-                <td>${txpayer.account_type}</td>
+                <td>${txpayer.category}</td>
                 <td>${txpayer.timeIn.split(" ")[0]}</td>
                 <td>${txpayer.timeIn.split(" ")[0]}</td>
                 <td><span class="badge bg-success">verified</span></td>
