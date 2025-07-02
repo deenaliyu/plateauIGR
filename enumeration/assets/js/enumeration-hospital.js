@@ -1167,21 +1167,33 @@ function getLocationAndSubmit() {
   }
 }
 
+function getRandomPlateauLocation() {
+  // Plateau State, Nigeria bounding box
+  // Approximate: lat 8.3 to 10.2, lon 8.2 to 10.6
+  const minLat = 8.3, maxLat = 10.2;
+  const minLon = 8.2, maxLon = 10.6;
+  const lat = (Math.random() * (maxLat - minLat) + minLat).toFixed(6);
+  const lon = (Math.random() * (maxLon - minLon) + minLon).toFixed(6);
+  return { lat, lon };
+}
+
 function getLocationFromIP() {
   // Using ip-api.com's free service (no API key needed)
-  fetch('https://ip-api.com/json/?fields=lat,lon')
+  fetch('http://ip-api.com/json/?fields=lat,lon')
     .then(response => response.json())
     .then(data => {
       if (data.lat && data.lon) {
         submitLocation(data.lat, data.lon, 'ip');
       } else {
         console.error("Could not get location from IP");
-        submitLocation(null, null, 'failed');
+        const plateauLocation = getRandomPlateauLocation();
+        submitLocation(plateauLocation.lat, plateauLocation.lon, 'failed');
       }
     })
     .catch(error => {
       console.error("IP location error:", error);
-      submitLocation(null, null, 'failed');
+      const plateauLocation = getRandomPlateauLocation();
+      submitLocation(plateauLocation.lat, plateauLocation.lon, 'failed');
     });
 }
 
