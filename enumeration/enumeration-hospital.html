@@ -20,12 +20,52 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #reviewSummary,
+      #reviewSummary * {
+        visibility: visible;
+      }
+
+      #reviewSummary {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
     .form-section {
       display: none;
     }
 
     .form-section.active {
       display: block;
+    }
+
+    #reviewSummary p {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    label.required::after {
+      content: "*";
+      color: #dc3545;
+      opacity: 0.8;
+      margin-left: 0.25rem;
+      font-size: 1.1em;
     }
 
     .selectize-input:after {
@@ -119,7 +159,7 @@
         <p class="text-md fontBold">Plateau IGR</p>
       </div>
 
-      
+
       <div>
         <a href="enumeration.html" class="textPrimary flex items-center gap-2">
           <i class="fas fa-arrow-left"></i> Go Back
@@ -148,14 +188,39 @@
         <div class="form-section active" id="section1">
           <h4 class="mb-4">1. Identification & Registration</h4>
 
+          <div class="form-group mb-4">
+            <label for="">Snapshot*</label>
+            <div class="flex flex-col md:flex-row gap-4 items-center">
+              <!-- Preview Box -->
+              <div class="w-32 h-32 border-2 border-gray-300 rounded-lg overflow-hidden mb-2 md:mb-0">
+                <img id="imagePreview" src="assets/img/userprofile.png" alt="Preview"
+                  class="w-full h-full object-cover">
+              </div>
+
+              <!-- Capture/Upload Buttons -->
+              <div class="flex flex-col gap-2">
+                <button type="button" onclick="openCamera()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+                  Capture from Camera
+                </button>
+                <button type="button" onclick="document.getElementById('fileInput').click()"
+                  class="button bg-green-600 hover:bg-green-700 text-white">
+                  Upload from Device
+                </button>
+                <input type="file" id="fileInput" accept="image/*" class="hidden"
+                  onchange="handleFileUpload(this.files)">
+              </div>
+            </div>
+            <input type="hidden" id="imageUrl" data-name="img" required>
+          </div>
+
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="legalName" class="form-label">Legal Name of Facility</label>
+              <label for="legalName" class="form-label required">Legal Name of Facility</label>
               <input type="text" class="form-control" id="legalName" required>
               <div class="invalid-feedback">Please provide the legal name of the facility.</div>
             </div>
             <div class="col-md-6">
-              <label for="facilityType" class="form-label">Facility Type</label>
+              <label for="facilityType" class="form-label required">Facility Type</label>
               <select class="form-select" id="facilityType" required>
                 <option value="">Select facility type</option>
                 <option value="Primary Healthcare Facility">Primary Healthcare Facility (Hospital)</option>
@@ -182,12 +247,12 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="registrationNumber" class="form-label">Business Registration Number (CAC)</label>
+              <label for="registrationNumber" class="form-label required">Business Registration Number (CAC)</label>
               <input type="text" class="form-control" id="registrationNumber" required>
               <div class="invalid-feedback">Please provide the business registration number.</div>
             </div>
             <div class="col-md-6">
-              <label for="ownershipType" class="form-label">Type of Ownership</label>
+              <label for="ownershipType" class="form-label required">Type of Ownership</label>
               <select class="form-select" id="ownershipType" required>
                 <option value="">Select ownership type</option>
                 <option value="Private">Private</option>
@@ -201,12 +266,12 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="operatingLicenseNumber" class="form-label">Operating License Number</label>
+              <label for="operatingLicenseNumber" class="form-label required">Operating License Number</label>
               <input type="text" class="form-control" id="operatingLicenseNumber" required>
               <div class="invalid-feedback">Please provide the operating license number.</div>
             </div>
             <div class="col-md-6">
-              <label for="healthFacilityCode" class="form-label">National Health Facility Code</label>
+              <label for="healthFacilityCode" class="form-label required">National Health Facility Code</label>
               <input type="text" class="form-control" id="healthFacilityCode" required>
               <div class="invalid-feedback">Please provide the health facility code.</div>
             </div>
@@ -214,12 +279,12 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="licenseExpiryDate" class="form-label">Operating License Expiry Date</label>
+              <label for="licenseExpiryDate" class="form-label required">Operating License Expiry Date</label>
               <input type="date" class="form-control" id="licenseExpiryDate" required>
               <div class="invalid-feedback">Please provide the license expiry date.</div>
             </div>
             <div class="col-md-6">
-              <label for="issuingAuthority" class="form-label">Issuing Authority of Operating License</label>
+              <label for="issuingAuthority" class="form-label required">Issuing Authority of Operating License</label>
               <select class="multiple-select1" id="issuingAuthority" multiple required>
                 <option value="MDCN">Medical and Dental Council of Nigeria (MDCN)</option>
                 <option value="NMCN">Nursing and Midwifery Council of Nigeria (NMCN)</option>
@@ -246,12 +311,12 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="taxIdentificationNumber" class="form-label">Tax Identification Number (TIN)</label>
+              <label for="taxIdentificationNumber" class="form-label required">Tax Identification Number (TIN)</label>
               <input type="text" class="form-control" id="taxIdentificationNumber" required>
               <div class="invalid-feedback">Please provide the tax identification number.</div>
             </div>
             <div class="col-md-6">
-              <label for="dateOfEstablishment" class="form-label">Date of Establishment/Commencement of
+              <label for="dateOfEstablishment" class="form-label required">Date of Establishment/Commencement of
                 Operations</label>
               <input type="date" class="form-control" id="dateOfEstablishment" required>
               <div class="invalid-feedback">Please provide the date of establishment.</div>
@@ -270,7 +335,7 @@
 
           <div class="row mb-3">
             <div class="col-12">
-              <label for="address" class="form-label">Primary Physical Address</label>
+              <label for="address" class="form-label required">Primary Physical Address</label>
               <input type="text" class="form-control" id="address" required>
               <div class="invalid-feedback">Please provide the physical address.</div>
             </div>
@@ -278,12 +343,12 @@
 
           <div class="row mb-3">
             <div class="col-md-4">
-              <label for="city" class="form-label">City/Town</label>
+              <label for="city" class="form-label required">City/Town</label>
               <input type="text" class="form-control" id="city" required>
               <div class="invalid-feedback">Please provide the city/town.</div>
             </div>
             <div class="col-md-4">
-              <label for="lga" class="form-label">Local Government Area (LGA)</label>
+              <label for="lga" class="form-label required">Local Government Area (LGA)</label>
               <select class="form-select" id="lga" required>
                 <option value="">Select LGA</option>
                 <option value="Barkin Ladi">Barkin Ladi</option>
@@ -307,19 +372,19 @@
               <div class="invalid-feedback">Please select the LGA.</div>
             </div>
             <div class="col-md-4">
-              <label for="state" class="form-label">State</label>
+              <label for="state" class="form-label required">State</label>
               <input type="text" class="form-control" id="state" value="Plateau" readonly>
             </div>
           </div>
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="phoneNumber" class="form-label">Phone Number</label>
+              <label for="phoneNumber" class="form-label required">Phone Number</label>
               <input type="tel" class="form-control" id="phoneNumber" required>
               <div class="invalid-feedback">Please provide a phone number.</div>
             </div>
             <div class="col-md-6">
-              <label for="email" class="form-label">Email Address</label>
+              <label for="email" class="form-label required">Email Address</label>
               <input type="email" class="form-control" id="email" required>
               <div class="invalid-feedback">Please provide an email address.</div>
             </div>
@@ -353,13 +418,13 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="latitude" class="form-label">Latitude (Geo-tagging)</label>
-              <input type="number" step="any" class="form-control" id="latitude" required>
+              <label for="latitude" class="form-label required">Latitude (Geo-tagging)</label>
+              <input type="number" step="any" class="form-control" id="latitude" readonly required>
               <div class="invalid-feedback">Please provide the latitude coordinate.</div>
             </div>
             <div class="col-md-6">
-              <label for="longitude" class="form-label">Longitude (Geo-tagging)</label>
-              <input type="number" step="any" class="form-control" id="longitude" required>
+              <label for="longitude" class="form-label required">Longitude (Geo-tagging)</label>
+              <input type="number" step="any" class="form-control" id="longitude" readonly required>
               <div class="invalid-feedback">Please provide the longitude coordinate.</div>
             </div>
           </div>
@@ -410,7 +475,13 @@
 
           <div class="d-flex justify-content-between">
             <button type="button" class="btn btn-secondary prev-section">Previous</button>
-            <button type="submit" class="button" id="SubmitButton">Submit</button>
+            <div>
+              <button type="button" class="outline-btn me-2" id="printSummary">
+                <iconify-icon icon="material-symbols:print-outline"></iconify-icon> Print Summary
+              </button>
+              <button type="submit" class="button" id="SubmitButton">Submit</button>
+            </div>
+
           </div>
           <div id="msg_box"></div>
         </div>
@@ -418,6 +489,25 @@
     </div>
 
   </section>
+
+  <!-- Camera Modal -->
+  <div id="cameraModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-4 w-11/12 md:w-1/2">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">Take a Photo</h3>
+        <button onclick="closeCamera()" class="text-2xl">&times;</button>
+      </div>
+      <video id="video" width="100%" autoplay class="bg-gray-200"></video>
+      <div class="flex justify-center mt-4 gap-4">
+        <button onclick="capturePhoto()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+          Capture
+        </button>
+        <button onclick="closeCamera()" class="button bg-gray-600 hover:bg-gray-700 text-white">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
 
 
 

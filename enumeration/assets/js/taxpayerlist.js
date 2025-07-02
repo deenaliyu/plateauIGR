@@ -4,6 +4,168 @@ const userIdo = urlParams.get('id');
 const enumerated = urlParams.get('enumerated')
 let userrrData = {}
 
+
+async function facilityDetails(tax_number) {
+  // Add the new tab
+  const tabList = document.getElementById('pills-tab');
+  const newTab = document.createElement('li');
+  newTab.className = 'nav-item text-center';
+  newTab.role = 'presentation';
+  newTab.innerHTML = `
+    <button class="nav-link" id="pills-facility-tab" data-bs-toggle="pill"
+      data-bs-target="#pills-facility" type="button" role="tab" 
+      aria-controls="pills-facility" aria-selected="false">
+      Facility Details
+    </button>
+  `;
+  tabList.appendChild(newTab);
+
+  // Create the tab content container
+  const tabContent = document.getElementById('pills-tabContent');
+  const facilityContent = document.createElement('div');
+  facilityContent.className = 'tab-pane fade';
+  facilityContent.id = 'pills-facility';
+  facilityContent.role = 'tabpanel';
+  facilityContent.setAttribute('aria-labelledby', 'pills-facility-tab');
+  facilityContent.innerHTML = '<div class="text-center mt-3"><div class="spinner-border" role="status"><span class="visually-hidden">Loading...</span></div></div>';
+  tabContent.appendChild(facilityContent);
+
+  try {
+    // Fetch facility data
+    const response = await fetch(`https://plateauigr.com/php/?getFacilities&&tax_number=${tax_number}`);
+    const data = await response.json();
+
+    if (data.status === 1 && data.facilities.length > 0) {
+      const facility = data.facilities[0];
+
+      // Format the data for display
+      const services = JSON.parse(facility.operations.services_offered || '[]').join(', ');
+      const equipment = JSON.parse(facility.operations.major_equipment || '[]').join(', ');
+      const issuingAuthority = JSON.parse(facility.facility.issuing_authority || '[]').join(', ');
+
+      // Create the facility details HTML
+      facilityContent.innerHTML = `
+        <div class="container mt-4">
+          <div class="row">
+            <div class="col-md-4 text-center mb-4">
+              <img src="${facility.facility.img}" alt="Facility Image" class="img-fluid rounded" style="max-height: 200px;">
+              <h4 class="mt-3">${facility.facility.legal_name}</h4>
+              <p class="text-muted">${facility.facility.facility_type}</p>
+            </div>
+            
+            <div class="col-md-8">
+              <div class="card">
+                <div class="card-header">
+                  <h5>Facility Information</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><strong>Tax Number:</strong> ${facility.facility.tax_number}</p>
+                      <p><strong>Registration Number:</strong> ${facility.facility.registration_number}</p>
+                      <p><strong>Ownership Type:</strong> ${facility.facility.ownership_type}</p>
+                      <p><strong>Operating License:</strong> ${facility.facility.operating_license_number}</p>
+                      <p><strong>Health Facility Code:</strong> ${facility.facility.health_facility_code}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><strong>License Expiry:</strong> ${facility.facility.license_expiry_date}</p>
+                      <p><strong>Issuing Authority:</strong> ${issuingAuthority}</p>
+                      <p><strong>TIN:</strong> ${facility.facility.tax_identification_number}</p>
+                      <p><strong>Established:</strong> ${facility.facility.date_of_establishment}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card mt-4">
+                <div class="card-header">
+                  <h5>Location Information</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><strong>Address:</strong> ${facility.location.address}</p>
+                      <p><strong>City:</strong> ${facility.location.city}</p>
+                      <p><strong>LGA:</strong> ${facility.location.lga}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><strong>Phone:</strong> ${facility.location.phone_number}</p>
+                      <p><strong>Email:</strong> ${facility.location.email}</p>
+                      <p><strong>Coordinates:</strong> ${facility.location.latitude}, ${facility.location.longitude}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              <div class="card mt-4">
+                <div class="card-header">
+                  <h5>Operations</h5>
+                </div>
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <p><strong>Services Offered:</strong> ${services}</p>
+                      <p><strong>Major Equipment:</strong> ${equipment}</p>
+                      <p><strong>Number of Employees:</strong> ${facility.operations.number_of_employees}</p>
+                    </div>
+                    <div class="col-md-6">
+                      <p><strong>Number of Beds:</strong> ${facility.operations.number_of_beds}</p>
+                      <p><strong>Avg Monthly Patients:</strong> ${facility.operations.avg_monthly_patient_visits}</p>
+                      <p><strong>Surgeries/Month:</strong> ${facility.operations.number_of_surgeries_per_month}</p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              
+              ${facility.branches && facility.branches.length > 0 ? `
+              <div class="card mt-4">
+                <div class="card-header">
+                  <h5>Branches (${facility.branches.length})</h5>
+                </div>
+                <div class="card-body">
+                  <div class="table-responsive">
+                    <table class="table table-striped">
+                      <thead>
+                        <tr>
+                          <th>Branch Name</th>
+                          <th>Address</th>
+                          <th>City</th>
+                          <th>LGA</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        ${facility.branches.map(branch => `
+                          <tr>
+                            <td>${branch.branch_name}</td>
+                            <td>${branch.address}</td>
+                            <td>${branch.city}</td>
+                            <td>${branch.lga}</td>
+                          </tr>
+                        `).join('')}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              ` : ''}
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      facilityContent.innerHTML = '<div class="alert alert-danger mt-3">No facility details found for this tax number.</div>';
+    }
+  } catch (error) {
+    console.error('Error fetching facility details:', error);
+    facilityContent.innerHTML = '<div class="alert alert-danger mt-3">Error loading facility details. Please try again later.</div>';
+  }
+
+  // Activate the new tab
+  const tabButton = document.getElementById('pills-facility-tab');
+  const tabInstance = new bootstrap.Tab(tabButton);
+  tabInstance.show();
+}
+
 async function getTaxPayer() {
   try {
     const response = await fetch(`${HOST}/?userProfile&id=${userIdo}`)
@@ -15,6 +177,10 @@ async function getTaxPayer() {
     let theimg = taxPayerData.img
     if (theimg === "") {
       theimg = "./assets/img/avatars/1.png"
+    }
+
+    if (taxPayerData.category === "Hospital") {
+      facilityDetails(taxPayerData.tax_number);
     }
 
     $("#userInfo").html(`

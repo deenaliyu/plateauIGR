@@ -125,8 +125,8 @@ function renderFacilities(facilities) {
         <td>${branches.length}</td>
         <!-- <td>${facilityData.created_by || 'N/A'}</td> -->
         <td>
-          <button class="btn text-dark btn-sm btn-primary view-facility" data-id="${facilityData.id}" title="View Details">
-            <iconify-icon icon="mdi:eye-outline"></iconify-icon> View
+          <button class="btn btn-sm btn-outline-primary view-facility" data-id="${facilityData.id}" title="View Details">
+            <iconify-icon icon="mdi:eye-outline" class="text-md mt-1"></iconify-icon>
           </button>
           <!-- <button class="btn btn-sm btn-warning edit-facility" data-id="${facilityData.id}" title="Edit">
             <iconify-icon icon="mdi:pencil-outline"></iconify-icon>

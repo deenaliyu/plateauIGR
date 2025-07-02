@@ -123,6 +123,36 @@ document.addEventListener('DOMContentLoaded', function () {
     branchesContainer.style.display = this.checked ? 'block' : 'none';
   });
 
+  // Add this JavaScript function to handle state-LGA relationship
+  function updateLgas(selectElement) {
+    const state = selectElement.value;
+    const lgaSelect = selectElement.closest('.row').querySelector('.branch-lga');
+
+    // Clear existing options
+    lgaSelect.innerHTML = '<option value="">Select LGA</option>';
+    lgaSelect.disabled = !state;
+
+    if (!state) return;
+
+    // Get LGAs for the selected state
+    const lgas = getLgasForState(state);
+
+    // Add LGAs to select
+    lgas.forEach(lga => {
+      const option = document.createElement('option');
+      option.value = lga;
+      option.textContent = lga;
+      lgaSelect.appendChild(option);
+    });
+  }
+
+  // Helper function with LGA data for all states
+  function getLgasForState(state) {
+    const stateLgas = lgaList;
+
+    return stateLgas[state] || [];
+  }
+
   // Add branch
   document.getElementById('addBranch').addEventListener('click', function () {
     const branchEntries = document.getElementById('branchEntries');
@@ -131,76 +161,96 @@ document.addEventListener('DOMContentLoaded', function () {
     const branchEntry = document.createElement('div');
     branchEntry.className = 'branch-entry';
     branchEntry.innerHTML = `
-                    <h6>Branch ${branchCount + 1}</h6>
-                    <div class="row">
-                        <div class="col-md-6">
-                            <label class="form-label">Branch Name</label>
-                            <input type="text" class="form-control branch-name" required>
-                            <div class="invalid-feedback">Please provide the branch name.</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Branch Address</label>
-                            <input type="text" class="form-control branch-address" required>
-                            <div class="invalid-feedback">Please provide the branch address.</div>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-4">
-                            <label class="form-label">Branch City/Town</label>
-                            <input type="text" class="form-control branch-city" required>
-                            <div class="invalid-feedback">Please provide the branch city.</div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Branch LGA</label>
-                            <select class="form-select branch-lga" required>
-                                <option value="">Select LGA</option>
-                                <option value="Barkin Ladi">Barkin Ladi</option>
-                                <option value="Bassa">Bassa</option>
-                                <option value="Bokkos">Bokkos</option>
-                                <option value="Jos East">Jos East</option>
-                                <option value="Jos North">Jos North</option>
-                                <option value="Jos South">Jos South</option>
-                                <option value="Kanam">Kanam</option>
-                                <option value="Kanke">Kanke</option>
-                                <option value="Langtang North">Langtang North</option>
-                                <option value="Langtang South">Langtang South</option>
-                                <option value="Mangu">Mangu</option>
-                                <option value="Mikang">Mikang</option>
-                                <option value="Pankshin">Pankshin</option>
-                                <option value="Qua'an Pan">Qua'an Pan</option>
-                                <option value="Riyom">Riyom</option>
-                                <option value="Shendam">Shendam</option>
-                                <option value="Wase">Wase</option>
-                            </select>
-                            <div class="invalid-feedback">Please select the branch LGA.</div>
-                        </div>
-                        <div class="col-md-4">
-                            <label class="form-label">Branch State</label>
-                            <input type="text" class="form-control branch-state" value="Plateau" readonly>
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col-md-6">
-                            <label class="form-label">Branch Latitude</label>
-                            <input type="number" step="any" class="form-control branch-latitude" required>
-                            <div class="invalid-feedback">Please provide the branch latitude.</div>
-                        </div>
-                        <div class="col-md-6">
-                            <label class="form-label">Branch Longitude</label>
-                            <input type="number" step="any" class="form-control branch-longitude" required>
-                            <div class="invalid-feedback">Please provide the branch longitude.</div>
-                        </div>
-                    </div>
-                    <button type="button" class="btn btn-danger btn-sm remove-branch">Remove Branch</button>
-                `;
+      <h6>Branch ${branchCount + 1}</h6>
+      <div class="row">
+        <div class="col-md-6">
+          <label class="form-label required">Branch Name</label>
+          <input type="text" class="form-control branch-name" required>
+          <div class="invalid-feedback">Please provide the branch name.</div>
+        </div>
+        <div class="col-md-6">
+          <label class="form-label required">Branch Address</label>
+          <input type="text" class="form-control branch-address" required>
+          <div class="invalid-feedback">Please provide the branch address.</div>
+        </div>
+      </div>
+      <div class="row mt-2">
+        <div class="col-md-4">
+          <label class="form-label required">Branch City/Town</label>
+          <input type="text" class="form-control branch-city" required>
+          <div class="invalid-feedback">Please provide the branch city.</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label required">State</label>
+          <select class="form-select branch-state" required>
+            <option value="">Select State</option>
+            <option value="Abia">Abia</option>
+            <option value="Adamawa">Adamawa</option>
+            <option value="AkwaIbom">Akwa Ibom</option>
+            <option value="Anambra">Anambra</option>
+            <option value="Bauchi">Bauchi</option>
+            <option value="Bayelsa">Bayelsa</option>
+            <option value="Benue">Benue</option>
+            <option value="Borno">Borno</option>
+            <option value="Cross River">Cross River</option>
+            <option value="Delta">Delta</option>
+            <option value="Ebonyi">Ebonyi</option>
+            <option value="Edo">Edo</option>
+            <option value="Ekiti">Ekiti</option>
+            <option value="Enugu">Enugu</option>
+            <option value="FCT">Federal Capital Territory</option>
+            <option value="Gombe">Gombe</option>
+            <option value="Imo">Imo</option>
+            <option value="Jigawa">Jigawa</option>
+            <option value="Kaduna">Kaduna</option>
+            <option value="Kano">Kano</option>
+            <option value="Katsina">Katsina</option>
+            <option value="Kebbi">Kebbi</option>
+            <option value="Kogi">Kogi</option>
+            <option value="Kwara">Kwara</option>
+            <option value="Lagos">Lagos</option>
+            <option value="Nasarawa">Nasarawa</option>
+            <option value="Niger">Niger</option>
+            <option value="Ogun">Ogun</option>
+            <option value="Ondo">Ondo</option>
+            <option value="Osun">Osun</option>
+            <option value="Oyo">Oyo</option>
+            <option value="Plateau">Plateau</option>
+            <option value="Rivers">Rivers</option>
+            <option value="Sokoto">Sokoto</option>
+            <option value="Taraba">Taraba</option>
+            <option value="Yobe">Yobe</option>
+            <option value="Zamfara">Zamfara</option>
+          </select>
+          <div class="invalid-feedback">Please select the state.</div>
+        </div>
+        <div class="col-md-4">
+          <label class="form-label required">Local Government</label>
+          <select class="form-select branch-lga" required disabled>
+            <option value="">Select State First</option>
+          </select>
+          <div class="invalid-feedback">Please select the LGA.</div>
+        </div>
+      </div>
+      
+      <button type="button" class="btn btn-danger btn-sm remove-branch">Remove Branch</button>
+    `;
 
     branchEntries.appendChild(branchEntry);
+
+    // Add event listener to the newly created element
+    branchEntry.querySelector('.branch-state').addEventListener('change', function () {
+      updateLgas(this);
+    });
 
     // Add remove event listener
     branchEntry.querySelector('.remove-branch').addEventListener('click', function () {
       branchEntries.removeChild(branchEntry);
     });
+
+
   });
+
 
   // Generate operations content based on facility type
   document.getElementById('facilityType').addEventListener('change', function () {
@@ -223,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Primary Services Offered</label>
+                                <label class="form-label required">Primary Services Offered</label>
                                 <select class="multiple-select" id="primaryServices" multiple required>
                                     <option value="General Consultation">General Consultation</option>
                                     <option value="Surgery">Surgery</option>
@@ -241,7 +291,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select at least one primary service.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Type of Major Equipment in Facility</label>
+                                <label class="form-label required">Type of Major Equipment in Facility</label>
                                 <select class="multiple-select" id="majorEquipment" multiple>
                                     <option value="MRI Scanner">MRI Scanner</option>
                                     <option value="CT Scanner">CT Scanner</option>
@@ -256,29 +306,29 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Number of Beds</label>
+                                <label class="form-label required">Number of Beds</label>
                                 <input type="number" class="form-control" id="numberOfBeds" required>
                                 <div class="invalid-feedback">Please provide the number of beds.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Average Monthly Patient Visits</label>
+                                <label class="form-label required">Average Monthly Patient Visits</label>
                                 <input type="number" class="form-control" id="avgMonthlyPatientVisits" required>
                                 <div class="invalid-feedback">Please provide the average monthly patient visits.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Number of Surgeries/Procedures per Month</label>
+                                <label class="form-label required">Number of Surgeries/Procedures per Month</label>
                                 <input type="number" class="form-control" id="numberOfSurgeries" required>
                                 <div class="invalid-feedback">Please provide the number of surgeries/procedures.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Cost of Hospital Card/Registration Fee (₦)</label>
+                                <label class="form-label required">Cost of Hospital Card/Registration Fee (₦)</label>
                                 <input type="number" class="form-control" id="registrationFee" required>
                                 <div class="invalid-feedback">Please provide the registration fee.</div>
                             </div>
@@ -289,29 +339,29 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label class="form-label">Average Number of Births per Month</label>
+                                <label class="form-label required">Average Number of Births per Month</label>
                                 <input type="number" class="form-control" id="avgBirthsPerMonth" required>
                                 <div class="invalid-feedback">Please provide the average number of births.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Number of Caesarean Section (CS) Births per Month</label>
+                                <label class="form-label required">Number of Caesarean Section (CS) Births per Month</label>
                                 <input type="number" class="form-control" id="csBirthsPerMonth" required>
                                 <div class="invalid-feedback">Please provide the number of CS births.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Number of patients for Ante-Natal per Month</label>
+                                <label class="form-label required">Number of patients for Ante-Natal per Month</label>
                                 <input type="number" class="form-control" id="anteNatalPatients" required>
                                 <div class="invalid-feedback">Please provide the number of ante-natal patients.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Number of patients for Post-Natal per Month</label>
+                                <label class="form-label required">Number of patients for Post-Natal per Month</label>
                                 <input type="number" class="form-control" id="postNatalPatients" required>
                                 <div class="invalid-feedback">Please provide the number of post-natal patients.</div>
                             </div>
@@ -322,17 +372,17 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label class="form-label">Number of Dental Chairs/Units</label>
+                                <label class="form-label required">Number of Dental Chairs/Units</label>
                                 <input type="number" class="form-control" id="dentalChairs" required>
                                 <div class="invalid-feedback">Please provide the number of dental chairs.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Average Number of Procedures per Month</label>
+                                <label class="form-label required">Average Number of Procedures per Month</label>
                                 <input type="number" class="form-control" id="avgProcedures" required>
                                 <div class="invalid-feedback">Please provide the average number of procedures.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
@@ -343,12 +393,12 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Average Number of Prescriptions Dispensed per Month</label>
+                                <label class="form-label required">Average Number of Prescriptions Dispensed per Month</label>
                                 <input type="number" class="form-control" id="prescriptionsPerMonth" required>
                                 <div class="invalid-feedback">Please provide the number of prescriptions.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
@@ -359,7 +409,7 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Type of Major Equipment</label>
+                                <label class="form-label required">Type of Major Equipment</label>
                                 <select class="multiple-select" id="majorEquipment" multiple required>
                                     <option value="MRI Scanner">MRI Scanner</option>
                                     <option value="CT Scanner">CT Scanner</option>
@@ -372,14 +422,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select at least one equipment type.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Number of Scans/Imaging Procedures per Month</label>
+                                <label class="form-label required">Number of Scans/Imaging Procedures per Month</label>
                                 <input type="number" class="form-control" id="scansPerMonth" required>
                                 <div class="invalid-feedback">Please provide the number of scans.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
@@ -390,12 +440,12 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label class="form-label">Number of Eye Surgeries/Procedures per Month</label>
+                                <label class="form-label required">Number of Eye Surgeries/Procedures per Month</label>
                                 <input type="number" class="form-control" id="eyeProcedures" required>
                                 <div class="invalid-feedback">Please provide the number of eye procedures.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Do you have an optical dispensing unit?</label>
+                                <label class="form-label required">Do you have an optical dispensing unit?</label>
                                 <select class="form-select" id="hasOpticalUnit" required>
                                     <option value="">Select</option>
                                     <option value="Yes">Yes</option>
@@ -404,14 +454,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select an option.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Average number of glasses dispensed per month</label>
+                                <label class="form-label required">Average number of glasses dispensed per month</label>
                                 <input type="number" class="form-control" id="glassesDispensed" required>
                                 <div class="invalid-feedback">Please provide the number of glasses dispensed.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
@@ -422,7 +472,7 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Primary Services Offered</label>
+                                <label class="form-label required">Primary Services Offered</label>
                                 <select class="multiple-select" id="primaryServices" multiple required>
                                     <option value="Physiotherapy">Physiotherapy</option>
                                     <option value="Occupational Therapy">Occupational Therapy</option>
@@ -434,14 +484,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select at least one primary service.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Average Number of Therapy Sessions per Month</label>
+                                <label class="form-label required">Average Number of Therapy Sessions per Month</label>
                                 <input type="number" class="form-control" id="therapySessions" required>
                                 <div class="invalid-feedback">Please provide the number of therapy sessions.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
@@ -452,7 +502,7 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Primary Services Offered</label>
+                                <label class="form-label required">Primary Services Offered</label>
                                 <select class="multiple-select" id="primaryServices" multiple required>
                                     <option value="Pathology">Pathology</option>
                                     <option value="Hematology">Hematology</option>
@@ -466,14 +516,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select at least one primary service.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Average Number of Patients (Lab tests) per Month</label>
+                                <label class="form-label required">Average Number of Patients (Lab tests) per Month</label>
                                 <input type="number" class="form-control" id="labTestsPerMonth" required>
                                 <div class="invalid-feedback">Please provide the number of lab tests.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
@@ -484,7 +534,7 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Primary Services Offered</label>
+                                <label class="form-label required">Primary Services Offered</label>
                                 <select class="multiple-select" id="primaryServices" multiple required>
                                     <option value="spa services">Spa services</option>
                                     <option value="massage therapy">Massage therapy</option>
@@ -498,7 +548,7 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select at least one primary service.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Type of Major Equipment in Facility</label>
+                                <label class="form-label required">Type of Major Equipment in Facility</label>
                                 <select class="multiple-select" id="majorEquipment" multiple>
                                     <option value="specialized massage chairs">Specialized massage chairs</option>
                                     <option value="Sauna">Sauna</option>
@@ -510,17 +560,17 @@ document.addEventListener('DOMContentLoaded', function () {
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Average Monthly Client Visits</label>
+                                <label class="form-label required">Average Monthly Client Visits</label>
                                 <input type="number" class="form-control" id="avgClientVisits" required>
                                 <div class="invalid-feedback">Please provide the average client visits.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Membership/Package fee (if applicable)</label>
+                                <label class="form-label required">Membership/Package fee (if applicable)</label>
                                 <select class="form-select" id="membershipFee">
                                     <option value="">Select fee range</option>
                                     <option value="0 to 25,000">₦0 to ₦25,000</option>
@@ -535,7 +585,7 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Primary Products Sold</label>
+                                <label class="form-label required">Primary Products Sold</label>
                                 <select class="multiple-select" id="primaryProducts" multiple required>
                                     <option value="over-the-counter medications">Over-the-counter medications</option>
                                     <option value="basic first aid">Basic first aid</option>
@@ -546,14 +596,14 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select at least one product.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Average Number of Sales Transactions per Month</label>
+                                <label class="form-label required">Average Number of Sales Transactions per Month</label>
                                 <input type="number" class="form-control" id="salesTransactions" required>
                                 <div class="invalid-feedback">Please provide the number of transactions.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-12">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
@@ -564,7 +614,7 @@ document.addEventListener('DOMContentLoaded', function () {
       html = `
                         <div class="row mb-3">
                             <div class="col-md-6">
-                                <label class="form-label">Primary Services Offered</label>
+                                <label class="form-label required">Primary Services Offered</label>
                                 <select class="multiple-select" id="primaryServices" multiple required>
                                     <option value="herbal remedies">Herbal remedies</option>
                                     <option value="traditional bone setting">Traditional bone setting</option>
@@ -574,24 +624,24 @@ document.addEventListener('DOMContentLoaded', function () {
                                 <div class="invalid-feedback">Please select at least one primary service.</div>
                             </div>
                             <div class="col-md-6">
-                                <label class="form-label">Cost of Initial Consultation/Treatment Fee (₦)</label>
+                                <label class="form-label required">Cost of Initial Consultation/Treatment Fee (₦)</label>
                                 <input type="number" class="form-control" id="consultationFee" required>
                                 <div class="invalid-feedback">Please provide the consultation fee.</div>
                             </div>
                         </div>
                         <div class="row mb-3">
                             <div class="col-md-4">
-                                <label class="form-label">Number of herbal medicine dispensed per month</label>
+                                <label class="form-label required">Number of herbal medicine dispensed per month</label>
                                 <input type="number" class="form-control" id="herbalMedicineDispensed" required>
                                 <div class="invalid-feedback">Please provide the number of herbal medicines dispensed.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Number of Employees</label>
+                                <label class="form-label required">Number of Employees</label>
                                 <input type="number" class="form-control" id="numberOfEmployees" required>
                                 <div class="invalid-feedback">Please provide the number of employees.</div>
                             </div>
                             <div class="col-md-4">
-                                <label class="form-label">Average Monthly Client Visits</label>
+                                <label class="form-label required">Average Monthly Client Visits</label>
                                 <input type="number" class="form-control" id="avgClientVisits" required>
                                 <div class="invalid-feedback">Please provide the average client visits.</div>
                             </div>
@@ -603,6 +653,51 @@ document.addEventListener('DOMContentLoaded', function () {
     initializeSelectize();
   });
 
+  // Add this to your document ready function
+  document.getElementById('printSummary').addEventListener('click', function () {
+    // Clone the review summary to avoid affecting the original
+    const printContent = document.getElementById('reviewSummary').cloneNode(true);
+
+    // Create a print-specific container
+    const printWindow = window.open('', '', 'width=800,height=600');
+    printWindow.document.write(`
+    <html>
+      <head>
+        <title>Facility Registration Summary</title>
+        <style>
+          body { font-family: Arial, sans-serif; margin: 20px; }
+          h4, h5, h6 { color: #333; }
+          .card { border: 1px solid #ddd; margin-bottom: 20px; }
+          .card-header { background-color: #f8f9fa; padding: 10px 15px; }
+          table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
+          table, th, td { border: 1px solid #ddd; }
+          th, td { padding: 8px; text-align: left; }
+          th { background-color: #f2f2f2; }
+          .text-center { text-align: center; }
+          .text-danger { color: #dc3545; }
+          .text-success { color: #28a745; }
+          .mt-3 { margin-top: 1rem; }
+          .mb-3 { margin-bottom: 1rem; }
+        </style>
+      </head>
+      <body>
+        <h3>Facility Registration Summary</h3>
+        <p>Printed on: ${new Date().toLocaleString()}</p>
+        ${printContent.innerHTML}
+        <script>
+          window.onload = function() {
+            setTimeout(function() {
+              window.print();
+              window.close();
+            }, 200);
+          }
+        </script>
+      </body>
+    </html>
+  `);
+    printWindow.document.close();
+  });
+
 
   // Form submission
   document.getElementById('facilityForm').addEventListener('submit', function (e) {
@@ -612,11 +707,13 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   });
 
+
   // Generate review summary
   function generateSummary() {
     const summary = document.getElementById('reviewSummary');
     let html = `
-      <h6>Identification & Registration</h6>
+      <h3 class="mb-2">Identification & Registration</h3>
+      <img src="${imageUrlInput.value || 'assets/img/userprofile.png'}" alt="Facility Image" style="max-width:150px;max-height:150px;display:block;margin-bottom:15px;border-radius:8px;">
       <p><strong>Legal Name:</strong> ${document.getElementById('legalName').value}</p>
       <p><strong>Facility Type:</strong> ${document.getElementById('facilityType').value}</p>
       <p><strong>Registration Number:</strong> ${document.getElementById('registrationNumber').value}</p>
@@ -628,7 +725,7 @@ document.addEventListener('DOMContentLoaded', function () {
       <p><strong>TIN:</strong> ${document.getElementById('taxIdentificationNumber').value}</p>
       <p><strong>Date of Establishment:</strong> ${document.getElementById('dateOfEstablishment').value}</p>
       
-      <h6 class="mt-4">Location & Contact</h6>
+      <h3 class="mt-4 mb-2">Location & Contact</h3>
       <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
       <p><strong>City/Town:</strong> ${document.getElementById('city').value}</p>
       <p><strong>LGA:</strong> ${document.getElementById('lga').value}</p>
@@ -643,14 +740,13 @@ document.addEventListener('DOMContentLoaded', function () {
     if (document.getElementById('hasBranches').checked) {
       const branches = document.querySelectorAll('.branch-entry');
       if (branches.length > 0) {
-        html += `<h6 class="mt-4">Branches</h6>`;
+        html += `<h3 class="mt-4 mb-2">Branches</h3>`;
         branches.forEach((branch, index) => {
           html += `
               <p><strong>Branch ${index + 1}:</strong> ${branch.querySelector('.branch-name').value}</p>
               <p><strong>Address:</strong> ${branch.querySelector('.branch-address').value}</p>
               <p><strong>City:</strong> ${branch.querySelector('.branch-city').value}</p>
               <p><strong>LGA:</strong> ${branch.querySelector('.branch-lga').value}</p>
-              <p><strong>Geo-coordinates:</strong> ${branch.querySelector('.branch-latitude').value}, ${branch.querySelector('.branch-longitude').value}</p>
           `;
         });
       }
@@ -658,7 +754,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Add operations based on facility type
     const facilityType = document.getElementById('facilityType').value;
-    html += `<h6 class="mt-4">Operations</h6>`;
+    html += `<h3 class="mt-4 mb-2">Operations</h3>`;
 
     if (facilityType.includes('Primary Healthcare Facility') ||
       facilityType.includes('Secondary Healthcare Facility') ||
@@ -863,8 +959,8 @@ document.addEventListener('DOMContentLoaded', function () {
           address: branch.querySelector('.branch-address').value,
           city: branch.querySelector('.branch-city').value,
           lga: branch.querySelector('.branch-lga').value,
-          latitude: branch.querySelector('.branch-latitude').value,
-          longitude: branch.querySelector('.branch-longitude').value
+          latitude: 0.00,
+          longitude: 0.00
         });
       });
     }
@@ -873,6 +969,8 @@ document.addEventListener('DOMContentLoaded', function () {
     const payload = {
       endpoint: "createFacility",
       data: {
+        enumerated_by: userInfo2?.id,
+        img: imageUrlInput.value || "assets/img/userprofile.png",
         legal_name: document.getElementById('legalName').value,
         facility_type: document.getElementById('facilityType').value,
         registration_number: document.getElementById('registrationNumber').value,
@@ -904,7 +1002,6 @@ document.addEventListener('DOMContentLoaded', function () {
     return payload;
   }
 
-
   async function registerUser() {
     if (isLoading) return;
 
@@ -922,8 +1019,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const userData = {
         "endpoint": "createPayerAccount",
         "data": {
-          "img": "assets/img/userprofile.png",
-          "firstname": $("#legalName").val(),
+          "img": imageUrlInput.value || "assets/img/userprofile.png",
+          "first_name": $("#legalName").val(),
           "surname": "",
           "email": $("#email").val(),
           "phone": $("#phoneNumber").val(),
@@ -969,6 +1066,19 @@ document.addEventListener('DOMContentLoaded', function () {
 
       const userResult = await userResponse.json();
 
+      if (userResult.status !== 1) {
+        let errorMessage = 'Registration failed';
+
+        // Check for specific error cases
+        if (userResult.message && userResult.status === 2) {
+          errorMessage = 'This email is already registered with a taxpayer';
+        } else if (userResult.message) {
+          errorMessage = userResult.message;
+        }
+
+        throw new Error(errorMessage);
+      }
+
       // If user registration is successful, submit the facility form with additional data from response
       const facilityPayload = preparePayload();
 
@@ -1004,11 +1114,23 @@ document.addEventListener('DOMContentLoaded', function () {
 
     } catch (error) {
       console.error('Registration error:', error);
-      $("#msg_box").html(`
-      <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-        <strong>Error!</strong> ${error.message}
-      </div>
-    `);
+      // Show appropriate error message
+      if (error.message.includes('already registered')) {
+        // Warning for duplicate email
+        await Swal.fire({
+          title: 'Warning',
+          text: error.message,
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
+      } else {
+        // Error for other cases
+        $("#msg_box").html(`
+        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+          <strong>Error!</strong> ${error.message}
+        </div>
+      `);
+      }
     } finally {
       // Hide loader
       isLoading = false;
@@ -1016,6 +1138,8 @@ document.addEventListener('DOMContentLoaded', function () {
       $("#msg_box").html('');
     }
   }
+
+
 })
 
 
@@ -1072,3 +1196,98 @@ function submitLocation(lat, lon, source) {
 $(document).ready(function () {
   getLocationAndSubmit();
 });
+
+// Camera variables
+let stream = null;
+const video = document.getElementById('video');
+const imagePreview = document.getElementById('imagePreview');
+const imageUrlInput = document.getElementById('imageUrl');
+
+// Open camera
+function openCamera() {
+  const cameraModal = document.getElementById('cameraModal');
+  cameraModal.classList.remove('hidden');
+
+  navigator.mediaDevices.getUserMedia({ video: true })
+    .then(function (mediaStream) {
+      stream = mediaStream;
+      video.srcObject = stream;
+    })
+    .catch(function (err) {
+      console.error("Error accessing camera: ", err);
+      alert("Could not access the camera. Please check permissions.");
+    });
+}
+
+// Close camera
+function closeCamera() {
+  if (stream) {
+    stream.getTracks().forEach(track => track.stop());
+    stream = null;
+  }
+  document.getElementById('cameraModal').classList.add('hidden');
+}
+
+// Capture photo from camera
+function capturePhoto() {
+  const canvas = document.createElement('canvas');
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+  canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+
+  canvas.toBlob(async function (blob) {
+    try {
+      await uploadImageToPublitio(blob);
+    } catch (error) {
+      alert(error.message);
+    }
+  }, 'image/jpeg', 0.95);
+
+  closeCamera();
+}
+
+// Handle file upload
+async function handleFileUpload(files) {
+  if (files && files[0]) {
+    if (files[0].size > 5 * 1024 * 1024) { // 5MB limit
+      alert('Image size should be less than 5MB');
+      return;
+    }
+
+    try {
+      await uploadImageToPublitio(files[0]);
+    } catch (error) {
+      alert(error.message);
+    }
+  }
+}
+
+// Upload to Publitio
+const publitio = new PublitioAPI(publitioKey1, publitioKey2);
+
+async function uploadImageToPublitio(file) {
+  // Show loading state
+  imagePreview.src = 'https://i.gifer.com/ZZ5H.gif'; // Online loading GIF
+  $("#uploaderContinua").prop("disabled", true)
+
+  try {
+    // Upload using SDK
+    const uploadResponse = await publitio.uploadFile(file, 'file', {
+      folder: 'taxpayer_profiles',
+      public_id: 'profile_' + Date.now(),
+      title: 'Profile Picture'
+    });
+
+    // Update preview and hidden input
+    imagePreview.src = uploadResponse.url_preview;
+    imageUrlInput.value = uploadResponse.url_preview;
+
+    $("#uploaderContinua").prop("disabled", false)
+    return uploadResponse.url_preview;
+  } catch (error) {
+    $("#uploaderContinua").prop("disabled", false)
+    console.error('Upload error:', error);
+    imagePreview.src = 'assets/img/userprofile.png';
+    throw new Error('Failed to upload image: ' + error.message);
+  }
+}
