@@ -3,6 +3,23 @@ const PLATEAU_BOUNDS = [
   [10.5, 10.5]  // Northeast coordinates
 ];
 
+async function getEnumerators() {
+  try {
+    const response = await fetch(`${HOST}?getEnumUser`);
+    const data = await response.json();
+
+    data.message.reverse().forEach(enumuser => {
+      $("#enumeratorFilter").append(`
+        <option value="${enumuser.id}">${enumuser.fullname}</option>
+        `)
+    })
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+getEnumerators()
+
 // Map initialization
 const map = L.map('map').setView([9.25, 9.5], 8); // Centered on Plateau State
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -51,6 +68,7 @@ function processAPIData(apiData) {
   }).filter(item => item !== null); // Remove null entries
 }
 
+
 // Fetch data from API
 async function fetchData(params = {}) {
   try {
@@ -94,7 +112,7 @@ async function applyFilters() {
 
   // Build API params
   const params = {};
-  if (enumerator !== 'all') params.enumerator = enumerator;
+  if (enumerator !== '') params.enumerator = enumerator;
   if (lga !== 'all') params.lga = lga;
 
   // Time range filters

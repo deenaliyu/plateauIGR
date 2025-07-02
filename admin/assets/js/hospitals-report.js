@@ -123,7 +123,7 @@ function renderFacilities(facilities) {
         <td>${locationData.phone_number || 'N/A'}</td>
         <td>${facilityData.ownership_type || 'N/A'}</td>
         <td>${branches.length}</td>
-        <!-- <td>${facilityData.created_by || 'N/A'}</td> -->
+        <td>${facilityData.enumerator_email || 'N/A'}</td>
         <td>
           <button class="btn btn-sm btn-outline-primary view-facility" data-id="${facilityData.id}" title="View Details">
             <iconify-icon icon="mdi:eye-outline" class="text-md mt-1"></iconify-icon>
