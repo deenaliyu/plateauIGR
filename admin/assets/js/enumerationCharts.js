@@ -7,7 +7,6 @@ async function getEnumerators() {
     const data = await response.json()
     console.log(data)
 
-    $("#totalField").html(data.message.length)
     if (data.status === 1) {
       // console.log(data)
 
@@ -80,7 +79,6 @@ async function loadDashboardData() {
 
     // 1. Display totals
     document.getElementById('theTotal').textContent = data.total_taxpayers[0].total;
-    document.getElementById('totalField').textContent = data.total_enumerators[0].total;
 
     // 2. Prepare business type data
     const businessData = data.taxpayers_by_business
