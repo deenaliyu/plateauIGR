@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlateauIGR</title>
+
+  <!-- FAVION ICON -->
+
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- <link rel="stylesheet" href="assets/css/responsive.css" /> -->
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+    integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #reviewSummary,
+      #reviewSummary * {
+        visibility: visible;
+      }
+
+      #reviewSummary {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    #reviewSummary p {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    label.required::after {
+      content: "*";
+      color: #dc3545;
+      opacity: 0.8;
+      margin-left: 0.25rem;
+      font-size: 1.1em;
+    }
+
+    .selectize-input:after {
+      content: '▾';
+      /* the dropdown arrow */
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      margin-top: -10px;
+      font-size: 20px;
+      color: #999;
+      pointer-events: none;
+    }
+
+    .progress {
+      height: 10px;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #CDA545;
+    }
+
+    .invalid-feedback {
+      display: none;
+    }
+
+    .was-validated .form-control:invalid~.invalid-feedback,
+    .was-validated .form-select:invalid~.invalid-feedback {
+      display: block;
+    }
+
+    .branch-entry {
+      border: 1px solid #dee2e6;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+    }
+
+    .branch-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .remove-branch {
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="modal fade" id="snapModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Take a Snap</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="row pakainfo">
+              <div class="col-md-6 pakainfo">
+                <div id="live_camera"></div>
+
+
+                <input class="button mt-3" type=button value="Take Snapshot" onClick="capture_web_snapshot()">
+                <input type="hidden" name="image" class="image-tag">
+              </div>
+              <div class="col-md-6">
+                <div id="preview">Your captured image will appear here...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="outline-btn" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="button" data-bs-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <header>
+    <div class="flex gap-2 items-center p-3 border-b">
+      <img src="./assets/img/logo.png" class="w-[50px]" alt="">
+      <p class="text-md fontBold">Plateau IGR</p>
+    </div>
+
+  </header>
+
+
+  <section class="flex h-[89vh] overflow-y-scroll headerBeginner">
+
+    <div class="w-3/12 md:block hidden bg-[#F9FAFB] p-3">
+
+      <div class="flex px-1 h-full">
+        <div class="flex px-1 h-full">
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v1.png" />
+          </div>
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v2.png" />
+          </div>
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v3.png" />
+          </div>
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v4.png" />
+          </div>
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v5.png" />
+          </div>
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v6.png" />
+          </div>
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v7.png" />
+          </div>
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v8.png" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
+
+      <!-- SECTOR SECTION -->
+      <section class="formTabs h-full">
+        <div class="md:pt-4 pt-3 mb-2">
+          <a class="flex items-center gap-2" href="enumeration.html">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </a>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">Sector</h1>
+          <p class="mt-2 mb-4">Choose the sector for enumeration</p>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="sector" class="form-label required">Sector</label>
+              <select class="form-select" id="" required>
+                <option value="">Select Sector</option>
+                <option value="Health Sector">Health Sector</option>
+                <option value="Education Sector">Education Sector</option>
+                <option value="Agricultural Sector">Agricultural Sector</option>
+                <option value="Mining Sector">Mining Sector</option>
+                <option value="Financial Sector">Financial Sector</option>
+              </select>
+              <div class="invalid-feedback">Please select Sector.</div>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+          </div>
+        </form>
+
+      </section>
+
+      <!-- USER CATEGORY SECTION -->
+      <section class="formTabs h-full">
+        <div class="md:pt-4 pt-3 mb-2">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+
+
+        <form action="">
+          <h1 class="fontBold text-lg">User Category</h1>
+          <p class="mt-2 mb-5">Choose the type of facility owner</p>
+
+          <div class="flex gap-x-5 justify-center flex-wrap">
+            <div class="md:w-8/12">
+              <div class="flex gap-x-5 mt-3 justify-center flex-wrap">
+                <div class="w-[244px] px-3 pb-4 card card-body cardi"
+                  data-name="individual">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/individual.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">Individual</p>
+                  <p class="text-center pt-2">These are individuals who are required to
+                    pay taxes on their personal income, such as salary, freelance work, rental
+                    income, etc.</p>
+                </div>
+                <div class="w-[244px] px-3 pb-4 card card-body cardi"
+                  data-name="corporate">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/corporate.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">Corporate</p>
+                  <p class="text-center pt-2">These are businesses, including corporations
+                    and limited liability companies, that are required to pay taxes on their
+                    profits.</p>
+                </div>
+              </div>
+              <div class="flex gap-x-5 mt-4 justify-center flex-wrap">
+                <div class="w-[244px] px-3 pb-4 card card-body cardi"
+                  data-name="state">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/properties.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">State Agency</p>
+                  <p class="text-center pt-2">These are government agencies and
+                    departments at the state level that are responsible for paying taxes on their
+                    operations.</p>
+                </div>
+                <div class="w-[244px] px-3 pb-4 card card-body cardi"
+                  data-name="federal">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/properties.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">Federal Agency</p>
+                  <p class="text-center pt-2">These are government agencies and
+                    departments at the federal level that are responsible for paying taxes on their
+                    operations.</p>
+                </div>
+              </div>
+            </div>
+
+          </div>
+         <div class="flex justify-between mt-4">
+            <button class="outline-btn mb-4" type="button" onclick="nextPrev(-1)">Previous</button>
+            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+          </div>
+        </form>
+
+      </section>
+
+      <!-- Identification & Registration -->
+      <section class="formTabs h-full">
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">Facility Info</h1>
+          <p class="mt-2 mb-4">Enter registration & licensing details</p>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="legalName" class="form-label required">Legal Name of Facility</label>
+              <input type="text" class="form-control" id="legalName" required>
+              <div class="invalid-feedback">Please provide the legal name of the facility.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="facilityType" class="form-label required">Facility Type</label>
+              <select class="form-select" id="facilityType" required>
+                <option value="">Select facility type</option>
+                <option value="Primary Healthcare Facility">Primary Healthcare Facility (Hospital)</option>
+                <option value="Secondary Healthcare Facility">Secondary Healthcare Facility (General
+                  Hospitals)</option>
+                <option value="Tertiary Healthcare Facilities">Tertiary Healthcare
+                  Facilities (Specialist/Teaching Hospitals)</option>
+                <option value="Private Hospitals/Clinics">Private Hospitals/Clinics</option>
+                <option value="Maternity Home / Clinic">Maternity Home / Clinic</option>
+                <option value="Dental Clinic / Centre">Dental Clinic / Centre</option>
+                <option value="Diagnostic Laboratory">Diagnostic Laboratory</option>
+                <option value="Imaging / Radiology Centre">Imaging / Radiology Centre</option>
+                <option value="Eye Clinic">Eye Clinic</option>
+                <option value="Rehabilitation Centre">Rehabilitation Centre</option>
+                <option value="Wellness Centre">Wellness Centre</option>
+                <option value="Herbal Medicine Centre / Traditionalist Health Centre">Herbal Medicine Centre /
+                  Traditionalist Health Centre</option>
+              </select>
+              <div class="invalid-feedback">Please select the facility type.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="registrationNumber" class="form-label required">Business Registration Number (CAC)</label>
+              <input type="text" class="form-control" id="registrationNumber" required>
+              <div class="invalid-feedback">Please provide the business registration number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="ownershipType" class="form-label required">Type of Ownership</label>
+              <select class="form-select" id="ownershipType" required>
+                <option value="">Select ownership type</option>
+                <option value="Private">Private</option>
+                <option value="Government-Owned">Government-Owned</option>
+                <option value="NGO">NGO</option>
+                <option value="Faith-based">Faith-based</option>
+              </select>
+              <div class="invalid-feedback">Please select the ownership type.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="operatingLicenseNumber" class="form-label required">Operating License Number</label>
+              <input type="text" class="form-control" id="operatingLicenseNumber" required>
+              <div class="invalid-feedback">Please provide the operating license number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="healthFacilityCode" class="form-label required">National Health Facility Code</label>
+              <input type="text" class="form-control" id="healthFacilityCode" required>
+              <div class="invalid-feedback">Please provide the health facility code.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="licenseExpiryDate" class="form-label required">Operating License Expiry Date</label>
+              <input type="date" class="form-control" id="licenseExpiryDate" required>
+              <div class="invalid-feedback">Please provide the license expiry date.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="issuingAuthority" class="form-label required">Issuing Authority of Operating License</label>
+              <select class="multiple-select1" id="issuingAuthority" multiple required>
+                <option value="MDCN">Medical and Dental Council of Nigeria (MDCN)</option>
+                <option value="NMCN">Nursing and Midwifery Council of Nigeria (NMCN)</option>
+                <option value="PCN">Pharmacists Council of Nigeria (PCN)</option>
+                <option value="MLSCN">Medical Laboratory Science Council of Nigeria (MLSCN)</option>
+                <option value="RRBN">Radiographers Registration Board of Nigeria (RRBN)</option>
+                <option value="FMoH">Federal Ministry of Health (FMoH)</option>
+              </select>
+              <div class="invalid-feedback">Please select at least one issuing authority.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="certificateOfStandard" class="form-label">Certificate of Standards Number (optional)</label>
+              <input type="text" class="form-control" id="certificateOfStandard">
+            </div>
+            <div class="col-md-6">
+              <label for="nhisAccreditationNumber" class="form-label">NHIS Accreditation Status/Number
+                (optional)</label>
+              <input type="text" class="form-control" id="nhisAccreditationNumber">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="taxIdentificationNumber" class="form-label required">Tax Identification Number (TIN)</label>
+              <input type="text" class="form-control" id="taxIdentificationNumber" required>
+              <div class="invalid-feedback">Please provide the tax identification number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="dateOfEstablishment" class="form-label required">Date of Establishment/Commencement of
+                Operations</label>
+              <input type="date" class="form-control" id="dateOfEstablishment" required>
+              <div class="invalid-feedback">Please provide the date of establishment.</div>
+            </div>
+          </div>
+
+
+
+          <div class="flex justify-between">
+            <button class="outline-btn mb-4" type="button" onclick="nextPrev(-1)">Previous</button>
+            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+          </div>
+        </form>
+
+      </section>
+
+      <!-- Operations Info -->
+      <section class="formTabs h-full">
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">Operations Info</h1>
+          <p class="mt-2 mb-4">Provide services, staff, and equipment info</p>
+
+
+          <!-- Dynamic content based on facility type -->
+          <div id="operationsContent">
+            <!-- This will be filled by JavaScript based on facility type -->
+          </div>
+
+          <div class="flex justify-between">
+            <button class="outline-btn mb-4" type="button" onclick="nextPrev(-1)">Previous</button>
+            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Contact & Location -->
+      <section class="formTabs h-full">
+
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">Contact & Location</h1>
+          <p class="mt-2 mb-4">Enter facility address and contact details</p>
+
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="address" class="form-label required">Primary Physical Address</label>
+              <input type="text" class="form-control" id="address" required>
+              <div class="invalid-feedback">Please provide the physical address.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="city" class="form-label required">City/Town</label>
+              <input type="text" class="form-control" id="city" required>
+              <div class="invalid-feedback">Please provide the city/town.</div>
+            </div>
+            <div class="col-md-4">
+              <label for="lga" class="form-label required">Local Government Area (LGA)</label>
+              <select class="form-select" id="lga" required>
+                <option value="">Select LGA</option>
+                <option value="Barkin Ladi">Barkin Ladi</option>
+                <option value="Bassa">Bassa</option>
+                <option value="Bokkos">Bokkos</option>
+                <option value="Jos East">Jos East</option>
+                <option value="Jos North">Jos North</option>
+                <option value="Jos South">Jos South</option>
+                <option value="Kanam">Kanam</option>
+                <option value="Kanke">Kanke</option>
+                <option value="Langtang North">Langtang North</option>
+                <option value="Langtang South">Langtang South</option>
+                <option value="Mangu">Mangu</option>
+                <option value="Mikang">Mikang</option>
+                <option value="Pankshin">Pankshin</option>
+                <option value="Qua'an Pan">Qua'an Pan</option>
+                <option value="Riyom">Riyom</option>
+                <option value="Shendam">Shendam</option>
+                <option value="Wase">Wase</option>
+              </select>
+              <div class="invalid-feedback">Please select the LGA.</div>
+            </div>
+            <div class="col-md-4">
+              <label for="state" class="form-label required">State</label>
+              <input type="text" class="form-control" id="state" value="Plateau" readonly>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="phoneNumber" class="form-label required">Phone Number</label>
+              <input type="tel" class="form-control" id="phoneNumber" required>
+              <div class="invalid-feedback">Please provide a phone number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label required">Email Address</label>
+              <input type="email" class="form-control" id="email" required>
+              <div class="invalid-feedback">Please provide an email address.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="website" class="form-label">Website (optional)</label>
+              <input type="url" class="form-control" id="website">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="hasBranches">
+                <label class="form-check-label" for="hasBranches">
+                  Does this facility have additional branches?
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="branchesContainer" style="display: none;">
+            <h5 class="mt-4 mb-3">Branch Information</h5>
+            <div id="branchEntries">
+              <!-- Branch entries will be added here dynamically -->
+            </div>
+            <button type="button" class="btn btn-outline-primary mt-2" id="addBranch">Add Another Branch</button>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="latitude" class="form-label required">Latitude (Geo-tagging)</label>
+              <input type="number" step="any" class="form-control" id="latitude" readonly required>
+              <div class="invalid-feedback">Please provide the latitude coordinate.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="longitude" class="form-label required">Longitude (Geo-tagging)</label>
+              <input type="number" step="any" class="form-control" id="longitude" readonly required>
+              <div class="invalid-feedback">Please provide the longitude coordinate.</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
+            <button type="button" class="button" onclick=" nextPrev(1)">Next</button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- Facility Representative  -->
+      <section class="formTabs h-full">
+
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">Facility Representative</h1>
+          <p class="mt-2 mb-4">Capture details of the facility’s authorized contact</p>
+
+
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="repName" class="form-label required">Full Name of Representative</label>
+              <input type="text" class="form-control" id="repName" required>
+              <div class="invalid-feedback">Please provide the full name.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="repemail" class="form-label required">Email Address</label>
+              <input type="email" class="form-control" id="repemail" required>
+              <div class="invalid-feedback">Please provide an email address.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="repphonenumber" class="form-label required">Phone Number</label>
+              <input type="text" class="form-control" id="repphonenumber" required>
+              <div class="invalid-feedback">Please provide a phone number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="repaltphone" class="form-label">Alternate Phone Number</label>
+              <input type="email" class="form-control" id="repaltphone">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="repTIN" class="form-label required">TIN</label>
+              <input type="text" class="form-control" id="repTIN" required>
+              <div class="invalid-feedback">Please provide a TIN Number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="repAddress" class="form-label" required>Address</label>
+              <input type="email" class="form-control" id="repAddress">
+              <div class="invalid-feedback">Please provide an address.</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
+            <button type="button" class="button" onclick=" nextPrev(1)">Next</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Document Uploads -->
+      <section class="formTabs h-full">
+
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">Document Uploads</h1>
+          <p class="mt-2 mb-4">Facility capture and documents uploads</p>
+
+
+          <div class="form-section" id="section2">
+
+            <div class="form-group mb-4">
+              <!-- <label for="">Profile Picture*</label> -->
+              <div class="flex flex-col md:flex-row gap-4 items-center">
+                <!-- Preview Box -->
+                <div class="w-32 h-32 border-2 border-gray-300 rounded-lg overflow-hidden mb-2 md:mb-0">
+                  <img id="imagePreview" src="assets/img/userprofile.png" alt="Preview"
+                    class="w-full h-full object-cover">
+                </div>
+
+                <!-- Capture/Upload Buttons -->
+                <div class="flex flex-col gap-2">
+                  <button type="button" onclick="openCamera()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+                    Capture from Camera
+                  </button>
+                  <button type="button" onclick="document.getElementById('fileInput').click()"
+                    class="button bg-green-600 hover:bg-green-700 text-white">
+                    Upload from Device
+                  </button>
+                  <input type="file" id="fileInput" accept="image/*" class="hidden"
+                    onchange="handleFileUpload(this.files)">
+                </div>
+              </div>
+              <input type="hidden" id="imageUrl" data-name="img" required>
+            </div>
+
+
+            <p class="my-4">Document Upload</p>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="repName" class="form-label">CAC Certificate</label>
+                <input type="file" class="form-control" id="repName">
+                <!-- <div class="invalid-feedback">Please.</div> -->
+              </div>
+              <div class="col-md-6">
+                <label for="repemail" class="form-label">Operating License</label>
+                <input type="file" class="form-control" id="repemail">
+                <!-- <div class="invalid-feedback">Please provide an email address.</div> -->
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
+              <button type="button" class="button" onclick=" nextPrev(1)">Next</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <section class="formTabs h-full">
+
+        <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">Review & Submit</h1>
+          <p class="mt-2 mb-4">Review all entries before submission</p>
+
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5>Facility Information Summary</h5>
+            </div>
+            <div class="card-body">
+              <div id="reviewSummary">
+                <!-- Summary will be generated here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="declaration" required>
+            <label class="form-check-label" for="declaration">
+              I declare that the information provided is accurate to the best of my knowledge.
+            </label>
+            <div class="invalid-feedback">You must agree to the declaration before submitting.</div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
+            <div>
+              <button type="button" class="outline-btn me-2" id="printSummary">
+                <iconify-icon icon="material-symbols:print-outline"></iconify-icon> Print Summary
+              </button>
+              <button type="submit" class="button" id="SubmitButton">Submit</button>
+            </div>
+
+          </div>
+
+          <div id="msg_box"></div>
+        </form>
+      </section>
+
+
+
+    </div>
+
+
+  </section>
+
+  <!-- Camera Modal -->
+  <div id="cameraModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-4 w-11/12 md:w-1/2">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">Take a Photo</h3>
+        <button onclick="closeCamera()" class="text-2xl">&times;</button>
+      </div>
+      <video id="video" width="100%" autoplay class="bg-gray-200"></video>
+      <div class="flex justify-center mt-4 gap-4">
+        <button onclick="capturePhoto()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+          Capture
+        </button>
+        <button onclick="closeCamera()" class="button bg-gray-600 hover:bg-gray-700 text-white">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <script src="assets/js/jquery.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="assets/js/aos-master/dist/aos.js"></script>
+  <script src="assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+  <script src="./assets/node_modules/publitio_js_sdk/build/publitio-api.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+    integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script>
+    AOS.init();
+  </script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/webcam.js"></script>
+  <script src="assets/js/snapping.js"></script>
+  <script src="assets/js/tabHandler.js"></script>
+  <script src="assets/js/enumeration-hospital.js"></script>
+</body>
+
+</html>
