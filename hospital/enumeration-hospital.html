@@ -199,7 +199,7 @@
     <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
 
       <!-- SECTOR SECTION -->
-      <section class="formTabs h-full">
+      <section class="form-section h-full">
         <div class="md:pt-4 pt-3 mb-2">
           <a class="flex items-center gap-2" href="enumeration.html">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
@@ -213,7 +213,7 @@
           <div class="row mb-3">
             <div class="col-md-6">
               <label for="sector" class="form-label required">Sector</label>
-              <select class="form-select" id="" required>
+              <select id="sector" class="form-select required">
                 <option value="">Select Sector</option>
                 <option value="Health Sector">Health Sector</option>
                 <option value="Education Sector">Education Sector</option>
@@ -226,20 +226,20 @@
           </div>
 
           <div class="flex justify-end">
-            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+            <button class="button mb-4 next-section" type="button">Continue</button>
           </div>
         </form>
 
       </section>
 
       <!-- USER CATEGORY SECTION -->
-      <section class="formTabs h-full">
-        <div class="md:pt-4 pt-3 mb-2">
+      <section class="form-section h-full">
+        <!-- <div class="md:pt-4 pt-3 mb-2">
           <button class="flex items-center gap-2" onclick="nextPrev(-1)">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
             <span>Go back</span>
           </button>
-        </div>
+        </div> -->
 
 
 
@@ -297,21 +297,21 @@
 
           </div>
          <div class="flex justify-between mt-4">
-            <button class="outline-btn mb-4" type="button" onclick="nextPrev(-1)">Previous</button>
-            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+            <button class="outline-btn mb-4 prev-section" type="button">Previous</button>
+            <button class="button mb-4 next-section" type="button">Continue</button>
           </div>
         </form>
 
       </section>
 
       <!-- Identification & Registration -->
-      <section class="formTabs h-full">
-        <div class="md:pt-4 pt-3">
+      <section class="form-section h-full">
+        <!-- <div class="md:pt-4 pt-3">
           <button class="flex items-center gap-2" onclick="nextPrev(-1)">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
             <span>Go back</span>
           </button>
-        </div>
+        </div> -->
 
         <form action="">
           <h1 class="fontBold text-lg">Facility Info</h1>
@@ -428,21 +428,21 @@
 
 
           <div class="flex justify-between">
-            <button class="outline-btn mb-4" type="button" onclick="nextPrev(-1)">Previous</button>
-            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+            <button class="outline-btn mb-4 prev-section" type="button">Previous</button>
+            <button class="button mb-4 next-section" type="button">Continue</button>
           </div>
         </form>
 
       </section>
 
       <!-- Operations Info -->
-      <section class="formTabs h-full">
-        <div class="md:pt-4 pt-3">
+      <section class="form-section h-full">
+        <!-- <div class="md:pt-4 pt-3">
           <button class="flex items-center gap-2" onclick="nextPrev(-1)">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
             <span>Go back</span>
           </button>
-        </div>
+        </div> -->
 
         <form action="">
           <h1 class="fontBold text-lg">Operations Info</h1>
@@ -455,21 +455,21 @@
           </div>
 
           <div class="flex justify-between">
-            <button class="outline-btn mb-4" type="button" onclick="nextPrev(-1)">Previous</button>
-            <button class="button mb-4" type="button" onclick=" nextPrev(1)">Continue</button>
+            <button class="outline-btn mb-4 prev-section" type="button">Previous</button>
+            <button class="button mb-4 next-section" type="button">Continue</button>
           </div>
         </form>
       </section>
 
       <!-- Contact & Location -->
-      <section class="formTabs h-full">
+      <section class="form-section h-full">
 
-        <div class="md:pt-4 pt-3">
+        <!-- <div class="md:pt-4 pt-3">
           <button class="flex items-center gap-2" onclick="nextPrev(-1)">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
             <span>Go back</span>
           </button>
-        </div>
+        </div> -->
 
         <form action="">
           <h1 class="fontBold text-lg">Contact & Location</h1>
@@ -573,22 +573,22 @@
           </div>
 
           <div class="d-flex justify-content-between">
-            <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
-            <button type="button" class="button" onclick=" nextPrev(1)">Next</button>
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <button type="button" class="button next-section">Next</button>
           </div>
 
         </form>
       </section>
 
       <!-- Facility Representative  -->
-      <section class="formTabs h-full">
+      <section class="form-section h-full">
 
-        <div class="md:pt-4 pt-3">
+        <!-- <div class="md:pt-4 pt-3">
           <button class="flex items-center gap-2" onclick="nextPrev(-1)">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
             <span>Go back</span>
           </button>
-        </div>
+        </div> -->
 
         <form action="">
           <h1 class="fontBold text-lg">Facility Representative</h1>
@@ -635,28 +635,28 @@
           </div>
 
           <div class="d-flex justify-content-between">
-            <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
-            <button type="button" class="button" onclick=" nextPrev(1)">Next</button>
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <button type="button" class="button next-section">Next</button>
           </div>
         </form>
       </section>
 
       <!-- Document Uploads -->
-      <section class="formTabs h-full">
+      <section class="form-section h-full">
 
-        <div class="md:pt-4 pt-3">
+        <!-- <div class="md:pt-4 pt-3">
           <button class="flex items-center gap-2" onclick="nextPrev(-1)">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
             <span>Go back</span>
           </button>
-        </div>
+        </div> -->
 
         <form action="">
           <h1 class="fontBold text-lg">Document Uploads</h1>
           <p class="mt-2 mb-4">Facility capture and documents uploads</p>
 
 
-          <div class="form-section" id="section2">
+          <div id="section2">
 
             <div class="form-group mb-4">
               <!-- <label for="">Profile Picture*</label> -->
@@ -700,21 +700,21 @@
             </div>
 
             <div class="d-flex justify-content-between">
-              <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
-              <button type="button" class="button" onclick=" nextPrev(1)">Next</button>
+              <button type="button" class="outline-btn prev-section">Previous</button>
+              <button type="button" class="button next-section">Next</button>
             </div>
           </div>
         </form>
       </section>
 
-      <section class="formTabs h-full">
+      <section class="form-section h-full">
 
-        <div class="md:pt-4 pt-3">
+        <!-- <div class="md:pt-4 pt-3">
           <button class="flex items-center gap-2" onclick="nextPrev(-1)">
             <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
             <span>Go back</span>
           </button>
-        </div>
+        </div> -->
 
         <form action="">
           <h1 class="fontBold text-lg">Review & Submit</h1>
@@ -741,7 +741,7 @@
           </div>
 
           <div class="d-flex justify-content-between">
-            <button type="button" class="outline-btn" onclick="nextPrev(1)">Previous</button>
+            <button type="button" class="outline-btn prev-section">Previous</button>
             <div>
               <button type="button" class="outline-btn me-2" id="printSummary">
                 <iconify-icon icon="material-symbols:print-outline"></iconify-icon> Print Summary

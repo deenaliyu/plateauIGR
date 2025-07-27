@@ -41,7 +41,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Form navigation
   const sections = document.querySelectorAll('.form-section');
-  const progressBar = document.querySelector('.progress-bar');
   let currentSection = 0;
 
   // Show first section by default
@@ -53,7 +52,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (validateSection(currentSection)) {
         currentSection++;
         showSection(currentSection);
-        updateProgressBar();
         generateSummary()
       }
     });
@@ -64,7 +62,6 @@ document.addEventListener('DOMContentLoaded', function () {
     button.addEventListener('click', function () {
       currentSection--;
       showSection(currentSection);
-      updateProgressBar();
     });
   });
 
@@ -91,12 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
-  // Update progress bar
-  function updateProgressBar() {
-    const progress = ((currentSection + 1) / sections.length) * 100;
-    progressBar.style.width = `${progress}%`;
-    progressBar.setAttribute('aria-valuenow', progress);
-  }
+
 
   // Validate current section before proceeding
   function validateSection(index) {
@@ -1883,7 +1875,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
   // Form submission
-  document.getElementById('facilityForm').addEventListener('submit', function (e) {
+  document.getElementById('SubmitButton').addEventListener('click', function (e) {
     e.preventDefault();
     if (validateSection(currentSection)) {
       registerUser();
@@ -1893,31 +1885,57 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Generate review summary
   function generateSummary() {
-    const summary = document.getElementById('reviewSummary');
+    const facilityType = document.getElementById('facilityType').value;
+    const facilityTypeKey = getFacilityTypeKey(facilityType);
+
     let html = `
-      <h3 class="mb-2">Identification & Registration</h3>
-      <img src="${imageUrlInput.value || 'assets/img/userprofile.png'}" alt="Facility Image" style="max-width:150px;max-height:150px;display:block;margin-bottom:15px;border-radius:8px;">
-      <p><strong>Legal Name:</strong> ${document.getElementById('legalName').value}</p>
-      <p><strong>Facility Type:</strong> ${document.getElementById('facilityType').value}</p>
-      <p><strong>Registration Number:</strong> ${document.getElementById('registrationNumber').value}</p>
-      <p><strong>Ownership Type:</strong> ${document.getElementById('ownershipType').value}</p>
-      <p><strong>Operating License Number:</strong> ${document.getElementById('operatingLicenseNumber').value}</p>
-      <p><strong>Health Facility Code:</strong> ${document.getElementById('healthFacilityCode').value}</p>
-      <p><strong>License Expiry Date:</strong> ${document.getElementById('licenseExpiryDate').value}</p>
-      <p><strong>Issuing Authority:</strong> ${Array.from(document.getElementById('issuingAuthority').selectedOptions).map(opt => opt.value).join(', ')}</p>
-      <p><strong>TIN:</strong> ${document.getElementById('taxIdentificationNumber').value}</p>
-      <p><strong>Date of Establishment:</strong> ${document.getElementById('dateOfEstablishment').value}</p>
-      
-      <h3 class="mt-4 mb-2">Location & Contact</h3>
-      <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
-      <p><strong>City/Town:</strong> ${document.getElementById('city').value}</p>
-      <p><strong>LGA:</strong> ${document.getElementById('lga').value}</p>
-      <p><strong>State:</strong> ${document.getElementById('state').value}</p>
-      <p><strong>Phone:</strong> ${document.getElementById('phoneNumber').value}</p>
-      <p><strong>Email:</strong> ${document.getElementById('email').value || 'Not provided'}</p>
-      <p><strong>Website:</strong> ${document.getElementById('website').value || 'Not provided'}</p>
-      <p><strong>Geo-coordinates:</strong> ${document.getElementById('latitude').value}, ${document.getElementById('longitude').value}</p>
-  `;
+        <h3 class="mb-2">Payer Information</h3>
+        <img src="${imageUrlInput.value || 'assets/img/userprofile.png'}" alt="Facility Image" style="max-width:150px;max-height:150px;display:block;margin-bottom:15px;border-radius:8px;">
+        <p><strong>Legal Name:</strong> ${document.getElementById('legalName').value}</p>
+        <p><strong>TIN:</strong> ${document.getElementById('taxIdentificationNumber').value}</p>
+        <p><strong>Category:</strong> ${document.querySelector('.selectedcat')?.getAttribute('data-name') || "Not selected"}</p>
+        <p><strong>Email:</strong> ${document.getElementById('email').value}</p>
+        <p><strong>Phone:</strong> ${document.getElementById('phoneNumber').value}</p>
+        <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
+        <p><strong>State/LGA:</strong> ${document.getElementById('state').value} / ${document.getElementById('lga').value}</p>
+        
+        <h3 class="mt-4 mb-2">Facility Information</h3>
+        <p><strong>Facility Type:</strong> ${facilityType}</p>
+        <p><strong>Registration Number:</strong> ${document.getElementById('registrationNumber').value}</p>
+        <p><strong>Ownership Type:</strong> ${document.getElementById('ownershipType').value}</p>
+        <p><strong>Operating License:</strong> ${document.getElementById('operatingLicenseNumber').value}</p>
+        <p><strong>Issuing Authority:</strong> ${Array.from(document.getElementById('issuingAuthority').selectedOptions).map(opt => opt.value).join(', ')}</p>
+        <p><strong>License Expiry:</strong> ${document.getElementById('licenseExpiryDate').value}</p>
+        <p><strong>Health Facility Code:</strong> ${document.getElementById('healthFacilityCode').value}</p>
+        <p><strong>Date Established:</strong> ${document.getElementById('dateOfEstablishment').value}</p>
+    `;
+
+    // Add facility type specific details
+    html += `<h3 class="mt-4 mb-2">Facility Operations</h3>`;
+
+    switch (facilityTypeKey) {
+      case "primary_healthcare":
+        html += `
+                <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
+                <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
+                <p><strong>Staff Count:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+                <p><strong>Outpatient Services:</strong> ${Array.from(document.getElementById('outpatientServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+            `;
+        break;
+
+      case "secondary_healthcare":
+        html += `
+                <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
+                <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
+                <p><strong>Total Staff:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+                <p><strong>Eye Services:</strong> ${Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+            `;
+        break;
+
+      // Add cases for all facility types
+      default:
+        break;
+    }
 
     // Add branches if any
     if (document.getElementById('hasBranches').checked) {
@@ -1926,265 +1944,186 @@ document.addEventListener('DOMContentLoaded', function () {
         html += `<h3 class="mt-4 mb-2">Branches</h3>`;
         branches.forEach((branch, index) => {
           html += `
-              <p><strong>Branch ${index + 1}:</strong> ${branch.querySelector('.branch-name').value}</p>
-              <p><strong>Address:</strong> ${branch.querySelector('.branch-address').value}</p>
-              <p><strong>City:</strong> ${branch.querySelector('.branch-city').value}</p>
-              <p><strong>LGA:</strong> ${branch.querySelector('.branch-lga').value}</p>
-          `;
+                    <p><strong>Branch ${index + 1}:</strong> ${branch.querySelector('.branch-name').value}</p>
+                    <p><strong>Address:</strong> ${branch.querySelector('.branch-address').value}</p>
+                    <p><strong>City:</strong> ${branch.querySelector('.branch-city').value}</p>
+                    <p><strong>LGA:</strong> ${branch.querySelector('.branch-lga').value}</p>
+                `;
         });
       }
     }
 
-    // Add operations based on facility type
-    const facilityType = document.getElementById('facilityType').value;
-    html += `<h3 class="mt-4 mb-2">Operations</h3>`;
-
-    if (facilityType.includes('Primary Healthcare Facility') ||
-      facilityType.includes('Secondary Healthcare Facility') ||
-      facilityType.includes('Tertiary Healthcare Facilities') ||
-      facilityType.includes('Private Hospitals/Clinics')) {
-
-      html += `
-        <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value).join(', ')}</p>
-        <p><strong>Major Equipment:</strong> ${Array.from(document.getElementById('majorEquipment').selectedOptions).map(opt => opt.value).join(', ') || 'None listed'}</p>
-        <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-        <p><strong>Number of Beds:</strong> ${document.getElementById('numberOfBeds').value}</p>
-        <p><strong>Avg Monthly Patient Visits:</strong> ${document.getElementById('avgMonthlyPatientVisits').value}</p>
-        <p><strong>Number of Surgeries/Procedures:</strong> ${document.getElementById('numberOfSurgeries').value}</p>
-        <p><strong>Registration Fee (₦):</strong> ${document.getElementById('registrationFee').value}</p>
-    `;
-
-    } else if (facilityType.includes('Maternity Home')) {
-      html += `
-          <p><strong>Avg Births per Month:</strong> ${document.getElementById('avgBirthsPerMonth').value}</p>
-          <p><strong>CS Births per Month:</strong> ${document.getElementById('csBirthsPerMonth').value}</p>
-          <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-          <p><strong>Ante-Natal Patients:</strong> ${document.getElementById('anteNatalPatients').value}</p>
-          <p><strong>Post-Natal Patients:</strong> ${document.getElementById('postNatalPatients').value}</p>
-      `;
-
-    } else if (facilityType.includes('Dental Clinic')) {
-      html += `
-          <p><strong>Dental Chairs/Units:</strong> ${document.getElementById('dentalChairs').value}</p>
-          <p><strong>Avg Procedures per Month:</strong> ${document.getElementById('avgProcedures').value}</p>
-          <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-      `;
-
-    } else if (facilityType.includes('Pharmacy / Chemist')) {
-      html += `
-          <p><strong>Prescriptions Dispensed per Month:</strong> ${document.getElementById('prescriptionsPerMonth').value}</p>
-          <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-      `;
-
-    } else if (facilityType.includes('Imaging / Radiology Centre')) {
-      html += `
-          <p><strong>Major Equipment:</strong> ${Array.from(document.getElementById('majorEquipment').selectedOptions).map(opt => opt.value).join(', ')}</p>
-          <p><strong>Scans/Imaging per Month:</strong> ${document.getElementById('scansPerMonth').value}</p>
-          <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-      `;
-
-    } else if (facilityType.includes('Eye Clinic')) {
-      html += `
-                        <p><strong>Eye Procedures per Month:</strong> ${document.getElementById('eyeProcedures').value}</p>
-                        <p><strong>Optical Dispensing Unit:</strong> ${document.getElementById('hasOpticalUnit').value}</p>
-                        <p><strong>Glasses Dispensed per Month:</strong> ${document.getElementById('glassesDispensed').value}</p>
-                        <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-                    `;
-
-    } else if (facilityType.includes('Rehabilitation Centre')) {
-      html += `
-                        <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value).join(', ')}</p>
-                        <p><strong>Therapy Sessions per Month:</strong> ${document.getElementById('therapySessions').value}</p>
-                        <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-                    `;
-
-    } else if (facilityType.includes('Diagnostic Laboratory')) {
-      html += `
-                        <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value).join(', ')}</p>
-                        <p><strong>Lab Tests per Month:</strong> ${document.getElementById('labTestsPerMonth').value}</p>
-                        <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-                    `;
-
-    } else if (facilityType.includes('Wellness Centre')) {
-      html += `
-                        <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value).join(', ')}</p>
-                        <p><strong>Major Equipment:</strong> ${Array.from(document.getElementById('majorEquipment').selectedOptions).map(opt => opt.value).join(', ') || 'None listed'}</p>
-                        <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-                        <p><strong>Avg Client Visits:</strong> ${document.getElementById('avgClientVisits').value}</p>
-                        <p><strong>Membership Fee:</strong> ${document.getElementById('membershipFee').value || 'Not specified'}</p>
-                    `;
-
-    } else if (facilityType.includes('Patent Medicine Store')) {
-      html += `
-                        <p><strong>Products Sold:</strong> ${Array.from(document.getElementById('primaryProducts').selectedOptions).map(opt => opt.value).join(', ')}</p>
-                        <p><strong>Sales Transactions per Month:</strong> ${document.getElementById('salesTransactions').value}</p>
-                        <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-                    `;
-
-    } else if (facilityType.includes('Herbal Medicine Centre')) {
-      html += `
-                        <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value).join(', ')}</p>
-                        <p><strong>Consultation Fee (₦):</strong> ${document.getElementById('consultationFee').value}</p>
-                        <p><strong>Herbal Medicine Dispensed per Month:</strong> ${document.getElementById('herbalMedicineDispensed').value}</p>
-                        <p><strong>Number of Employees:</strong> ${document.getElementById('numberOfEmployees').value}</p>
-                        <p><strong>Avg Client Visits:</strong> ${document.getElementById('avgClientVisits').value}</p>
-                    `;
-    }
-
-    summary.innerHTML = html;
+    document.getElementById('reviewSummary').innerHTML = html;
   }
 
   // Prepare payload for API submission
   function preparePayload() {
     const facilityType = document.getElementById('facilityType').value;
-    let operations = {};
+    const facilityTypeKey = getFacilityTypeKey(facilityType);
 
-    // Prepare operations based on facility type
-    if (facilityType.includes('Primary Healthcare Facility') ||
-      facilityType.includes('Secondary Healthcare Facility') ||
-      facilityType.includes('Tertiary Healthcare Facilities') ||
-      facilityType.includes('Private Hospitals/Clinics')) {
-
-      operations = {
-        services_offered: Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value),
-        major_equipment: Array.from(document.getElementById('majorEquipment').selectedOptions).map(opt => opt.value),
-        number_of_employees: document.getElementById('numberOfEmployees').value,
-        number_of_beds: document.getElementById('numberOfBeds').value,
-        avg_monthly_patient_visits: document.getElementById('avgMonthlyPatientVisits').value,
-        number_of_surgeries_per_month: document.getElementById('numberOfSurgeries').value,
-        registration_fee: document.getElementById('registrationFee').value
-      };
-
-    } else if (facilityType.includes('Maternity Home')) {
-      operations = {
-        avg_births_per_month: document.getElementById('avgBirthsPerMonth').value,
-        cs_births_per_month: document.getElementById('csBirthsPerMonth').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value,
-        ante_natal_patients: document.getElementById('anteNatalPatients').value,
-        post_natal_patients: document.getElementById('postNatalPatients').value
-      };
-
-    } else if (facilityType.includes('Dental Clinic')) {
-      operations = {
-        dental_chairs: document.getElementById('dentalChairs').value,
-        avg_procedures_per_month: document.getElementById('avgProcedures').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value
-      };
-
-    } else if (facilityType.includes('Pharmacy / Chemist')) {
-      operations = {
-        prescriptions_per_month: document.getElementById('prescriptionsPerMonth').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value
-      };
-
-    } else if (facilityType.includes('Imaging / Radiology Centre')) {
-      operations = {
-        major_equipment: Array.from(document.getElementById('majorEquipment').selectedOptions).map(opt => opt.value),
-        scans_per_month: document.getElementById('scansPerMonth').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value
-      };
-
-    } else if (facilityType.includes('Eye Clinic')) {
-      operations = {
-        eye_procedures_per_month: document.getElementById('eyeProcedures').value,
-        has_optical_unit: document.getElementById('hasOpticalUnit').value,
-        glasses_dispensed_per_month: document.getElementById('glassesDispensed').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value
-      };
-
-    } else if (facilityType.includes('Rehabilitation Centre')) {
-      operations = {
-        services_offered: Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value),
-        therapy_sessions_per_month: document.getElementById('therapySessions').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value
-      };
-
-    } else if (facilityType.includes('Diagnostic Laboratory')) {
-      operations = {
-        services_offered: Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value),
-        lab_tests_per_month: document.getElementById('labTestsPerMonth').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value
-      };
-
-    } else if (facilityType.includes('Wellness Centre')) {
-      operations = {
-        services_offered: Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value),
-        major_equipment: Array.from(document.getElementById('majorEquipment').selectedOptions).map(opt => opt.value),
-        number_of_employees: document.getElementById('numberOfEmployees').value,
-        avg_client_visits: document.getElementById('avgClientVisits').value,
-        membership_fee: document.getElementById('membershipFee').value
-      };
-
-    } else if (facilityType.includes('Patent Medicine Store')) {
-      operations = {
-        products_sold: Array.from(document.getElementById('primaryProducts').selectedOptions).map(opt => opt.value),
-        sales_transactions_per_month: document.getElementById('salesTransactions').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value
-      };
-
-    } else if (facilityType.includes('Herbal Medicine Centre')) {
-      operations = {
-        services_offered: Array.from(document.getElementById('primaryServices').selectedOptions).map(opt => opt.value),
-        consultation_fee: document.getElementById('consultationFee').value,
-        herbal_medicine_dispensed_per_month: document.getElementById('herbalMedicineDispensed').value,
-        number_of_employees: document.getElementById('numberOfEmployees').value,
-        avg_client_visits: document.getElementById('avgClientVisits').value
-      };
-    }
-
-    // Prepare branches if any
-    let branches = [];
-    if (document.getElementById('hasBranches').checked) {
-      const branchEntries = document.querySelectorAll('.branch-entry');
-      branchEntries.forEach(branch => {
-        branches.push({
-          branch_name: branch.querySelector('.branch-name').value,
-          address: branch.querySelector('.branch-address').value,
-          city: branch.querySelector('.branch-city').value,
-          lga: branch.querySelector('.branch-lga').value,
-          latitude: 0.00,
-          longitude: 0.00
-        });
-      });
-    }
+    // Prepare facility type specific data
+    const facilityTypeData = prepareFacilityTypeData(facilityTypeKey);
 
     // Construct the full payload
     const payload = {
-      endpoint: "createFacility",
+      endpoint: "NewcreateFacility",
       data: {
-        enumerated_by: userInfo2?.id,
-        img: imageUrlInput.value || "assets/img/userprofile.png",
-        legal_name: document.getElementById('legalName').value,
-        facility_type: document.getElementById('facilityType').value,
-        registration_number: document.getElementById('registrationNumber').value,
-        ownership_type: document.getElementById('ownershipType').value,
-        operating_license_number: document.getElementById('operatingLicenseNumber').value,
-        health_facility_code: document.getElementById('healthFacilityCode').value,
-        license_expiry_date: document.getElementById('licenseExpiryDate').value,
-        issuing_authority: Array.from(document.getElementById('issuingAuthority').selectedOptions).map(opt => opt.value),
-        certificate_of_standard: document.getElementById('certificateOfStandard').value || undefined,
-        nhis_accreditation_number: document.getElementById('nhisAccreditationNumber').value || undefined,
-        tax_identification_number: document.getElementById('taxIdentificationNumber').value,
-        date_of_establishment: document.getElementById('dateOfEstablishment').value,
-        location: {
-          address: document.getElementById('address').value,
-          city: document.getElementById('city').value,
+        payer_user: {
+          tin: document.getElementById('taxIdentificationNumber').value,
+          nin: "", // Will need to add this field to the form
+          bvn: "", // Will need to add this field to the form
+          category: document.querySelector('.selectedcat')?.getAttribute('data-name') || "corporate",
+          first_name: document.getElementById('legalName').value.split(' ')[0] || "",
+          surname: document.getElementById('legalName').value.split(' ').slice(1).join(' ') || "",
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phoneNumber').value,
+          state: document.getElementById('state').value,
+          business_type: "Healthcare",
+          employment_status: "active",
+          number_of_staff: document.getElementById('staffCount')?.value || "0",
           lga: document.getElementById('lga').value,
-          phone_number: document.getElementById('phoneNumber').value,
-          email: document.getElementById('email').value || undefined,
-          website: document.getElementById('website').value || undefined,
-          has_branches: document.getElementById('hasBranches').checked,
-          latitude: document.getElementById('latitude').value,
-          longitude: document.getElementById('longitude').value
+          address: document.getElementById('address').value,
+          img: imageUrlInput.value || "assets/img/userprofile.png",
+          password: generateRandomPassword(), // Helper function needed
+          created_by: "enumerator",
+          by_account: userInfo2?.id || "admin",
+          business_own: document.getElementById('ownershipType').value,
+          id_type: "CAC",
+          id_number: document.getElementById('registrationNumber').value,
+          annual_revenue: "", // Will need to add this field
+          value_business: "", // Will need to add this field
+          verification_status: "pending",
+          verification_code: "",
+          tin_status: "active",
+          rep_firstname: document.getElementById('repName').value.split(' ')[0] || "",
+          rep_surname: document.getElementById('repName').value.split(' ').slice(1).join(' ') || "",
+          rep_email: document.getElementById('repemail').value,
+          rep_phone: document.getElementById('repphonenumber').value,
+          rep_position: "", // Will need to add this field
+          rep_state: document.getElementById('state').value,
+          rep_lga: document.getElementById('lga').value,
+          rep_address: document.getElementById('repAddress').value,
+          enumlatitude: document.getElementById('latitude').value,
+          enumlongitude: document.getElementById('longitude').value,
+          timeIn: new Date().toISOString(),
+          new_tin: "",
+          industry: "Health Services",
+          annual_income: ""
         },
-        operations: operations,
-        branches: branches.length > 0 ? branches : undefined
+        facility_hospital: {
+          facility_name: document.getElementById('legalName').value,
+          facility_type: facilityTypeKey,
+          cac_rc_number: document.getElementById('registrationNumber').value,
+          ownership_type: document.getElementById('ownershipType').value,
+          license_number: document.getElementById('operatingLicenseNumber').value,
+          issuing_authority: Array.from(document.getElementById('issuingAuthority').selectedOptions).map(opt => opt.value).join(', '),
+          license_expiry: document.getElementById('licenseExpiryDate').value,
+          health_facility_code: document.getElementById('healthFacilityCode').value,
+          nhis_number: document.getElementById('nhisAccreditationNumber').value || "",
+          certificate_of_standards: document.getElementById('certificateOfStandard').value || "",
+          date_established: document.getElementById('dateOfEstablishment').value,
+          primary_services: "", // Will be filled from facility type data
+          major_equipment_type: "", // Will be filled from facility type data
+          number_of_employees: document.getElementById('staffCount')?.value || "0",
+          number_of_beds: document.getElementById('numberOfBeds')?.value || "0",
+          avg_monthly_visits: document.getElementById('avgMonthlyPatientVisits')?.value || "0",
+          monthly_surgeries: document.getElementById('numberOfSurgeries')?.value || "0",
+          card_fee: "500" // Default value
+        },
+        facility_type_data: {
+          [facilityTypeKey]: facilityTypeData
+        },
+        branches: prepareBranchesData(),
+        facility_documents: {
+          cac_certificate_path: "", // Will need to handle file uploads
+          operating_license_path: "" // Will need to handle file uploads
+        }
       }
     };
 
     return payload;
   }
 
+  // Helper function to map facility type to API key
+  function getFacilityTypeKey(facilityType) {
+    const typeMap = {
+      "Primary Healthcare Facility": "primary_healthcare",
+      "Secondary Healthcare Facility": "secondary_healthcare",
+      "Tertiary Healthcare Facilities": "tertiary_healthcare",
+      "Private Hospitals/Clinics": "private_hospital_clinic",
+      "Maternity Home / Clinic": "maternity_home_clinic",
+      "Dental Clinic / Centre": "dental_clinic",
+      "Diagnostic Laboratory": "diagnostic_laboratory",
+      "Imaging / Radiology Centre": "imaging_radiology_centre",
+      "Eye Clinic": "eye_clinic",
+      "Rehabilitation Centre": "rehabilitation_centre",
+      "Wellness Centre": "wellness_centre",
+      "Herbal Medicine Centre / Traditionalist Health Centre": "herbal_medicine_centre"
+    };
+    return typeMap[facilityType] || "primary_healthcare";
+  }
+
+  // Prepare facility type specific data
+  function prepareFacilityTypeData(facilityTypeKey) {
+    const data = {};
+
+    switch (facilityTypeKey) {
+      case "primary_healthcare":
+        data.number_of_departments = document.getElementById('departmentsCount')?.value || "0";
+        data.number_of_wards = document.getElementById('wardsCount')?.value || "0";
+        data.average_number_of_staff = document.getElementById('staffCount')?.value || "0";
+        data.outpatient_services_offered = Array.from(document.getElementById('outpatientServices')?.selectedOptions || []).map(opt => opt.value).join(', ');
+        data.standard_consultation_fee = document.getElementById('consultationFee')?.value || "0";
+        // ... map all primary healthcare fields
+        break;
+
+      case "secondary_healthcare":
+        data.departments_count = document.getElementById('departmentsCount')?.value || "0";
+        data.wards_count = document.getElementById('wardsCount')?.value || "0";
+        data.total_staff_count = document.getElementById('staffCount')?.value || "0";
+        data.eye_services = Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value);
+        data.eye_test_fee = document.getElementById('eyeTestFee')?.value || "0";
+        // ... map all secondary healthcare fields
+        break;
+
+      // Add cases for all facility types
+      default:
+        break;
+    }
+
+    return data;
+  }
+
+  // Prepare branches data
+  function prepareBranchesData() {
+    if (!document.getElementById('hasBranches').checked) return [];
+
+    const branches = [];
+    const branchEntries = document.querySelectorAll('.branch-entry');
+
+    branchEntries.forEach(branch => {
+      branches.push({
+        branch_name: branch.querySelector('.branch-name').value,
+        physical_address: branch.querySelector('.branch-address').value,
+        city: branch.querySelector('.branch-city').value,
+        lga: branch.querySelector('.branch-lga').value,
+        phone_numbers: "", // Will need to add phone field to branch form
+        email: "", // Will need to add email field to branch form
+        website: "", // Will need to add website field to branch form
+        latitude: "0.0", // Will need to add geo-tagging for branches
+        longitude: "0.0"
+      });
+    });
+
+    return branches;
+  }
+
+  // Generate random password for new payer accounts
+  function generateRandomPassword() {
+    return Math.random().toString(36).slice(-8);
+  }
+
+  // Update the registerUser function
   async function registerUser() {
     if (isLoading) return;
 
@@ -2193,135 +2132,74 @@ document.addEventListener('DOMContentLoaded', function () {
       isLoading = true;
       $("#SubmitButton").addClass("hidden");
       $("#msg_box").html(`
-      <div class="flex justify-center items-center mb-4">
-        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-      </div>
-    `);
+            <div class="flex justify-center items-center mb-4">
+                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                <span class="ml-3">Submitting facility registration...</span>
+            </div>
+        `);
 
-      // First register the user
-      const userData = {
-        "endpoint": "createPayerAccount",
-        "data": {
-          "img": imageUrlInput.value || "assets/img/userprofile.png",
-          "first_name": $("#legalName").val(),
-          "surname": "",
-          "email": $("#email").val(),
-          "phone": $("#phoneNumber").val(),
-          "tin": $("#taxIdentificationNumber").val(),
-          "address": $("#address").val(),
-          "state": "Plateau",
-          "lga": $("#lga").val(),
-          "business_type": "",
-          "annual_revenue": "",
-          "value_business": "",
-          "numberofstaff": "",
-          "password": "",
-          "rep_firstname": "",
-          "rep_surname": "",
-          "rep_email": "",
-          "rep_phone": "",
-          "rep_position": "",
-          "rep_state": "",
-          "rep_lga": "",
-          "rep_address": "",
-          "enumlatitude": $("#latitude").val(),
-          "enumlongitude": $("#longitude").val(),
-          "category": "Hospital",
-          "industry": "Hospitals",
-          "business_own": "1",
-          "created_by": "enumerator",
-          "by_account": userInfo2?.id
-        }
-      };
+      // Prepare the payload
+      const payload = preparePayload();
 
-      const userResponse = await fetch(HOST, {
+      // Submit to API
+      const response = await fetch(HOST, {
         method: "POST",
-        body: JSON.stringify(userData),
+        body: JSON.stringify(payload),
         headers: {
           "Content-Type": "application/json"
         }
       });
 
-      if (!userResponse.ok) {
-        const errorData = await userResponse.json();
-        throw new Error(errorData.message || 'User registration failed');
-      }
+      const result = await response.json();
 
-      const userResult = await userResponse.json();
+      if (!response.ok || result.status !== 1) {
+        let errorMessage = result.message || 'Registration failed';
 
-      if (userResult.status !== 1) {
-        let errorMessage = 'Registration failed';
-
-        // Check for specific error cases
-        if (userResult.message && userResult.status === 2) {
-          errorMessage = 'This email is already registered with a taxpayer';
-        } else if (userResult.message) {
-          errorMessage = userResult.message;
+        // Handle specific error cases
+        if (errorMessage.includes('already exists')) {
+          errorMessage = 'This facility or taxpayer is already registered';
+        } else if (errorMessage.includes('validation')) {
+          errorMessage = 'Please check your form data and try again';
         }
 
         throw new Error(errorMessage);
       }
 
-      // If user registration is successful, submit the facility form with additional data from response
-      const facilityPayload = preparePayload();
-
-      // Add data from first API response to facility payload if needed
-      facilityPayload.data.tax_number = userResult.data.tax_number; // Example: add user ID from first response
-
-      const facilityResponse = await fetch(HOST, {
-        method: "POST",
-        body: JSON.stringify(facilityPayload),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-
-      if (!facilityResponse.ok) {
-        const errorData = await facilityResponse.json();
-        throw new Error(errorData.message || 'Facility registration failed');
-      }
-
-      const facilityResult = await facilityResponse.json();
-
       // Success - show SweetAlert
       await Swal.fire({
         title: 'Success!',
-        text: 'Registration completed successfully',
+        text: 'Facility registration completed successfully',
         icon: 'success',
-        confirmButtonText: 'Proceed',
+        confirmButtonText: 'Continue',
         allowOutsideClick: false,
+        willClose: () => {
+          // Redirect or reset form
+          window.location.href = 'enumeration.html'; // Or reset the form
+        }
       });
-
-      // Reload page after confirmation
-      window.location.reload();
 
     } catch (error) {
       console.error('Registration error:', error);
+
       // Show appropriate error message
-      if (error.message.includes('already registered')) {
-        // Warning for duplicate email
-        await Swal.fire({
-          title: 'Warning',
-          text: error.message,
-          icon: 'warning',
-          confirmButtonText: 'OK'
-        });
-      } else {
-        // Error for other cases
-        $("#msg_box").html(`
-        <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-          <strong>Error!</strong> ${error.message}
-        </div>
-      `);
-      }
+      $("#msg_box").html(`
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <strong>Error!</strong> ${error.message}
+                <button type="button" class="absolute top-0 bottom-0 right-0 px-4 py-3" onclick="this.parentElement.remove()">
+                    <iconify-icon icon="mdi:close"></iconify-icon>
+                </button>
+            </div>
+        `);
+
+      // Scroll to error message
+      document.getElementById('msg_box').scrollIntoView({ behavior: 'smooth' });
+
     } finally {
       // Hide loader
       isLoading = false;
       $("#SubmitButton").removeClass("hidden");
-      $("#msg_box").html('');
     }
   }
-
 
 })
 
