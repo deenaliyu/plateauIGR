@@ -1894,12 +1894,13 @@ document.addEventListener('DOMContentLoaded', function () {
         <p><strong>Legal Name:</strong> ${document.getElementById('repName').value}</p>
         <p><strong>TIN:</strong> ${document.getElementById('repTIN').value}</p>
         <p><strong>Category:</strong> ${document.querySelector('.selectedcat')?.getAttribute('data-name') || "Not selected"}</p>
-        <p><strong>Email:</strong> ${document.getElementById('repEmail').value}</p>
+        <p><strong>Email:</strong> ${document.getElementById('repemail').value}</p>
         <p><strong>Phone:</strong> ${document.getElementById('repphonenumber').value}</p>
         <p><strong>Address:</strong> ${document.getElementById('repAddress').value}</p>
         <p><strong>State/LGA:</strong> ${document.getElementById('state').value} / ${document.getElementById('lga').value}</p>
         
         <h3 class="mt-4 mb-2">Facility Information</h3>
+        <p><strong>Facility Name:</strong> ${document.getElementById('legalName').value}</p>
         <p><strong>Facility Type:</strong> ${facilityType}</p>
         <p><strong>Registration Number:</strong> ${document.getElementById('registrationNumber').value}</p>
         <p><strong>Ownership Type:</strong> ${document.getElementById('ownershipType').value}</p>
@@ -2080,7 +2081,23 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     }
 
+    html += `
+      <div class="flex justify-end -mt-20" >
+        <div class="w-[100px] h-[100px] pr-8" id="qrContainer"></div>
+
+      </div>
+    `
+
     document.getElementById('reviewSummary').innerHTML = html;
+
+    const qrCodeContainer = document.getElementById("qrContainer")
+
+      const qrCode = new QRCode(qrCodeContainer, {
+        text: `https://plateauigr.com`,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        version: 10,
+      });
   }
 
   // Prepare payload for API submission
