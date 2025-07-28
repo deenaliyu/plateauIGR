@@ -37,16 +37,9 @@ $(".aside").html(`
       </li>
 
       <li class="menu-item">
-        <a href="taxpayer.html" class="menu-link mddd">
+        <a href="hospital-report.html" class="menu-link mddd">
           <i class='menu-icon tf-icons bx bxs-group' ></i>
-          <div data-i18n="Basic">Tax Payers</div>
-        </a>
-      </li>
-
-      <li class="menu-item">
-        <a href="invoice.html" class="menu-link invv">
-          <i class='menu-icon tf-icons bx bxs-file'></i>
-          <div data-i18n="Basic">Invoice</div>
+          <div data-i18n="Basic">Health Sector</div>
         </a>
       </li>
 

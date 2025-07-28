@@ -20,6 +20,36 @@ function convertToPercentage(number, total) {
   return percentage.toFixed(2); // Round the percentage to two decimal places
 }
 
+
+async function fetchUserData() {
+  try {
+    const response = await fetch(`${HOST}?getEnumUser=true&id=${THEUSERINFO?.id}`);
+    const data = await response.json();
+
+    if (data.status === 1 && data.message.length > 0) {
+      const user = data.message[0];
+
+      document.getElementById('fullname').textContent = user.fullname;
+      document.getElementById('agent-id').textContent = user.agent_id;
+      document.getElementById('email').textContent = user.email;
+      document.getElementById('contact').textContent = user.phone;
+      document.getElementById('state').textContent = user.state;
+      document.getElementById('lga').textContent = user.lga;
+      document.getElementById('address').textContent = user.address;
+      document.getElementById('taxpayers').textContent = user.taxpayer_count; // Replace with actual value if available
+
+      // Optionally update avatar if your API includes a profile picture
+      // document.getElementById('avatar').src = user.avatar_url;
+    } else {
+      console.error('No user found or invalid response');
+    }
+  } catch (err) {
+    console.error('Error fetching user data:', err);
+  }
+}
+
+fetchUserData()
+
 function plotGraph(theDattaa) {
   var chartDom = document.getElementById('dashbordChart');
   var myChart = echarts.init(chartDom);

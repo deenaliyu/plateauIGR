@@ -1891,12 +1891,12 @@ document.addEventListener('DOMContentLoaded', function () {
     let html = `
         <h3 class="mb-2">Payer Information</h3>
         <img src="${imageUrlInput.value || 'assets/img/userprofile.png'}" alt="Facility Image" style="max-width:150px;max-height:150px;display:block;margin-bottom:15px;border-radius:8px;">
-        <p><strong>Legal Name:</strong> ${document.getElementById('legalName').value}</p>
-        <p><strong>TIN:</strong> ${document.getElementById('taxIdentificationNumber').value}</p>
+        <p><strong>Legal Name:</strong> ${document.getElementById('repName').value}</p>
+        <p><strong>TIN:</strong> ${document.getElementById('repTIN').value}</p>
         <p><strong>Category:</strong> ${document.querySelector('.selectedcat')?.getAttribute('data-name') || "Not selected"}</p>
-        <p><strong>Email:</strong> ${document.getElementById('email').value}</p>
-        <p><strong>Phone:</strong> ${document.getElementById('phoneNumber').value}</p>
-        <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
+        <p><strong>Email:</strong> ${document.getElementById('repEmail').value}</p>
+        <p><strong>Phone:</strong> ${document.getElementById('repphonenumber').value}</p>
+        <p><strong>Address:</strong> ${document.getElementById('repAddress').value}</p>
         <p><strong>State/LGA:</strong> ${document.getElementById('state').value} / ${document.getElementById('lga').value}</p>
         
         <h3 class="mt-4 mb-2">Facility Information</h3>
@@ -1916,24 +1916,151 @@ document.addEventListener('DOMContentLoaded', function () {
     switch (facilityTypeKey) {
       case "primary_healthcare":
         html += `
-                <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
-                <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
-                <p><strong>Staff Count:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
-                <p><strong>Outpatient Services:</strong> ${Array.from(document.getElementById('outpatientServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
-            `;
+      <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
+      <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
+      <p><strong>Staff Count:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+      <p><strong>Outpatient Services:</strong> ${Array.from(document.getElementById('outpatientServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Consultation Fee:</strong> ₦${document.getElementById('consultationFee')?.value || "0"}</p>
+      <p><strong>ANC Initial Visit Fee:</strong> ₦${document.getElementById('ancInitialFee')?.value || "0"}</p>
+      <p><strong>ANC Subsequent Visit Fee:</strong> ₦${document.getElementById('ancSubsequentFee')?.value || "0"}</p>
+      <p><strong>Postnatal Care Fee:</strong> ₦${document.getElementById('postnatalFee')?.value || "0"}</p>
+      <p><strong>Immunization Free:</strong> ${document.getElementById('immunizationFree')?.value || "No"}</p>
+    `;
         break;
 
       case "secondary_healthcare":
         html += `
-                <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
-                <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
-                <p><strong>Total Staff:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
-                <p><strong>Eye Services:</strong> ${Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
-            `;
+      <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
+      <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
+      <p><strong>Total Staff:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+      <p><strong>Eye Services:</strong> ${Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Eye Test Fee:</strong> ₦${document.getElementById('eyeTestFee')?.value || "0"}</p>
+      <p><strong>Eye Drops Cost:</strong> ₦${document.getElementById('eyeDropsCost')?.value || "0"}</p>
+      <p><strong>Maternity Services:</strong> ${Array.from(document.getElementById('maternityServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Normal Delivery Fee:</strong> ₦${document.getElementById('normalDeliveryFee')?.value || "0"}</p>
+      <p><strong>C-Section Fee:</strong> ₦${document.getElementById('cSectionFee')?.value || "0"}</p>
+      <p><strong>Gyne Consultation Fee:</strong> ₦${document.getElementById('gyneConsultationFee')?.value || "0"}</p>
+    `;
         break;
 
-      // Add cases for all facility types
+      case "tertiary_healthcare":
+        html += `
+      <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
+      <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
+      <p><strong>Total Staff:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+      <p><strong>Surgical Theatres:</strong> ${document.getElementById('operatingTheatres')?.value || "0"}</p>
+      <p><strong>ICU Beds:</strong> ${document.getElementById('icuBeds')?.value || "0"}</p>
+      <p><strong>Major Surgery Cost:</strong> ₦${document.getElementById('majorSurgeryCost')?.value || "0"}</p>
+      <p><strong>ICU Daily Charge:</strong> ₦${document.getElementById('icuDailyCharge')?.value || "0"}</p>
+      <p><strong>Eye Services:</strong> ${Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Maternity Services:</strong> ${Array.from(document.getElementById('maternityServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+    `;
+        break;
+
+      case "private_hospital_clinic":
+        html += `
+      <p><strong>Departments:</strong> ${document.getElementById('departmentsCount')?.value || "0"}</p>
+      <p><strong>Wards:</strong> ${document.getElementById('wardsCount')?.value || "0"}</p>
+      <p><strong>Total Staff:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+      <p><strong>Consultation Fee:</strong> ₦${document.getElementById('consultationFee')?.value || "0"}</p>
+      <p><strong>Emergency Services:</strong> ${document.getElementById('emergencyServices')?.value || "No"}</p>
+      <p><strong>Operating Hours:</strong> ${document.getElementById('operatingHours')?.value || "Not specified"}</p>
+      <p><strong>Ambulance Services:</strong> ${document.getElementById('ambulanceServices')?.value || "No"}</p>
+    `;
+        break;
+
+      case "maternity_home_clinic":
+        html += `
+      <p><strong>Consultation Fee:</strong> ₦${document.getElementById('consultationFee')?.value || "0"}</p>
+      <p><strong>Labour Wards:</strong> ${document.getElementById('labourWards')?.value || "0"}</p>
+      <p><strong>Ultrasound Fee:</strong> ₦${document.getElementById('ultrasoundFee')?.value || "0"}</p>
+      <p><strong>Normal Delivery Fee:</strong> ₦${document.getElementById('normalDeliveryFee')?.value || "0"}</p>
+      <p><strong>C-Section Fee:</strong> ₦${document.getElementById('cSectionFee')?.value || "0"}</p>
+      <p><strong>Assisted Reproductive Services:</strong> ${Array.from(document.getElementById('artServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Cancer Screening:</strong> ${Array.from(document.getElementById('cancerScreening')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+    `;
+        break;
+
+      case "dental_clinic":
+        html += `
+      <p><strong>Teeth Whitening Cost:</strong> ₦${document.getElementById('teethWhiteningCost')?.value || "0"}</p>
+      <p><strong>Dental Implant Cost:</strong> ₦${document.getElementById('implantCost')?.value || "0"}</p>
+      <p><strong>Scaling/Polishing Fee:</strong> ₦${document.getElementById('scalingCost')?.value || "0"}</p>
+      <p><strong>Extraction Cost:</strong> ₦${document.getElementById('extractionCost')?.value || "0"}</p>
+      <p><strong>Patients Per Week:</strong> ${document.getElementById('patientsPerWeek')?.value || "0"}</p>
+      <p><strong>Dental Chairs:</strong> ${document.getElementById('dentalChairs')?.value || "0"}</p>
+      <p><strong>Clinical Staff:</strong> ${document.getElementById('clinicalStaff')?.value || "0"}</p>
+    `;
+        break;
+
+      case "diagnostic_laboratory":
+        html += `
+      <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('labServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Genotype Test Cost:</strong> ₦${document.getElementById('genotypeTestCost')?.value || "0"}</p>
+      <p><strong>HIV Viral Load Cost:</strong> ₦${document.getElementById('hivViralLoadCost')?.value || "0"}</p>
+      <p><strong>Tests Per Week:</strong> ${document.getElementById('testsPerWeek')?.value || "0"}</p>
+      <p><strong>Staff Count:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+      <p><strong>Paternity Tests:</strong> ${document.getElementById('paternityTest')?.value === "yes" ? "Yes" : "No"}</p>
+    `;
+        break;
+
+      case "imaging_radiology_centre":
+        html += `
+      <p><strong>MRI Fee:</strong> ₦${document.getElementById('mriFee')?.value || "0"}</p>
+      <p><strong>CT Scan Fee:</strong> ₦${document.getElementById('ctFee')?.value || "0"}</p>
+      <p><strong>X-Ray Fee:</strong> ₦${document.getElementById('xrayFee')?.value || "0"}</p>
+      <p><strong>Scans Per Week:</strong> ${document.getElementById('scansPerWeek')?.value || "0"}</p>
+      <p><strong>Staff Count:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+      <p><strong>Major Equipment:</strong> ${Array.from(document.getElementById('majorEquipment')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+    `;
+        break;
+
+      case "eye_clinic":
+        html += `
+      <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Eye Test Fee:</strong> ₦${document.getElementById('eyeTestFee')?.value || "0"}</p>
+      <p><strong>Eye Drops Cost:</strong> ₦${document.getElementById('eyeDropsCost')?.value || "0"}</p>
+      <p><strong>Optical Unit:</strong> ${document.getElementById('hasOpticalUnit')?.value || "No"}</p>
+      <p><strong>Glasses Dispensed Monthly:</strong> ${document.getElementById('glassesDispensedPerMonth')?.value || "0"}</p>
+      <p><strong>Contact Lens Services:</strong> ${document.getElementById('contactLensService')?.value || "No"}</p>
+    `;
+        break;
+
+      case "rehabilitation_centre":
+        html += `
+      <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('therapyServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Drug Detox Program:</strong> ${document.getElementById('detoxProgram')?.value === "yes" ? "Yes" : "No"}</p>
+      <p><strong>Detox Program Cost:</strong> ₦${document.getElementById('detoxCost')?.value || "0"}</p>
+      <p><strong>Therapy Rooms:</strong> ${document.getElementById('therapyRooms')?.value || "0"}</p>
+      <p><strong>Staff Count:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
+      <p><strong>Physiotherapy Fee:</strong> ₦${document.getElementById('physioFee')?.value || "0"}</p>
+    `;
+        break;
+
+      case "wellness_centre":
+        html += `
+      <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Massage Session Fee:</strong> ₦${document.getElementById('massageFee')?.value || "0"}</p>
+      <p><strong>Spa Treatment Cost:</strong> ₦${document.getElementById('spaTreatmentCost')?.value || "0"}</p>
+      <p><strong>Customers Per Week:</strong> ${document.getElementById('customersPerWeek')?.value || "0"}</p>
+      <p><strong>Treatment Rooms:</strong> ${document.getElementById('treatmentRooms')?.value || "0"}</p>
+      <p><strong>Fitness Studios:</strong> ${document.getElementById('fitnessStations')?.value || "0"}</p>
+    `;
+        break;
+
+      case "herbal_medicine_centre":
+        html += `
+      <p><strong>Services Offered:</strong> ${Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+      <p><strong>Consultation Fee:</strong> ₦${document.getElementById('consultationFee')?.value || "0"}</p>
+      <p><strong>Dispenses Herbal Remedies:</strong> ${document.getElementById('herbalDispensing')?.value === "yes" ? "Yes" : "No"}</p>
+      <p><strong>Herbal Medicine Cost:</strong> ₦${document.getElementById('herbalMedicineCost')?.value || "0"}</p>
+      <p><strong>Customers Per Week:</strong> ${document.getElementById('customersPerWeek')?.value || "0"}</p>
+      <p><strong>Medicines Dispensed Monthly:</strong> ${document.getElementById('herbalMedicineDispensed')?.value || "0"}</p>
+    `;
+        break;
+
       default:
+        html += `<p>No specific operations data available for this facility type</p>`;
         break;
     }
 
@@ -1969,20 +2096,20 @@ document.addEventListener('DOMContentLoaded', function () {
       endpoint: "NewcreateFacility",
       data: {
         payer_user: {
-          tin: document.getElementById('taxIdentificationNumber').value,
+          tin: document.getElementById('repTIN').value,
           nin: "", // Will need to add this field to the form
           bvn: "", // Will need to add this field to the form
           category: document.querySelector('.selectedcat')?.getAttribute('data-name') || "corporate",
-          first_name: document.getElementById('legalName').value.split(' ')[0] || "",
-          surname: document.getElementById('legalName').value.split(' ').slice(1).join(' ') || "",
-          email: document.getElementById('email').value,
-          phone: document.getElementById('phoneNumber').value,
+          first_name: document.getElementById('repName').value.split(' ')[0] || "",
+          surname: document.getElementById('repName').value.split(' ').slice(1).join(' ') || "",
+          email: document.getElementById('repemail').value,
+          phone: document.getElementById('repphonenumber').value,
           state: document.getElementById('state').value,
           business_type: "Healthcare",
           employment_status: "active",
           number_of_staff: document.getElementById('staffCount')?.value || "0",
           lga: document.getElementById('lga').value,
-          address: document.getElementById('address').value,
+          address: document.getElementById('repAddress').value,
           img: imageUrlInput.value || "assets/img/userprofile.png",
           password: generateRandomPassword(), // Helper function needed
           created_by: "enumerator",
@@ -1990,8 +2117,8 @@ document.addEventListener('DOMContentLoaded', function () {
           business_own: document.getElementById('ownershipType').value,
           id_type: "CAC",
           id_number: document.getElementById('registrationNumber').value,
-          annual_revenue: "", // Will need to add this field
-          value_business: "", // Will need to add this field
+          annual_revenue: "",
+          value_business: "",
           verification_status: "pending",
           verification_code: "",
           tin_status: "active",
@@ -1999,7 +2126,7 @@ document.addEventListener('DOMContentLoaded', function () {
           rep_surname: document.getElementById('repName').value.split(' ').slice(1).join(' ') || "",
           rep_email: document.getElementById('repemail').value,
           rep_phone: document.getElementById('repphonenumber').value,
-          rep_position: "", // Will need to add this field
+          rep_position: "",
           rep_state: document.getElementById('state').value,
           rep_lga: document.getElementById('lga').value,
           rep_address: document.getElementById('repAddress').value,
@@ -2072,9 +2199,19 @@ document.addEventListener('DOMContentLoaded', function () {
         data.number_of_departments = document.getElementById('departmentsCount')?.value || "0";
         data.number_of_wards = document.getElementById('wardsCount')?.value || "0";
         data.average_number_of_staff = document.getElementById('staffCount')?.value || "0";
-        data.outpatient_services_offered = Array.from(document.getElementById('outpatientServices')?.selectedOptions || []).map(opt => opt.value).join(', ');
+        data.outpatient_services_offered = Array.from(document.getElementById('outpatientServices')?.selectedOptions || []).map(opt => opt.value);
         data.standard_consultation_fee = document.getElementById('consultationFee')?.value || "0";
-        // ... map all primary healthcare fields
+        data.anc_fee_initial_visit = document.getElementById('ancInitialFee')?.value || "0";
+        data.anc_fee_subsequent_visit = document.getElementById('ancSubsequentFee')?.value || "0";
+        data.avg_pregnant_women_per_week = document.getElementById('pregnantWomenWeekly')?.value || "0";
+        data.avg_deliveries_per_week = document.getElementById('deliveriesWeekly')?.value || "0";
+        data.postnatal_care_fee = document.getElementById('postnatalFee')?.value || "0";
+        data.is_immunization_free = document.getElementById('immunizationFree')?.value || "No";
+        data.family_planning_methods = Array.from(document.getElementById('familyPlanningServices')?.selectedOptions || []).map(opt => opt.value);
+        data.avg_cost_injectable_contraceptive = document.getElementById('injectableCost')?.value || "0";
+        data.basic_diagnostics = Array.from(document.getElementById('basicTests')?.selectedOptions || []).map(opt => opt.value);
+        data.avg_cost_malaria_test = document.getElementById('malariaTestCost')?.value || "0";
+        data.has_onsite_pharmacy = document.getElementById('hasPharmacy')?.value || "No";
         break;
 
       case "secondary_healthcare":
@@ -2083,11 +2220,182 @@ document.addEventListener('DOMContentLoaded', function () {
         data.total_staff_count = document.getElementById('staffCount')?.value || "0";
         data.eye_services = Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value);
         data.eye_test_fee = document.getElementById('eyeTestFee')?.value || "0";
-        // ... map all secondary healthcare fields
+        data.eye_drops_cost = document.getElementById('eyeDropsCost')?.value || "0";
+        data.maternity_services = Array.from(document.getElementById('maternityServices')?.selectedOptions || []).map(opt => opt.value);
+        data.normal_delivery_fee = document.getElementById('normalDeliveryFee')?.value || "0";
+        data.c_section_fee = document.getElementById('cSectionFee')?.value || "0";
+        data.labour_wards_count = document.getElementById('labourWards')?.value || "0";
+        data.gyne_consultation_fee = document.getElementById('gyneConsultationFee')?.value || "0";
+        data.dental_services = Array.from(document.getElementById('dentalServices')?.selectedOptions || []).map(opt => opt.value);
+        data.teeth_whitening_cost = document.getElementById('teethWhiteningCost')?.value || "0";
+        data.implant_cost = document.getElementById('implantCost')?.value || "0";
+        data.radiology_services = Array.from(document.getElementById('radiologyServices')?.selectedOptions || []).map(opt => opt.value);
+        data.mri_fee = document.getElementById('mriFee')?.value || "0";
+        data.ct_scan_fee = document.getElementById('ctFee')?.value || "0";
+        data.lab_services = Array.from(document.getElementById('labServices')?.selectedOptions || []).map(opt => opt.value);
+        data.genotype_test_cost = document.getElementById('genotypeTestCost')?.value || "0";
         break;
 
-      // Add cases for all facility types
+      case "tertiary_healthcare":
+        data.departments_count = document.getElementById('departmentsCount')?.value || "0";
+        data.wards_count = document.getElementById('wardsCount')?.value || "0";
+        data.total_staff_count = document.getElementById('staffCount')?.value || "0";
+        data.surgical_operating_theatres = document.getElementById('operatingTheatres')?.value || "0";
+        data.major_surgery_cost = document.getElementById('majorSurgeryCost')?.value || "0";
+        data.minor_surgery_cost = document.getElementById('minorSurgeryCost')?.value || "0";
+        data.icu_beds = document.getElementById('icuBeds')?.value || "0";
+        data.icu_bed_charge_per_day = document.getElementById('icuDailyCharge')?.value || "0";
+        data.eye_services = Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value);
+        data.eye_test_fee = document.getElementById('eyeTestFee')?.value || "0";
+        data.eye_drops_cost = document.getElementById('eyeDropsCost')?.value || "0";
+        data.maternity_services = Array.from(document.getElementById('maternityServices')?.selectedOptions || []).map(opt => opt.value);
+        data.normal_delivery_fee = document.getElementById('normalDeliveryFee')?.value || "0";
+        data.c_section_fee = document.getElementById('cSectionFee')?.value || "0";
+        data.labour_wards_count = document.getElementById('labourWards')?.value || "0";
+        data.gyne_consultation_fee = document.getElementById('gyneConsultationFee')?.value || "0";
+        data.dental_services = Array.from(document.getElementById('dentalServices')?.selectedOptions || []).map(opt => opt.value);
+        data.teeth_whitening_cost = document.getElementById('teethWhiteningCost')?.value || "0";
+        data.implant_cost = document.getElementById('implantCost')?.value || "0";
+        data.radiology_services = Array.from(document.getElementById('radiologyServices')?.selectedOptions || []).map(opt => opt.value);
+        data.mri_fee = document.getElementById('mriFee')?.value || "0";
+        data.ct_scan_fee = document.getElementById('ctFee')?.value || "0";
+        data.lab_services = Array.from(document.getElementById('labServices')?.selectedOptions || []).map(opt => opt.value);
+        data.genotype_test_cost = document.getElementById('genotypeTestCost')?.value || "0";
+        break;
+
+      case "private_hospital_clinic":
+        data.departments_count = document.getElementById('departmentsCount')?.value || "0";
+        data.wards_count = document.getElementById('wardsCount')?.value || "0";
+        data.total_staff_count = document.getElementById('staffCount')?.value || "0";
+        data.consultation_fee = document.getElementById('consultationFee')?.value || "0";
+        data.emergency_services_available = document.getElementById('emergencyServices')?.value || "No";
+        data.specialty_services_offered = document.getElementById('specialtyServices')?.value || "";
+        data.diagnostic_services = document.getElementById('diagnosticServices')?.value || "";
+        data.pharmacy_services = document.getElementById('pharmacyServices')?.value || "No";
+        data.average_patient_wait_time_minutes = document.getElementById('waitTime')?.value || "0";
+        data.operating_hours = document.getElementById('operatingHours')?.value || "";
+        data.ambulance_services_available = document.getElementById('ambulanceServices')?.value || "No";
+        break;
+
+      case "maternity_home_clinic":
+        data.standard_consultation_fee = document.getElementById('consultationFee')?.value || "0";
+        data.number_of_labour_wards = document.getElementById('labourWards')?.value || "0";
+        data.fee_ultrasound_scan = document.getElementById('ultrasoundFee')?.value || "0";
+        data.fee_antenatal_care = document.getElementById('antenatalFee')?.value || "0";
+        data.charge_normal_delivery = document.getElementById('normalDeliveryFee')?.value || "0";
+        data.fee_caesarean_section = document.getElementById('cSectionFee')?.value || "0";
+        data.fee_epidural_relief = document.getElementById('epiduralFee')?.value || "0";
+        data.cost_contraceptive_implant = document.getElementById('implantCost')?.value || "0";
+        data.avg_antenatal_postnatal_visits_per_week = document.getElementById('visitsPerWeek')?.value || "0";
+        data.avg_births_per_week = document.getElementById('birthsPerWeek')?.value || "0";
+        data.avg_cervical_cancer_screening_cost = document.getElementById('cervicalScreeningCost')?.value || "0";
+        data.avg_hpv_vaccine_cost = document.getElementById('hpvVaccineCost')?.value || "0";
+        data.avg_number_of_employees = document.getElementById('numberOfEmployees')?.value || "0";
+        data.assisted_reproductive_services = Array.from(document.getElementById('artServices')?.selectedOptions || []).map(opt => opt.value);
+        data.gynaecological_tests = Array.from(document.getElementById('gynTests')?.selectedOptions || []).map(opt => opt.value);
+        data.gynaecological_other = document.getElementById('gynOtherSpecify')?.value || "";
+        data.cancer_screening_services = Array.from(document.getElementById('cancerScreening')?.selectedOptions || []).map(opt => opt.value);
+        data.family_planning_services = Array.from(document.getElementById('familyPlanningServices')?.selectedOptions || []).map(opt => opt.value);
+        data.obstetrics_services = Array.from(document.getElementById('obstetricsServices')?.selectedOptions || []).map(opt => opt.value);
+        data.pediatric_services = Array.from(document.getElementById('pediatricServices')?.selectedOptions || []).map(opt => opt.value);
+        break;
+
+      case "dental_clinic":
+        data.avg_cost_teeth_whitening = document.getElementById('teethWhiteningCost')?.value || "0";
+        data.avg_cost_dental_implant = document.getElementById('implantCost')?.value || "0";
+        data.fee_scaling_polishing = document.getElementById('scalingCost')?.value || "0";
+        data.avg_cost_simple_extraction = document.getElementById('extractionCost')?.value || "0";
+        data.cost_orthodontic_wiring = document.getElementById('bracesCost')?.value || "0";
+        data.avg_patients_per_week = document.getElementById('patientsPerWeek')?.value || "0";
+        data.dental_chairs_count = document.getElementById('dentalChairs')?.value || "0";
+        data.clinical_staff_count = document.getElementById('clinicalStaff')?.value || "0";
+        data.dental_services_offered = Array.from(document.getElementById('dentalServices')?.selectedOptions || []).map(opt => opt.value);
+        break;
+
+      case "diagnostic_laboratory":
+        data.services_offered = Array.from(document.getElementById('labServices')?.selectedOptions || []).map(opt => opt.value);
+        data.avg_cost_genotype_test = document.getElementById('genotypeTestCost')?.value || "0";
+        data.paternity_maternity_test_service = document.getElementById('paternityTest')?.value === "yes";
+        data.avg_cost_dna_paternity_test = document.getElementById('dnaTestCost')?.value || "0";
+        data.avg_cost_hiv_viral_load = document.getElementById('hivViralLoadCost')?.value || "0";
+        data.avg_cost_malaria_test = document.getElementById('malariaTestCost')?.value || "0";
+        data.avg_fee_routine_mri = document.getElementById('mriScanCost')?.value || "0";
+        data.avg_fee_ct_scan = document.getElementById('ctScanCost')?.value || "0";
+        data.avg_fee_xray = document.getElementById('xrayScanCost')?.value || "0";
+        data.drug_dispensing_unit = document.getElementById('dispensingUnit')?.value === "yes";
+        data.avg_diagnostic_tests_per_week = document.getElementById('testsPerWeek')?.value || "0";
+        data.total_clinical_support_staff = document.getElementById('staffCount')?.value || "0";
+        data.primary_lab_services = Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value);
+        break;
+
+      case "imaging_radiology_centre":
+        data.services_offered = Array.from(document.getElementById('radiologyServices')?.selectedOptions || []).map(opt => opt.value);
+        data.avg_fee_mri_scan = document.getElementById('mriFee')?.value || "0";
+        data.avg_fee_ct_scan = document.getElementById('ctFee')?.value || "0";
+        data.avg_fee_ultrasound_obstetric = document.getElementById('obstetricUltrasoundFee')?.value || "0";
+        data.avg_fee_xray = document.getElementById('xrayFee')?.value || "0";
+        data.avg_cost_3d_mammogram = document.getElementById('mammogram3dFee')?.value || "0";
+        data.avg_scans_per_week = document.getElementById('scansPerWeek')?.value || "0";
+        data.total_radiology_staff = document.getElementById('staffCount')?.value || "0";
+        data.major_equipment = Array.from(document.getElementById('majorEquipment')?.selectedOptions || []).map(opt => opt.value);
+        break;
+
+      case "eye_clinic":
+        data.services_offered = Array.from(document.getElementById('eyeServices')?.selectedOptions || []).map(opt => opt.value);
+        data.standard_eye_test_fee = document.getElementById('eyeTestFee')?.value || "0";
+        data.sodium_hyaluronate_drops_cost = document.getElementById('eyeDropsCost')?.value || "0";
+        data.has_optical_dispensing_unit = document.getElementById('hasOpticalUnit')?.value === "Yes";
+        data.price_range_eyeglasses = document.getElementById('eyeglassesPriceRange')?.value || "0";
+        data.monthly_eyeglasses_dispensed = document.getElementById('glassesDispensedPerMonth')?.value || "0";
+        data.provides_contact_lens_services = document.getElementById('contactLensService')?.value === "Yes";
+        data.contact_lens_fitting_cost = document.getElementById('contactLensCost')?.value || "0";
+        data.retina_surgery_cost = document.getElementById('retinaSurgeryCost')?.value || "0";
+        data.glaucoma_surgery_cost = document.getElementById('glaucomaSurgeryCost')?.value || "0";
+        data.average_staff_count = document.getElementById('eyeClinicStaffCount')?.value || "0";
+        break;
+
+      case "rehabilitation_centre":
+        data.services_offered = Array.from(document.getElementById('therapyServices')?.selectedOptions || []).map(opt => opt.value);
+        data.offers_drug_detox = document.getElementById('detoxProgram')?.value === "yes";
+        data.cost_complete_drug_detox_program = document.getElementById('detoxCost')?.value || "0";
+        data.consultation_fee_psychiatric = document.getElementById('mentalHealthFee')?.value || "0";
+        data.trauma_ptsd_session_cost = document.getElementById('traumaSessionFee')?.value || "0";
+        data.physiotherapy_session_fee = document.getElementById('physioFee')?.value || "0";
+        data.mental_health_therapy_session_cost = document.getElementById('therapySessionFee')?.value || "0";
+        data.therapy_rooms_count = document.getElementById('therapyRooms')?.value || "0";
+        data.staff_total_count = document.getElementById('staffCount')?.value || "0";
+        data.therapy_services_offered = Array.from(document.getElementById('therapyServices')?.selectedOptions || []).map(opt => opt.value);
+        break;
+
+      case "wellness_centre":
+        data.services_offered = Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value);
+        data.avg_fee_massage_session = document.getElementById('massageFee')?.value || "0";
+        data.cost_spa_treatment = document.getElementById('spaTreatmentCost')?.value || "0";
+        data.fee_personal_training_session = document.getElementById('trainingFee')?.value || "0";
+        data.cost_fitness_membership_package = document.getElementById('membershipCost')?.value || "0";
+        data.avg_customers_per_week = document.getElementById('customersPerWeek')?.value || "0";
+        data.num_treatment_rooms = document.getElementById('treatmentRooms')?.value || "0";
+        data.num_fitness_studios = document.getElementById('fitnessStations')?.value || "0";
+        data.total_staff = document.getElementById('staffCount')?.value || "0";
+        data.primary_services = Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value);
+        data.facility_equipment = Array.from(document.getElementById('facilityEquipment')?.selectedOptions || []).map(opt => opt.value);
+        break;
+
+      case "herbal_medicine_centre":
+        data.services_offered = Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value);
+        data.standard_consultation_fee = document.getElementById('consultationFee')?.value || "0";
+        data.dispenses_herbal_remedies = document.getElementById('herbalDispensing')?.value === "yes";
+        data.avg_cost_herbal_medicine = document.getElementById('herbalMedicineCost')?.value || "0";
+        data.standard_fee_bone_setting = document.getElementById('boneSettingFee')?.value || "0";
+        data.standard_fee_traditional_massage = document.getElementById('massageFee')?.value || "0";
+        data.avg_customers_per_week = document.getElementById('customersPerWeek')?.value || "0";
+        data.herbal_medicines_dispensed_per_month = document.getElementById('herbalMedicineDispensed')?.value || "0";
+        data.num_employees_traditionalists = document.getElementById('numberOfEmployees')?.value || "0";
+        data.primary_services_offered = Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value);
+        break;
+
       default:
+        console.warn(`Unknown facility type: ${facilityTypeKey}`);
         break;
     }
 
