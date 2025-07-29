@@ -1,32 +1,22 @@
+// Plateau State boundaries
 const PLATEAU_BOUNDS = [
-  [8.5, 8.5],  // Southwest coordinates
-  [10.5, 10.5]  // Northeast coordinates
+  [8.5, 8.7],   // Southwest coordinates
+  [10.0, 10.2]  // Northeast coordinates
 ];
 
-async function getEnumerators() {
-  try {
-    const response = await fetch(`${HOST}?getEnumUser`);
-    const data = await response.json();
+// Initialize map with Plateau focus
+const map = L.map('map', {
+  maxBounds: PLATEAU_BOUNDS,
+  maxBoundsViscosity: 1.0
+}).setView([9.2, 9.3], 8);
 
-    data.message.reverse().forEach(enumuser => {
-      $("#enumeratorFilter").append(`
-        <option value="${enumuser.id}">${enumuser.fullname}</option>
-        `)
-    })
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-getEnumerators()
-
-// Map initialization
-const map = L.map('map').setView([9.25, 9.5], 8); // Centered on Plateau State
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  minZoom: 7,
+  maxZoom: 12
 }).addTo(map);
 
-// Variables to hold map layers and data
+// Variables for map layers
 let heatLayer = null;
 let markerCluster = null;
 let pinLayer = null;
@@ -44,12 +34,18 @@ const hospitalElm = document.getElementById('hospitalCount');
 const selectedLGAElement = document.getElementById('selectedLGA');
 const lgaCountElement = document.getElementById('lgaCount');
 
-// Process API data to match our frontend structure
+// Check if coordinates are within Plateau
+function isInPlateau(lat, lng) {
+  return lat >= PLATEAU_BOUNDS[0][0] && lat <= PLATEAU_BOUNDS[1][0] && 
+         lng >= PLATEAU_BOUNDS[0][1] && lng <= PLATEAU_BOUNDS[1][1];
+}
+
+// Process API data for Plateau
 function processAPIData(apiData) {
   return apiData.data.map(item => {
-    // Skip records with invalid coordinates
     if (!item.enumlatitude || !item.enumlongitude ||
-      item.enumlatitude === "0.00" || item.enumlongitude === "0.00") {
+        item.enumlatitude === "0.00" || item.enumlongitude === "0.00" ||
+        !isInPlateau(parseFloat(item.enumlatitude), parseFloat(item.enumlongitude))) {
       return null;
     }
 
@@ -58,24 +54,36 @@ function processAPIData(apiData) {
       lng: parseFloat(item.enumlongitude),
       facilityType: item.business_type || "Unknown",
       lga: item.lga,
-      ward: "Unknown", // API doesn't provide ward info
-      enumerator: item.enumerator_name || "Unknown",
       entityType: item.category,
       date: new Date(item.timeIn),
-      count: 1, // Each record represents 1 enumeration
-      rawData: item // Keep original data for popups
+      rawData: item
     };
-  }).filter(item => item !== null); // Remove null entries
+  }).filter(item => item !== null);
 }
 
+// Fetch enumerators
+async function getEnumerators() {
+  try {
+    const response = await fetch(`${HOST}?getEnumUser`);
+    const data = await response.json();
 
-// Fetch data from API
+    data.message.reverse().forEach(enumuser => {
+      $("#enumeratorFilter").append(`
+        <option value="${enumuser.id}">${enumuser.fullname}</option>
+      `);
+    });
+  } catch (error) {
+    console.error("Error loading enumerators:", error);
+  }
+}
+
+// Fetch data with Plateau filter
 async function fetchData(params = {}) {
   try {
     showLoading();
-
-    // Construct query parameters
     const queryParams = new URLSearchParams();
+    queryParams.append('state', 'Plateau');
+    
     for (const [key, value] of Object.entries(params)) {
       if (value) queryParams.append(key, value);
     }
@@ -85,10 +93,8 @@ async function fetchData(params = {}) {
 
     if (data.status === "1") {
       return processAPIData(data);
-    } else {
-      console.error("API Error:", data.message);
-      return [];
     }
+    return [];
   } catch (error) {
     console.error("Fetch Error:", error);
     return [];
@@ -97,11 +103,10 @@ async function fetchData(params = {}) {
   }
 }
 
-// Apply filters to the data
+// Apply filters
 async function applyFilters() {
   showLoading();
 
-  // Get filter values from UI
   const timeRange = document.getElementById('timeRange').value;
   const startDate = document.getElementById('startDate').value;
   const endDate = document.getElementById('endDate').value;
@@ -110,12 +115,10 @@ async function applyFilters() {
   const lga = document.getElementById('lgaFilter').value;
   const visualizationType = document.getElementById('visualizationType').value;
 
-  // Build API params
-  const params = {};
-  if (enumerator !== '') params.enumerator = enumerator;
+  const params = { state: 'Plateau' };
+  if (enumerator) params.enumerator = enumerator;
   if (lga !== 'all') params.lga = lga;
 
-  // Time range filters
   if (timeRange === 'custom' && startDate && endDate) {
     params.from_date = startDate;
     params.to_date = endDate;
@@ -123,47 +126,43 @@ async function applyFilters() {
     const now = new Date();
     let fromDate = new Date();
 
-    if (timeRange === 'today') {
-      fromDate.setHours(0, 0, 0, 0);
-    } else if (timeRange === 'week') {
-      fromDate.setDate(fromDate.getDate() - 7);
-    } else if (timeRange === 'month') {
-      fromDate.setMonth(fromDate.getMonth() - 1);
-    }
+    if (timeRange === 'today') fromDate.setHours(0, 0, 0, 0);
+    else if (timeRange === 'week') fromDate.setDate(fromDate.getDate() - 7);
+    else if (timeRange === 'month') fromDate.setMonth(fromDate.getMonth() - 1);
 
     params.from_date = fromDate.toISOString().split('T')[0];
     params.to_date = now.toISOString().split('T')[0];
   }
 
-  // Fetch and process data
   filteredData = await fetchData(params);
-
-  // Apply entity type filter client-side
+  
   if (entityType !== 'all') {
     filteredData = filteredData.filter(item => item.entityType === entityType);
   }
 
-  // Update statistics
   updateStatistics();
-
-  // Update visualization
   updateVisualization(visualizationType);
 
-  // Zoom to selected LGA if filtered
-  if (lga !== 'all') {
-    const lgaData = filteredData.filter(item => item.lga === lga);
-    if (lgaData.length > 0) {
-      const lgaBounds = getDataBounds(lgaData);
-      map.fitBounds(lgaBounds, { padding: [50, 50] });
-    }
+  // Zoom to results
+  if (filteredData.length > 0) {
+    const bounds = getDataBounds(filteredData);
+    map.fitBounds(bounds, { 
+      padding: [50, 50],
+      maxZoom: lga !== 'all' ? 10 : 9 
+    });
+  } else {
+    map.fitBounds(PLATEAU_BOUNDS, { padding: [20, 20] });
+    L.popup()
+      .setLatLng(map.getCenter())
+      .setContent("No facilities found with current filters")
+      .openOn(map);
   }
 
   hideLoading();
 }
 
-// Update visualization based on selected type
+// Update visualization
 function updateVisualization(type) {
-  // Clear existing layers
   if (heatLayer) map.removeLayer(heatLayer);
   if (markerCluster) map.removeLayer(markerCluster);
   if (pinLayer) map.removeLayer(pinLayer);
@@ -171,15 +170,13 @@ function updateVisualization(type) {
   if (filteredData.length === 0) return;
 
   if (type === 'heatmap') {
-    const heatData = filteredData.map(item => [item.lat, item.lng, item.count]);
-    heatLayer = L.heatLayer(heatData, {
-      radius: 25,
+    heatLayer = L.heatLayer(filteredData.map(item => [item.lat, item.lng, 1]), {
+      radius: 20,
       blur: 15,
-      maxZoom: 17,
+      maxZoom: 12,
       gradient: { 0.4: 'blue', 0.6: 'lime', 1: 'red' }
     }).addTo(map);
-  }
-  else if (type === 'clusters' || type === 'pins') {
+  } else {
     const layer = type === 'clusters' ? L.markerClusterGroup() : L.layerGroup();
 
     filteredData.forEach(item => {
@@ -187,97 +184,63 @@ function updateVisualization(type) {
         icon: L.divIcon({
           className: 'custom-marker',
           html: `<div style="background-color: ${getColorByType(item)}; 
-                           width: ${type === 'pins' ? '15px' : '10px'}; 
-                           height: ${type === 'pins' ? '15px' : '10px'}; 
-                           border-radius: 50%; 
-                           ${type === 'pins' ? 'border: 2px solid white;' : ''}"></div>`
+                         width: 15px; height: 15px; border-radius: 50%; 
+                         border: 2px solid white;"></div>`
         })
-      });
-
-      marker.bindPopup(createPopupContent(item));
+      }).bindPopup(createPopupContent(item));
+      
       layer.addLayer(marker);
     });
 
     map.addLayer(layer);
-
     if (type === 'clusters') markerCluster = layer;
     else pinLayer = layer;
   }
-
-  // Zoom to show all data
-  if (filteredData.length > 0) {
-    map.fitBounds(getDataBounds(filteredData), { padding: [50, 50] });
-  }
 }
 
-// Update statistics panel
+// Update statistics
 function updateStatistics() {
   const lgaFilter = document.getElementById('lgaFilter').value;
 
-  // Update total counts
   totalCountElement.textContent = filteredData.length;
+  individualCountElement.textContent = filteredData.filter(item => item.entityType === 'Individual').length;
+  businessCountElement.textContent = filteredData.filter(item => item.entityType === 'Corporate').length;
+  stateAgencyElm.textContent = filteredData.filter(item => item.entityType === 'State Agency').length;
+  federalAgencyElm.textContent = filteredData.filter(item => item.entityType === 'Federal Agency').length;
+  hospitalElm.textContent = filteredData.filter(item => item.entityType === 'Hospital').length;
 
-  const individualCount = filteredData.filter(item => item.entityType === 'Individual').length;
-  individualCountElement.textContent = individualCount;
-
-  const corporateCount = filteredData.filter(item => item.entityType === 'Corporate').length;
-  businessCountElement.textContent = corporateCount;
-
-  const stateAgncyCount = filteredData.filter(item => item.entityType === 'State Agency').length;
-  stateAgencyElm.textContent = stateAgncyCount;
-
-  const federalAgencyCount = filteredData.filter(item => item.entityType === 'Federal Agency').length;
-  federalAgencyElm.textContent = federalAgencyCount;
-
-  const hospitalCount = filteredData.filter(item => item.entityType === 'Hospital').length;
-  hospitalElm.textContent = hospitalCount;
-
-  // Update LGA information
-  const selectedLGA = lgaFilter === 'all' ? 'None' : lgaFilter;
-  selectedLGAElement.textContent = selectedLGA;
-
-  if (lgaFilter !== 'all') {
-    const lgaCount = filteredData.filter(item => item.lga === lgaFilter).length;
-    lgaCountElement.textContent = lgaCount;
-  } else {
-    lgaCountElement.textContent = 'N/A';
-  }
+  selectedLGAElement.textContent = lgaFilter === 'all' ? 'None' : lgaFilter;
+  lgaCountElement.textContent = lgaFilter !== 'all' ? 
+    filteredData.filter(item => item.lga === lgaFilter).length : 'N/A';
 }
 
-// Helper function to determine marker color
+// Helper functions
 function getColorByType(item) {
-  // Use business type or entity type for color coding
-  if (item.facilityType && item.facilityType !== "Unknown") {
-    // Create a simple hash of the business type for consistent coloring
-    let hash = 0;
-    for (let i = 0; i < item.facilityType.length; i++) {
-      hash = item.facilityType.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    const color = `hsl(${hash % 360}, 70%, 50%)`;
-    return color;
-  }
-  return item.entityType === 'individual' ? '#3498db' : '#e74c3c';
+  const colors = {
+    'Individual': '#3498db',
+    'Corporate': '#e74c3c',
+    'State Agency': '#9b59b6',
+    'Federal Agency': '#f1c40f',
+    'Hospital': '#2ecc71'
+  };
+  return colors[item.entityType] || '#95a5a6';
 }
 
-// Helper function to create popup content
 function createPopupContent(item) {
   const data = item.rawData;
   return `
-        <div style="max-width: 300px;">
-            <h6>${data.tax_number}</h6>
-            <table class="table table-sm">
-                <tr><th>LGA:</th><td>${data.lga}</td></tr>
-                <tr><th>Enumerator:</th><td>${data.enumerator_name || 'Unknown'}</td></tr>
-                <tr><th>Type:</th><td>${item.entityType}</td></tr>
-                <tr><th>Date:</th><td>${new Date(data.timeIn).toLocaleString()}</td></tr>
-                ${data.business_type ? `<tr><th>Business:</th><td>${data.business_type}</td></tr>` : ''}
-                ${data.phone ? `<tr><th>Phone:</th><td>${data.phone}</td></tr>` : ''}
-            </table>
-        </div>
-    `;
+    <div style="max-width: 250px;">
+      <h6>${data.business_type || 'Facility'}</h6>
+      <table class="table table-sm">
+        <tr><th>LGA:</th><td>${data.lga || 'Unknown'}</td></tr>
+        <tr><th>Type:</th><td>${item.entityType || 'Unknown'}</td></tr>
+        <tr><th>Date:</th><td>${new Date(data.timeIn).toLocaleDateString() || 'Unknown'}</td></tr>
+        ${data.phone ? `<tr><th>Phone:</th><td>${data.phone}</td></tr>` : ''}
+      </table>
+    </div>
+  `;
 }
 
-// Helper function to get bounds of data points
 function getDataBounds(data) {
   const lats = data.map(item => item.lat);
   const lngs = data.map(item => item.lng);
@@ -287,23 +250,20 @@ function getDataBounds(data) {
   ];
 }
 
-// Show loading indicator
 function showLoading() {
   loadingIndicator.classList.remove('d-none');
 }
 
-// Hide loading indicator
 function hideLoading() {
   loadingIndicator.classList.add('d-none');
 }
 
-// Reset all filters
 function resetFilters() {
   document.getElementById('timeRange').value = 'all';
   document.getElementById('customRangeContainer').classList.add('d-none');
   document.getElementById('startDate').value = '';
   document.getElementById('endDate').value = '';
-  document.getElementById('enumeratorFilter').value = 'all';
+  document.getElementById('enumeratorFilter').value = '';
   document.getElementById('entityTypeFilter').value = 'all';
   document.getElementById('lgaFilter').value = 'all';
   document.getElementById('visualizationType').value = 'heatmap';
@@ -311,57 +271,34 @@ function resetFilters() {
   filteredData = [...allData];
   updateStatistics();
   updateVisualization('heatmap');
+  map.fitBounds(PLATEAU_BOUNDS, { padding: [20, 20] });
 }
 
-// Initialize the application
+// Initialize application
 async function initialize() {
-  // Set initial view to Plateau State
-  map.fitBounds(PLATEAU_BOUNDS);
+  // Set strict Plateau bounds
+  map.fitBounds(PLATEAU_BOUNDS, { padding: [20, 20] });
+  map.on('drag', function() {
+    if (!map.getBounds().intersects(PLATEAU_BOUNDS)) {
+      map.fitBounds(PLATEAU_BOUNDS, { padding: [20, 20] });
+    }
+  });
+
+  // Load enumerators
+  await getEnumerators();
 
   // Fetch initial data
   allData = await fetchData();
   filteredData = [...allData];
-
-  // Update UI
   updateStatistics();
   updateVisualization('heatmap');
-
-  // Add click handler for LGA summary
-  map.on('click', function (e) {
-    const nearby = filteredData.filter(item => {
-      return Math.abs(item.lat - e.latlng.lat) < 0.2 &&
-        Math.abs(item.lng - e.latlng.lng) < 0.2;
-    });
-
-    const lgaCounts = {};
-    nearby.forEach(item => {
-      lgaCounts[item.lga] = (lgaCounts[item.lga] || 0) + 1;
-    });
-
-    let content = '<b>Nearby Enumerations</b><br><table class="table table-sm">';
-    for (const [lga, count] of Object.entries(lgaCounts)) {
-      content += `<tr><td>${lga}</td><td>${count}</td></tr>`;
-    }
-    content += '</table>';
-
-    L.popup()
-      .setLatLng(e.latlng)
-      .setContent(content)
-      .openOn(map);
-  });
 }
 
 // Event listeners
 document.getElementById('applyFilters').addEventListener('click', applyFilters);
 document.getElementById('resetFilters').addEventListener('click', resetFilters);
-
-document.getElementById('timeRange').addEventListener('change', function () {
-  const customRangeContainer = document.getElementById('customRangeContainer');
-  if (this.value === 'custom') {
-    customRangeContainer.classList.remove('d-none');
-  } else {
-    customRangeContainer.classList.add('d-none');
-  }
+document.getElementById('timeRange').addEventListener('change', function() {
+  document.getElementById('customRangeContainer').classList.toggle('d-none', this.value !== 'custom');
 });
 
 // Start the application

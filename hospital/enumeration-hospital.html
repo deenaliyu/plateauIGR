@@ -415,6 +415,15 @@
             <div class="col-md-6">
               <label for="taxIdentificationNumber" class="form-label required">Tax Identification Number (TIN)</label>
               <input type="text" class="form-control" id="taxIdentificationNumber" required>
+              <div class="flex justify-between items-center">
+              <p class="text-sm font-bold">Don't have TIN?<a href="#popUpModal" data-bs-toggle="modal"
+                  class="fontBold text-[#CDA545]">
+                  Click here</a></p>
+
+              <p class="text-sm font-bold">Can't remember TIN?<a href="#forgotTinModal" data-bs-toggle="modal"
+                  class="fontBold text-danger">
+                  Forgot TIN</a></p>
+            </div>
               <div class="invalid-feedback">Please provide the tax identification number.</div>
             </div>
             <div class="col-md-6">
@@ -783,6 +792,8 @@
   </div>
 
 
+  <div id="ModalsContainer"></div>
+
 
 
   <script src="assets/js/jquery.js"></script>
@@ -801,6 +812,7 @@
   <script src="assets/js/snapping.js"></script>
   <script src="assets/js/tabHandler.js"></script>
   <script src="assets/js/enumeration-hospital.js"></script>
+    <script src="assets/js/hadleTinGen.js"></script>
 </body>
 
 </html>

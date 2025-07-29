@@ -2082,22 +2082,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     html += `
-      <div class="flex justify-end -mt-20" >
-        <div class="w-[100px] h-[100px] pr-8" id="qrContainer"></div>
-
-      </div>
-    `
+        <div class="tax-liabilities">
+            <h5>Applicable Tax Liabilities</h5>
+            <ul class="tax-list">
+                <li>PAYE</li>
+                <li>Development Levy</li>
+                <li>Business Premise Levy</li>
+                <li>Environmental and Waste Management Fees</li>
+                <li>Shop/Trade Permit</li>
+                <li>Tenement Rate</li>
+                <li>Bill Board Levy</li>
+            </ul>
+        </div>
+`;
 
     document.getElementById('reviewSummary').innerHTML = html;
 
-    const qrCodeContainer = document.getElementById("qrContainer")
-
-      const qrCode = new QRCode(qrCodeContainer, {
-        text: `https://plateauigr.com`,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        version: 10,
-      });
+    
   }
 
   // Prepare payload for API submission
@@ -2499,7 +2500,7 @@ document.addEventListener('DOMContentLoaded', function () {
         allowOutsideClick: false,
         willClose: () => {
           // Redirect or reset form
-          window.location.href = 'enumeration.html'; // Or reset the form
+   window.location.href = `enumeration-hospital-preview.html?id=${tax_number.tax_number}`;
         }
       });
 

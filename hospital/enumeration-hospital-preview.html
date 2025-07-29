@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlateauIGR</title>
+
+  <!-- FAVION ICON -->
+
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- <link rel="stylesheet" href="assets/css/responsive.css" /> -->
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+    integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #reviewSummary,
+      #reviewSummary * {
+        visibility: visible;
+      }
+
+      #reviewSummary {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    #reviewSummary p {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    label.required::after {
+      content: "*";
+      color: #dc3545;
+      opacity: 0.8;
+      margin-left: 0.25rem;
+      font-size: 1.1em;
+    }
+
+    .selectize-input:after {
+      content: '▾';
+      /* the dropdown arrow */
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      margin-top: -10px;
+      font-size: 20px;
+      color: #999;
+      pointer-events: none;
+    }
+
+    .progress {
+      height: 10px;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #CDA545;
+    }
+
+    .invalid-feedback {
+      display: none;
+    }
+
+    .was-validated .form-control:invalid~.invalid-feedback,
+    .was-validated .form-select:invalid~.invalid-feedback {
+      display: block;
+    }
+
+    .branch-entry {
+      border: 1px solid #dee2e6;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+    }
+
+    .branch-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .remove-branch {
+      margin-top: 10px;
+    }
+
+    .card {
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .card-header {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+        .qr-code-container {
+            display: flex;
+            justify-content: center;
+            padding: 20px;
+        }
+        .loading-spinner {
+            display: flex;
+            justify-content: center;
+            padding: 40px;
+        }
+  </style>
+
+  
+</head>
+
+<body>
+
+
+  <header>
+    <div class="flex gap-2 items-center p-3 border-b">
+      <img src="./assets/img/logo.png" class="w-[50px]" alt="">
+      <p class="text-md fontBold">Plateau IGR</p>
+    </div>
+
+  </header>
+
+
+  <section class="flex h-[89vh] overflow-y-scroll headerBeginner">
+
+    <div class="w-3/12 bg-[#F9FAFB] p-3">
+
+      <div class="flex px-1 h-full">
+        <div class="flex px-1 h-full">
+          <div class="mt-5 imgTabs">
+            <img src="./assets/img/v9.png" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
+
+
+<form action="">
+    <h1 class="font-bold text-lg my-4 text-center">Facility Information</h1>
+    <div id="reviewSummary" class="loading-spinner">
+        <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Loading...</span>
+        </div>
+    </div>
+</form>
+
+      <div class="flex justify-end mt-5">
+        <button class="button no-print" onclick="window.print()">Print</button>
+      </div>
+
+
+
+    </div>
+
+
+  </section>
+
+  
+
+
+
+  <script src="assets/js/jquery.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="assets/js/aos-master/dist/aos.js"></script>
+  <script src="assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+  <script src="./assets/node_modules/publitio_js_sdk/build/publitio-api.min.js"></script>
+ 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/tabHandler.js"></script>
+  <script src="assets/js/enumeration-hospital-preview.js"></script>
+
+</body>
+
+</html>

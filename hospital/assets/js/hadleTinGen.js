@@ -12,7 +12,7 @@ $('#ModalsContainer').html(`
         </div>
 
         <div class="modal-body">
-          <p>To Generate an Invoice, please provide your Tax Identification Number (TIN) or choose one of the options
+          <p>To Create an Account, please provide your Tax Identification Number (TIN) or choose one of the options
             below.</p>
 
           <div class="tin-input my-5">
