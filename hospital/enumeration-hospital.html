@@ -198,7 +198,7 @@
 
     <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
 
-      <!-- SECTOR SECTION -->
+      <!-- TIN STATUS SECTION -->
       <section class="form-section h-full">
         <div class="md:pt-4 pt-3 mb-2">
           <a class="flex items-center gap-2" href="enumeration.html">
@@ -208,25 +208,34 @@
         </div>
 
         <form action="">
-          <h1 class="fontBold text-lg">Sector</h1>
-          <p class="mt-2 mb-4">Choose the sector for enumeration</p>
+          <h1 class="fontBold text-lg">TIN Validation</h1>
+          <p class="mt-2 mb-4">Validate Customer TIN Number</p>
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="sector" class="form-label required">Sector</label>
-              <select id="sector" class="form-select required">
-                <option value="">Select Sector</option>
-                <option value="Health Sector">Health Sector</option>
-                <option value="Education Sector">Education Sector</option>
-                <option value="Agricultural Sector">Agricultural Sector</option>
-                <option value="Mining Sector">Mining Sector</option>
-                <option value="Financial Sector">Financial Sector</option>
-              </select>
-              <div class="invalid-feedback">Please select Sector.</div>
+              <label for="sector" class="form-label required">Do you have a TIN Number?</label>
+              <div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="hasTIN" id="hasTINYes" value="yes" required>
+                  <label class="form-check-label" for="hasTINYes">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="hasTIN" id="hasTINNo" value="no" required>
+                  <label class="form-check-label" for="hasTINNo">
+                    No
+                  </label>
+                </div>
+              </div>
+
+              <div id="selectionContainer">
+                
+              </div>
             </div>
           </div>
 
           <div class="flex justify-end">
-            <button class="button mb-4 next-section" type="button">Continue</button>
+            <!-- <button class="button mb-4 next-section" type="button">Continue</button> -->
           </div>
         </form>
 
@@ -250,8 +259,7 @@
           <div class="flex gap-x-5 justify-center flex-wrap">
             <div class="md:w-8/12">
               <div class="flex gap-x-5 mt-3 justify-center flex-wrap">
-                <div class="w-[244px] px-3 pb-4 card card-body cardi"
-                  data-name="individual">
+                <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="individual">
                   <div class="flex justify-center pt-2">
                     <img src="./assets/img/individual.png" class="text-center" alt="">
                   </div>
@@ -260,8 +268,7 @@
                     pay taxes on their personal income, such as salary, freelance work, rental
                     income, etc.</p>
                 </div>
-                <div class="w-[244px] px-3 pb-4 card card-body cardi"
-                  data-name="corporate">
+                <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="corporate">
                   <div class="flex justify-center pt-2">
                     <img src="./assets/img/corporate.png" class="text-center" alt="">
                   </div>
@@ -272,8 +279,7 @@
                 </div>
               </div>
               <div class="flex gap-x-5 mt-4 justify-center flex-wrap">
-                <div class="w-[244px] px-3 pb-4 card card-body cardi"
-                  data-name="state">
+                <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="state">
                   <div class="flex justify-center pt-2">
                     <img src="./assets/img/properties.png" class="text-center" alt="">
                   </div>
@@ -282,8 +288,7 @@
                     departments at the state level that are responsible for paying taxes on their
                     operations.</p>
                 </div>
-                <div class="w-[244px] px-3 pb-4 card card-body cardi"
-                  data-name="federal">
+                <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="federal">
                   <div class="flex justify-center pt-2">
                     <img src="./assets/img/properties.png" class="text-center" alt="">
                   </div>
@@ -296,7 +301,7 @@
             </div>
 
           </div>
-         <div class="flex justify-between mt-4">
+          <div class="flex justify-between mt-4">
             <button class="outline-btn mb-4 prev-section" type="button">Previous</button>
             <button class="button mb-4 next-section" type="button">Continue</button>
           </div>
@@ -416,14 +421,14 @@
               <label for="taxIdentificationNumber" class="form-label required">Tax Identification Number (TIN)</label>
               <input type="text" class="form-control" id="taxIdentificationNumber" required>
               <div class="flex justify-between items-center">
-              <p class="text-sm font-bold">Don't have TIN?<a href="#popUpModal" data-bs-toggle="modal"
-                  class="fontBold text-[#CDA545]">
-                  Click here</a></p>
+                <p class="text-sm font-bold">Don't have TIN?<a href="#popUpModal" data-bs-toggle="modal"
+                    class="fontBold text-[#CDA545]">
+                    Click here</a></p>
 
-              <p class="text-sm font-bold">Can't remember TIN?<a href="#forgotTinModal" data-bs-toggle="modal"
-                  class="fontBold text-danger">
-                  Forgot TIN</a></p>
-            </div>
+                <p class="text-sm font-bold">Can't remember TIN?<a href="#forgotTinModal" data-bs-toggle="modal"
+                    class="fontBold text-danger">
+                    Forgot TIN</a></p>
+              </div>
               <div class="invalid-feedback">Please provide the tax identification number.</div>
             </div>
             <div class="col-md-6">
@@ -812,7 +817,7 @@
   <script src="assets/js/snapping.js"></script>
   <script src="assets/js/tabHandler.js"></script>
   <script src="assets/js/enumeration-hospital.js"></script>
-    <script src="assets/js/hadleTinGen.js"></script>
+  <script src="assets/js/hadleTinGen.js"></script>
 </body>
 
 </html>
