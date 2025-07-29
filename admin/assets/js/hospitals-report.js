@@ -39,10 +39,10 @@ function loadFacilities() {
   const dateRange = $('#dateRangeFilter').val();
   const search = $('#searchFilter').val();
 
-  let url = 'https://plateauigr.com/php/?getFacilities';
+  let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
   if (facilityType) url += `&facility_type=${facilityType}`;
   if (lga) url += `&lga=${lga}`;
-  if (ownershipType) url += `&ownership_type=${ownershipType}`;
+  if (ownershipType) url += `&category=${ownershipType}`;
   if (dateRange) {
     const dates = dateRange.split(' - ');
     url += `&start_date=${dates[0]}&end_date=${dates[1]}`;
@@ -64,28 +64,66 @@ function loadFacilities() {
     $('#dataTable').empty();
   }
 
-  fetch(url)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 1) {
-        renderFacilities(data.facilities);
-        initializeDataTable()
-      } else {
-        $('#showFacilitiesList').html(`
-          <tr>
-            <td colspan="12" class="text-center text-danger">No facilities found</td>
-          </tr>
-        `);
-      }
-    })
-    .catch(error => {
-      console.error('Error loading facilities:', error);
-      $('#showFacilitiesList').html(`
-        <tr>
-          <td colspan="12" class="text-center text-danger">Error loading facilities. Please try again.</td>
-        </tr>
-      `);
-    });
+  // Add loading state
+$('#showFacilitiesList').html(`
+  <tr>
+    <td colspan="12" class="text-center">Loading facilities...</td>
+  </tr>
+`);
+
+const controller = new AbortController();
+const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
+
+fetch(url, { signal: controller.signal })
+  .then(response => {
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    return response.json();
+  })
+  .then(data => {
+    clearTimeout(timeoutId);
+    if (data.status === 1) {
+      renderFacilities(data.facilities);
+      initializeDataTable();
+    } else {
+      showNoDataMessage();
+    }
+  })
+  .catch(error => {
+    clearTimeout(timeoutId);
+    console.error('Error loading facilities:', error);
+    if (error.name === 'AbortError') {
+      showErrorMessage('Request timed out');
+    } else {
+      showErrorMessage('Error loading facilities');
+    }
+  });
+
+function showNoDataMessage() {
+  const colCount = $('#showFacilitiesList tr:first th').length || 12;
+  $('#showFacilitiesList').html(`
+    <tr>
+      <td colspan="${colCount}" class="text-center text-muted">No facilities found</td>
+    </tr>
+  `);
+}
+
+function showErrorMessage(message) {
+  const colCount = $('#showFacilitiesList tr:first th').length || 12;
+  $('#showFacilitiesList').html(`
+    <tr>
+      <td colspan="${colCount}" class="text-center text-danger">${message}</td>
+    </tr>
+  `);
+  
+  // Optionally add retry button
+  $('#showFacilitiesList').after(`
+    <div class="text-center mt-2">
+      <button class="btn btn-sm btn-primary" onclick="loadFacilities()">Retry</button>
+    </div>
+  `);
+}
 }
 
 function initializeDataTable() {
@@ -106,34 +144,42 @@ function renderFacilities(facilities) {
     return;
   }
 
+  console.log('Facilities data:', facilities);
   facilities.forEach((facility, index) => {
-    const facilityData = facility.facility;
-    const locationData = facility.location;
-    const operationsData = facility.operations;
-    const branches = facility.branches || [];
+    const facilityData = facility;
 
-    $('#showFacilitiesList').append(`
-      <tr>
-        <td>${index + 1}</td>
-        <td>${facilityData.legal_name || 'N/A'}</td>
-        <td>${facilityData.facility_type || 'N/A'}</td>
-        <td>${operationsData.number_of_employees || '0'}</td>
-        <td>${facilityData.tax_identification_number || 'N/A'}</td>
-        <td>${locationData.lga || 'N/A'}</td>
-        <td>${locationData.phone_number || 'N/A'}</td>
-        <td>${facilityData.ownership_type || 'N/A'}</td>
-        <td>${branches.length}</td>
-        <td>${facilityData.enumerator_email || 'N/A'}</td>
-        <td>
-          <button class="btn btn-sm btn-outline-primary view-facility" data-id="${facilityData.id}" title="View Details">
-            <iconify-icon icon="mdi:eye-outline" class="text-md mt-1"></iconify-icon>
-          </button>
-          <!-- <button class="btn btn-sm btn-warning edit-facility" data-id="${facilityData.id}" title="Edit">
-            <iconify-icon icon="mdi:pencil-outline"></iconify-icon>
-          </button> -->
-        </td>
-      </tr>
-    `);
+
+   $('#showFacilitiesList').append(`
+  <tr>
+    <td>${index + 1}</td>
+    <td>${facilityData.branch_name || 'N/A'}</td>
+    <td>${formatFacilityType(facilityData.facility_type) || 'N/A'}</td>
+    <td>${facilityData.number_of_beds || '0'}</td>
+    <td>${facilityData.avg_monthly_visits || '0'}</td>
+    <td>${facilityData.state || 'N/A'}</td>
+    <td>${facilityData.lga || 'N/A'}</td>
+    <td>${facilityData.branch_phone_numbers || 'N/A'}</td>
+    <td>${facilityData.branch_email  || 'N/A'}</td>
+    <td>Active</td> <!-- Default status -->
+    <td>
+      <button class="btn btn-sm btn-outline-primary view-facility" 
+              data-id="${facilityData.payer_user_id}" 
+              title="View Details">
+        <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+      </button>
+    </td>
+  </tr>
+`);
+
+// Helper function to format facility type
+function formatFacilityType(type) {
+  if (!type) return 'N/A';
+  
+  // Convert snake_case to Title Case
+  return type.split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
   });
 
   // Add click handlers for view buttons
@@ -151,7 +197,7 @@ function renderFacilities(facilities) {
 
 // Load summary tiles
 function loadSummaryTiles() {
-  fetch('https://plateauigr.com/php/?getFacilities')
+  fetch('https://plateauigr.com/php/?gettHospitalFacilities')
     .then(response => response.json())
     .then(data => {
       if (data.status === 1) {
@@ -212,11 +258,13 @@ function showFacilityDetails(facilityId) {
     </div>
   `);
 
-  fetch(`https://plateauigr.com/php/?getFacilities&facility_id=${facilityId}`)
+
+  fetch(`https://plateauigr.com/php/?gettHospitalFacilities&facility_hospital_id=${facilityId}`)
     .then(response => response.json())
     .then(data => {
       if (data.status === 1 && data.facilities.length > 0) {
         const facility = data.facilities[0];
+        console.log('Facility details loaded:', facility);
         renderFacilityDetails(facility);
       } else {
         $('#facilityDetailsContent').html(`
@@ -236,16 +284,37 @@ function showFacilityDetails(facilityId) {
 
 // Render facility details
 function renderFacilityDetails(facility) {
-  const facilityData = facility.facility;
-  const locationData = facility.location;
-  const operationsData = facility.operations;
-  const branches = facility.branches || [];
-
+  const facilityData = facility;
+  const typeData = facility.type_data || {};
+  
   // Parse JSON strings if they exist
-  const servicesOffered = operationsData.services_offered ? JSON.parse(operationsData.services_offered) : [];
-  const majorEquipment = operationsData.major_equipment && operationsData.major_equipment !== 'null' ?
-    JSON.parse(operationsData.major_equipment) : [];
-  const issuingAuthority = facilityData.issuing_authority ? JSON.parse(facilityData.issuing_authority) : [];
+  const servicesOffered = typeData.services_offered ? JSON.parse(typeData.services_offered) : [];
+  const primaryServices = typeData.primary_services_offered ? JSON.parse(typeData.primary_services_offered) : [];
+  
+  // Create dynamic type-specific fields
+  let typeSpecificFields = '';
+  
+  // Generate fields based on type_data properties
+  for (const [key, value] of Object.entries(typeData)) {
+    if (key !== 'id' && key !== 'facility_hospital_id' && key !== 'created_at' && key !== 'updated_at' && 
+        key !== 'services_offered' && key !== 'primary_services_offered') {
+      const label = key
+        .replace(/_/g, ' ')
+        .replace(/\b\w/g, l => l.toUpperCase());
+      
+      let displayValue = value;
+      if (key.includes('fee') || key.includes('cost')) {
+        displayValue = value ? `₦${parseFloat(value).toLocaleString()}` : 'N/A';
+      }
+      
+      typeSpecificFields += `
+        <tr>
+          <th>${label}:</th>
+          <td>${displayValue || 'N/A'}</td>
+        </tr>
+      `;
+    }
+  }
 
   $('#facilityDetailsContent').html(`
     <div class="row">
@@ -254,121 +323,73 @@ function renderFacilityDetails(facility) {
         <table class="table table-sm">
           <tr>
             <th>Legal Name:</th>
-            <td>${facilityData.legal_name || 'N/A'}</td>
+            <td>${facilityData.branch_name || facilityData.first_name || 'N/A'}</td>
           </tr>
           <tr>
             <th>Facility Type:</th>
-            <td>${facilityData.facility_type || 'N/A'}</td>
+            <td>${formatFacilityType(facilityData.facility_type) || 'N/A'}</td>
           </tr>
           <tr>
             <th>Registration Number:</th>
-            <td>${facilityData.registration_number || 'N/A'}</td>
+            <td>${facilityData.facility_hospital_id || 'N/A'}</td>
           </tr>
           <tr>
-            <th>Ownership Type:</th>
-            <td>${facilityData.ownership_type || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th>TIN Number:</th>
-            <td>${facilityData.tax_identification_number || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th>Date Established:</th>
-            <td>${facilityData.date_of_establishment || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th>Issuing Authority:</th>
-            <td>${issuingAuthority.join(', ') || 'N/A'}</td>
-          </tr>
-        </table>
-      </div>
-      <div class="col-md-12 mb-4">
-        <h5 class="text-xl fontBold text-black">Location Information</h5>
-        <table class="table table-sm">
-          <tr>
-            <th>Address:</th>
-            <td>${locationData.address || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th>City/Town:</th>
-            <td>${locationData.city || 'N/A'}</td>
+            <th>State:</th>
+            <td>${facilityData.state || 'N/A'}</td>
           </tr>
           <tr>
             <th>LGA:</th>
-            <td>${locationData.lga || 'N/A'}</td>
+            <td>${facilityData.lga || 'N/A'}</td>
           </tr>
           <tr>
             <th>Phone:</th>
-            <td>${locationData.phone_number || 'N/A'}</td>
+            <td>${facilityData.branch_phone_numbers || facilityData.phone || 'N/A'}</td>
           </tr>
           <tr>
             <th>Email:</th>
-            <td>${locationData.email || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th>Coordinates:</th>
-            <td>${locationData.latitude}, ${locationData.longitude}</td>
+            <td>${facilityData.branch_email || facilityData.email || 'N/A'}</td>
           </tr>
         </table>
       </div>
-    </div>
-    <div class="row mt-3">
+      
       <div class="col-md-12 mb-4">
-        <h5 class="text-xl fontBold text-black">Operations</h5>
+        <h5 class="text-xl fontBold text-black">Services</h5>
         <table class="table table-sm">
           <tr>
-            <th>Services Offered:</th>
+            <th>Primary Services:</th>
+            <td>${primaryServices.join(', ') || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>All Services Offered:</th>
             <td>${servicesOffered.join(', ') || 'N/A'}</td>
           </tr>
-          <tr>
-            <th>Major Equipment:</th>
-            <td>${majorEquipment.join(', ') || 'N/A'}</td>
-          </tr>
-          <tr>
-            <th>Number of Employees:</th>
-            <td>${operationsData.number_of_employees || '0'}</td>
-          </tr>
+        </table>
+      </div>
+      
+      <div class="col-md-12 mb-4">
+        <h5 class="text-xl fontBold text-black">${formatFacilityType(facilityData.facility_type)} Specific Information</h5>
+        <table class="table table-sm">
+          ${typeSpecificFields}
           <tr>
             <th>Number of Beds:</th>
-            <td>${operationsData.number_of_beds || '0'}</td>
+            <td>${facilityData.number_of_beds || '0'}</td>
           </tr>
           <tr>
             <th>Avg Monthly Visits:</th>
-            <td>${operationsData.avg_monthly_patient_visits || '0'}</td>
-          </tr>
-          <tr>
-            <th>Registration Fee:</th>
-            <td>${operationsData.registration_fee ? '₦' + operationsData.registration_fee : 'N/A'}</td>
+            <td>${facilityData.avg_monthly_visits || '0'}</td>
           </tr>
         </table>
       </div>
-      <div class="col-md-12 mb-4">
-        <h5 class="text-xl fontBold text-black">Branches (${branches.length})</h5>
-        ${branches.length > 0 ? `
-          <div class="table-responsive">
-            <table class="table table-sm">
-              <thead>
-                <tr>
-                  <th>Name</th>
-                  <th>Address</th>
-                  <th>LGA</th>
-                </tr>
-              </thead>
-              <tbody>
-                ${branches.map(branch => `
-                  <tr>
-                    <td>${branch.branch_name || 'N/A'}</td>
-                    <td>${branch.address || 'N/A'}</td>
-                    <td>${branch.lga || 'N/A'}</td>
-                  </tr>
-                `).join('')}
-              </tbody>
-            </table>
-          </div>
-        ` : '<p>No branches</p>'}
-      </div>
     </div>
   `);
+}
+
+// Helper function to format facility type
+function formatFacilityType(type) {
+  if (!type) return 'N/A';
+  return type.split('_')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
 }
 
 // Edit facility
@@ -389,7 +410,7 @@ function exportData(format) {
   const dateRange = $('#dateRangeFilter').val();
   const search = $('#searchFilter').val();
 
-  let url = 'https://plateauigr.com/php/?getFacilities';
+  let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
   if (facilityType) url += `&facility_type=${facilityType}`;
   if (lga) url += `&lga=${lga}`;
   if (ownershipType) url += `&ownership_type=${ownershipType}`;
@@ -423,14 +444,14 @@ function exportData(format) {
         const ws = XLSX.utils.json_to_sheet(exportData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Facilities");
-        
+
         // Fix for Excel export - use correct bookType
         const fileExtension = format === 'csv' ? 'csv' : 'xlsx';
         const bookType = format === 'csv' ? 'csv' : 'xlsx';
-        const fileName = `Facilities_Export_${new Date().toISOString().slice(0,10)}.${fileExtension}`;
-        
+        const fileName = `Facilities_Export_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
+
         XLSX.writeFile(wb, fileName, { bookType });
-        
+
         Swal.fire({
           title: 'Export Successful',
           text: `Facilities data has been exported as ${format.toUpperCase()}`,
