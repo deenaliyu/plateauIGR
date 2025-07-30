@@ -10,7 +10,6 @@ document.addEventListener('DOMContentLoaded', function () {
       });
       selecti.classList.add("selectedcat");
       let btnclicked = document.querySelector(".bb");
-      btnclicked.classList.remove("disabled");
       var dataId = selecti.getAttribute("data-name");
       // console.log(dataId)
 
@@ -88,7 +87,143 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 
+  const yesRadio = document.getElementById('hasTINYes');
+  const noRadio = document.getElementById('hasTINNo');
+  const selectionContainer = document.getElementById('selectionContainer');
 
+  function updateTINSelection() {
+    if (yesRadio.checked) {
+      selectionContainer.innerHTML = `
+        <form>
+          <div class="mt-3">
+            <label for="tinNumber" class="form-label required">TIN Number</label>
+            <input placeholder='Enter your TIN number' type="text" class="form-control" id="tinNumber" name="tinNumber" required>
+          </div>
+
+          <button type="button" class="button mt-4" id="validate-btn">
+            Validate
+            <iconify-icon class="align-middle" icon="material-symbols:line-end-arrow-notch-sharp"></iconify-icon>
+          </button>
+        </form>
+      `;
+
+      document.getElementById('validate-btn').addEventListener('click', validateTIN);
+
+    } else if (noRadio.checked) {
+      selectionContainer.innerHTML = `
+        <div class="mt-3">
+          <a href="../generatetin.html?callback=./hospital/enumeration-hospital.html" type="button" class="button" id="generateTIN">Generate TIN</a>
+        </div>
+      `;
+    }
+  }
+
+  yesRadio.addEventListener('change', updateTINSelection);
+  noRadio.addEventListener('change', updateTINSelection);
+
+  // Initialize based on default selection if any
+  if (yesRadio.checked || noRadio.checked) {
+    updateTINSelection();
+  }
+
+  async function validateTIN() {
+    const validateBtn = document.querySelector("#validate-btn")
+    const validationInput = document.querySelector("#tinNumber");
+    // e.preventDefault()
+    const tinvalue = validationInput.value.trim();
+
+    if (!tinvalue) {
+      alert('Please enter a valid TIN number.');
+      return;
+    }
+
+    validateBtn.disabled = true;
+    validateBtn.innerHTML = `
+        Validating...
+        <iconify-icon icon="eos-icons:loading"></iconify-icon>
+      `;
+
+    try {
+      const response = await fetch(`${HOST}?checkUsers&data=${tinvalue}`);
+      const data = await response.json();
+
+      if (data.status === 1 && data.user) {
+        // Populate the form fields with user data
+        document.getElementById('legalName').value = `${data.user.first_name} ${data.user.surname}`;
+        document.getElementById('taxIdentificationNumber').value = data.user.tin;
+        document.getElementById('address').value = data.user.address;
+        document.getElementById('city').value = data.user.lga; // Assuming city is same as LGA
+        document.getElementById('lga').value = data.user.lga;
+        document.getElementById('state').value = data.user.state;
+        document.getElementById('phoneNumber').value = data.user.phone;
+        document.getElementById('email').value = data.user.email;
+
+        // Representative fields (using user data if rep fields are empty in response)
+        document.getElementById('repName').value = data.user.rep_firstname !== "null" ?
+          `${data.user.rep_firstname} ${data.user.rep_surname}` :
+          `${data.user.first_name} ${data.user.surname}`;
+
+        document.getElementById('repemail').value = data.user.rep_email !== "null" ?
+          data.user.rep_email : data.user.email;
+
+        document.getElementById('repphonenumber').value = data.user.rep_phone !== "null" ?
+          data.user.rep_phone : data.user.phone;
+
+        document.getElementById('repTIN').value = data.user.tin;
+        document.getElementById('repAddress').value = data.user.rep_address !== "null" ?
+          data.user.rep_address : data.user.address;
+
+        // Select the appropriate category card
+        const categoryCards = document.querySelectorAll(".cardi");
+        const userCategory = data.user.category.toLowerCase(); // Convert to lowercase to match data-name
+
+        categoryCards.forEach(card => {
+          card.classList.remove("selectedcat");
+          if (card.getAttribute("data-name") === userCategory) {
+            card.classList.add("selectedcat");
+
+            // Also enable the next button if it exists
+            const nextBtn = document.querySelector(".bb");
+            if (nextBtn) {
+              nextBtn.classList.remove("disabled");
+            }
+          }
+        });
+
+        // Show success message
+        Swal.fire({
+          icon: 'success',
+          title: 'TIN Verified!',
+          text: 'TIN verification successful! User details have been populated.',
+          confirmButtonText: 'Proceed',
+          confirmButtonColor: '#CDA544',
+        }).then(() => {
+          currentSection++;
+          showSection(currentSection);
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'TIN Verification Failed',
+          text: data.message || 'TIN verification failed. User not found.',
+          confirmButtonText: 'OK',
+          confirmButtonColor: '#CDA544'
+        });
+      }
+    } catch (error) {
+      console.error('Error during TIN validation:', error);
+      Swal.fire({
+        icon: 'error',
+        title: 'TIN Validation Error',
+        text: 'An error occurred during TIN validation. Please try again.',
+        confirmButtonText: 'OK',
+        confirmButtonColor: '#CDA544'
+      });
+    } finally {
+      validateBtn.disabled = false;
+      validateBtn.innerHTML = `Validate <iconify-icon class="align-middle" icon="material-symbols:line-end-arrow-notch-sharp"></iconify-icon>`;
+    }
+  };
 
   // Validate current section before proceeding
   function validateSection(index) {
@@ -2098,7 +2233,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.getElementById('reviewSummary').innerHTML = html;
 
-    
+
   }
 
   // Prepare payload for API submission
@@ -2500,7 +2635,7 @@ document.addEventListener('DOMContentLoaded', function () {
         allowOutsideClick: false,
         willClose: () => {
           // Redirect or reset form
-   window.location.href = `enumeration-hospital-preview.html?id=${tax_number.tax_number}`;
+          window.location.href = `enumeration-hospital-preview.html?id=${tax_number.tax_number}`;
         }
       });
 
