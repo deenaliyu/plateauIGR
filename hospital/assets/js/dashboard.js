@@ -22,7 +22,7 @@ function convertToPercentage(number, total) {
 
 async function taxpayerDistributionbyTin() {
   try {
-    const response = await fetch(`${HOST}/?enumeratorTinAnalysis`)
+    const response = await fetch(`${HOST}/?enumeratorTinAnalysis&enumerator=${THEUSERINFO?.id}`)
     const taxpayerDistribution = await response.json()
 
 
