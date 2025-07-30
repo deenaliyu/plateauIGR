@@ -323,7 +323,7 @@ function renderFacilityDetails(facility) {
         <table class="table table-sm">
           <tr>
             <th>Legal Name:</th>
-            <td>${facilityData.branch_name || facilityData.first_name || 'N/A'}</td>
+            <td>${facilityData.branch_name ||'N/A'}</td>
           </tr>
           <tr>
             <th>Facility Type:</th>
@@ -343,11 +343,11 @@ function renderFacilityDetails(facility) {
           </tr>
           <tr>
             <th>Phone:</th>
-            <td>${facilityData.branch_phone_numbers || facilityData.phone || 'N/A'}</td>
+            <td>${facilityData.branch_phone_numbers || 'N/A'}</td>
           </tr>
           <tr>
             <th>Email:</th>
-            <td>${facilityData.branch_email || facilityData.email || 'N/A'}</td>
+            <td>${facilityData.branch_email || 'N/A'}</td>
           </tr>
         </table>
       </div>
@@ -413,7 +413,7 @@ function exportData(format) {
   let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
   if (facilityType) url += `&facility_type=${facilityType}`;
   if (lga) url += `&lga=${lga}`;
-  if (ownershipType) url += `&ownership_type=${ownershipType}`;
+  if (ownershipType) url += `&category=${ownershipType}`;
   if (dateRange) {
     const dates = dateRange.split(' - ');
     url += `&start_date=${dates[0]}&end_date=${dates[1]}`;

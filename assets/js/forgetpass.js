@@ -1,6 +1,15 @@
+
+
+
 $("#LoginNow").on("click", (e) => {
 
-    let emailAdd = document.querySelector("#emailAdd").value
+    
+  const urlParams = new URLSearchParams(window.location.search);
+
+let myParam = urlParams.get('type');
+  
+console.log(myParam);
+  let emailAdd = document.querySelector("#emailAdd").value
   
     e.preventDefault()
     $(".msg_box").html(`
@@ -13,7 +22,7 @@ $("#LoginNow").on("click", (e) => {
     
     $.ajax({
       type: "GET",
-      url: `${HOST}/?resetPassword&email=${emailAdd}`,
+      url: `${HOST}/?resetPassword&email=${emailAdd}&type=${myParam}`,
       dataType: 'json',
       success: function (data) {
       if (data.status === 1) {
@@ -40,6 +49,7 @@ $("#LoginNow").on("click", (e) => {
 
   const urlParams = new URLSearchParams(window.location.search);
 const userid = urlParams.get('id');
+const type = urlParams.get('type');
   $("#ResetNow").on("click", (e) => {
     e.preventDefault()
   
@@ -71,14 +81,18 @@ const userid = urlParams.get('id');
       $("#ResetNow").addClass("hidden")
       $.ajax({
         type: "GET",
-        url: `${HOST}/?changePassword&id=${userid}&password=${ppsword}`,
+        url: `${HOST}/?changePassword&id=${userid}&password=${ppsword}&type=${type}`,
         dataType: 'json',
         success: function (data) {
         if (data.status === 1) {
             $("#load").html(`
               <p class="text-success text-center mt-4 text-lg">${data.message}</p>
             `)
+            if (type === 'enum') {
+              window.location.href = `hospital`
+            } else if (type === 'user') {
             window.location.href = `signin.html`
+          }
           } else if (data.status === 0) {
             $("#load").html(`
               <p class="text-warning text-center mt-4 text-base">${data.message}</p>
