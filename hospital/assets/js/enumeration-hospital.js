@@ -2287,6 +2287,7 @@ document.addEventListener('DOMContentLoaded', function () {
           number_of_staff: document.getElementById('staffCount')?.value || "0",
           lga: document.getElementById('lga').value,
           address: document.getElementById('repAddress').value,
+          postal_code: document.getElementById('postalCode').value,
           img: imageUrlInput.value || "assets/img/userprofile.png",
           password: generateRandomPassword(), // Helper function needed
           created_by: "enumerator",
@@ -2299,6 +2300,7 @@ document.addEventListener('DOMContentLoaded', function () {
           verification_status: "pending",
           verification_code: "",
           tin_status: "active",
+          tin_response: yesRadio.checked ? "yes" : "no",
           rep_firstname: document.getElementById('repName').value.split(' ')[0] || "",
           rep_surname: document.getElementById('repName').value.split(' ').slice(1).join(' ') || "",
           rep_email: document.getElementById('repemail').value,
