@@ -127,9 +127,17 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (noRadio.checked) {
       selectionContainer.innerHTML = `
         <div class="mt-3">
-          <a href="../generatetin.html?callback=./hospital/enumeration-hospital.html" type="button" class="button" id="generateTIN">Generate TIN</a>
+          <!-- <a href="../generatetin.html?callback=./hospital/enumeration-hospital.html" type="button" class="button" id="generateTIN">Generate TIN</a> -->
+          <button class="button" type="button" id="proceedWithoutTIN">
+            Proceed 
+          </button>
         </div>
       `;
+      document.getElementById('proceedWithoutTIN').addEventListener('click', function () {
+        // Proceed without TIN logic
+        currentSection++;
+        showSection(currentSection);
+      });
     }
   }
 
@@ -2277,16 +2285,16 @@ document.addEventListener('DOMContentLoaded', function () {
           nin: "", // Will need to add this field to the form
           bvn: "", // Will need to add this field to the form
           category: document.querySelector('.selectedcat')?.getAttribute('data-name') || "corporate",
-          first_name: document.getElementById('repName').value.split(' ')[0] || "",
-          surname: document.getElementById('repName').value.split(' ').slice(1).join(' ') || "",
-          email: document.getElementById('repemail').value,
-          phone: document.getElementById('repphonenumber').value,
+          first_name: document.getElementById('legalName').value || "",
+          surname: "",
+          email: document.getElementById('email').value,
+          phone: document.getElementById('phoneNumber').value,
           state: document.getElementById('state').value,
           business_type: "Healthcare",
           employment_status: "active",
           number_of_staff: document.getElementById('staffCount')?.value || "0",
           lga: document.getElementById('lga').value,
-          address: document.getElementById('repAddress').value,
+          address: document.getElementById('address').value,
           postal_code: document.getElementById('postalCode').value,
           img: imageUrlInput.value || "assets/img/userprofile.png",
           password: generateRandomPassword(), // Helper function needed
@@ -2663,7 +2671,10 @@ document.addEventListener('DOMContentLoaded', function () {
           // Redirect or reset form
           window.location.href = `enumeration-hospital-preview.html?id=${tax_number.tax_number}`;
         }
-      });
+      }).then(() => {
+        window.location.href = `enumeration-hospital-preview.html?id=${tax_number.tax_number}`;
+      })
+      // Clear form after success;
 
     } catch (error) {
       console.error('Registration error:', error);
