@@ -96,6 +96,21 @@ document.addEventListener('DOMContentLoaded', function () {
       selectionContainer.innerHTML = `
         <form>
           <div class="mt-3">
+            <label class="form-label font-bold text-lg required">TIN Type</label>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tinType" id="jtbTin" value="JTB" checked>
+              <label class="form-check-label" for="jtbTin">
+                JTB TIN (Joint Tax Board)
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="tinType" id="plateauTin" value="PlateauIGR">
+              <label class="form-check-label" for="plateauTin">
+                Plateau IGR TIN
+              </label>
+            </div>
+          </div>
+          <div class="mt-3">
             <label for="tinNumber" class="form-label required">TIN Number</label>
             <input placeholder='Enter your TIN number' type="text" class="form-control" id="tinNumber" name="tinNumber" required>
           </div>
@@ -129,6 +144,8 @@ document.addEventListener('DOMContentLoaded', function () {
   async function validateTIN() {
     const validateBtn = document.querySelector("#validate-btn")
     const validationInput = document.querySelector("#tinNumber");
+    const tinType = document.querySelector('input[name="tinType"]:checked').value;
+
     // e.preventDefault()
     const tinvalue = validationInput.value.trim();
 
@@ -144,7 +161,14 @@ document.addEventListener('DOMContentLoaded', function () {
       `;
 
     try {
-      const response = await fetch(`${HOST}?checkUsers&data=${tinvalue}`);
+      let endpoint;
+      if (tinType === 'JTB') {
+        endpoint = `${HOST}?checkUsers&data=${tinvalue}`;
+      } else {
+        endpoint = `${HOST}?checkUsers&data=${tinvalue}`;
+      }
+
+      const response = await fetch(endpoint);
       const data = await response.json();
 
       if (data.status === 1 && data.user) {
