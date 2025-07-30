@@ -168,9 +168,42 @@
 
                         </div>
 
+                        <div class="dashCards card w-full flex-col space-y-2 relative">
+                          <div class="flex items-center pt-2">
+                            <p class="text-gray-500 text-xs impMetrics">TAXPAYERS WITH TIN</p>
+                          </div>
+
+                          <p class="zanumbers text-success pt-4">
+                            <span id="totalTinYes">-</span>
+                          </p>
+
+                        </div>
+
+                        <div class="dashCards card w-full flex-col space-y-2 relative">
+                          <div class="flex items-center pt-2">
+                            <p class="text-gray-500 text-xs impMetrics">TAXPAYERS WITHOUT TIN</p>
+                          </div>
+
+                          <p class="zanumbers text-success pt-4">
+                            <span id="totalTinNo">-</span>
+                          </p>
+
+                        </div>
+
                       </div>
 
                       <div class="row gy-4 mt-4">
+
+                        <div class="col-md-12">
+                          <div class="card card-body">
+                            <div class="card-title text-[#000]">TAXPAYER DISTRIBUTION BY TIN</div>
+
+                            <div class="theChart d-flex justify-center">
+                              <canvas id="tinDistributionTaxpayer"></canvas>
+                            </div>
+
+                          </div>
+                        </div>
 
                         <!-- <div class="col-md-6">
                           <div class="card card-body">
@@ -288,7 +321,7 @@
                         <th>Agent ID</th>
                         <th>Agent Name</th>
                         <th>Email</th>
-                         <th>Phone</th>
+                        <th>Phone</th>
                         <th>No of Taxpayers Registered</th>
                         <th>Manage</th>
                         <th>Action</th>

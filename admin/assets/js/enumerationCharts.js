@@ -5,7 +5,7 @@ async function getEnumerators() {
   try {
     const response = await fetch(`${HOST}?getEnumUser`)
     const data = await response.json()
-    console.log(data)
+    // console.log(data)
 
     if (data.status === 1) {
       // console.log(data)
@@ -60,6 +60,57 @@ async function fetchMDAs() {
 
 fetchMDAs()
 
+async function taxpayerDistributionbyTin() {
+  try {
+    const response = await fetch(`${HOST}/?enumeratorTinAnalysis`)
+    const taxpayerDistribution = await response.json()
+
+    $("#totalTinYes").html(taxpayerDistribution.total_tin_yes);
+    $("#totalTinNo").html(taxpayerDistribution.total_tin_no);
+
+    // Plot the pie chart
+    plotTinDistributionGraph(taxpayerDistribution);
+
+  } catch (error) {
+    console.log('Error fetching TIN analysis ', error)
+    $("#totalTinYes").html("0");
+    $("#totalTinNo").html("0");
+  }
+
+}
+
+taxpayerDistributionbyTin()
+
+function plotTinDistributionGraph(data) {
+  const ctx = document.getElementById('tinDistributionTaxpayer').getContext('2d');
+
+  const chartData = {
+    labels: ['With TIN', 'Without TIN'],
+    datasets: [{
+      data: [data.total_tin_yes, data.total_tin_no],
+      backgroundColor: ['#4CAF50', '#F44336'],
+      borderColor: '#fff',
+      borderWidth: 1
+    }]
+  };
+
+  new Chart(ctx, {
+    type: 'pie',
+    data: chartData,
+    options: {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top',
+        },
+        title: {
+          display: true,
+          text: 'Taxpayer Distribution by TIN'
+        }
+      }
+    }
+  });
+}
 
 function calculatePercentage(number, total) {
 
@@ -94,9 +145,9 @@ async function loadDashboardData() {
 
     // 3. Create business type chart (top 10)
     const top10 = businessLabels
-      .map((label, i) => ({label, value: businessValues[i]}))
-      .sort((a,b) => b.value - a.value)
-      .slice(0,10);
+      .map((label, i) => ({ label, value: businessValues[i] }))
+      .sort((a, b) => b.value - a.value)
+      .slice(0, 10);
 
     pieCharts(
       top10.map(item => item.label),
@@ -142,16 +193,16 @@ function pieCharts(labels, title, theData, theId) {
   }
 
   const ctx = element.getContext('2d');
-  
+
   // Generate distinct colors for each segment
   const generateColors = (count) => {
     const colors = [];
     const baseColors = [
-      '#CDA545', '#EA4335', '#63B967', '#3A37D0', 
+      '#CDA545', '#EA4335', '#63B967', '#3A37D0',
       '#7AD0C7', '#242424', '#FF9F40', '#4BC0C0',
       '#9966FF', '#FF6384', '#36A2EB', '#FFCE56'
     ];
-    
+
     for (let i = 0; i < count; i++) {
       colors.push(baseColors[i % baseColors.length]);
     }
@@ -195,14 +246,14 @@ function pieCharts(labels, title, theData, theId) {
             font: {
               size: 12
             },
-            generateLabels: function(chart) {
+            generateLabels: function (chart) {
               const data = chart.data;
               if (data.labels.length && data.datasets.length) {
                 return data.labels.map((label, i) => {
                   const value = data.datasets[0].data[i];
                   const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
                   const percentage = Math.round((value / total) * 100);
-                  
+
                   return {
                     text: `${label}: ${value} (${percentage}%)`,
                     fillStyle: data.datasets[0].backgroundColor[i],
@@ -217,7 +268,7 @@ function pieCharts(labels, title, theData, theId) {
         },
         tooltip: {
           callbacks: {
-            label: function(context) {
+            label: function (context) {
               const label = context.label || '';
               const value = context.raw || 0;
               const total = context.dataset.data.reduce((a, b) => a + b, 0);

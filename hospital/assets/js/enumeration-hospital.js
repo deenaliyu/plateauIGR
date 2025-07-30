@@ -2291,7 +2291,7 @@ document.addEventListener('DOMContentLoaded', function () {
           img: imageUrlInput.value || "assets/img/userprofile.png",
           password: generateRandomPassword(), // Helper function needed
           created_by: "enumerator",
-          by_account: userInfo2?.id || "admin",
+          by_account: userInfo2?.id || null,
           business_own: document.getElementById('ownershipType').value,
           id_type: "CAC",
           id_number: document.getElementById('registrationNumber').value,
