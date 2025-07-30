@@ -65,7 +65,7 @@ function renderFacilitySummary(facility) {
     // Generate HTML
     const html = `
         <div class="row">
-            <div class="col-md-12 offset-md-1">
+            <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header">
                         <h6>Basic Information</h6>
@@ -151,7 +151,7 @@ function renderFacilitySummary(facility) {
                 </div>
             </div>
 
-            <div class="col-md-12 offset-md-1">
+            <div class="col-md-12">
                 <div class="card mb-4">
                     <div class="card-header">
                         <h6>Services Offered</h6>

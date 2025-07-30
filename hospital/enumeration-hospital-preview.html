@@ -116,26 +116,29 @@
     }
 
     .card {
-            margin-bottom: 20px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .card-header {
-            background-color: #f8f9fa;
-            font-weight: bold;
-        }
-        .qr-code-container {
-            display: flex;
-            justify-content: center;
-            padding: 20px;
-        }
-        .loading-spinner {
-            display: flex;
-            justify-content: center;
-            padding: 40px;
-        }
+      margin-bottom: 20px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .card-header {
+      background-color: #f8f9fa;
+      font-weight: bold;
+    }
+
+    .qr-code-container {
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .loading-spinner {
+      display: flex;
+      justify-content: center;
+      padding: 40px;
+    }
   </style>
 
-  
+
 </head>
 
 <body>
@@ -167,16 +170,16 @@
     <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
 
 
-<form action="">
-    <h1 class="font-bold text-lg my-4 text-center">Facility Information</h1>
-    <div id="reviewSummary" class="loading-spinner">
-        <div class="spinner-border text-primary" role="status">
+      <form action="">
+        <h1 class="font-bold text-lg my-4 text-center">Facility Information</h1>
+        <div id="reviewSummary" class="loading-spinner">
+          <div class="spinner-border text-primary" role="status">
             <span class="visually-hidden">Loading...</span>
+          </div>
         </div>
-    </div>
-</form>
+      </form>
 
-      <div class="flex justify-end mt-5">
+      <div class="flex justify-end mt-3">
         <button class="button no-print" onclick="window.print()">Print</button>
       </div>
 
@@ -187,7 +190,7 @@
 
   </section>
 
-  
+
 
 
 
@@ -198,7 +201,7 @@
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
   <script src="./assets/node_modules/publitio_js_sdk/build/publitio-api.min.js"></script>
- 
+
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <script src="assets/js/nav.js"></script>
   <script src="assets/js/tabHandler.js"></script>

@@ -2669,10 +2669,10 @@ document.addEventListener('DOMContentLoaded', function () {
         allowOutsideClick: false,
         willClose: () => {
           // Redirect or reset form
-          window.location.href = `enumeration-hospital-preview.html?id=${tax_number.tax_number}`;
+          window.location.href = `enumeration-hospital-preview.html?id=${result.id}`;
         }
       }).then(() => {
-        window.location.href = `enumeration-hospital-preview.html?id=${tax_number.tax_number}`;
+        window.location.href = `enumeration-hospital-preview.html?id=${result.id}`;
       })
       // Clear form after success;
 
