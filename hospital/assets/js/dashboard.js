@@ -131,7 +131,7 @@ let monthData
 
 async function getAnalytics() {
   try {
-    const response = await fetch(`${HOST}?getEnumerationSpecificAgentDashboard&id=${THEUSERINFO.id}`)
+    const response = await fetch(`${HOST}?getHealthcareEnumerationDashboard&id=${THEUSERINFO.id}`)
     const data = await response.json()
 
     $("#totalRegis").html(data[0][0].total_users)
