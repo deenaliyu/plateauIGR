@@ -112,7 +112,7 @@ document.addEventListener('DOMContentLoaded', function () {
           </div>
           <div class="mt-3">
             <label for="tinNumber" class="form-label required">TIN Number</label>
-            <input placeholder='Enter your TIN number' type="text" class="form-control" id="tinNumber" name="tinNumber" required>
+            <input placeholder='Enter your TIN number' type="number" class="form-control" id="tinNumber" name="tinNumber" required>
           </div>
 
           <button type="button" class="button mt-4" id="validate-btn">
