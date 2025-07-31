@@ -127,17 +127,17 @@ document.addEventListener('DOMContentLoaded', function () {
     } else if (noRadio.checked) {
       selectionContainer.innerHTML = `
         <div class="mt-3">
-          <!-- <a href="../generatetin.html?callback=./hospital/enumeration-hospital.html" type="button" class="button" id="generateTIN">Generate TIN</a> -->
-          <button class="button" type="button" id="proceedWithoutTIN">
+          <a href="../generatetin.html?callback=./hospital/enumeration-hospital.html" type="button" class="button" id="generateTIN">Generate TIN</a>
+          <!-- <button class="button" type="button" id="proceedWithoutTIN">
             Proceed 
-          </button>
+          </button> -->
         </div>
       `;
-      document.getElementById('proceedWithoutTIN').addEventListener('click', function () {
-        // Proceed without TIN logic
-        currentSection++;
-        showSection(currentSection);
-      });
+      // document.getElementById('proceedWithoutTIN').addEventListener('click', function () {
+      //   // Proceed without TIN logic
+      //   currentSection++;
+      //   showSection(currentSection);
+      // });
     }
   }
 

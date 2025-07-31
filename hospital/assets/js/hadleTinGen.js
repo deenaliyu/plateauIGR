@@ -28,7 +28,7 @@ $('#ModalsContainer').html(`
           
           <button type="button" data-bs-toggle="modal" data-bs-target="#forgotTinModal" data-bs-dismiss="modal" class="outline-btn text-sm">Forgot
             TIN?</button>
-          <a href="generatetin.html?callback=${fileNametin}" type="button" class="button  text-sm">Generate TIN</a>
+          <a href="../generatetin.html?callback=./hospital/enumeration-hospital.html" type="button" class="button  text-sm">Generate TIN</a>
         </div>
 
       </div>
