@@ -169,6 +169,25 @@ async function loadDashboardData() {
       "taxpayerCategoryChart"
     );
 
+    // 5. Process enumerator data (by_account)
+    const enumeratorData = data.by_account
+      .filter(item => item.enumerator && typeof item.enumerator === 'object' && item.enumerator.email)
+      .map(item => ({
+        email: item.enumerator.email,
+        user_count: parseInt(item.user_count)
+      }))
+      .sort((a, b) => b.user_count - a.user_count);
+
+    // 6. Create enumerator chart (top 10 by user_count)
+    const top10Enumerators = enumeratorData.slice(0, 10);
+    
+    pieCharts(
+      top10Enumerators.map(item => item.email),
+      "Top 10 Enumerators by Count",
+      top10Enumerators.map(item => item.user_count),
+      "enumeratorChart"
+    );
+
   } catch (error) {
     console.error("Dashboard error:", error);
     alert("Failed to load dashboard data");

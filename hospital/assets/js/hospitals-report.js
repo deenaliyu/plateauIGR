@@ -1,105 +1,71 @@
 $(document).ready(function () {
-  // Initialize date range picker
+  // Initialize date range picker with proper configuration
   $('.date-range-picker').daterangepicker({
     opens: 'left',
+    autoUpdateInput: false,
     locale: {
-      format: 'YYYY-MM-DD'
+      format: 'YYYY-MM-DD',
+      cancelLabel: 'Clear'
     }
   });
 
-  // Load facilities data
+  // Handle date range selection
+  $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+    $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
+  });
+
+  // Handle date range clear
+  $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
+    $(this).val('');
+  });
+
+  // Load initial data
   loadFacilities();
   loadSummaryTiles();
 
-  // Apply filters
+  // Apply filters with better validation
   $('#applyFilters').click(function () {
-    loadFacilities();
-    $('#filterModal').modal('hide');
+    try {
+      const dateRange = $('#dateRangeFilter').val();
+      if (dateRange && dateRange.split(' - ').length !== 2) {
+        alert('Please select a valid date range');
+        return;
+      }
+      loadFacilities();
+      $('#filterModal').modal('hide');
+    } catch (error) {
+      console.error('Filter error:', error);
+      alert('Error applying filters');
+    }
   });
 
-  // Reset filters
+  // Reset filters more thoroughly
   $('#resetFilters').click(function () {
-    $('#filterForm')[0].reset();
-    $('.date-range-picker').val('');
-    loadFacilities();
+    try {
+      $('#filterForm')[0].reset();
+      $('.date-range-picker').val('');
+      $('.date-range-picker').data('daterangepicker').setStartDate(new Date());
+      $('.date-range-picker').data('daterangepicker').setEndDate(new Date());
+      loadFacilities();
+    } catch (error) {
+      console.error('Reset error:', error);
+    }
   });
 
-  // Export to CSV
+  // Export to CSV with better error handling
   $('.dropdown-item-download').click(function () {
-    const format = $(this).text().toLowerCase();
-    exportData(format);
+    try {
+      const format = $(this).text().toLowerCase();
+      exportData(format);
+    } catch (error) {
+      console.error('Export error:', error);
+      alert('Error during export');
+    }
   });
 });
 
-// Load facilities data
-function loadFacilities() {
-  const facilityType = $('#facilityTypeFilter').val();
-  const lga = $('#lgaFilter').val();
-  const ownershipType = $('#ownershipTypeFilter').val();
-  const dateRange = $('#dateRangeFilter').val();
-  const search = $('#searchFilter').val();
-
-  let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
-  if (facilityType) url += `&facility_type=${facilityType}`;
-  if (lga) url += `&lga=${lga}`;
-  if (ownershipType) url += `&category=${ownershipType}`;
-  if (dateRange) {
-    const dates = dateRange.split(' - ');
-    url += `&start_date=${dates[0]}&end_date=${dates[1]}`;
-  }
-  if (search) url += `&search=${search}`;
-
-  $('#showFacilitiesList').html(`
-    <tr>
-      <td colspan="12" class="text-center">
-        <div class="flex justify-center items-center my-4">
-          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-        </div>
-      </td>
-    </tr>
-  `);
-
-  if ($.fn.DataTable.isDataTable('#dataTable')) {
-    $('#dataTable').DataTable().destroy();
-    $('#dataTable').empty();
-  }
-
-  // Add loading state
-$('#showFacilitiesList').html(`
-  <tr>
-    <td colspan="12" class="text-center">Loading facilities...</td>
-  </tr>
-`);
-
-const controller = new AbortController();
-const timeoutId = setTimeout(() => controller.abort(), 10000); // 10s timeout
-
-fetch(url, { signal: controller.signal })
-  .then(response => {
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    return response.json();
-  })
-  .then(data => {
-    clearTimeout(timeoutId);
-    if (data.status === 1) {
-      renderFacilities(data.facilities);
-      initializeDataTable();
-    } else {
-      showNoDataMessage();
-    }
-  })
-  .catch(error => {
-    clearTimeout(timeoutId);
-    console.error('Error loading facilities:', error);
-    if (error.name === 'AbortError') {
-      showErrorMessage('Request timed out');
-    } else {
-      showErrorMessage('Error loading facilities');
-    }
-  });
-
+// Improved loadFacilities function
+// Global helper functions
 function showNoDataMessage() {
   const colCount = $('#showFacilitiesList tr:first th').length || 12;
   $('#showFacilitiesList').html(`
@@ -117,14 +83,79 @@ function showErrorMessage(message) {
     </tr>
   `);
   
-  // Optionally add retry button
+  // Retry button
   $('#showFacilitiesList').after(`
     <div class="text-center mt-2">
       <button class="btn btn-sm btn-primary" onclick="loadFacilities()">Retry</button>
     </div>
   `);
 }
+
+// Load facilities function
+function loadFacilities() {
+  try {
+    const facilityType = $('#facilityTypeFilter').val();
+    const lga = $('#lgaFilter').val();
+    const ownershipType = $('#ownershipTypeFilter').val();
+    const dateRange = $('#dateRangeFilter').val();
+    const search = $('#searchFilter').val();
+
+    let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
+    if (facilityType) url += `&facility_type=${facilityType}`;
+    if (lga) url += `&lga=${lga}`;
+    if (ownershipType) url += `&category=${ownershipType}`;
+    if (dateRange) {
+      const dates = dateRange.split(' - ');
+      url += `&start_date=${dates[0]}&end_date=${dates[1]}`;
+    }
+    if (search) url += `&search=${search}`;
+    $('#showFacilitiesList').html(`
+      <tr>
+        <td colspan="12" class="text-center">
+          <div class="flex justify-center items-center my-4">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div>
+        </td>
+      </tr>
+    `);
+
+    if ($.fn.DataTable.isDataTable('#dataTable')) {
+      $('#dataTable').DataTable().destroy();
+      $('#dataTable').empty();
+    }
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 10000);
+
+    fetch(url, { signal: controller.signal })
+      .then(response => {
+        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+        return response.json();
+      })
+      .then(data => {
+        clearTimeout(timeoutId);
+        if (data.status === 1) {
+          renderFacilities(data.facilities);
+          initializeDataTable();
+        } else {
+          showNoDataMessage();
+        }
+      })
+      .catch(error => {
+        clearTimeout(timeoutId);
+        console.error('Error loading facilities:', error);
+        showErrorMessage(error.name === 'AbortError' ? 
+          'Request timed out' : 
+          'Error loading facilities');
+      });
+
+  } catch (error) {
+    console.error('Error in loadFacilities:', error);
+    showErrorMessage('An unexpected error occurred');
+  }
 }
+
+// Helper functions remain largely the same but could be enhanced
 
 function initializeDataTable() {
   $('#dataTable').DataTable({
