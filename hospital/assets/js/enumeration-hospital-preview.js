@@ -1,3 +1,14 @@
+function printInvoice(thecard) {
+  var originalContent = document.body.innerHTML;
+  var printContent = document.getElementById(thecard).innerHTML;
+
+
+  document.body.innerHTML = printContent;
+  window.print();
+  document.body.innerHTML = originalContent;
+
+}
+
 // Get facility ID from URL
 function getFacilityIdFromUrl() {
     const urlParams = new URLSearchParams(window.location.search);
@@ -64,139 +75,144 @@ function renderFacilitySummary(facility) {
 
     // Generate HTML
     const html = `
-        <div class="row">
-            <div class="col-md-12">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h6>Basic Information</h6>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-sm">
-                         <tr>
-                                <th>Full Name:</th>
-                                <td>${facilityData.first_name || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Facility Name:</th>
-                                <td>${facilityData.branch_name || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Facility Type:</th>
-                                <td>${formatFacilityType(facilityData.facility_type)}</td>
-                            </tr>
-                            <tr>
-                                <th>Registration ID:</th>
-                                <td>${facilityData.facility_hospital_id || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Owner Address:</th>
-                                <td>${facilityData.address || 'N/A'}</td>
-                            <tr>
-                                <th>Address:</th>
-                                <td>${facilityData.physical_address || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>City:</th>
-                                <td>${facilityData.city || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>LGA:</th>
-                                <td>${facilityData.lga || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>State:</th>
-                                <td>${facilityData.state || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Branch Phone:</th>
-                                <td>${facilityData.branch_phone_numbers || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Main Phone:</th>
-                                <td>${facilityData.phone || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Branch Email:</th>
-                                <td>${facilityData.branch_email || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Main Email:</th>
-                                <td>${facilityData.email || 'N/A'}</td>
-                            </tr>
-                            <tr>
-                                <th>Website:</th>
-                                <td>${facilityData.branch_website ? `<a href="${facilityData.branch_website}" target="_blank">${facilityData.branch_website}</a>` : 'N/A'}</td>
-                            </tr>
-                        </table>
-                    </div>
-                </div>
+        <div class="printable-page">
+            <h1 class="font-bold text-xl text-center">Enumeration Biodata</h1>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card mb-4">
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Left Column - Basic Info -->
+                                <div class="col-6">
+                                    <div class="info-section">
+                                        <h5 class="section-title">Basic Information</h5>
+                                        <table class="table table-sm table-borderless">
+                                            <tr>
+                                                <th width="40%">Full Name:</th>
+                                                <td>${facilityData.first_name || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Facility Name:</th>
+                                                <td>${facilityData.branch_name || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Facility Type:</th>
+                                                <td>${formatFacilityType(facilityData.facility_type)}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Registration ID:</th>
+                                                <td>${facilityData.facility_hospital_id || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Owner Address:</th>
+                                                <td>${facilityData.address || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Physical Address:</th>
+                                                <td>${facilityData.physical_address || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>City:</th>
+                                                <td>${facilityData.city || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>LGA:</th>
+                                                <td>${facilityData.lga || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>State:</th>
+                                                <td>${facilityData.state || 'N/A'}</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="info-section mt-4">
+                                        <h5 class="section-title">Contact Information</h5>
+                                        <table class="table table-sm table-borderless">
+                                            <tr>
+                                                <th width="40%">Branch Phone:</th>
+                                                <td>${facilityData.branch_phone_numbers || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Main Phone:</th>
+                                                <td>${facilityData.phone || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Branch Email:</th>
+                                                <td>${facilityData.branch_email || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Main Email:</th>
+                                                <td>${facilityData.email || 'N/A'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Website:</th>
+                                                <td>${facilityData.branch_website ? `<a href="${facilityData.branch_website}" target="_blank">${facilityData.branch_website}</a>` : 'N/A'}</td>
+                                            </tr>
+                                        </table>
 
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h6>Operational Details</h6>
-                    </div>
-                    <div class="card-body">
-                        <table class="table table-sm">
-                            <tr>
-                                <th>Number of Beds:</th>
-                                <td>${facilityData.number_of_beds || '0'}</td>
-                            </tr>
-                            <tr>
-                                <th>Average Monthly Visits:</th>
-                                <td>${facilityData.avg_monthly_visits || '0'}</td>
-                            </tr>
-                            ${typeSpecificFields}
-                        </table>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-12">
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h6>Services Offered</h6>
-                    </div>
-                    <div class="card-body">
-                        <h6 class="mb-3">Primary Services:</h6>
-                        <ul class="list-group mb-4">
-                            ${primaryServices.length > 0 ?
-                            primaryServices.map(service => `<li class="list-group-item">${service}</li>`).join('') :
-                            '<li class="list-group-item text-muted">No primary services listed</li>'}
-                        </ul>
-                        
-                        <h6 class="mb-3">All Services:</h6>
-                        <ul class="list-group">
-                            ${servicesOffered.length > 0 ?
-                            servicesOffered.map(service => `<li class="list-group-item">${service}</li>`).join('') :
-                            '<li class="list-group-item text-muted">No services listed</li>'}
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card mb-4">
-                    <div class="card-header">
-                        <h6>Tax Liabilities</h6>
-                    </div>
-                    <div class="card-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">PAYE</li>
-                            <li class="list-group-item">Development Levy</li>
-                            <li class="list-group-item">Business Premise Levy</li>
-                            <li class="list-group-item">Environmental and Waste Management Fees</li>
-                            <li class="list-group-item">Shop/Trade Permit</li>
-                            <li class="list-group-item">Tenement Rate</li>
-                            <li class="list-group-item">Bill Board Levy</li>
-                        </ul>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">
-                        <h6>Facility QR Code</h6>
-                    </div>
-                    <div class="card-body text-center">
-                        <div id="qrContainer" class="qr-code-container"></div>
-                        <p class="mt-2 small text-muted">Scan to view facility details</p>
+                                        <div id="qrContainer" class="qr-code-container mx-auto"></div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Right Column - Operational Details -->
+                                <div class="col-6">
+                                    <div class="info-section">
+                                        <h5 class="section-title">Operational Details</h5>
+                                        <table class="table table-sm table-borderless">
+                                            <tr>
+                                                <th width="40%">Number of Beds:</th>
+                                                <td>${facilityData.number_of_beds || '0'}</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Average Monthly Visits:</th>
+                                                <td>${facilityData.avg_monthly_visits || '0'}</td>
+                                            </tr>
+                                            ${typeSpecificFields}
+                                        </table>
+                                    </div>
+                                    
+                                    <div class="info-section mt-4">
+                                        <h5 class="section-title">Services Offered</h5>
+                                        <div class="services-container">
+                                            <div class="services-column">
+                                                <h6>Primary Services:</h6>
+                                                <ul class="list-unstyled">
+                                                    ${primaryServices.length > 0 ?
+                                                    primaryServices.map(service => `<li>• ${service}</li>`).join('') :
+                                                    '<li class="text-muted">No primary services listed</li>'}
+                                                </ul>
+                                            </div>
+                                            <div class="services-column">
+                                                <h6>All Services:</h6>
+                                                <ul class="list-unstyled">
+                                                    ${servicesOffered.length > 0 ?
+                                                    servicesOffered.map(service => `<li>• ${service}</li>`).join('') :
+                                                    '<li class="text-muted">No services listed</li>'}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="info-section mt-4">
+                                        <h5 class="section-title">Tax Liabilities</h5>
+                                        <div class="tax-liabilities">
+                                            <ul class="list-unstyled row">
+                                                <li class="col-6">• PAYE</li>
+                                                <li class="col-6">• Development Levy</li>
+                                                <li class="col-6">• Business Premise Levy</li>
+                                                <li class="col-6">• Environmental Fees</li>
+                                                <li class="col-6">• Shop/Trade Permit</li>
+                                                <li class="col-6">• Tenement Rate</li>
+                                                <li class="col-6">• Bill Board Levy</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            
+                        </div>
                     </div>
                 </div>
             </div>

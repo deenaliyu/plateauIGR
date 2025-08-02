@@ -20,109 +20,79 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <style>
+    .printable-page {
+      font-size: 14px;
+      line-height: 1.4;
+    }
+
+    .card {
+      border: 1px solid #ddd;
+      /* page-break-inside: avoid; */
+    }
+
+    .info-section {
+      margin-bottom: 15px;
+    }
+
+    .section-title {
+      border-bottom: 1px solid #eee;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .services-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    .services-column {
+      flex: 1;
+      min-width: 200px;
+    }
+
+    .qr-code-container {
+      width: 150px;
+      height: 150px;
+      margin: 0 auto;
+      border: 1px solid #eee;
+      padding: 5px;
+    }
+
+    .tax-liabilities ul {
+      margin-bottom: 0;
+    }
+
+    .table-sm td,
+    .table-sm th {
+      padding: 0.3rem;
+    }
+
     @media print {
-      body * {
-        visibility: hidden;
-      }
-
-      #reviewSummary,
-      #reviewSummary * {
-        visibility: visible;
-      }
-
-      #reviewSummary {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-      }
-
-      .no-print {
-        display: none !important;
+      .printable-page {
+        font-size: 12px;
       }
 
       .card {
         border: none;
         box-shadow: none;
       }
-    }
 
-    .form-section {
-      display: none;
-    }
+      .card-header {
+        background-color: white !important;
+        color: black !important;
+        border-bottom: 2px solid #333;
+      }
 
-    .form-section.active {
-      display: block;
-    }
+      a {
+        text-decoration: none;
+        color: black !important;
+      }
 
-    #reviewSummary p {
-      font-size: 14px;
-      margin-bottom: 5px;
-    }
-
-    label.required::after {
-      content: "*";
-      color: #dc3545;
-      opacity: 0.8;
-      margin-left: 0.25rem;
-      font-size: 1.1em;
-    }
-
-    .selectize-input:after {
-      content: '▾';
-      /* the dropdown arrow */
-      position: absolute;
-      right: 10px;
-      top: 50%;
-      margin-top: -10px;
-      font-size: 20px;
-      color: #999;
-      pointer-events: none;
-    }
-
-    .progress {
-      height: 10px;
-      margin-bottom: 20px;
-    }
-
-    .progress-bar {
-      height: 20px;
-      background-color: #CDA545;
-    }
-
-    .invalid-feedback {
-      display: none;
-    }
-
-    .was-validated .form-control:invalid~.invalid-feedback,
-    .was-validated .form-select:invalid~.invalid-feedback {
-      display: block;
-    }
-
-    .branch-entry {
-      border: 1px solid #dee2e6;
-      padding: 15px;
-      margin-bottom: 15px;
-      border-radius: 5px;
-      background-color: #f8f9fa;
-    }
-
-    .branch-entry:last-child {
-      margin-bottom: 0;
-    }
-
-    .remove-branch {
-      margin-top: 10px;
-    }
-
-    .card {
-      margin-bottom: 20px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    }
-
-    .card-header {
-      background-color: #f8f9fa;
-      font-weight: bold;
+      .no-print {
+        display: none !important;
+      }
     }
 
     .qr-code-container {
@@ -131,11 +101,10 @@
       padding: 20px;
     }
 
-    .loading-spinner {
+    /* .loading-spinner {
       display: flex;
       justify-content: center;
-      padding: 40px;
-    }
+    } */
   </style>
 
 
@@ -145,50 +114,35 @@
 
 
   <header>
-    <div class="flex gap-2 items-center p-3 border-b">
-      <img src="./assets/img/logo.png" class="w-[50px]" alt="">
-      <p class="text-md fontBold">Plateau IGR</p>
-    </div>
+    <div class="flex items-center justify-between px-4 mb-4 border-b">
+      <div class="flex gap-2 items-center p-3">
+        <img src="./assets/img/logo.png" class="w-[50px]" alt="">
+        <p class="text-md fontBold">Plateau IGR</p>
+      </div>
 
+      <div class="flex justify-end mt-3">
+        <button class="button no-print" onclick="printInvoice('reviewSummary')">Print</button>
+      </div>
+    </div>
   </header>
 
 
-  <section class="flex h-[89vh] overflow-y-scroll headerBeginner">
+  <div class="w-full bg-center px-4">
 
-    <div class="w-3/12 bg-[#F9FAFB] p-3">
 
-      <div class="flex px-1 h-full">
-        <div class="flex px-1 h-full">
-          <div class="mt-5 imgTabs">
-            <img src="./assets/img/v9.png" />
-          </div>
-        </div>
+    <div id="reviewSummary" class="loading-spinner">
+
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Loading...</span>
       </div>
 
     </div>
 
-    <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
-
-
-      <form action="">
-        <h1 class="font-bold text-lg my-4 text-center">Facility Information</h1>
-        <div id="reviewSummary" class="loading-spinner">
-          <div class="spinner-border text-primary" role="status">
-            <span class="visually-hidden">Loading...</span>
-          </div>
-        </div>
-      </form>
-
-      <div class="flex justify-end mt-3">
-        <button class="button no-print" onclick="window.print()">Print</button>
-      </div>
 
 
 
-    </div>
 
-
-  </section>
+  </div>
 
 
 

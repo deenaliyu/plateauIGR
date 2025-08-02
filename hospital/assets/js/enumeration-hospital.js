@@ -182,29 +182,22 @@ document.addEventListener('DOMContentLoaded', function () {
       if (data.status === 1 && data.user) {
         // Populate the form fields with user data
         document.getElementById('legalName').value = `${data.user.first_name} ${data.user.surname}`;
+        document.getElementById('legalName').readOnly = true;
         document.getElementById('taxIdentificationNumber').value = data.user.tin;
+        document.getElementById('taxIdentificationNumber').readOnly = true;
         document.getElementById('address').value = data.user.address;
+        document.getElementById('address').readOnly = true;
         document.getElementById('city').value = data.user.lga; // Assuming city is same as LGA
+        document.getElementById('city').readOnly = true;
         document.getElementById('lga').value = data.user.lga;
+        document.getElementById('lga').readOnly = true;
         document.getElementById('state').value = data.user.state;
+        document.getElementById('state').readOnly = true;
         document.getElementById('phoneNumber').value = data.user.phone;
+        document.getElementById('phoneNumber').readOnly = true;
         document.getElementById('email').value = data.user.email;
-
-        // Representative fields (using user data if rep fields are empty in response)
-        document.getElementById('repName').value = data.user.rep_firstname !== "null" ?
-          `${data.user.rep_firstname} ${data.user.rep_surname}` :
-          `${data.user.first_name} ${data.user.surname}`;
-
-        document.getElementById('repemail').value = data.user.rep_email !== "null" ?
-          data.user.rep_email : data.user.email;
-
-        document.getElementById('repphonenumber').value = data.user.rep_phone !== "null" ?
-          data.user.rep_phone : data.user.phone;
-
-        document.getElementById('repTIN').value = data.user.tin;
-        document.getElementById('repAddress').value = data.user.rep_address !== "null" ?
-          data.user.rep_address : data.user.address;
-
+        document.getElementById('email').readOnly = true;
+        
         // Select the appropriate category card
         const categoryCards = document.querySelectorAll(".cardi");
         const userCategory = data.user.category.toLowerCase(); // Convert to lowercase to match data-name
@@ -2281,7 +2274,7 @@ document.addEventListener('DOMContentLoaded', function () {
       endpoint: "NewcreateFacility",
       data: {
         payer_user: {
-          tin: document.getElementById('repTIN').value,
+          tin: document.getElementById('taxIdentificationNumber').value,
           nin: "", // Will need to add this field to the form
           bvn: "", // Will need to add this field to the form
           category: document.querySelector('.selectedcat')?.getAttribute('data-name') || "corporate",
