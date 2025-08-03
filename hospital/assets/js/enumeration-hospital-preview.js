@@ -76,7 +76,10 @@ function renderFacilitySummary(facility) {
     // Generate HTML
     const html = `
         <div class="printable-page">
-            <h1 class="font-bold text-xl text-center">Enumeration Biodata</h1>
+            <div class="flex gap-3 justify-content-center items-center mb-3">
+                <img src="./assets/img/logo.png" width="50" height="50" alt="" />
+                <h1 class="font-bold text-xl text-center">Enumeration Biodata</h1>
+            </div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card mb-4">
