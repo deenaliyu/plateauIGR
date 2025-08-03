@@ -55,6 +55,14 @@
       display: block;
     }
 
+    .sideTabs {
+      display: none;
+    }
+
+    .sideTabs.active {
+      display: block;
+    }
+
     #reviewSummary p {
       font-size: 14px;
       margin-bottom: 5px;
@@ -114,6 +122,9 @@
     .remove-branch {
       margin-top: 10px;
     }
+    .tinTabs {
+      display: none;
+    }
   </style>
 </head>
 
@@ -167,28 +178,28 @@
 
       <div class="flex px-1 h-full">
         <div class="flex px-1 h-full">
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v1.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v2.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v3.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v4.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v5.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v6.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v7.png" />
           </div>
-          <div class="mt-5 imgTabs">
+          <div class="mt-5 sideTabs">
             <img src="./assets/img/v8.png" />
           </div>
         </div>
@@ -420,15 +431,6 @@
             <div class="col-md-6">
               <label for="taxIdentificationNumber" class="form-label required">Tax Identification Number (TIN)</label>
               <input type="text" class="form-control" id="taxIdentificationNumber" required>
-              <div class="flex justify-between items-center">
-                <p class="text-sm font-bold">Don't have TIN?<a href="#popUpModal" data-bs-toggle="modal"
-                    class="fontBold text-[#CDA545]">
-                    Click here</a></p>
-
-                <p class="text-sm font-bold">Can't remember TIN?<a href="#forgotTinModal" data-bs-toggle="modal"
-                    class="fontBold text-danger">
-                    Forgot TIN</a></p>
-              </div>
               <div class="invalid-feedback">Please provide the tax identification number.</div>
             </div>
             <div class="col-md-6">
@@ -803,6 +805,231 @@
     </div>
   </div>
 
+  <div class="modal fade" id="tingenerateModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Generate TIN</h5>
+          <button data-bs-dismiss="modal">
+            <iconify-icon icon="ph:x"></iconify-icon>
+          </button>
+
+        </div>
+        <div class="modal-body">
+
+          <form action="" class="formTabs pb-10">
+
+            <h1 class="fontBold text-2xl">Generate Tin</h1>
+            <h1 class="mb-3 mt-3">Personal Details</h1>
+
+            <div class="form-group w-full mb-4">
+              <label for="">Name of Organization*</label>
+              <input type="text" class="form-control payInputs" required data-name="organization_name">
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Email *</label>
+                <input type="text" class="form-control payInputs" required data-name="email"
+                  placeholder="Enter your Email Address">
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Phone number *</label>
+                <input type="number" class="form-control payInputs" minlength="11" maxlength="11"
+                  required data-name="phone_number" placeholder="Your 11-digits phone number">
+              </div>
+            </div>
+
+
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Sector*</label>
+                <select class="form-select payInputs" id="sectorSelect" data-name="sector" required>
+                  <option value="">Select</option>
+                </select>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Industry*</label>
+                <select class="form-select payInputs" id="industrySelect" data-name="industry" required>
+                  <option value="">Select</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">CAC*</label>
+                <input type="text" class="form-control payInputs" data-name="cac_number" placeholder="Enter your CAC"
+                  required>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Number of Employee*</label>
+                <select class="form-select payInputs" data-name="num_employees" required>
+                  <option value="">Select</option>
+                  <option value="0 - 10">0 - 10</option>
+                  <option value="11 - 50">11 - 50</option>
+                  <option value="51 - 500">51 - 500</option>
+                  <option value="500 and above">500 and above</option>
+                </select>
+              </div>
+
+            </div>
+
+
+            <div class="flex items-center mb-4 gap-2">
+
+              <div class="form-group w-full">
+                <label for="">State of Residence*</label>
+                <select id="selectState" class="form-select payInputs" data-name="state" required>
+                  <option value="Plateau">Plateau</option>
+                </select>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">LGA*</label>
+                <select id="selectLGA" class="form-select payInputs" required data-name="lga">
+                  <option value="Bokkos">Bokkos</option>
+                  <option value="Barkin Ladi">Barkin Ladi</option>
+                  <option value="Bassa">Bassa</option>
+                  <option value="Jos East">Jos East</option>
+                  <option value="Jos North">Jos North</option>
+                  <option value="Jos South">Jos South</option>
+                  <option value="Kanam">Kanam</option>
+                  <option value="Kanke">Kanke</option>
+                  <option value="Langtang South">Langtang South</option>
+                  <option value="Langtang North">Langtang North</option>
+                  <option value="Mangu">Mangu</option>
+                  <option value="Mikang">Mikang</option>
+                  <option value="Pankshin">Pankshin</option>
+                  <option value="Qua an Pan">Qua an Pan</option>
+                  <option value="Riyom">Riyom</option>
+                  <option value="Shendam">Shendam</option>
+                  <option value="Wase">Wase</option>
+                </select>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Address*</label>
+                <input type="text" class="form-control payInputs" data-name="address" placeholder="" required>
+              </div>
+            </div>
+
+
+            <div class="form-group w-full mb-3">
+              <label for="">Website</label>
+              <input type="text" class="form-control payInputs" data-name="website" placeholder="example.com">
+            </div>
+
+            <button class="button w-full" type="button" onclick="previewPage()">Preview</button>
+          </form>
+
+          <form action="" class="formTabs pb-10">
+            <div>
+              <button class="flex items-center gap-2" onclick="nextPrev(-1)" type="button">
+                <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+                <span>Go back</span>
+              </button>
+            </div>
+
+            <h1 class="fontBold text-2xl">Generate Tin</h1>
+            <h1 class="mb-3 mt-3">Preview Details</h1>
+
+            <div class="form-group w-full mb-4">
+              <label for="">Name of Organization</label>
+              <input type="text" class="form-control payInputs2" data-name="organization_name" readonly>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Email</label>
+                <input type="text" class="form-control payInputs2" data-name="email" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Phone number </label>
+                <input type="number" class="form-control payInputs2" data-name="phone_number" readonly>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">CAC</label>
+                <input type="text" class="form-control payInputs2" data-name="cac_number" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Industry</label>
+                <input type="text" class="form-control payInputs2" data-name="industry" readonly>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Sector</label>
+                <input type="text" class="form-control payInputs2" data-name="sector" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Number of Employee</label>
+                <input type="text" class="form-control payInputs2" data-name="num_employees" readonly>
+              </div>
+
+            </div>
+
+
+            <div class="flex items-center mb-4 gap-2">
+
+              <div class="form-group w-full">
+                <label for="">State of Residence</label>
+                <input type="text" class="form-control payInputs2" data-name="state" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">LGA</label>
+                <input type="text" class="form-control payInputs2" data-name="lga" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Address</label>
+                <input type="text" class="form-control payInputs2" data-name="address" readonly>
+              </div>
+            </div>
+
+
+            <div class="form-group w-full mb-3">
+              <label for="">Website</label>
+              <input type="text" class="form-control payInputs2" id="tin" data-name="website" readonly>
+            </div>
+
+            <button class="button w-full" id="generateTinBtn" type="button" onclick="generateTin('corporate')">Generate
+              Tin</button>
+            <div id="msg_box2"></div>
+          </form>
+
+          <form action="" class="formTabs mt-[15%]" id="tinDisplayForm">
+            <div class="flex justify-center mb-3">
+              <img src="./assets/img/paid.png" />
+            </div>
+            <p class="text-center text-black text-lg">TIN has been generated successfully</p>
+            <p class="text-center text-black text-lg">Your TIN has been sent to your email/phone number.</p>
+
+            <p class="text-3xl text-center text-[#CDA545] cursor-pointer mt-5" id="tinNumber"></p>
+
+            <div class="flex justify-center mt-5 gap-3" id="goHomeBtnCont">
+              <!-- <a href="#" class="button" id="goHomeBtn">Validate TIN</a> -->
+              <!-- <a href="tin-slip.html" class="button" id="printSlipBtn">Print Slip</a> -->
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
 
   <div id="ModalsContainer"></div>
 

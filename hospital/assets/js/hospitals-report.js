@@ -100,7 +100,7 @@ function loadFacilities() {
     const dateRange = $('#dateRangeFilter').val();
     const search = $('#searchFilter').val();
 
-    let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
+    let url = `${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`;
     if (facilityType) url += `&facility_type=${facilityType}`;
     if (lga) url += `&lga=${lga}`;
     if (ownershipType) url += `&category=${ownershipType}`;
@@ -228,7 +228,7 @@ function formatFacilityType(type) {
 
 // Load summary tiles
 function loadSummaryTiles() {
-  fetch('https://plateauigr.com/php/?gettHospitalFacilities')
+  fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`)
     .then(response => response.json())
     .then(data => {
       if (data.status === 1) {
@@ -290,7 +290,7 @@ function showFacilityDetails(facilityId) {
   `);
 
 
-  fetch(`https://plateauigr.com/php/?gettHospitalFacilities&facility_hospital_id=${facilityId}`)
+  fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}&facility_hospital_id=${facilityId}`)
     .then(response => response.json())
     .then(data => {
       if (data.status === 1 && data.facilities.length > 0) {
@@ -441,7 +441,7 @@ function exportData(format) {
   const dateRange = $('#dateRangeFilter').val();
   const search = $('#searchFilter').val();
 
-  let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
+  let url = `${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`;
   if (facilityType) url += `&facility_type=${facilityType}`;
   if (lga) url += `&lga=${lga}`;
   if (ownershipType) url += `&category=${ownershipType}`;

@@ -198,7 +198,7 @@ function formatFacilityType(type) {
 
 // Load summary tiles
 function loadSummaryTiles() {
-  fetch('https://plateauigr.com/php/?gettHospitalFacilities')
+  fetch('https://plateauigr.com/php/? ')
     .then(response => response.json())
     .then(data => {
       if (data.status === 1) {
