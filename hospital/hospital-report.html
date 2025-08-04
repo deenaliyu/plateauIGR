@@ -158,98 +158,94 @@
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
-
-  <!-- Add this modal for filters -->
-  <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="filterModalLabel">Filter Facilities</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <form id="filterForm">
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="facilityTypeFilter" class="form-label">Facility Type</label>
-                <select class="form-select" id="facilityTypeFilter">
-                  <option value="">All Types</option>
-                  <option value="Primary Healthcare Facility">Primary Healthcare Facility</option>
-                  <option value="Secondary Healthcare Facility">Secondary Healthcare Facility
-                  </option>
-                  <option value="Tertiary Healthcare Facilities">Tertiary Healthcare
-                    Facility</option>
-                  <option value="Private Hospitals/Clinics">Private Hospital/Clinic</option>
-                  <option value="Maternity Home / Clinic">Maternity Home/Clinic</option>
-                  <option value="Dental Clinic / Centre">Dental Clinic</option>
-                  <option value="Diagnostic Laboratory">Diagnostic Laboratory</option>
-                  <option value="Pharmacy / Chemist">Pharmacy/Chemist</option>
-                  <option value="Imaging / Radiology Centre">Imaging/Radiology Centre</option>
-                  <option value="Eye Clinic">Eye Clinic</option>
-                  <option value="Rehabilitation Centre">Rehabilitation Centre</option>
-                  <option value="Wellness Centre">Wellness Centre</option>
-                  <option value="Patent Medicine Store">Patent Medicine Store</option>
-                  <option value="Herbal Medicine Centre / Traditionalist Health Centre">Herbal
-                    Medicine Centre</option>
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="lgaFilter" class="form-label">Local Government Area</label>
-                <select class="form-select" id="lgaFilter">
-                  <option value="">All LGAs</option>
-                  <option value="Barkin Ladi">Barkin Ladi</option>
-                  <option value="Bassa">Bassa</option>
-                  <option value="Bokkos">Bokkos</option>
-                  <option value="Jos East">Jos East</option>
-                  <option value="Jos North">Jos North</option>
-                  <option value="Jos South">Jos South</option>
-                  <option value="Kanam">Kanam</option>
-                  <option value="Kanke">Kanke</option>
-                  <option value="Langtang North">Langtang North</option>
-                  <option value="Langtang South">Langtang South</option>
-                  <option value="Mangu">Mangu</option>
-                  <option value="Mikang">Mikang</option>
-                  <option value="Pankshin">Pankshin</option>
-                  <option value="Qua'an Pan">Qua'an Pan</option>
-                  <option value="Riyom">Riyom</option>
-                  <option value="Shendam">Shendam</option>
-                  <option value="Wase">Wase</option>
-                </select>
-              </div>
+  <!-- / Layout wrapper -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Facilities</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="filterForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="facilityTypeFilter" class="form-label">Facility Type</label>
+              <select class="form-select" id="facilityTypeFilter">
+                <option value="">All Types</option>
+                <option value="Primary Healthcare Facility">Primary Healthcare Facility</option>
+                <option value="Secondary Healthcare Facility">Secondary Healthcare Facility</option>
+                <option value="Tertiary Healthcare Facilities">Tertiary Healthcare Facility</option>
+                <option value="Private Hospitals/Clinics">Private Hospital/Clinic</option>
+                <option value="Maternity Home / Clinic">Maternity Home/Clinic</option>
+                <option value="Dental Clinic / Centre">Dental Clinic</option>
+                <option value="Diagnostic Laboratory">Diagnostic Laboratory</option>
+                <option value="Pharmacy / Chemist">Pharmacy/Chemist</option>
+                <option value="Imaging / Radiology Centre">Imaging/Radiology Centre</option>
+                <option value="Eye Clinic">Eye Clinic</option>
+                <option value="Rehabilitation Centre">Rehabilitation Centre</option>
+                <option value="Wellness Centre">Wellness Centre</option>
+                <option value="Patent Medicine Store">Patent Medicine Store</option>
+                <option value="Herbal Medicine Centre / Traditionalist Health Centre">Herbal Medicine Centre</option>
+              </select>
             </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="ownershipTypeFilter" class="form-label">category Type</label>
-                <select class="form-select" id="ownershipTypeFilter">
-                  <option value="">All Types</option>
-                  <option value="Individual">Individual</option>
-                  <option value="Corporate">Corporate</option>
-                  <option value="Federal">Federal</option>
-                  <option value="State">State</option>
-                </select>
-              </div>
-              <div class="col-md-6 mb-3">
-                <label for="dateRangeFilter" class="form-label">Date Range</label>
-                <input type="text" class="form-control date-range-picker" id="dateRangeFilter"
-                  placeholder="Select date range">
-              </div>
+            <div class="col-md-6 mb-3">
+              <label for="lgaFilter" class="form-label">Local Government Area</label>
+              <select class="form-select" id="lgaFilter">
+                <option value="">All LGAs</option>
+                <option value="Barkin Ladi">Barkin Ladi</option>
+                <option value="Bassa">Bassa</option>
+                <option value="Bokkos">Bokkos</option>
+                <option value="Jos East">Jos East</option>
+                <option value="Jos North">Jos North</option>
+                <option value="Jos South">Jos South</option>
+                <option value="Kanam">Kanam</option>
+                <option value="Kanke">Kanke</option>
+                <option value="Langtang North">Langtang North</option>
+                <option value="Langtang South">Langtang South</option>
+                <option value="Mangu">Mangu</option>
+                <option value="Mikang">Mikang</option>
+                <option value="Pankshin">Pankshin</option>
+                <option value="Qua'an Pan">Qua'an Pan</option>
+                <option value="Riyom">Riyom</option>
+                <option value="Shendam">Shendam</option>
+                <option value="Wase">Wase</option>
+              </select>
             </div>
-            <div class="row">
-              <div class="col-md-6 mb-3">
-                <label for="searchFilter" class="form-label">Search</label>
-                <input type="text" class="form-control" id="searchFilter" placeholder="Search facilities...">
-              </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="categoryFilter" class="form-label">Category Type</label>
+              <select class="form-select" id="categoryFilter">
+                <option value="">All Types</option>
+                <option value="Individual">Individual</option>
+                <option value="Corporate">Corporate</option>
+                <option value="Federal">Federal</option>
+                <option value="State">State</option>
+              </select>
             </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="applyFilters">Apply Filters</button>
-          <button type="button" class="btn btn-outline-danger" id="resetFilters">Reset</button>
-        </div>
+            <div class="col-md-6 mb-3">
+              <label for="dateRangeFilter" class="form-label">Date Range</label>
+              <input type="text" class="form-control date-range-picker" id="dateRangeFilter" placeholder="Select date range">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="searchFilter" class="form-label">Search</label>
+              <input type="text" class="form-control" id="searchFilter" placeholder="Search facilities...">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="applyFilters">Apply Filters</button>
+        <button type="button" class="btn btn-outline-danger" id="resetFilters">Reset</button>
       </div>
     </div>
   </div>
+</div>
+</div>
 
   <!-- Add this modal for facility details -->
   <div class="modal fade" id="facilityDetailsModal" tabindex="-1" aria-labelledby="facilityDetailsModalLabel"

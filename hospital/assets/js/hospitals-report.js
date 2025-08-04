@@ -1,5 +1,5 @@
 $(document).ready(function () {
-  // Initialize date range picker with proper configuration
+  // Initialize date range picker
   $('.date-range-picker').daterangepicker({
     opens: 'left',
     autoUpdateInput: false,
@@ -9,106 +9,68 @@ $(document).ready(function () {
     }
   });
 
-  // Handle date range selection
-  $('.date-range-picker').on('apply.daterangepicker', function(ev, picker) {
+  // Apply date range
+  $('.date-range-picker').on('apply.daterangepicker', function (ev, picker) {
     $(this).val(picker.startDate.format('YYYY-MM-DD') + ' - ' + picker.endDate.format('YYYY-MM-DD'));
   });
 
-  // Handle date range clear
-  $('.date-range-picker').on('cancel.daterangepicker', function(ev, picker) {
+  // Clear date range
+  $('.date-range-picker').on('cancel.daterangepicker', function () {
     $(this).val('');
   });
 
-  // Load initial data
+  // Initial load
   loadFacilities();
-  loadSummaryTiles();
+  // loadSummaryTiles();
 
-  // Apply filters with better validation
+  // Apply filters
   $('#applyFilters').click(function () {
-    try {
-      const dateRange = $('#dateRangeFilter').val();
-      if (dateRange && dateRange.split(' - ').length !== 2) {
-        alert('Please select a valid date range');
-        return;
-      }
-      loadFacilities();
-      $('#filterModal').modal('hide');
-    } catch (error) {
-      console.error('Filter error:', error);
-      alert('Error applying filters');
+    const dateRange = $('#dateRangeFilter').val();
+    if (dateRange && dateRange.split(' - ').length !== 2) {
+      alert('Please select a valid date range');
+      return;
     }
+    loadFacilities();
+    $('#filterModal').modal('hide');
   });
 
-  // Reset filters more thoroughly
+  // Reset filters
   $('#resetFilters').click(function () {
-    try {
-      $('#filterForm')[0].reset();
-      $('.date-range-picker').val('');
-      $('.date-range-picker').data('daterangepicker').setStartDate(new Date());
-      $('.date-range-picker').data('daterangepicker').setEndDate(new Date());
-      loadFacilities();
-    } catch (error) {
-      console.error('Reset error:', error);
-    }
+    $('#filterForm')[0].reset();
+    $('.date-range-picker').val('');
+    const drp = $('.date-range-picker').data('daterangepicker');
+    drp.setStartDate(new Date());
+    drp.setEndDate(new Date());
+    loadFacilities();
   });
 
-  // Export to CSV with better error handling
+  // Export
   $('.dropdown-item-download').click(function () {
-    try {
-      const format = $(this).text().toLowerCase();
-      exportData(format);
-    } catch (error) {
-      console.error('Export error:', error);
-      alert('Error during export');
-    }
+    const format = $(this).text().toLowerCase();
+    exportData(format);
   });
 });
 
-// Improved loadFacilities function
-// Global helper functions
-function showNoDataMessage() {
-  const colCount = $('#showFacilitiesList tr:first th').length || 12;
-  $('#showFacilitiesList').html(`
-    <tr>
-      <td colspan="${colCount}" class="text-center text-muted">No facilities found</td>
-    </tr>
-  `);
-}
-
-function showErrorMessage(message) {
-  const colCount = $('#showFacilitiesList tr:first th').length || 12;
-  $('#showFacilitiesList').html(`
-    <tr>
-      <td colspan="${colCount}" class="text-center text-danger">${message}</td>
-    </tr>
-  `);
-  
-  // Retry button
-  $('#showFacilitiesList').after(`
-    <div class="text-center mt-2">
-      <button class="btn btn-sm btn-primary" onclick="loadFacilities()">Retry</button>
-    </div>
-  `);
-}
-
-// Load facilities function
+// Load facilities
 function loadFacilities() {
   try {
     const facilityType = $('#facilityTypeFilter').val();
     const lga = $('#lgaFilter').val();
-    const ownershipType = $('#ownershipTypeFilter').val();
+    const category = $('#categoryFilter').val();
     const dateRange = $('#dateRangeFilter').val();
     const search = $('#searchFilter').val();
 
     let url = `${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`;
-    if (facilityType) url += `&facility_type=${facilityType}`;
-    if (lga) url += `&lga=${lga}`;
-    if (ownershipType) url += `&category=${ownershipType}`;
+    if (facilityType) url += `&facility_type=${encodeURIComponent(facilityType)}`;
+    if (lga) url += `&lga=${encodeURIComponent(lga)}`;
+    if (category) url += `&category=${encodeURIComponent(category)}`;
     if (dateRange) {
-      const dates = dateRange.split(' - ');
-      url += `&start_date=${dates[0]}&end_date=${dates[1]}`;
+      const [start, end] = dateRange.split(' - ');
+      url += `&start_date=${start}&end_date=${end}`;
     }
-    if (search) url += `&search=${search}`;
+    if (search) url += `&search=${encodeURIComponent(search)}`;
+
+    // Show loading spinner
     $('#showFacilitiesList').html(`
       <tr>
         <td colspan="12" class="text-center">
@@ -119,101 +81,78 @@ function loadFacilities() {
       </tr>
     `);
 
+    // Destroy DataTable if exists
     if ($.fn.DataTable.isDataTable('#dataTable')) {
-      $('#dataTable').DataTable().destroy();
-      $('#dataTable').empty();
+      $('#dataTable').DataTable().clear().destroy();
     }
 
+    // Fetch data with timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000);
 
     fetch(url, { signal: controller.signal })
-      .then(response => {
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        return response.json();
+      .then(res => {
+        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+        return res.json();
       })
       .then(data => {
         clearTimeout(timeoutId);
-        if (data.status === 1) {
+        if (data.status === 1 && data.facilities) {
           renderFacilities(data.facilities);
           initializeDataTable();
         } else {
           showNoDataMessage();
         }
       })
-      .catch(error => {
+      .catch(err => {
         clearTimeout(timeoutId);
-        console.error('Error loading facilities:', error);
-        showErrorMessage(error.name === 'AbortError' ? 
-          'Request timed out' : 
-          'Error loading facilities');
+        console.error('Error loading facilities:', err);
+        showErrorMessage(err.name === 'AbortError' ? 'Request timed out' : 'Error loading facilities');
       });
 
-  } catch (error) {
-    console.error('Error in loadFacilities:', error);
+  } catch (err) {
+    console.error('Error in loadFacilities:', err);
     showErrorMessage('An unexpected error occurred');
   }
 }
 
-// Helper functions remain largely the same but could be enhanced
-
-function initializeDataTable() {
-  $('#dataTable').DataTable({
-    responsive: true,
-  });
-}
-// Render facilities in table
+// Render facilities table
 function renderFacilities(facilities) {
-  $('#showFacilitiesList').empty();
+  const list = document.getElementById('showFacilitiesList');
+  list.innerHTML = ''; // clear previous rows
 
-  if (facilities.length === 0) {
-    $('#showFacilitiesList').html(`
-      <tr>
-        <td colspan="12" class="text-center">No facilities found matching your criteria</td>
-      </tr>
-    `);
+  if (!facilities || facilities.length === 0) {
+    list.innerHTML = `<tr><td colspan="11" class="text-center text-muted">No facilities found</td></tr>`;
     return;
   }
 
-  console.log('Facilities data:', facilities);
+  let html = '';
   facilities.forEach((facility, index) => {
-    const facilityData = facility;
-
-
-   $('#showFacilitiesList').append(`
-  <tr>
-    <td>${index + 1}</td>
-    <td>${facilityData.branch_name || 'N/A'}</td>
-    <td>${formatFacilityType(facilityData.facility_type) || 'N/A'}</td>
-    <td>${facilityData.number_of_beds || '0'}</td>
-    <td>${facilityData.avg_monthly_visits || '0'}</td>
-    <td>${facilityData.state || 'N/A'}</td>
-    <td>${facilityData.lga || 'N/A'}</td>
-    <td>${facilityData.branch_phone_numbers || 'N/A'}</td>
-    <td>${facilityData.branch_email  || 'N/A'}</td>
-    <td>Active</td> <!-- Default status -->
-    <td>
-      <button class="btn btn-sm btn-outline-primary view-facility" 
-              data-id="${facilityData.payer_user_id}" 
+    html += `
+      <tr>
+        <td>${index + 1}</td>
+        <td>${facility.branch_name || 'N/A'}</td>
+        <td>${facility.facility_type || 'N/A'}</td>
+        <td>${facility.number_of_beds || '0'}</td>
+        <td>${facility.avg_monthly_visits || '0'}</td>
+        <td>${facility.state || 'N/A'}</td>
+        <td>${facility.lga || 'N/A'}</td>
+        <td>${facility.phone || 'N/A'}</td>
+        <td>${facility.email || 'N/A'}</td>
+        <td>${facility.status || 'Active'}</td>
+        <td>
+         <button class="btn btn-sm btn-outline-primary view-facility" 
+              data-id="${facility.payer_user_id}" 
               title="View Details">
         <iconify-icon icon="mdi:eye-outline"></iconify-icon>
       </button>
-    </td>
-  </tr>
-`);
-
-// Helper function to format facility type
-function formatFacilityType(type) {
-  if (!type) return 'N/A';
-  
-  // Convert snake_case to Title Case
-  return type.split('_')
-    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
-}
+        </td>
+      </tr>
+    `;
   });
 
-  // Add click handlers for view buttons
+  list.innerHTML = html;
+
   $('.view-facility').click(function () {
     const facilityId = $(this).data('id');
     showFacilityDetails(facilityId);
@@ -226,60 +165,103 @@ function formatFacilityType(type) {
   });
 }
 
-// Load summary tiles
-function loadSummaryTiles() {
-  fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.status === 1) {
-        renderSummaryTiles(data.facilities);
-      }
-    });
+
+
+// Show error message
+function showErrorMessage(message) {
+  document.getElementById('showFacilitiesList').innerHTML = `
+    <tr>
+      <td colspan="12" class="text-center text-danger">
+        ${message}
+      </td>
+    </tr>
+  `;
 }
 
-// Render summary tiles
-function renderSummaryTiles(facilities) {
-  const facilityTypes = {};
-  const lgaCounts = {};
+// Show "no data" message
+function showNoDataMessage() {
+  document.getElementById('showFacilitiesList').innerHTML = `
+    <tr>
+      <td colspan="12" class="text-center text-muted">
+        No data available for the selected filters.
+      </td>
+    </tr>
+  `;
+}
 
-  // Count facilities by type
-  facilities.forEach(facility => {
-    const type = facility.facility.facility_type;
-    const lga = facility.location.lga;
-
-    if (!facilityTypes[type]) {
-      facilityTypes[type] = 0;
-    }
-    facilityTypes[type]++;
-
-    if (!lgaCounts[lga]) {
-      lgaCounts[lga] = 0;
-    }
-    lgaCounts[lga]++;
-  });
-
-  // Create tiles for each facility type
-  $('#facilityTypeSummary').empty();
-  for (const [type, count] of Object.entries(facilityTypes)) {
-    $('#facilityTypeSummary').append(`
-      <div class="col-md-3 mb-3">
-        <div class="card h-100">
-          <div class="card-body">
-            <h5 class="card-title text-black fontBold">${type}</h5>
-            <p class="card-text display-4 text-primary">${count}</p>
-          </div>
-        </div>
-      </div>
-    `);
+// Initialize DataTable
+function initializeDataTable() {
+  if ($.fn.DataTable.isDataTable('#dataTable')) {
+    $('#dataTable').DataTable().clear().destroy();
   }
 
-  // Add click handlers to filter by facility type
-  // $('.card').click(function () {
-  //   const type = $(this).find('.card-title').text();
-  //   $('#facilityTypeFilter').val(type);
-  //   loadFacilities();
-  // });
+  $('#dataTable').DataTable({
+    paging: true,
+    searching: true,
+    ordering: true,
+    responsive: true
+  });
 }
+
+
+
+// Updated filter modal HTML with all parameters
+
+
+// Load summary tiles
+// function loadSummaryTiles() {
+//   fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`)
+//     .then(response => response.json())
+//     .then(data => {
+//       if (data.status === 1) {
+//         renderSummaryTiles(data.facilities);
+//       }
+//     });
+// }
+
+// // Render summary tiles
+// function renderSummaryTiles(facilities) {
+//   const facilityTypes = {};
+//   const lgaCounts = {};
+
+//   // Count facilities by type
+//   facilities.forEach(facility => {
+//     const type = facility.facility.facility_type;
+//     const lga = facility.location.lga;
+
+//     if (!facilityTypes[type]) {
+//       facilityTypes[type] = 0;
+//     }
+//     facilityTypes[type]++;
+
+//     if (!lgaCounts[lga]) {
+//       lgaCounts[lga] = 0;
+//     }
+//     lgaCounts[lga]++;
+//   });
+
+//   // Create tiles for each facility type
+//   $('#facilityTypeSummary').empty();
+//   for (const [type, count] of Object.entries(facilityTypes)) {
+//     $('#facilityTypeSummary').append(`
+//       <div class="col-md-3 mb-3">
+//         <div class="card h-100">
+//           <div class="card-body">
+//             <h5 class="card-title text-black fontBold">${type}</h5>
+//             <p class="card-text display-4 text-primary">${count}</p>
+//           </div>
+//         </div>
+//       </div>
+//     `);
+//   }
+
+//   // Add click handlers to filter by facility type
+//   // $('.card').click(function () {
+//   //   const type = $(this).find('.card-title').text();
+//   //   $('#facilityTypeFilter').val(type);
+//   //   loadFacilities();
+//   // });
+// }
 
 // Show facility details in modal
 function showFacilityDetails(facilityId) {
@@ -313,7 +295,7 @@ function showFacilityDetails(facilityId) {
   $('#facilityDetailsModal').modal('show');
 }
 
-// Render facility details
+// // Render facility details
 function renderFacilityDetails(facility) {
   const facilityData = facility;
   const typeData = facility.type_data || {};
@@ -415,7 +397,7 @@ function renderFacilityDetails(facility) {
   `);
 }
 
-// Helper function to format facility type
+// // Helper function to format facility type
 function formatFacilityType(type) {
   if (!type) return 'N/A';
   return type.split('_')
@@ -423,60 +405,84 @@ function formatFacilityType(type) {
     .join(' ');
 }
 
-// Edit facility
-function editFacility(facilityId) {
-  Swal.fire({
-    title: 'Edit Facility',
-    text: 'This feature will be available soon',
-    icon: 'info',
-    confirmButtonText: 'OK'
-  });
-}
+// // Edit facility
+// function editFacility(facilityId) {
+//   Swal.fire({
+//     title: 'Edit Facility',
+//     text: 'This feature will be available soon',
+//     icon: 'info',
+//     confirmButtonText: 'OK'
+//   });
+// }
 
-// Export data
+// // Export data
 function exportData(format) {
+  // Match filter logic
   const facilityType = $('#facilityTypeFilter').val();
   const lga = $('#lgaFilter').val();
-  const ownershipType = $('#ownershipTypeFilter').val();
+  const category = $('#categoryFilter').val();
   const dateRange = $('#dateRangeFilter').val();
   const search = $('#searchFilter').val();
 
   let url = `${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`;
-  if (facilityType) url += `&facility_type=${facilityType}`;
-  if (lga) url += `&lga=${lga}`;
-  if (ownershipType) url += `&category=${ownershipType}`;
+  if (facilityType) url += `&facility_type=${encodeURIComponent(facilityType)}`;
+  if (lga) url += `&lga=${encodeURIComponent(lga)}`;
+  if (category) url += `&category=${encodeURIComponent(category)}`;
   if (dateRange) {
     const dates = dateRange.split(' - ');
     url += `&start_date=${dates[0]}&end_date=${dates[1]}`;
   }
-  if (search) url += `&search=${search}`;
+  if (search) url += `&search=${encodeURIComponent(search)}`;
 
   fetch(url)
     .then(response => response.json())
     .then(data => {
       if (data.status === 1) {
         const facilities = data.facilities;
-        const exportData = facilities.map(facility => ({
-          'Name': facility.first_name,
-          'Facility Type': facility.facility_type,
-          'Number of Staff': facility.operations.number_of_employees || "N/A",
-          'TIN Number': facility.tin,
-          'LGA': facility.lga,
-          'Phone': facility.phone,
-          // 'Category': facility.facility.category,
-          'Ownership': facility.facility.ownership_type,
-          'Branches': facility.branches.length,
-          'Enumerated By': facility.facility.created_by,
-          'Address': facility.location.address,
-          'Email': facility.location.email,
-          'Date Established': facility.facility.date_of_establishment
-        }));
 
+        // Map facilities and merge type_data dynamically
+        const exportData = facilities.map(facility => {
+          // Base fields
+          let row = {
+            "Payer User ID": facility.payer_user_id,
+            "Facility Name": facility.first_name,
+            "Email": facility.email,
+            "Phone": facility.phone,
+            "State": facility.state,
+            "LGA": facility.lga,
+            "TIN": facility.tin,
+            "Address": facility.address,
+            "Enumerator ID": facility.enumerator_id,
+            "Facility Hospital ID": facility.facility_hospital_id,
+            "Facility Type": facility.facility_type,
+            "Number of Beds": facility.number_of_beds,
+            "Liabilities": facility.liabilities,
+            "Average Monthly Visits": facility.avg_monthly_visits,
+            "Branch Name": facility.branch_name,
+            "Physical Address": facility.physical_address,
+            "City": facility.city,
+            "Branch Phone Numbers": facility.branch_phone_numbers,
+            "Branch Email": facility.branch_email,
+            "Branch Website": facility.branch_website,
+            "CAC Certificate Path": facility.cac_certificate_path,
+            "Operating License Path": facility.operating_license_path
+          };
+
+          // Merge type_data if available
+          if (facility.type_data) {
+            Object.entries(facility.type_data).forEach(([key, value]) => {
+              row[`TypeData: ${key}`] = value;
+            });
+          }
+
+          return row;
+        });
+
+        // Convert to Excel or CSV
         const ws = XLSX.utils.json_to_sheet(exportData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Facilities");
 
-        // Fix for Excel export - use correct bookType
         const fileExtension = format === 'csv' ? 'csv' : 'xlsx';
         const bookType = format === 'csv' ? 'csv' : 'xlsx';
         const fileName = `Facilities_Export_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
