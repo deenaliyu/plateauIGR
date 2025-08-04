@@ -407,47 +407,72 @@ function editFacility(facilityId) {
 
 // Export data
 function exportData(format) {
+  // Match filter logic
   const facilityType = $('#facilityTypeFilter').val();
   const lga = $('#lgaFilter').val();
-  const ownershipType = $('#ownershipTypeFilter').val();
+  const category = $('#categoryFilter').val();
   const dateRange = $('#dateRangeFilter').val();
   const search = $('#searchFilter').val();
 
-  let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
-  if (facilityType) url += `&facility_type=${facilityType}`;
-  if (lga) url += `&lga=${lga}`;
-  if (ownershipType) url += `&Category=${ownershipType}`;
+  let url = `${HOST}?gettHospitalFacilities`;
+  if (facilityType) url += `&facility_type=${encodeURIComponent(facilityType)}`;
+  if (lga) url += `&lga=${encodeURIComponent(lga)}`;
+  if (category) url += `&category=${encodeURIComponent(category)}`;
   if (dateRange) {
     const dates = dateRange.split(' - ');
     url += `&start_date=${dates[0]}&end_date=${dates[1]}`;
   }
-  if (search) url += `&search=${search}`;
+  if (search) url += `&search=${encodeURIComponent(search)}`;
 
   fetch(url)
     .then(response => response.json())
     .then(data => {
       if (data.status === 1) {
         const facilities = data.facilities;
-        const exportData = facilities.map(facility => ({
-          'Name': facility.facility.legal_name,
-          'Facility Type': facility.facility.facility_type,
-          'Number of Staff': facility.operations.number_of_employees,
-          'TIN Number': facility.facility.tax_identification_number,
-          'LGA': facility.location.lga,
-          'Phone': facility.location.phone_number,
-          'Category': facility.facility.category,
-          'Branches': facility.branches.length,
-          'Enumerated By': facility.facility.created_by,
-          'Address': facility.location.address,
-          'Email': facility.location.email,
-          'Date Established': facility.facility.date_of_establishment
-        }));
 
+        // Map facilities and merge type_data dynamically
+        const exportData = facilities.map(facility => {
+          // Base fields
+          let row = {
+            "Payer User ID": facility.payer_user_id,
+            "Facility Name": facility.first_name,
+            "Email": facility.email,
+            "Phone": facility.phone,
+            "State": facility.state,
+            "LGA": facility.lga,
+            "TIN": facility.tin,
+            "Address": facility.address,
+            "Enumerator ID": facility.enumerator_id,
+            "Facility Hospital ID": facility.facility_hospital_id,
+            "Facility Type": facility.facility_type,
+            "Number of Beds": facility.number_of_beds,
+            "Liabilities": facility.liabilities,
+            "Average Monthly Visits": facility.avg_monthly_visits,
+            "Branch Name": facility.branch_name,
+            "Physical Address": facility.physical_address,
+            "City": facility.city,
+            "Branch Phone Numbers": facility.branch_phone_numbers,
+            "Branch Email": facility.branch_email,
+            "Branch Website": facility.branch_website,
+            "CAC Certificate Path": facility.cac_certificate_path,
+            "Operating License Path": facility.operating_license_path
+          };
+
+          // Merge type_data if available
+          if (facility.type_data) {
+            Object.entries(facility.type_data).forEach(([key, value]) => {
+              row[`TypeData: ${key}`] = value;
+            });
+          }
+
+          return row;
+        });
+
+        // Convert to Excel or CSV
         const ws = XLSX.utils.json_to_sheet(exportData);
         const wb = XLSX.utils.book_new();
         XLSX.utils.book_append_sheet(wb, ws, "Facilities");
 
-        // Fix for Excel export - use correct bookType
         const fileExtension = format === 'csv' ? 'csv' : 'xlsx';
         const bookType = format === 'csv' ? 'csv' : 'xlsx';
         const fileName = `Facilities_Export_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
@@ -479,3 +504,76 @@ function exportData(format) {
       });
     });
 }
+// function exportData(format) {
+//   const facilityType = $('#facilityTypeFilter').val();
+//   const lga = $('#lgaFilter').val();
+//   const ownershipType = $('#ownershipTypeFilter').val();
+//   const dateRange = $('#dateRangeFilter').val();
+//   const search = $('#searchFilter').val();
+
+//   let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
+//   if (facilityType) url += `&facility_type=${facilityType}`;
+//   if (lga) url += `&lga=${lga}`;
+//   if (ownershipType) url += `&Category=${ownershipType}`;
+//   if (dateRange) {
+//     const dates = dateRange.split(' - ');
+//     url += `&start_date=${dates[0]}&end_date=${dates[1]}`;
+//   }
+//   if (search) url += `&search=${search}`;
+
+//   fetch(url)
+//     .then(response => response.json())
+//     .then(data => {
+//       if (data.status === 1) {
+//         const facilities = data.facilities;
+//         const exportData = facilities.map(facility => ({
+//           'Name': facility.facility.legal_name,
+//           'Facility Type': facility.facility.facility_type,
+//           'Number of Staff': facility.operations.number_of_employees,
+//           'TIN Number': facility.facility.tax_identification_number,
+//           'LGA': facility.location.lga,
+//           'Phone': facility.location.phone_number,
+//           'Category': facility.facility.category,
+//           'Branches': facility.branches.length,
+//           'Enumerated By': facility.facility.created_by,
+//           'Address': facility.location.address,
+//           'Email': facility.location.email,
+//           'Date Established': facility.facility.date_of_establishment
+//         }));
+
+//         const ws = XLSX.utils.json_to_sheet(exportData);
+//         const wb = XLSX.utils.book_new();
+//         XLSX.utils.book_append_sheet(wb, ws, "Facilities");
+
+//         // Fix for Excel export - use correct bookType
+//         const fileExtension = format === 'csv' ? 'csv' : 'xlsx';
+//         const bookType = format === 'csv' ? 'csv' : 'xlsx';
+//         const fileName = `Facilities_Export_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
+
+//         XLSX.writeFile(wb, fileName, { bookType });
+
+//         Swal.fire({
+//           title: 'Export Successful',
+//           text: `Facilities data has been exported as ${format.toUpperCase()}`,
+//           icon: 'success',
+//           confirmButtonText: 'OK'
+//         });
+//       } else {
+//         Swal.fire({
+//           title: 'No Data',
+//           text: 'No facilities found to export',
+//           icon: 'warning',
+//           confirmButtonText: 'OK'
+//         });
+//       }
+//     })
+//     .catch(error => {
+//       console.error('Export error:', error);
+//       Swal.fire({
+//         title: 'Export Failed',
+//         text: 'An error occurred while exporting data',
+//         icon: 'error',
+//         confirmButtonText: 'OK'
+//       });
+//     });
+// }
