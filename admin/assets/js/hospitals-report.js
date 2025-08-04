@@ -33,11 +33,13 @@ $(document).ready(function () {
 
 // Load facilities data
 function loadFacilities() {
+   $('.date-range-picker').val('');
   const facilityType = $('#facilityTypeFilter').val();
   const lga = $('#lgaFilter').val();
   const ownershipType = $('#ownershipTypeFilter').val();
   const dateRange = $('#dateRangeFilter').val();
   const search = $('#searchFilter').val();
+
 
   let url = 'https://plateauigr.com/php/?gettHospitalFacilities';
   if (facilityType) url += `&facility_type=${facilityType}`;
@@ -144,7 +146,7 @@ function renderFacilities(facilities) {
     return;
   }
 
-  console.log('Facilities data:', facilities);
+  // console.log('Facilities data:', facilities);
   facilities.forEach((facility, index) => {
     const facilityData = facility;
 
@@ -198,7 +200,7 @@ function formatFacilityType(type) {
 
 // Load summary tiles
 function loadSummaryTiles() {
-  fetch('https://plateauigr.com/php/? ')
+  fetch('https://plateauigr.com/php/?gettHospitalFacilities')
     .then(response => response.json())
     .then(data => {
       if (data.status === 1) {
@@ -214,8 +216,8 @@ function renderSummaryTiles(facilities) {
 
   // Count facilities by type
   facilities.forEach(facility => {
-    const type = facility.facility.facility_type;
-    const lga = facility.location.lga;
+    const type = facility.facility_type;
+    const lga = facility.lga;
 
     if (!facilityTypes[type]) {
       facilityTypes[type] = 0;
@@ -235,7 +237,7 @@ function renderSummaryTiles(facilities) {
       <div class="col-md-3 mb-3">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title text-black fontBold">${type}</h5>
+            <h5 class="card-title text-black fontBold">${type.replaceAll('_', ' ')}</h5>
             <p class="card-text display-4 text-primary">${count}</p>
           </div>
         </div>
