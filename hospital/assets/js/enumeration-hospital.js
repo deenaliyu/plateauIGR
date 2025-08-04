@@ -196,7 +196,7 @@ async function validateTIN() {
       document.getElementById('taxIdentificationNumber').readOnly = true;
       document.getElementById('address').value = data.user.address;
       document.getElementById('address').readOnly = true;
-      document.getElementById('city').value = data.user.lga; // Assuming city is same as LGA
+      document.getElementById('city').value = data.user.city;
       document.getElementById('city').readOnly = true;
       document.getElementById('lga').value = data.user.lga;
       document.getElementById('lga').readOnly = true;

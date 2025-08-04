@@ -131,6 +131,7 @@ function renderFacilities(facilities) {
     html += `
       <tr>
         <td>${index + 1}</td>
+         <td>${facility.enumeration_id}</td>
         <td>${facility.branch_name || 'N/A'}</td>
         <td>${facility.facility_type || 'N/A'}</td>
         <td>${facility.number_of_beds || '0'}</td>
@@ -334,6 +335,10 @@ function renderFacilityDetails(facility) {
       <div class="col-md-12 mb-4">
         <h5 class="text-xl fontBold text-black">Facility Information</h5>
         <table class="table table-sm">
+        <tr>
+            <th>Enumeration ID:</th>
+            <td>${facilityData.enumeration_id ||'N/A'}</td>
+          </tr>
           <tr>
             <th>Legal Name:</th>
             <td>${facilityData.branch_name ||'N/A'}</td>

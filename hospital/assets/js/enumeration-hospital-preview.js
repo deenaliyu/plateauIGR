@@ -90,6 +90,10 @@ function renderFacilitySummary(facility) {
                                     <div class="info-section">
                                         <h5 class="section-title">Basic Information</h5>
                                         <table class="table table-sm table-borderless">
+                                        <tr>
+                                                <th width="40%">Enumeration ID:</th>
+                                                <td>${facilityData.enumeration_id || 'N/A'}</td>
+                                            </tr>
                                             <tr>
                                                 <th width="40%">Full Name:</th>
                                                 <td>${facilityData.first_name || 'N/A'}</td>
