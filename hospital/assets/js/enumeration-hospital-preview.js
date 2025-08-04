@@ -199,17 +199,12 @@ function renderFacilitySummary(facility) {
                                     
                                     <div class="info-section mt-4">
                                         <h5 class="section-title">Tax Liabilities</h5>
-                                        <div class="tax-liabilities">
-                                            <ul class="list-unstyled row">
-                                                <li class="col-6">• PAYE</li>
-                                                <li class="col-6">• Development Levy</li>
-                                                <li class="col-6">• Business Premise Levy</li>
-                                                <li class="col-6">• Environmental Fees</li>
-                                                <li class="col-6">• Shop/Trade Permit</li>
-                                                <li class="col-6">• Tenement Rate</li>
-                                                <li class="col-6">• Bill Board Levy</li>
-                                            </ul>
-                                        </div>
+                                        <ul class="list-unstyled row">
+                                            ${JSON.parse(facilityData.liabilities).length > 0
+                                            ? JSON.parse(facilityData.liabilities).map(tax => `<li class="col-6">• ${tax}</li>`).join('')
+                                            : '<li>No taxes selected</li>'
+                                            }
+                                        </ul>
                                     </div>
                                 </div>
                             </div>

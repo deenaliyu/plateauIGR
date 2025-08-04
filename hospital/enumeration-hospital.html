@@ -126,6 +126,25 @@
     .tinTabs {
       display: none;
     }
+
+    .tax-options {
+      margin-top: 1rem;
+    }
+
+    .tax-options .form-check {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .tax-options .form-check-input {
+      margin-top: 0.25rem;
+      margin-left: -1.5rem;
+    }
+
+    .tax-options .form-check-label {
+      cursor: pointer;
+      padding-left: 0.5rem;
+    }
   </style>
 </head>
 
@@ -672,7 +691,7 @@
         </form>
       </section>
 
-     
+
 
       <!-- Document Uploads -->
       <section class="form-section h-full">
@@ -737,6 +756,121 @@
               <button type="button" class="outline-btn prev-section">Previous</button>
               <button type="button" class="button next-section">Next</button>
             </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Enumeration Use Uploads -->
+      <section class="form-section h-full">
+
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">Enumeration Use Only</h1>
+          <p class="mt-2 mb-4">Confirm these details yourself before proceeding.</p>
+
+
+          <div class="row">
+            <!-- Number of Staff -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Number of Staff</label>
+              <select class="form-select" id="staffCountEnum" required>
+                <option value="">Select range</option>
+                <option value="1-10">1-10</option>
+                <option value="10-20">10-20</option>
+                <option value="20-above">20-above</option>
+              </select>
+            </div>
+
+            <!-- Payment Points -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Payment Points</label>
+              <select class="form-select" id="paymentPoints" required>
+                <option value="">Select range</option>
+                <option value="1-2">1-2</option>
+                <option value="2-5">2-5</option>
+                <option value="5-above">5-above</option>
+              </select>
+            </div>
+
+            <!-- Estimated Number of Rooms -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Estimated Number of Rooms</label>
+              <select class="form-select" id="estimatedRooms" required>
+                <option value="">Select range</option>
+                <option value="1-2">1-2</option>
+                <option value="2-3">2-3</option>
+                <option value="3-above">3-above</option>
+              </select>
+            </div>
+
+            <!-- Number of Branches -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Number of Branches</label>
+              <select class="form-select" id="numberOfBranches" required>
+                <option value="">Select number</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3-above">3-above</option>
+              </select>
+            </div>
+          </div>
+
+
+          <div class="mt-5">
+            <h5 class="text-lg font-bold">Applicable Tax Liabilities</h5>
+            <div class="row tax-options">
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-paye" value="PAYE">
+                  <label class="form-check-label" for="tax-paye">PAYE</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-premise-levy" value="Business Premise Levy">
+                  <label class="form-check-label" for="tax-premise-levy">Business Premise Levy</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-trade-permit" value="Shop/Trade Permit">
+                  <label class="form-check-label" for="tax-trade-permit">Shop/Trade Permit</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-billboard-levy" value="Bill Board Levy">
+                  <label class="form-check-label" for="tax-billboard-levy">Bill Board Levy</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-dev-levy" value="Development Levy">
+                  <label class="form-check-label" for="tax-dev-levy">Development Levy</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-env-fee"
+                    value="Environmental and Waste Management Fees">
+                  <label class="form-check-label" for="tax-env-fee">Environmental and Waste Management Fees</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-tenement-rate" value="Tenement Rate">
+                  <label class="form-check-label" for="tax-tenement-rate">Tenement Rate</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <button type="button" class="button next-section">Next</button>
           </div>
         </form>
       </section>

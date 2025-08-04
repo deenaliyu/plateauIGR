@@ -2372,20 +2372,28 @@ function generateSummary() {
       });
     }
   }
+  const selectedTaxes = Array.from(document.querySelectorAll('.tax-checkbox:checked')).map(checkbox => checkbox.value);
+  html += `
+  <div class="tax-liabilities mt-4">
+    <h5>Applicable Tax Liabilities</h5>
+    <ul class="tax-list">
+      ${selectedTaxes.length > 0
+      ? selectedTaxes.map(tax => `<li>${tax}</li>`).join('')
+      : '<li>No taxes selected</li>'
+    }
+    </ul>
+  </div>`;
 
   html += `
-        <div class="tax-liabilities">
-            <h5>Applicable Tax Liabilities</h5>
-            <ul class="tax-list">
-                <li>PAYE</li>
-                <li>Development Levy</li>
-                <li>Business Premise Levy</li>
-                <li>Environmental and Waste Management Fees</li>
-                <li>Shop/Trade Permit</li>
-                <li>Tenement Rate</li>
-                <li>Bill Board Levy</li>
-            </ul>
-        </div>`;
+        <div class="enumuse mt-4">
+          <h5 class="text-lg font-bold">Enumeration Use Only</h5>
+
+          <p><strong>Number of Staff:</strong> ${document.getElementById('staffCountEnum').value}</p>
+          <p><strong>Payment Points:</strong> ${document.getElementById('paymentPoints').value}</p>
+          <p><strong>Estimated Number of Rooms:</strong> ${document.getElementById('estimatedRooms').value}</p>
+          <p><strong>Number of Branches:</strong> ${document.getElementById('numberOfBranches').value}</p>
+        </div>
+  `;
 
   document.getElementById('reviewSummary').innerHTML = html;
 
@@ -2454,6 +2462,8 @@ function preparePayload() {
         cac_rc_number: document.getElementById('registrationNumber').value,
         ownership_type: document.getElementById('ownershipType').value,
         license_number: document.getElementById('operatingLicenseNumber').value,
+        liabilities: Array.from(document.querySelectorAll('.tax-checkbox:checked'))
+          .map(checkbox => checkbox.value),
         issuing_authority: Array.from(document.getElementById('issuingAuthority').selectedOptions).map(opt => opt.value).join(', '),
         license_expiry: document.getElementById('licenseExpiryDate').value,
         health_facility_code: document.getElementById('healthFacilityCode').value,
@@ -2472,6 +2482,12 @@ function preparePayload() {
         [facilityTypeKey]: facilityTypeData
       },
       branches: prepareBranchesData(),
+      facility_classification: {
+        staff_range: document.getElementById('staffCountEnum').value,
+        payment_point_range: document.getElementById('paymentPoints').value,
+        room_range: document.getElementById('estimatedRooms').value,
+        branch_range: document.getElementById('numberOfBranches').value,
+      },
       facility_documents: {
         cac_certificate_path: "", // Will need to handle file uploads
         operating_license_path: "" // Will need to handle file uploads

@@ -146,17 +146,17 @@ const currentDate = new Date();
 $(".datei").html(currentDate.toLocaleDateString());
 $(".datem").html(currentDate.toLocaleDateString());
 
-let logoutTimeout;
+// let logoutTimeout;
 
-function startLogoutTimer() {
-  // Set the timeout to 10 minutes (600,000 milliseconds)
-  logoutTimeout = setTimeout(logout, 600000);
-}
+// function startLogoutTimer() {
+//   // Set the timeout to 10 minutes (600,000 milliseconds)
+//   logoutTimeout = setTimeout(logout, 600000);
+// }
 
-function resetLogoutTimer() {
-  clearTimeout(logoutTimeout);
-  startLogoutTimer();
-}
+// function resetLogoutTimer() {
+//   clearTimeout(logoutTimeout);
+//   startLogoutTimer();
+// }
 
 function logout() {
   localStorage.removeItem("adminDataPrime");
@@ -164,12 +164,12 @@ function logout() {
   window.location.href = "./index.html";
 }
 
-// Attach event listeners to reset the logout timer on user activity
-document.addEventListener('mousemove', resetLogoutTimer);
-document.addEventListener('keydown', resetLogoutTimer);
+// // Attach event listeners to reset the logout timer on user activity
+// document.addEventListener('mousemove', resetLogoutTimer);
+// document.addEventListener('keydown', resetLogoutTimer);
 
-// Start the logout timer when the page loads
-startLogoutTimer();
+// // Start the logout timer when the page loads
+// startLogoutTimer();
 
 $("#logout").on("click", function (e) {
   e.preventDefault();
