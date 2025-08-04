@@ -1991,7 +1991,115 @@ document.getElementById('facilityType').addEventListener('change', function () {
               </div>
           </div>
       `;
+  } else if (facilityType.includes('Nursing Health Science')) {
+    html = `
+    <!-- School Category -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label required">School Category</label>
+        <select class="form-select" id="schoolCategory" required>
+          <option value="">Select category</option>
+          <option value="School of Nursing and Midwifery">School of Nursing and Midwifery</option>
+          <option value="School of Health Technology">School of Health Technology</option>
+          <option value="Veterinary Sciences">Veterinary Sciences</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Programs Offered -->
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <label class="form-label required">Programs Offered</label>
+        <select class="multiple-select" id="programsOffered" multiple required>
+          <!-- Nursing and Midwifery options -->
+          <option value="National Diploma (ND) in Nursing">National Diploma (ND) in Nursing</option>
+          <option value="Higher National Diploma (HND) in Nursing">Higher National Diploma (HND) in Nursing</option>
+          <option value="Basic Midwifery Program">Basic Midwifery Program</option>
+          <option value="Post-Basic Accident & Emergency Nursing">Post-Basic Accident & Emergency Nursing</option>
+          <option value="Post-Basic Perioperative Nursing">Post-Basic Perioperative Nursing</option>
+          <option value="Post-Basic Public Health Nursing">Post-Basic Public Health Nursing</option>
+          <option value="Post-Basic Psychiatric Nursing">Post-Basic Psychiatric Nursing</option>
+          <option value="National Certification of Education">National Certification of Education</option>
+          
+          <!-- Health Technology options -->
+          <option value="ND in Community Health Extension Work (CHEW)">ND in Community Health Extension Work (CHEW)</option>
+          <option value="HND in Community Health">HND in Community Health</option>
+          <option value="ND in Environmental Health Technology">ND in Environmental Health Technology</option>
+          <option value="HND in Environmental Health Technology">HND in Environmental Health Technology</option>
+          <option value="ND in Health Information Management">ND in Health Information Management</option>
+          <option value="HND in Health Information Management">HND in Health Information Management</option>
+          <option value="ND in Medical Laboratory Technology">ND in Medical Laboratory Technology</option>
+          <option value="HND in Medical Laboratory Technology">HND in Medical Laboratory Technology</option>
+          <option value="ND in Dental Health Technology">ND in Dental Health Technology</option>
+          <option value="HND in Dental Health Technology">HND in Dental Health Technology</option>
+          <option value="Public Health Technology (ND/HND)">Public Health Technology (ND/HND)</option>
+          
+          <!-- Veterinary options -->
+          <option value="Doctor of Veterinary Medicine (DVM)">Doctor of Veterinary Medicine (DVM)</option>
+          <option value="ND in Animal Health & Production Technology">ND in Animal Health & Production Technology</option>
+          <option value="HND in Animal Health & Production Technology">HND in Animal Health & Production Technology</option>
+          <option value="ND in Veterinary & Medical Laboratory Technology">ND in Veterinary & Medical Laboratory Technology</option>
+          <option value="HND in Veterinary & Medical Laboratory Technology">HND in Veterinary & Medical Laboratory Technology</option>
+          <option value="Bachelor of Medical Laboratory Science (BMLS)">Bachelor of Medical Laboratory Science (BMLS)</option>
+          <option value="Postgraduate Diploma (PGD) in Veterinary Sciences">Postgraduate Diploma (PGD) in Veterinary Sciences</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Accreditation and Basic Info -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label class="form-label required">Is Fully Accredited?</label>
+        <select class="form-select" id="isAccredited" required>
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label required">Academic Departments Count</label>
+        <input type="number" class="form-control" id="academicDepartmentsCount" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label required">Clinical Labs Count</label>
+        <input type="number" class="form-control" id="clinicalLabsCount" required>
+      </div>
+    </div>
+
+    <!-- Student and Staff Info -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label class="form-label required">Total Students Enrolled</label>
+        <input type="number" class="form-control" id="totalStudentsEnrolled" required>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label required">Has External Placements?</label>
+        <select class="form-select" id="hasExternalPlacements" required>
+          <option value="">Select</option>
+          <option value="Yes">Yes</option>
+          <option value="No">No</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label required">Total Staff Count</label>
+        <input type="number" class="form-control" id="totalStaffCount" required>
+      </div>
+    </div>
+
+    <!-- Additional Info -->
+    <div class="row mb-3">
+      <div class="col-md-6">
+        <label class="form-label required">Student-Lecturer Ratio</label>
+        <input type="text" class="form-control" id="studentLecturerRatio" placeholder="e.g., 30:1" required>
+      </div>
+      <div class="col-md-6">
+        <label class="form-label">Professional Exams per Session</label>
+        <input type="number" class="form-control" id="professionalExams">
+      </div>
+    </div>
+  `;
   }
+
 
   operationsContent.innerHTML = html;
   initializeSelectize();
@@ -2229,6 +2337,21 @@ function generateSummary() {
     `;
       break;
 
+    case "nursing_health_sciences":
+      html += `
+          <p><strong>School Category:</strong> ${document.getElementById('schoolCategory')?.value || "Not specified"}</p>
+          <p><strong>Programs Offered:</strong> ${Array.from(document.getElementById('programsOffered')?.selectedOptions || []).map(opt => opt.value).join(', ')}</p>
+          <p><strong>Is Accredited:</strong> ${document.getElementById('isAccredited')?.value || "No"}</p>
+          <p><strong>Academic Departments:</strong> ${document.getElementById('academicDepartmentsCount')?.value || "0"}</p>
+          <p><strong>Clinical Labs:</strong> ${document.getElementById('clinicalLabsCount')?.value || "0"}</p>
+          <p><strong>Total Students:</strong> ${document.getElementById('totalStudentsEnrolled')?.value || "0"}</p>
+          <p><strong>Has External Placements:</strong> ${document.getElementById('hasExternalPlacements')?.value || "No"}</p>
+          <p><strong>Total Staff:</strong> ${document.getElementById('totalStaffCount')?.value || "0"}</p>
+          <p><strong>Student-Lecturer Ratio:</strong> ${document.getElementById('studentLecturerRatio')?.value || "Not specified"}</p>
+          <p><strong>Professional Exams/Session:</strong> ${document.getElementById('professionalExams')?.value || "0"}</p>
+        `;
+      break;
+
     default:
       html += `<p>No specific operations data available for this facility type</p>`;
       break;
@@ -2373,7 +2496,8 @@ function getFacilityTypeKey(facilityType) {
     "Eye Clinic": "eye_clinic",
     "Rehabilitation Centre": "rehabilitation_centre",
     "Wellness Centre": "wellness_centre",
-    "Herbal Medicine Centre / Traditionalist Health Centre": "herbal_medicine_centre"
+    "Herbal Medicine Centre / Traditionalist Health Centre": "herbal_medicine_centre",
+    "Nursing Health Sciences": "nursing_health_sciences"
   };
   return typeMap[facilityType] || "primary_healthcare";
 }
@@ -2580,6 +2704,19 @@ function prepareFacilityTypeData(facilityTypeKey) {
       data.herbal_medicines_dispensed_per_month = document.getElementById('herbalMedicineDispensed')?.value || "0";
       data.num_employees_traditionalists = document.getElementById('numberOfEmployees')?.value || "0";
       data.primary_services_offered = Array.from(document.getElementById('primaryServices')?.selectedOptions || []).map(opt => opt.value);
+      break;
+
+    case "nursing_health_sciences":
+      data.school_category = document.getElementById('schoolCategory')?.value || "";
+      data.programs_offered = Array.from(document.getElementById('programsOffered')?.selectedOptions || []).map(opt => opt.value);
+      data.is_accredited = document.getElementById('isAccredited')?.value === "Yes";
+      data.academic_departments_count = document.getElementById('academicDepartmentsCount')?.value || "0";
+      data.clinical_labs_count = document.getElementById('clinicalLabsCount')?.value || "0";
+      data.total_students_enrolled = document.getElementById('totalStudentsEnrolled')?.value || "0";
+      data.has_external_placements = document.getElementById('hasExternalPlacements')?.value === "Yes";
+      data.total_staff_count = document.getElementById('totalStaffCount')?.value || "0";
+      data.avg_student_lecturer_ratio = document.getElementById('studentLecturerRatio')?.value || "";
+      data.professional_exams_per_session = document.getElementById('professionalExams')?.value || "0";
       break;
 
     default:

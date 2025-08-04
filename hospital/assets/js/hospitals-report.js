@@ -457,13 +457,13 @@ function exportData(format) {
       if (data.status === 1) {
         const facilities = data.facilities;
         const exportData = facilities.map(facility => ({
-          'Name': facility.facility.legal_name,
-          'Facility Type': facility.facility.facility_type,
-          'Number of Staff': facility.operations.number_of_employees,
-          'TIN Number': facility.facility.tax_identification_number,
-          'LGA': facility.location.lga,
-          'Phone': facility.location.phone_number,
-          'Category': facility.facility.category,
+          'Name': facility.first_name,
+          'Facility Type': facility.facility_type,
+          'Number of Staff': facility.operations.number_of_employees || "N/A",
+          'TIN Number': facility.tin,
+          'LGA': facility.lga,
+          'Phone': facility.phone,
+          // 'Category': facility.facility.category,
           'Ownership': facility.facility.ownership_type,
           'Branches': facility.branches.length,
           'Enumerated By': facility.facility.created_by,

@@ -122,6 +122,7 @@
     .remove-branch {
       margin-top: 10px;
     }
+
     .tinTabs {
       display: none;
     }
@@ -201,6 +202,12 @@
           </div>
           <div class="mt-5 sideTabs">
             <img src="./assets/img/v8.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v9.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v9.png" />
           </div>
         </div>
       </div>
@@ -358,6 +365,7 @@
                 <option value="Wellness Centre">Wellness Centre</option>
                 <option value="Herbal Medicine Centre / Traditionalist Health Centre">Herbal Medicine Centre /
                   Traditionalist Health Centre</option>
+                <option value="Nursing Health Sciences">Nursing Health Sciences</option>
               </select>
               <div class="invalid-feedback">Please select the facility type.</div>
             </div>
@@ -679,6 +687,80 @@
           <p class="mt-2 mb-4">Facility capture and documents uploads</p>
 
 
+          <!-- Number of Staff -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label class="form-label required">Number of Staff</label>
+              <select class="form-select" id="staffCountEnum" required>
+                <option value="">Select range</option>
+                <option value="1-10">1-10</option>
+                <option value="10-20">10-20</option>
+                <option value="20-above">20-above</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Payment Points -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label class="form-label required">Payment Points</label>
+              <select class="form-select" id="paymentPoints" required>
+                <option value="">Select range</option>
+                <option value="1-2">1-2</option>
+                <option value="2-5">2-5</option>
+                <option value="5-above">5-above</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Estimated Number of Rooms -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label class="form-label required">Estimated Number of Rooms</label>
+              <select class="form-select" id="estimatedRooms" required>
+                <option value="">Select range</option>
+                <option value="1-2">1-2</option>
+                <option value="2-3">2-3</option>
+                <option value="3-above">3-above</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Number of Branches -->
+          <div class="row mb-3">
+            <div class="col-12">
+              <label class="form-label required">Number of Branches</label>
+              <select class="form-select" id="numberOfBranches" required>
+                <option value="">Select number</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3-above">3-above</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <button type="button" class="button next-section">Next</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Document Uploads -->
+      <section class="form-section h-full">
+
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">For Enumeration Use Only</h1>
+          <p class="mt-2 mb-4">Confirm Enumeration Details</p>
+
+
           <div id="section2">
 
             <div class="form-group mb-4">
@@ -836,8 +918,8 @@
 
               <div class="form-group w-full">
                 <label for="">Phone number *</label>
-                <input type="number" class="form-control payInputs" minlength="11" maxlength="11"
-                  required data-name="phone_number" placeholder="Your 11-digits phone number">
+                <input type="number" class="form-control payInputs" minlength="11" maxlength="11" required
+                  data-name="phone_number" placeholder="Your 11-digits phone number">
               </div>
             </div>
 
