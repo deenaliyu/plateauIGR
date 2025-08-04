@@ -761,53 +761,49 @@
           <p class="mt-2 mb-4">Confirm Enumeration Details</p>
 
 
-          <div id="section2">
-
-            <div class="form-group mb-4">
-              <!-- <label for="">Profile Picture*</label> -->
-              <div class="flex flex-col md:flex-row gap-4 items-center">
-                <!-- Preview Box -->
-                <div class="w-32 h-32 border-2 border-gray-300 rounded-lg overflow-hidden mb-2 md:mb-0">
-                  <img id="imagePreview" src="assets/img/userprofile.png" alt="Preview"
-                    class="w-full h-full object-cover">
-                </div>
-
-                <!-- Capture/Upload Buttons -->
-                <div class="flex flex-col gap-2">
-                  <button type="button" onclick="openCamera()" class="button bg-blue-600 hover:bg-blue-700 text-white">
-                    Capture from Camera
-                  </button>
-                  <button type="button" onclick="document.getElementById('fileInput').click()"
-                    class="button bg-green-600 hover:bg-green-700 text-white">
-                    Upload from Device
-                  </button>
-                  <input type="file" id="fileInput" accept="image/*" class="hidden"
-                    onchange="handleFileUpload(this.files)">
-                </div>
-              </div>
-              <input type="hidden" id="imageUrl" data-name="img" required>
-              <div class="invalid-feedback">Please upload a profile picture.</div>
+          <div class="row">
+            <!-- Number of Staff -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Number of Staff</label>
+              <select class="form-select" id="staffCountEnum" required>
+                <option value="">Select range</option>
+                <option value="1-10">1-10</option>
+                <option value="10-20">10-20</option>
+                <option value="20-above">20-above</option>
+              </select>
             </div>
 
-
-            <p class="my-4">Document Upload (Optional)</p>
-
-            <div class="row mb-3">
-              <div class="col-md-6">
-                <label for="repName" class="form-label">CAC Certificate</label>
-                <input type="file" class="form-control" id="repName">
-                <!-- <div class="invalid-feedback">Please.</div> -->
-              </div>
-              <div class="col-md-6">
-                <label for="repemail" class="form-label">Operating License</label>
-                <input type="file" class="form-control" id="repemail">
-                <!-- <div class="invalid-feedback">Please provide an email address.</div> -->
-              </div>
+            <!-- Payment Points -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Payment Points</label>
+              <select class="form-select" id="paymentPoints" required>
+                <option value="">Select range</option>
+                <option value="1-2">1-2</option>
+                <option value="2-5">2-5</option>
+                <option value="5-above">5-above</option>
+              </select>
             </div>
 
-            <div class="d-flex justify-content-between">
-              <button type="button" class="outline-btn prev-section">Previous</button>
-              <button type="button" class="button next-section">Next</button>
+            <!-- Estimated Number of Rooms -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Estimated Number of Rooms</label>
+              <select class="form-select" id="estimatedRooms" required>
+                <option value="">Select range</option>
+                <option value="1-2">1-2</option>
+                <option value="2-3">2-3</option>
+                <option value="3-above">3-above</option>
+              </select>
+            </div>
+
+            <!-- Number of Branches -->
+            <div class="col-md-6 mb-3">
+              <label class="form-label required">Number of Branches</label>
+              <select class="form-select" id="numberOfBranches" required>
+                <option value="">Select number</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3-above">3-above</option>
+              </select>
             </div>
           </div>
         </form>
