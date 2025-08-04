@@ -122,6 +122,7 @@
     .remove-branch {
       margin-top: 10px;
     }
+
     .tinTabs {
       display: none;
     }
@@ -723,6 +724,87 @@
               </div>
             </div>
 
+            <p class="my-4">Enumerator use only</p>
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="staffNumber" class="form-label">Number of staff</label>
+                <select class="form-select" id="staffNumber">
+                  <option selected disabled>Choose...</option>
+                  <option value="1-10">1-10</option>
+                  <option value="10-20">10-20</option>
+                  <option value="20-above">20-above</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="paymentPoints" class="form-label">Payment points</label>
+                <select class="form-select" id="paymentPoints">
+                  <option selected disabled>Choose...</option>
+                  <option value="1-2">1-2</option>
+                  <option value="2-5">2-5</option>
+                  <option value="5-above">5-above</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="roomNumber" class="form-label">Estimated Number of Rooms in facility</label>
+                <select class="form-select" id="roomNumber">
+                  <option selected disabled>Choose...</option>
+                  <option value="1-2">1-2</option>
+                  <option value="2-3">2-3</option>
+                  <option value="3-above">3-above</option>
+                </select>
+              </div>
+              <div class="col-md-6">
+                <label for="branchNumber" class="form-label">Number of branches</label>
+                <select class="form-select" id="branchNumber">
+                  <option selected disabled>Choose...</option>
+                  <option value="1">1</option>
+                  <option value="2">2</option>
+                  <option value="3-above">3-above</option>
+                </select>
+              </div>
+            </div>
+            <div class="row mb-3">
+              <div class="col-12">
+                <label class="form-label">Select Applicable Taxes/Levies:</label>
+                <div class="row">
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="payeCheck">
+                      <label class="form-check-label" for="payeCheck">PAYE</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="businessPremiseCheck">
+                      <label class="form-check-label" for="businessPremiseCheck">Business Premise Levy</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="shopTradeCheck">
+                      <label class="form-check-label" for="shopTradeCheck">Shop/Trade Permit</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="billBoardCheck">
+                      <label class="form-check-label" for="billBoardCheck">Bill Board Levy</label>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="developmentLevyCheck">
+                      <label class="form-check-label" for="developmentLevyCheck">Development Levy</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="environmentalFeesCheck">
+                      <label class="form-check-label" for="environmentalFeesCheck">Environmental Fees</label>
+                    </div>
+                    <div class="form-check">
+                      <input class="form-check-input" type="checkbox" id="tenementRateCheck">
+                      <label class="form-check-label" for="tenementRateCheck">Tenement Rate</label>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
             <div class="d-flex justify-content-between">
               <button type="button" class="outline-btn prev-section">Previous</button>
               <button type="button" class="button next-section">Next</button>
@@ -836,8 +918,8 @@
 
               <div class="form-group w-full">
                 <label for="">Phone number *</label>
-                <input type="number" class="form-control payInputs" minlength="11" maxlength="11"
-                  required data-name="phone_number" placeholder="Your 11-digits phone number">
+                <input type="number" class="form-control payInputs" minlength="11" maxlength="11" required
+                  data-name="phone_number" placeholder="Your 11-digits phone number">
               </div>
             </div>
 
