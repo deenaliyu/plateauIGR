@@ -74,152 +74,228 @@ function renderFacilitySummary(facility) {
     }
 
     // Generate HTML
-    const html = `
-        <div class="printable-page">
-            <div class="flex gap-3 justify-content-center items-center mb-3">
-                <img src="./assets/img/logo.png" width="50" height="50" alt="" />
-                <h1 class="font-bold text-xl text-center">Enumeration Biodata</h1>
-            </div>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <!-- Left Column - Basic Info -->
-                                <div class="col-6">
-                                    <div class="info-section">
-                                        <h5 class="section-title">Basic Information</h5>
-                                        <table class="table table-sm table-borderless">
-                                        <tr>
-                                                <th width="40%">Enumeration ID:</th>
-                                                <td>${facilityData.enumeration_id || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th width="40%">Full Name:</th>
-                                                <td>${facilityData.first_name || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Facility Name:</th>
-                                                <td>${facilityData.branch_name || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Facility Type:</th>
-                                                <td>${formatFacilityType(facilityData.facility_type)}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Registration ID:</th>
-                                                <td>${facilityData.facility_hospital_id || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Owner Address:</th>
-                                                <td>${facilityData.address || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Physical Address:</th>
-                                                <td>${facilityData.physical_address || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>City:</th>
-                                                <td>${facilityData.city || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>LGA:</th>
-                                                <td>${facilityData.lga || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>State:</th>
-                                                <td>${facilityData.state || 'N/A'}</td>
-                                            </tr>
-                                        </table>
-                                    </div>
-                                    
-                                    <div class="info-section mt-4">
-                                        <h5 class="section-title">Contact Information</h5>
-                                        <table class="table table-sm table-borderless">
-                                            <tr>
-                                                <th width="40%">Branch Phone:</th>
-                                                <td>${facilityData.branch_phone_numbers || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Main Phone:</th>
-                                                <td>${facilityData.phone || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Branch Email:</th>
-                                                <td>${facilityData.branch_email || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Main Email:</th>
-                                                <td>${facilityData.email || 'N/A'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Website:</th>
-                                                <td>${facilityData.branch_website ? `<a href="${facilityData.branch_website}" target="_blank">${facilityData.branch_website}</a>` : 'N/A'}</td>
-                                            </tr>
-                                        </table>
+const html = `<div class="printable-page bg-white p-3 position-relative">
+    <!-- Logo Watermark -->
+    <div class="watermark position-absolute w-100 h-100 d-flex align-items-center justify-content-center" 
+         style="top: 0; left: 0; z-index: 1; opacity: 0.08; pointer-events: none;">
+        <img src="./assets/img/logo.png" style="width: 400px; height: 400px; transform: rotate(-15deg);" alt="Watermark Logo" />
+    </div>
 
-                                        <div id="qrContainer" class="qr-code-container mx-auto"></div>
-                                    </div>
-                                </div>
-                                
-                                <!-- Right Column - Operational Details -->
-                                <div class="col-6">
-                                    <div class="info-section">
-                                        <h5 class="section-title">Operational Details</h5>
-                                        <table class="table table-sm table-borderless">
-                                            <tr>
-                                                <th width="40%">Number of Beds:</th>
-                                                <td>${facilityData.number_of_beds || '0'}</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Average Monthly Visits:</th>
-                                                <td>${facilityData.avg_monthly_visits || '0'}</td>
-                                            </tr>
-                                            ${typeSpecificFields}
-                                        </table>
-                                    </div>
-                                    
-                                    <div class="info-section mt-4">
-                                        <h5 class="section-title">Services Offered</h5>
-                                        <div class="services-container">
-                                            <div class="services-column">
-                                                <h6>Primary Services:</h6>
-                                                <ul class="list-unstyled">
-                                                    ${primaryServices.length > 0 ?
-                                                    primaryServices.map(service => `<li>• ${service}</li>`).join('') :
-                                                    '<li class="text-muted">No primary services listed</li>'}
-                                                </ul>
-                                            </div>
-                                            <div class="services-column">
-                                                <h6>All Services:</h6>
-                                                <ul class="list-unstyled">
-                                                    ${servicesOffered.length > 0 ?
-                                                    servicesOffered.map(service => `<li>• ${service}</li>`).join('') :
-                                                    '<li class="text-muted">No services listed</li>'}
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    <div class="info-section mt-4">
-                                        <h5 class="section-title">Tax Liabilities</h5>
-                                        <ul class="list-unstyled row">
-                                            ${JSON.parse(facilityData.liabilities).length > 0
-                                            ? JSON.parse(facilityData.liabilities).map(tax => `<li class="col-6">• ${tax}</li>`).join('')
-                                            : '<li>No taxes selected</li>'
-                                            }
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            
-                            
-                        </div>
+    <!-- Content -->
+    <div class="position-relative" style="z-index: 2;">
+        <!-- Header -->
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="fw-bold" style="font-size: 15px;">PlateauIGR</div>
+            <div class="d-flex align-items-center gap-2">
+                <img src="./assets/img/logo.png" style="width: 40px; height: 40px;" alt="Logo" />
+                <span class="fw-bold" style="font-size: 17px;">ENUMERATION BIODATA</span>
+            </div>
+            <div style="font-size: 13px;">${new Date().toLocaleDateString('en-US')} ${new Date().toLocaleTimeString('en-US', {hour12: true})}</div>
+        </div>
+
+        <!-- Photo and QR Code Row -->
+        <div class="d-flex justify-content-between align-items-start mb-3">
+            <div style="width: 280px;">
+                <img src="${facilityData.facility_photo || './assets/img/facility-placeholder.jpg'}" 
+                     class="img-fluid" style="width: 100%; height: 160px; object-fit: cover; border: 1px solid #ccc;" alt="Facility Photo" />
+            </div>
+            <div>
+                <div id="qrContainer" style="width: 100px; height: 100px; border: 1px solid #000;"></div>
+            </div>
+        </div>
+
+        <!-- Facility Info -->
+        <div class="mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">FACILITY INFO</h6>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Facility Name:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.branch_name || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Facility Type:</strong><br>
+                        <span style="font-size: 12px;">${formatFacilityType(facilityData.facility_type)}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">CAC Number:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.cac_number || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Type of Ownership:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.ownership_type || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Operating License Number:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.license_number || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Issuing Authority:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.issuing_authority || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">License Expiry Date:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.license_expiry || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">National Health Facility Code:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.nhfc_code || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">NHIS Accreditation Number:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.nhis_number || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Certificate of Standards No.:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.standards_cert || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">TIN:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.tin || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Date of Establishment:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.establishment_date || 'N/A'}</span>
                     </div>
                 </div>
             </div>
         </div>
-    `;
+
+        <!-- Operations Info -->
+        <div class="mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">OPERATIONS INFO</h6>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Primary Services Offered:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.primary_services || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Type of Major Equipment:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.major_equipment || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Number of Employees:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.employee_count || '0'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Number of Beds:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.number_of_beds || '0'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Average Monthly Patient Visits:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.avg_monthly_visits || '0'}</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Number of Surgeries/Procedures per Month:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.monthly_procedures || '0'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Cost of Hospital Card/Registration Fee:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.registration_fee || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact & Location -->
+        <div class="mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">CONTACT & LOCATION</h6>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Physical Address:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.physical_address || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">City/Town:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.city || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">LGA:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.lga || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Phone Number:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.phone || facilityData.branch_phone_numbers || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Email Address:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.email || facilityData.branch_email || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Website:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.branch_website || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Latitude:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.latitude || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Longitude:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.longitude || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Facility Representative -->
+        <div class="mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">FACILITY REPRESENTATIVE</h6>
+            <div class="row">
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Full Name of Representative:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.representative_name || facilityData.first_name || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Address:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.representative_address || facilityData.address || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Phone Number:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.representative_phone || facilityData.phone || 'N/A'}</span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Alternate Phone Number:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.alternate_phone || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">TIN:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.representative_tin || facilityData.tin || 'N/A'}</span>
+                    </div>
+                    <div class="mb-1">
+                        <strong style="font-size: 12px;">Email Address:</strong><br>
+                        <span style="font-size: 12px;">${facilityData.representative_email || facilityData.email || 'N/A'}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tax Liabilities -->
+        <div class="mb-2">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">TAX LIABILITIES</h6>
+            <div>
+                ${
+                    facilityData.liabilities &&
+                    facilityData.liabilities !== 'null' &&
+                    facilityData.liabilities.trim() !== ''
+                    ? facilityData.liabilities.split('\n').map(tax => `<div class="mb-1" style="font-size: 12px;">${tax}</div>`).join('')
+                    : '<div style="font-size: 12px;">No taxes selected</div>'
+                }
+            </div>
+        </div>
+    </div>
+</div>`;
+
 
     document.getElementById('reviewSummary').innerHTML = html;
 
