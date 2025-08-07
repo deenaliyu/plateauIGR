@@ -196,10 +196,10 @@ async function validateTIN() {
       document.getElementById('taxIdentificationNumber').readOnly = true;
       document.getElementById('address').value = data.user.address;
       document.getElementById('address').readOnly = true;
-      document.getElementById('city').value = data.user.city;
-      document.getElementById('city').readOnly = true;
+      document.getElementById('city').value = data.user.lga;
+      // document.getElementById('city').readOnly = true;
       document.getElementById('lga').value = data.user.lga;
-      document.getElementById('lga').readOnly = true;
+      document.getElementById('lga').disabled = true;
       document.getElementById('state').value = data.user.state;
       document.getElementById('state').readOnly = true;
       document.getElementById('phoneNumber').value = data.user.phone;
