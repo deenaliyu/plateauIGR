@@ -47,9 +47,9 @@ if (payment === "yes") {
     <a href="dashboard.html">
       <img src="./assets/img/logo.png" class="w-[70px] -ml-2" alt="" />
     </a>
-    <div class="pt-2">
-    <h5 class="text-[#1E1E1E] text-[15px] fontBold">Plateau IGR Portal</h5>
-    <p class="text-[#1E1E1E] text-[12px] pt-2">Future of tax payment</p>
+    <div>
+    <h5 class="text-[#000] text-[15px] fontBold">Plateau IGR Portal</h5>
+    <p class="text-[#000] text-[12px] pt-2">Future of tax payment</p>
     </div>
     </div>
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
@@ -58,7 +58,7 @@ if (payment === "yes") {
   </div>
 
 
-    <ul class="menu-inner">
+    <ul class="menu-inner mt-5">
       <!-- Dashboard -->
       <li class="menu-item">
         <a href="dashboard.html"  class="menu-link dass">
@@ -147,14 +147,14 @@ if (payment === "yes") {
 } else if (payment === "no") {
   $(".aside").html(`
   <div class="app-brand demo">
-  <div class="flex gap-x-2">
-    <a href="dashboard.html">
-      <img src="./assets/img/logo.png" class="w-[70px] -ml-2" alt="" />
-    </a>
-    <div class="pt-3">
-    <h5 class="text-[#FFFFFF] text-[16px]">Plateau IGR Portal</h5>
-    <p class="text-[#727283] text-[12px] pt-2">Future of tax payment</p>
-    </div>
+    <div class="flex gap-x-2">
+      <a href="dashboard.html">
+        <img src="./assets/img/logo.png" class="w-[70px] -ml-2" alt="" />
+      </a>
+      <div>
+        <h5 class="text-[#000] text-[16px]">Plateau IGR Portal</h5>
+        <p class="text-[#000] text-[12px] pt-2">Future of tax payment</p>
+      </div>
     </div>
     <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto d-block d-xl-none">
       <i class="bx bx-chevron-left bx-sm align-middle"></i>
@@ -162,7 +162,7 @@ if (payment === "yes") {
   </div>
 
 
-  <ul class="menu-inner">
+  <ul class="menu-inner mt-5">
     <!-- Dashboard -->
     <li class="menu-item">
       <a href="dashboard.html"  class="menu-link dass">
@@ -249,7 +249,7 @@ if (payment === "yes") {
     <a href="dashboard.html">
       <img src="./assets/img/logo.png" class="w-[70px] -ml-2" alt="" />
     </a>
-    <div class="pt-3">
+    <div>
     <h5 class="text-[#FFFFFF] text-[16px]">Plateau IGR Portal</h5>
     <p class="text-[#727283] text-[12px] pt-2">Future of tax payment</p>
     </div>
@@ -260,7 +260,7 @@ if (payment === "yes") {
   </div>
 
 
-  <ul class="menu-inner">
+  <ul class="menu-inner mt-5">
     <!-- Dashboard -->
     <li class="menu-item">
       <a href="dashboard.html"  class="menu-link dass">
@@ -351,7 +351,7 @@ if (payment === "yes") {
       <a href="dashboard.html">
         <img src="./assets/img/logo.png" class="w-[70px] -ml-2" alt="" />
       </a>
-      <div class="pt-3">
+      <div>
       <h5 class="text-[#FFFFFF] text-[16px]">Plateau IGR Portal</h5>
       <p class="text-[#727283] text-[12px] pt-2">Future of tax payment</p>
       </div>
@@ -362,7 +362,7 @@ if (payment === "yes") {
     </div>
 
 
-    <ul class="menu-inner">
+    <ul class="menu-inner mt-5">
       <!-- Dashboard -->
       <li class="menu-item">
         <a href="dashboard.html"  class="menu-link dass">

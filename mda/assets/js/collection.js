@@ -26,7 +26,7 @@ async function featchCollectionReport() {
   }
 
   featchCollectionReport().then(rr => {
-    // $("#dataTable").DataTable();
+    $("#dataTable").DataTable();
   
   })
 
@@ -44,6 +44,7 @@ async function featchCollectionReport() {
                 <td>${i + 1}</td>
                 <td>${invoice.COL_4}</td>
                 <td>${invoice.first_name} ${invoice.surname} </td>
+                <td>${invoice.tin === "" ? "N/A" : invoice.tin}</td>
                 <td>${invoice.invoice_number}</td>
                 <td>&#8358 ${invoice.amount_paid}</td>
                 <td>${formattedDate}</td>
