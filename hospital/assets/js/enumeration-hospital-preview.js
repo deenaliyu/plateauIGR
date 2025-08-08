@@ -1,11 +1,11 @@
 function printInvoice(thecard) {
-  var originalContent = document.body.innerHTML;
-  var printContent = document.getElementById(thecard).innerHTML;
+    var originalContent = document.body.innerHTML;
+    var printContent = document.getElementById(thecard).innerHTML;
 
 
-  document.body.innerHTML = printContent;
-  window.print();
-  document.body.innerHTML = originalContent;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
 
 }
 
@@ -57,24 +57,40 @@ function renderFacilitySummary(facility) {
     let typeSpecificFields = '';
     for (const [key, value] of Object.entries(typeData)) {
         if (!['id', 'facility_hospital_id', 'created_at', 'updated_at', 'services_offered', 'primary_services_offered'].includes(key)) {
+            // Format the key: replace underscores with spaces and capitalize each word
             const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             let displayValue = value;
 
-            if (key.includes('fee') || key.includes('cost') || key.includes('price')) {
+            // Handle different value types
+            if (typeof value === 'string' && (value.startsWith('[') && value.endsWith(']'))) {
+                // Handle JSON arrays (services lists)
+                try {
+                    const parsedArray = JSON.parse(value);
+                    displayValue = Array.isArray(parsedArray) ? parsedArray.join(', ') : value;
+                } catch (e) {
+                    displayValue = value;
+                }
+            } else if (key.includes('fee') || key.includes('cost') || key.includes('price')) {
+                // Format currency values
                 displayValue = formatCurrency(value);
+            } else if (key.includes('count')) {
+                // Format count values
+                displayValue = value || '0';
             }
 
             typeSpecificFields += `
-                <tr>
-                    <th width="40%">${label}:</th>
-                    <td>${displayValue || 'N/A'}</td>
-                </tr>
+                <div class="col-6">
+                    <div class="mb-1 flex space-x-6">
+                        <strong style="font-size: 13px;">${label}:</strong><br>
+                        <span style="font-size: 13px;">${displayValue || 'N/A'}</span>
+                    </div>
+                </div>
             `;
         }
     }
 
     // Generate HTML
-const html = `<div class="printable-page bg-white p-3 position-relative">
+    const html = `<div class="printable-page bg-white p-3 position-relative">
     <!-- Logo Watermark -->
     <div class="watermark position-absolute w-100 h-100 d-flex align-items-center justify-content-center" 
          style="top: 0; left: 0; z-index: 1; opacity: 0.08; pointer-events: none;">
@@ -90,18 +106,28 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                 <img src="./assets/img/logo.png" style="width: 40px; height: 40px;" alt="Logo" />
                 <span class="fw-bold" style="font-size: 17px;">ENUMERATION BIODATA</span>
             </div>
-            <div style="font-size: 13px;">${new Date().toLocaleDateString('en-US')} ${new Date().toLocaleTimeString('en-US', {hour12: true})}</div>
+            <div style="font-size: 13px;">${new Date().toLocaleDateString('en-US')} ${new Date().toLocaleTimeString('en-US', { hour12: true })}</div>
         </div>
 
         <!-- Photo and QR Code Row -->
         <div class="d-flex justify-content-between align-items-start mb-4">
-            <div style="width: 280px;">
-                <img src="${facilityData.facility_photo || './assets/img/proppicture.png'}" 
-                     class="img-fluid" style="width: 100%; height: 160px; object-fit: cover; border: 1px solid #ccc;" alt="Facility Photo" />
-            </div>
+            
             <div class="text-center" >
-                <div id="qrContainer" style="width: 200px;" ></div>
+                <div id="qrContainer" style="width: 100px;" ></div>
             </div>
+
+            <!-- Tax Liabilities -->
+        <div class="mb-2">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">TAX LIABILITIES</h6>
+            <div>
+                ${facilityData.liabilities &&
+            facilityData.liabilities !== 'null' &&
+            facilityData.liabilities.trim() !== ''
+            ? facilityData.liabilities.split('\n').map(tax => `<div class="mb-1 flex space-x-6" style="font-size: 13px;">${tax}</div>`).join('')
+            : '<div style="font-size: 13px;">No taxes selected</div>'
+        }
+            </div>
+        </div>
         </div>
 
         <!-- Facility Info -->
@@ -115,7 +141,7 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Facility Name:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.branch_name || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.first_name || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Facility Type:</strong><br>
@@ -123,7 +149,7 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">CAC Number:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.cac_number || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.cac_rc_number || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Type of Ownership:</strong><br>
@@ -145,7 +171,7 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">National Health Facility Code:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.nhfc_code || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.health_facility_code || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">NHIS Accreditation Number:</strong><br>
@@ -153,7 +179,7 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Certificate of Standards No.:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.standards_cert || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.certificate_of_standards || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">TIN:</strong><br>
@@ -161,16 +187,9 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Date of Establishment:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.establishment_date || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.date_established || 'N/A'}</span>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Operations Info -->
-        <div class="mb-3">
-            <h6 class="fw-bold mb-2" style="font-size: 15px;">OPERATIONS INFO</h6>
-            <div class="row">
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Primary Services Offered:</strong><br>
@@ -182,7 +201,7 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Number of Employees:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.employee_count || '0'}</span>
+                        <span style="font-size: 13px;">${facilityData.number_of_employees || '0'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Number of Beds:</strong><br>
@@ -196,13 +215,21 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Number of Surgeries/Procedures per Month:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.monthly_procedures || '0'}</span>
+                        <span style="font-size: 13px;">${facilityData.monthly_surgeries || '0'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Cost of Hospital Card/Registration Fee:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.registration_fee || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.card_fee || 'N/A'}</span>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Operations Info -->
+        <div class="mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">OPERATIONS INFO</h6>
+            <div class="row">
+                ${typeSpecificFields}
             </div>
         </div>
 
@@ -213,11 +240,11 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Physical Address:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.physical_address || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.address || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">City/Town:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.city || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.lga || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">LGA:</strong><br>
@@ -239,11 +266,11 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Latitude:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.latitude || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.enumlatitude || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Longitude:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.longitude || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.enumlongitude || 'N/A'}</span>
                     </div>
                 </div>
             </div>
@@ -256,15 +283,15 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Full Name of Representative:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.representative_name || facilityData.first_name || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.rep_firstname + ' ' + facilityData.rep_surname || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Address:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.representative_address || facilityData.address || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.rep_address || facilityData.address || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Phone Number:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.representative_phone || facilityData.phone || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.rep_phone || facilityData.phone || 'N/A'}</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -284,19 +311,7 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
             </div>
         </div>
 
-        <!-- Tax Liabilities -->
-        <div class="mb-2">
-            <h6 class="fw-bold mb-2" style="font-size: 15px;">TAX LIABILITIES</h6>
-            <div>
-                ${
-                    facilityData.liabilities &&
-                    facilityData.liabilities !== 'null' &&
-                    facilityData.liabilities.trim() !== ''
-                    ? facilityData.liabilities.split('\n').map(tax => `<div class="mb-1 flex space-x-6" style="font-size: 13px;">${tax}</div>`).join('')
-                    : '<div style="font-size: 13px;">No taxes selected</div>'
-                }
-            </div>
-        </div>
+        
     </div>
 </div>`;
 
@@ -353,7 +368,7 @@ async function loadFacilityDetails(facilityId) {
 document.addEventListener('DOMContentLoaded', () => {
     const facilityId = getFacilityIdFromUrl();
     const reviewSummaryElement = document.getElementById('reviewSummary');
-    
+
     if (!reviewSummaryElement) {
         console.error('Error: reviewSummary element not found in DOM');
         return;
