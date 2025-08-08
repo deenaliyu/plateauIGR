@@ -132,8 +132,8 @@ function renderFacilities(facilities) {
       <tr>
         <td>${index + 1}</td>
         <td>${facility.enumeration_id}</td>
-        <td>${facility.branch_name || 'N/A'}</td>
-        <td>${facility.facility_type || 'N/A'}</td>
+        <td>${facility.first_name || 'N/A'}</td>
+        <td>${formatFacilityType(facility.facility_type) || 'N/A'}</td>
         <td>${facility.number_of_beds || '0'}</td>
         <td>${facility.avg_monthly_visits || '0'}</td>
         <td>${facility.state || 'N/A'}</td>
@@ -325,6 +325,75 @@ function renderFacilityDetails(facility) {
     }
   }
 
+  // Generate branch data HTML
+  let branchDataHTML = '';
+  const facilityBranches = facility.facility_branches || [];
+
+  // Handle both single object and array cases
+  let branchesArray = [];
+  if (Array.isArray(facilityBranches)) {
+    branchesArray = facilityBranches;
+  } else if (facilityBranches && typeof facilityBranches === 'object' && facilityBranches.branch_name) {
+    // Single branch object
+    branchesArray = [facilityBranches];
+  }
+
+  if (branchesArray.length > 0) {
+    branchesArray.forEach((branch, index) => {
+      branchDataHTML += `
+        <div class="mb-3 p-3 border rounded" style="background-color: #f8f9fa;">
+          <h6 class="fw-bold mb-2" style="font-size: 14px; color: #495057;">Branch ${index + 1}</h6>
+          <div class="row">
+            <div class="col-6">
+              <div class="mb-1">
+                <strong style="font-size: 13px;">Branch Name:</strong><br>
+                <span style="font-size: 13px;">${branch.branch_name || 'N/A'}</span>
+              </div>
+              <div class="mb-1">
+                <strong style="font-size: 13px;">Physical Address:</strong><br>
+                <span style="font-size: 13px;">${branch.physical_address || 'N/A'}</span>
+              </div>
+              <div class="mb-1">
+                <strong style="font-size: 13px;">City:</strong><br>
+                <span style="font-size: 13px;">${branch.city || 'N/A'}</span>
+              </div>
+              <div class="mb-1">
+                <strong style="font-size: 13px;">LGA:</strong><br>
+                <span style="font-size: 13px;">${branch.lga || 'N/A'}</span>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="mb-1">
+                <strong style="font-size: 13px;">Phone Numbers:</strong><br>
+                <span style="font-size: 13px;">${branch.phone_numbers || 'N/A'}</span>
+              </div>
+              <div class="mb-1">
+                <strong style="font-size: 13px;">Email:</strong><br>
+                <span style="font-size: 13px;">${branch.email || 'N/A'}</span>
+              </div>
+              <div class="mb-1">
+                <strong style="font-size: 13px;">Website:</strong><br>
+                <span style="font-size: 13px;">${branch.website || 'N/A'}</span>
+              </div>
+              <div class="mb-1">
+                <strong style="font-size: 13px;">Coordinates:</strong><br>
+                <span style="font-size: 13px;">${branch.latitude || 'N/A'}, ${branch.longitude || 'N/A'}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      `;
+    });
+  } else {
+    branchDataHTML = `
+      <div class="mb-3 p-3 border rounded" style="background-color: #f8f9fa;">
+        <div class="text-center" style="font-size: 13px; color: #6c757d;">
+          No branch information available
+        </div>
+      </div>
+    `;
+  }
+
   $('#facilityDetailsContent').html(`
     <div class="row">
       <div class="col-md-12 mb-4">
@@ -336,7 +405,7 @@ function renderFacilityDetails(facility) {
           </tr>
           <tr>
             <th>Legal Name:</th>
-            <td>${facilityData.branch_name ||'N/A'}</td>
+            <td>${facilityData.first_name ||'N/A'}</td>
           </tr>
           <tr>
             <th>Facility Type:</th>
@@ -344,7 +413,7 @@ function renderFacilityDetails(facility) {
           </tr>
           <tr>
             <th>Registration Number:</th>
-            <td>${facilityData.facility_hospital_id || 'N/A'}</td>
+            <td>${facilityData.cac_rc_number || 'N/A'}</td>
           </tr>
           <tr>
             <th>State:</th>
@@ -356,11 +425,11 @@ function renderFacilityDetails(facility) {
           </tr>
           <tr>
             <th>Phone:</th>
-            <td>${facilityData.branch_phone_numbers || 'N/A'}</td>
+            <td>${facilityData.phone || 'N/A'}</td>
           </tr>
           <tr>
             <th>Email:</th>
-            <td>${facilityData.branch_email || 'N/A'}</td>
+            <td>${facilityData.email || 'N/A'}</td>
           </tr>
         </table>
       </div>
@@ -392,6 +461,11 @@ function renderFacilityDetails(facility) {
             <td>${facilityData.avg_monthly_visits || '0'}</td>
           </tr>
         </table>
+      </div>
+      
+      <div class="col-md-12 mb-4">
+        <h5 class="text-xl fontBold text-black">Branch Information</h5>
+        ${branchDataHTML}
       </div>
     </div>
   `);

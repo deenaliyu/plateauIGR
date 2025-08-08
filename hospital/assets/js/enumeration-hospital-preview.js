@@ -89,6 +89,75 @@ function renderFacilitySummary(facility) {
         }
     }
 
+    // Generate branch data HTML
+    let branchDataHTML = '';
+    const facilityBranches = facility.facility_branches || [];
+
+    // Handle both single object and array cases
+    let branchesArray = [];
+    if (Array.isArray(facilityBranches)) {
+        branchesArray = facilityBranches;
+    } else if (facilityBranches && typeof facilityBranches === 'object' && facilityBranches.branch_name) {
+        // Single branch object
+        branchesArray = [facilityBranches];
+    }
+
+    if (branchesArray.length > 0) {
+        branchesArray.forEach((branch, index) => {
+            branchDataHTML += `
+                <div>
+                    <h6 class="fw-bold mb-2" style="font-size: 14px; color: #495057;">Branch ${index + 1}</h6>
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">Branch Name:</strong><br>
+                                <span style="font-size: 13px;">${branch.branch_name || 'N/A'}</span>
+                            </div>
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">Physical Address:</strong><br>
+                                <span style="font-size: 13px;">${branch.physical_address || 'N/A'}</span>
+                            </div>
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">City:</strong><br>
+                                <span style="font-size: 13px;">${branch.city || 'N/A'}</span>
+                            </div>
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">LGA:</strong><br>
+                                <span style="font-size: 13px;">${branch.lga || 'N/A'}</span>
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">Phone Numbers:</strong><br>
+                                <span style="font-size: 13px;">${branch.phone_numbers || 'N/A'}</span>
+                            </div>
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">Email:</strong><br>
+                                <span style="font-size: 13px;">${branch.email || 'N/A'}</span>
+                            </div>
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">Website:</strong><br>
+                                <span style="font-size: 13px;">${branch.website || 'N/A'}</span>
+                            </div>
+                            <div class="mb-1 flex space-x-6">
+                                <strong style="font-size: 13px;">Coordinates:</strong><br>
+                                <span style="font-size: 13px;">${branch.latitude || 'N/A'}, ${branch.longitude || 'N/A'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+        });
+    } else {
+        branchDataHTML = `
+            <div class="mb-3 p-3 border rounded" style="background-color: #f8f9fa;">
+                <div class="text-center" style="font-size: 13px; color: #6c757d;">
+                    No branch information available
+                </div>
+            </div>
+        `;
+    }
+
     // Generate HTML
     const html = `<div class="printable-page bg-white p-3 position-relative">
     <!-- Logo Watermark -->
@@ -311,6 +380,12 @@ function renderFacilitySummary(facility) {
             </div>
         </div>
 
+        <!-- Branch Information -->
+        <div class="mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">BRANCH INFORMATION</h6>
+            ${branchDataHTML}
+        </div>
+
         
     </div>
 </div>`;
@@ -347,7 +422,7 @@ async function loadFacilityDetails(facilityId) {
         const data = await response.json();
 
         if (data.status === 1 && data.facilities && data.facilities.length > 0) {
-            console.log('Facility details loaded:', data.facilities[0]);
+            // console.log('Facility details loaded:', data.facilities[0]);
             renderFacilitySummary(data.facilities[0]);
         } else {
             reviewSummaryElement.innerHTML = `
