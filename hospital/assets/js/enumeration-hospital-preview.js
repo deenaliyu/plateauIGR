@@ -283,7 +283,6 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                 </div>
             </div>
         </div>
-
         <!-- Tax Liabilities -->
         <div class="mb-2">
             <h6 class="fw-bold mb-2" style="font-size: 15px;">TAX LIABILITIES</h6>
