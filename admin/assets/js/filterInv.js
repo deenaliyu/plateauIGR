@@ -21,7 +21,7 @@ if (userDATA) {
 
   $("#payment_channel").html(`
     <div class="form-group">
-    <label for="defaultSelect" class="form-label">Payment Channel</label>
+    <label for="defaultSelect" class="form-label">Payment Bank</label>
       <select name="" id="listOfchannel" class="form-select">
         <option selected value="">All</option>
       </select>
@@ -29,7 +29,7 @@ if (userDATA) {
   `)
 
 
-
+  
 } else {
 
 }
@@ -126,27 +126,37 @@ $("#filterMda").on('click', () => {
   const fromDate = document.getElementById('fromDateInput').value;
   const toDate = document.getElementById('toDateInput').value;
 
-  // console.log(fromDate, toDate, selectedMda, selectedRevenueHead)
-
+  // console.log(selectedMda, selectedRevenueHead)
   if (selectedRevenueHead === "All") {
     selectedRevenueHead = ""
   }
 
-  const filteredData = AllInvoiceData.filter(item =>
-    (!selectedMda || removeDoubleSpaces(item.COL_3.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
-    (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
-    (!selectedPaymentStatus || item.payment_status.toLowerCase() === selectedPaymentStatus.toLowerCase()) &&
-    (!fromDate || item.date_created >= fromDate) &&
-    (!toDate || item.date_created <= toDate)
-  );
+  function normalizeDate(date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  } 
+
+  const filteredData = AllInvoiceData.filter(item => {
+    const itemDate = normalizeDate(new Date(item.date_created));
+    const from = fromDate ? normalizeDate(new Date(fromDate)) : null;
+    const to = toDate ? normalizeDate(new Date(toDate)) : null;
+      
+    return (
+       (!selectedMda || removeDoubleSpaces(item.COL_3.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
+        (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
+        (!selectedPaymentStatus || item.payment_status.toLowerCase() === selectedPaymentStatus.toLowerCase()) &&
+        (!from || itemDate >= from) &&
+        (!to || itemDate <= to)
+    )
+    
+  });
 
   // console.log(selectedRevenueHead.toLowerCase() )
-  console.log(filteredData)
+  // console.log(filteredData)
 
   $("#dataTable").DataTable().clear().draw()
   $("#dataTable").DataTable().destroy()
   $("#showThem2").html('')
-  displayData(filteredData.reverse())
+  displayData(filteredData)
 
   $("#dataTable").DataTable()
   $("#filterInvoice").modal("hide")
@@ -158,7 +168,7 @@ function clearfilter() {
   $("#showThem2").html('')
 
 
-  displayData(AllInvoiceData.reverse())
+  displayData(AllInvoiceData)
 
   $("#dataTable").DataTable()
   $("#filterInvoice").modal("hide")
@@ -185,33 +195,59 @@ $("#filterMda2").on('click', () => {
   const selectedMda = document.getElementById('getMDAs').value;
   const selRevv = document.getElementById('listOfpayable');
   let selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
+  
   const payment = document.getElementById('listOfchannel').value;
+  const paymentGateway = document.getElementById('paymentGateway').value;
+  const paymentMethod = document.getElementById('paymentMethod').value;
+    
   const fromDate = document.getElementById('fromDateInput').value;
   const toDate = document.getElementById('toDateInput').value;
 
-  // console.log(selectedMda, selectedRevenueHead)
-
+  console.log(selectedMda, selectedRevenueHead);
+  
   if (selectedRevenueHead === "All") {
-    selectedRevenueHead = ""
+    selectedRevenueHead = "";
   }
 
-  const filteredData = AllInvoiceData.filter(item =>
-    (!selectedMda || removeDoubleSpaces(item.mda_id.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
-    (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
-    (!payment || removeDoubleSpaces(item.payment_channel.toLowerCase()).includes(removeDoubleSpaces(payment.toLowerCase()))) &&
-    (!fromDate || item.timeIn >= fromDate) &&
-    (!toDate || item.timeIn <= toDate)
-  );
+  function normalizeDate(date) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate());
+  }
 
+  function removeDoubleSpaces(str) {
+    return str.replace(/\s+/g, ' ').trim();
+  }
 
-  $("#dataTable").DataTable().clear().draw()
-  $("#dataTable").DataTable().destroy()
-  $("#showThem2").html('')
-  displayData(filteredData.reverse())
+  const filteredData = AllInvoiceData.filter(item => {
+    const itemDate = normalizeDate(new Date(item.timeIn));
+    const from = fromDate ? normalizeDate(new Date(fromDate)) : null;
+    const to = toDate ? normalizeDate(new Date(toDate)) : null;
 
-  $("#dataTable").DataTable()
-  $("#filterInvoice").modal("hide")
-})
+    // Handle null values by treating them as empty strings
+    const paymentBank = item.payment_bank ? item.payment_bank.toLowerCase() : '';
+    const paymentGateway2 = item.payment_channel ? item.payment_channel.toLowerCase() : '';
+    const paymentMethod2 = item.payment_method ? item.payment_method.toLowerCase() : '';
+    
+    console.log(paymentMethod + ' ' + paymentMethod2, payment + ' ' + paymentBank)
+    
+    return (
+      (!selectedMda || removeDoubleSpaces(item.mda_id.toLowerCase()).includes(removeDoubleSpaces(selectedMda.toLowerCase()))) &&
+      (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
+      (!payment || removeDoubleSpaces(paymentBank).includes(removeDoubleSpaces(payment.toLowerCase()))) &&
+      (!paymentGateway || removeDoubleSpaces(paymentGateway2).includes(removeDoubleSpaces(paymentGateway.toLowerCase()))) &&
+      (!paymentMethod || removeDoubleSpaces(paymentMethod2).includes(removeDoubleSpaces(paymentMethod.toLowerCase()))) &&
+      (!from || itemDate >= from) &&
+      (!to || itemDate <= to)
+    );
+  });
+
+  $("#dataTable").DataTable().clear().draw();
+  $("#dataTable").DataTable().destroy();
+  $("#showThem2").html('');
+  displayData(filteredData);
+
+  $("#dataTable").DataTable();
+  $("#filterInvoice").modal("hide");
+});
 
 
 function clearfilter2() {
@@ -219,7 +255,7 @@ function clearfilter2() {
   $("#dataTable").DataTable().destroy()
   $("#showThem2").html('')
 
-  displayData(AllInvoiceData.reverse())
+  displayData(AllInvoiceData)
 
   $("#dataTable").DataTable()
   $("#filterInvoice").modal("hide")
@@ -227,6 +263,8 @@ function clearfilter2() {
   const selectedMda = document.getElementById('getMDAs').value = ""
   const selRevv = document.getElementById('listOfpayable').value = ""
   const payment = document.getElementById('listOfchannel').value = ""
+  const paymentGateway = document.getElementById('paymentGateway').value = ""
+  const paymentMethod = document.getElementById('paymentMethod').value = ""
   const fromDate = document.getElementById('fromDateInput').value = ""
   const toDate = document.getElementById('toDateInput').value = ""
 

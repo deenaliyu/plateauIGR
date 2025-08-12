@@ -60,7 +60,7 @@ async function getAllMda() {
         <option value="${revHd["fullname"]}">${revHd["fullname"]}</option>
       `)
 
-    });
+    });f
 
   }
 }
@@ -226,10 +226,10 @@ async function fetchRevHeads(sector) {
     console.log(sectorAndCol3Filtered, sectorFiltered)
     // Merge both filtered results
     const filteredItems = [...new Set([...sectorFiltered, ...sectorAndCol3Filtered])];
-
+    
     let dateCurrent = new Date();
     let yearCurrent = dateCurrent.getFullYear();
-
+    
     filteredItems.forEach((dd, i) => {
       revenueArr.push(dd);
       theItemNo++;
@@ -237,7 +237,7 @@ async function fetchRevHeads(sector) {
       $("#revenueHeadItems").append(`
         <div class="mb-2 bg-white p-4 rounded-lg shadow-md">
           <h3 class="text-xl font-semibold text-gray-800 mb-4">Item - ${theItemNo}</h3>
-          <div class="flex items-center gap-2 mb-5">
+          <div class="flex items-center gap-2 mb-2">
             <div class="form-group w-8/12">
               <label for="">Assessment Informations*</label>
               <select class="form-select genInv revHeadsss revenueHeader" required>
@@ -265,7 +265,6 @@ async function fetchRevHeads(sector) {
             </div>
           </div>
         </div>
-        
       `);
     });
 
@@ -750,10 +749,32 @@ async function generateInvoiceNum(taxNumber) {
   // let lga = $("#LGAaas").val()
   // let zonalOff = $("#zonalOff").val()
   let the_sector = $("#sectorSelect").val()
+  
+    const the_payload = {
+      generateSingleInvoices: true,
+      tax_number: taxNumber,
+      revenue_head_id: revenueHeader.join(','),
+      price: amountto.join(','),
+      description: description,
+      lga: null,
+      zonalOffice: null,
+      business_type: business_own,
+      previous_year: prevYears.join(','),
+      previous_year_value: prevYearsAmount.join(','),
+      previous_year2: prevYears2.join(','),
+      previous_year_value2: prevYearsAmount2.join(','),
+      sector: the_sector,
+      file_no: "0001",
+      invoice_type: "demand notice",
+      created_by: "admin",
+      by_account: userInfo2?.id
+    };
+
 
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${revenueHeader.join(',')}&price=${amountto.join(',')}&description=${description}&lga=null&zonalOffice=null&business_type=${business_own}&previous_year=${prevYears.join(',')}&previous_year_value=${prevYearsAmount.join(',')}&previous_year2=${prevYears2.join(',')}&previous_year_value2=${prevYearsAmount2.join(',')}&sector=${the_sector}&file_no=0001&invoice_type=demand notice`,
+    url: HOST,
+    data: the_payload,
     dataType: 'json',
     success: function (data) {
       console.log(data)

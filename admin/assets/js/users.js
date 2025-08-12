@@ -57,10 +57,10 @@ $("#createUser").on("click", function () {
           }
 
           if (selectedValues.length > 0) {
-            obj[checkboxes[0].dataset.name] = selectedValues.join('~');
+            obj.data[checkboxes[0].dataset.name] = selectedValues.join('~');
           } else {
-            obj[checkboxes[0].dataset.name] = "";
-          }
+                obj[checkboxes[0].dataset.name] = "";
+            }
         }
 
 
@@ -126,7 +126,7 @@ async function fetchUSERS() {
 
   const response = await fetch(`${HOST}/php/index.php?getAdminUser`);
   const userInvoices = await response.json();
-  // console.log(userInvoices);
+//   console.log(userInvoices);
   $("#loader").css("display", "none");
   if (userInvoices.status === 1) {
     userInvoices.message.forEach((userInvoice, i) => {

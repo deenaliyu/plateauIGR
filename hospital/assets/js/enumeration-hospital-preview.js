@@ -1,11 +1,11 @@
 function printInvoice(thecard) {
-  var originalContent = document.body.innerHTML;
-  var printContent = document.getElementById(thecard).innerHTML;
+    var originalContent = document.body.innerHTML;
+    var printContent = document.getElementById(thecard).innerHTML;
 
 
-  document.body.innerHTML = printContent;
-  window.print();
-  document.body.innerHTML = originalContent;
+    document.body.innerHTML = printContent;
+    window.print();
+    document.body.innerHTML = originalContent;
 
 }
 
@@ -74,7 +74,7 @@ function renderFacilitySummary(facility) {
     }
 
     // Generate HTML
-const html = `<div class="printable-page bg-white p-3 position-relative">
+    const html = `<div class="printable-page bg-white p-3 position-relative">
     <!-- Logo Watermark -->
     <div class="watermark position-absolute w-100 h-100 d-flex align-items-center justify-content-center" 
          style="top: 0; left: 0; z-index: 1; opacity: 0.08; pointer-events: none;">
@@ -90,7 +90,7 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
                 <img src="./assets/img/logo.png" style="width: 40px; height: 40px;" alt="Logo" />
                 <span class="fw-bold" style="font-size: 17px;">ENUMERATION BIODATA</span>
             </div>
-            <div style="font-size: 13px;">${new Date().toLocaleDateString('en-US')} ${new Date().toLocaleTimeString('en-US', {hour12: true})}</div>
+            <div style="font-size: 13px;">${new Date().toLocaleDateString('en-US')} ${new Date().toLocaleTimeString('en-US', { hour12: true })}</div>
         </div>
 
         <!-- Photo and QR Code Row -->
@@ -287,13 +287,12 @@ const html = `<div class="printable-page bg-white p-3 position-relative">
         <div class="mb-2">
             <h6 class="fw-bold mb-2" style="font-size: 15px;">TAX LIABILITIES</h6>
             <div>
-                ${
-                    facilityData.liabilities &&
-                    facilityData.liabilities !== 'null' &&
-                    facilityData.liabilities.trim() !== ''
-                    ? facilityData.liabilities.split('\n').map(tax => `<div class="mb-1 flex space-x-6" style="font-size: 13px;">${tax}</div>`).join('')
-                    : '<div style="font-size: 13px;">No taxes selected</div>'
-                }
+                ${facilityData.liabilities &&
+            facilityData.liabilities !== 'null' &&
+            facilityData.liabilities.trim() !== ''
+            ? facilityData.liabilities.split('\n').map(tax => `<div class="mb-1 flex space-x-6" style="font-size: 13px;">${tax}</div>`).join('')
+            : '<div style="font-size: 13px;">No taxes selected</div>'
+        }
             </div>
         </div>
     </div>
@@ -352,7 +351,7 @@ async function loadFacilityDetails(facilityId) {
 document.addEventListener('DOMContentLoaded', () => {
     const facilityId = getFacilityIdFromUrl();
     const reviewSummaryElement = document.getElementById('reviewSummary');
-    
+
     if (!reviewSummaryElement) {
         console.error('Error: reviewSummary element not found in DOM');
         return;

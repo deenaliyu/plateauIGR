@@ -25,7 +25,7 @@ async function getTinManagements() {
           <td>${tinmngment.state}</td>
           <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
           <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
-          <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
+          <td>${tinmngment.admin_email ? tinmngment.admin_email : 'self'}</td>
           <td>${getFormattedDate(tinmngment.created_at)}</td>
           <td>
           <div class="flex gap-3 items-center">
@@ -150,7 +150,10 @@ function viewUser(e) {
         <th>LGA</th>
         <td>${theuser.lga}</td>
       </tr>
-      
+      <tr>
+        <th>Address</th>
+        <td>${theuser.address}</td>
+      </tr>
       <tr>
         <th>Created by</th>
         <td>${theuser.payer_id === null ? 'Self' : 'Admin'}</td>

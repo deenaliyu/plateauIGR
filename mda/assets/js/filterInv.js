@@ -21,7 +21,7 @@ if (userDATA) {
   `)
 
 
-  
+
 } else {
 
 }
@@ -141,28 +141,37 @@ function clearfilter() {
 
 $("#filterMda2").on('click', () => {
   const selRevv = document.getElementById('listOfpayable');
-  const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
-  const payment = document.getElementById('listOfchannel').value;
-  const fromDate = document.getElementById('fromDateInput').value;
-  const toDate = document.getElementById('toDateInput').value;
+  let selectedRevenueHead = selRevv.options[selRevv.selectedIndex]?.text.trim();
+  const payment = document.getElementById('listOfchannel').value.trim();
+  const fromDate = document.getElementById('fromDateInput').value.trim(); // e.g. "2024-03-01"
+  const toDate = document.getElementById('toDateInput').value.trim();     // e.g. "2024-03-31"
 
+  if (selectedRevenueHead === "All") {
+    selectedRevenueHead = ""
+  } 
 
-  const filteredData = AllInvoiceData.filter(item =>
-    (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
-    (!payment || removeDoubleSpaces(item.payment_channel.toLowerCase()).includes(removeDoubleSpaces(payment.toLowerCase()))) &&
-    (!fromDate || item.timeIn >= fromDate) &&
-    (!toDate || item.timeIn <= toDate)
-  );
+  const filteredData = AllInvoiceData.filter(item => {
+    const itemDate = item.timeIn ? item.timeIn.substring(0, 10) : null;
 
+    return (
+      (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
+      (!payment || removeDoubleSpaces(item.payment_channel.toLowerCase()).includes(removeDoubleSpaces(payment.toLowerCase()))) &&
+      (!fromDate || (itemDate && itemDate >= fromDate)) &&
+      (!toDate || (itemDate && itemDate <= toDate))
+    );
+  });
 
-  $("#dataTable").DataTable().clear().draw()
-  $("#dataTable").DataTable().destroy()
-  $("#showThem2").html('')
-  displayData(filteredData.reverse())
+  const table = $("#dataTable").DataTable();
+  table.clear().draw();
+  table.destroy();
 
-  $("#dataTable").DataTable()
-  $("#filterInvoice").modal("hide")
-})
+  $("#showThem2").html('');
+  displayData(filteredData.reverse());
+
+  $("#dataTable").DataTable();
+  $("#filterInvoice").modal("hide");
+});
+
 
 
 function clearfilter2() {

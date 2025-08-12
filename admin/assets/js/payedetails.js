@@ -198,17 +198,17 @@ function generateInv(amount, staff_id) {
     confirmButtonText: "Generate Invoice",
     showLoaderOnConfirm: true,
     preConfirm: async () => {
-      try {
-        const response = await fetch(
-          `${HOST}?generateSingleInvoices&tax_number=${payerID}&price=${amount}&revenue_head_id=1359&invoice_type=invoice`
-        );
-        if (!response.ok) {
-          throw new Error(response.statusText);
+        try {
+            const response = await fetch(
+              `${HOST}?generateSingleInvoices&tax_number=${payerID}&price=${amount}&revenue_head_id=1359&invoice_type=invoice&created_by=admin&by_account=${userInfo2.id}`
+            );
+            if (!response.ok) {
+              throw new Error(response.statusText);
+            }
+            return await response.json();
+          } catch (error) {
+            Swal.showValidationMessage(`Request failed: ${error}`);
         }
-        return await response.json();
-      } catch (error) {
-        Swal.showValidationMessage(`Request failed: ${error}`);
-      }
     },
     allowOutsideClick: () => !Swal.isLoading(),
   }).then((result) => {
@@ -361,6 +361,7 @@ async function getInvoiceHistory() {
             <td>${rhUser.COL_4}</td>
             <td>${rhUser.amount_paid}</td>
             <td>${rhUser.amount_paid}</td>
+            <td>${rhUser.created_by}</td>
             <td>${rhUser.date_created.split(' ')[0]}</td>
             <td>${rhUser["due_date"]}</td>
             <td>${rhUser.status === "paid" ? `<span class='badge bg-success'>Paid</span>` : `<span class='badge bg-danger'>Un-paid</span>`}</td>

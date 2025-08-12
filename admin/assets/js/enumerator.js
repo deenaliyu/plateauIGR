@@ -50,7 +50,7 @@ function registerUser() {
   let EnumData = {
     "endpoint": "createEnumUser",
     "data": {
-      // "password": generateRandomString()
+    //   "password": $("#password").val()
     }
   }
 
@@ -84,8 +84,8 @@ function registerUser() {
           showConfirmButton: true,
         }).then((result) => {
           if (result.isConfirmed) {
-            // window.location.href = ""
-            window.location.reload()
+            window.location.href = "./enumeration.html"
+            // window.location.reload()
           }
         })
 

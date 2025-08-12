@@ -8,6 +8,8 @@ function formatMoney(amount) {
   });
 }
 
+$("#generatePresumptiveBtn").attr('href', `../generatepresumptiveinvoice.html?created_by=admin&id=${userInfo2?.id}`);
+
 let AllDemanData = {}
 
 async function fetchInvoice() {
@@ -38,7 +40,7 @@ async function fetchInvoice() {
         type: 'GET',
         data: filters,
         success: function (response) {
-          dataToExport = response.data
+            dataToExport = response.data
           // Map the API response to DataTables expected format
           callback({
             draw: data.draw, // Pass through draw counter
@@ -76,6 +78,11 @@ async function fetchInvoice() {
         data: null,
         render: function (data, type, row) {
           return formatMoney(row.amount_paid);
+        }
+      },
+      { data: 'admin_email', 
+        render: function (data, type, row) {
+          return `${data ? data : "self"}`;
         }
       },
       { data: 'date_created' },

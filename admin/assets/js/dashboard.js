@@ -334,7 +334,6 @@ $(document).ready(function () {
 
 // createDonutChart();
 
-
 function convertToTwoDigitsEx(number) {
   // Using padStart to add a leading zero if needed
   return String(number).padStart(2, '0');

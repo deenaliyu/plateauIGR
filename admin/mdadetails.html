@@ -70,8 +70,7 @@
               <div class="flex gap-x-5" id="createRevCont">
 
 
-                <button class="button" data-bs-toggle="modal" data-bs-target="#createRevenueHead">Create revenue head
-                </button>
+                <button class="button" data-bs-toggle="modal" data-bs-target="#createRevenueHead">Create revenue head </button>
                 <button class="button-secondary" data-bs-toggle="modal" data-bs-target="#bulkCreateRevModal">Create
                   Bulk</button>
 
@@ -99,14 +98,14 @@
             <div class="flex items-center gap-2 mb-4">
               <a href="mda.html" class="textPrimary">MDAs</a>
               <iconify-icon icon="ic:sharp-arrow-right-alt" class="text-xl"></iconify-icon>
-              <p id="industryy">-</p>
+              <p id="industryy">Ministry of Agriculture</p>
             </div>
 
             <div class="card p-4">
 
               <div class="">
                 <div id="otherInfo">
-                  <h1 class="text-2xl">-</h1>
+                  <h1 class="text-2xl">Ministry of Agriculture</h1>
                   <!-- <p>Address: <span></span></p> -->
                   <p>Email Address: <span></span></p>
                   <p>LGA: <span>Uyo</span></p>
@@ -153,7 +152,7 @@
                     Approval requests
                   </button>
                 </li>
-
+                
                 <li class="nav-item flex align-items-center" id="aprrv">
                   <button type="button" class="nav-link" role="tab" data-bs-toggle="tab" data-bs-target="#mdaAdmins">
                     MDA Admins
@@ -162,7 +161,6 @@
               </ul>
 
               <div class="tab-content">
-
                 <div class="tab-pane fade active show" id="apprevheads" role="tabpanel">
 
                   <table class="table table-sm" id="dataTable">
@@ -173,6 +171,7 @@
                         <th>Category</th>
                         <th>Demand Notice</th>
                         <th>Sector</th>
+                        <th>Revenue Code</th>
                         <th>Frequency</th>
                         <th>Amount per head</th>
                         <th>Revenue generated</th>
@@ -195,6 +194,7 @@
                         <th>S/N</th>
                         <th>Revenue Head</th>
                         <th>Category</th>
+                        <th>Remita Code</th>
                         <th>Frequency</th>
                         <th>Amount per head</th>
                         <th>Revenue generated</th>
@@ -205,8 +205,9 @@
                     </tbody>
                   </table>
 
-                </div>
-
+                </div>  
+                
+                
                 <div class="tab-pane fade" id="mdaAdmins" role="tabpanel">
                   <div class="flex justify-end mb-4">
                     <button class="button" data-bs-toggle="modal" data-bs-target="#createMdaAdmin">Create Admin</button>
@@ -385,11 +386,20 @@
                 data-name="COL_4" />
             </div>
           </div>
+          
           <div class="row">
             <div class="col mb-3">
               <label for="nameLarge" class="form-label">Amount to be paid</label>
-              <input type="text" id="nameLarge" class="form-control revInput2" data-name="COL_5"
+              <input type="text" id="nameLarge" class="form-control revInput2" data-name="COL_6"
                 placeholder="NGN XXX" />
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-3">
+              <label for="nameLarge" class="form-label">Revenue Code</label>
+              <input type="text" id="nameLarge" class="form-control revInput2" data-name="COL_2"
+                placeholder="remita code" />
             </div>
           </div>
 
@@ -405,7 +415,7 @@
               </select>
             </div>
           </div>
-
+          
           <div class="row">
             <div class="col mb-3">
               <label for="dobLarge" class="form-label">Demand Notice</label>
@@ -425,6 +435,7 @@
               </select>
             </div>
           </div>
+
 
           <div class="row">
             <div class="col mb-3">
@@ -464,8 +475,8 @@
       </div>
     </div>
   </div>
-
-  <div class="modal fade" id="createMdaAdmin" tabindex="-1" aria-hidden="true">
+  
+    <div class="modal fade" id="createMdaAdmin" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header ">
@@ -701,14 +712,9 @@
       </div>
     </div>
   </div>
-
-
-
-  <div id="msg_box"></div>
-
+  
+  
   <input type="hidden" id="mdaID" value="">
-
-
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
@@ -729,9 +735,9 @@
 
   <!-- Vendors JS -->
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
-
+  
   <!-- Main JS -->
-  <script src="./assets/js/revHead.js"></script>
+  <script src="./assets/js/revHead.js?v=1.0"></script>
   <script src="./assets/js/mda-admins.js"></script>
   <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/main.js"></script>

@@ -18,18 +18,42 @@ function formatMoney(amount) {
 }
 
 async function getEtccDetails() {
-  const response = await fetch(`${HOST}/?getETCC&type=ref&id=${theid}`)
-  const etccDetail = await response.json()
+  const response = await fetch(`${HOST}/?getETCC&type=ref&id=${theid}`);
+  const etccDetail = await response.json();
 
-  $("#loader").css("display", "none")
+  $("#loader").css("display", "none");
 
-  console.log(etccDetail)
   if (etccDetail.status === 0) {
-
+    // Handle error case if needed
   } else {
+    let theEtcDetail = etccDetail.message[0];
 
-    let theEtcDetail = etccDetail.message[0]
+    // Function to safely get values or return 0/default
+    const getValue = (value, isMoney = false) => {
+      if (value === undefined || value === null || value === '') {
+        return isMoney ? formatMoney(0) : '0';
+      }
+      return isMoney ? formatMoney(value) : value;
+    };
 
+    // Generate rows for available years only
+    let assessmentRows = '';
+    for (let i = 1; i <= 3; i++) {
+      const year = theEtcDetail[`year${i}`];
+      if (!year) continue; // Skip if year is not available
+
+      assessmentRows += `
+        <tr>
+          <td class="text-sm">${getValue(year)}</td>
+          <td class="text-sm">${getValue(theEtcDetail[`income${i}`], true)}</td>
+          <td class="text-sm">${getValue(theEtcDetail[`tax_paid_${i}`], true)}</td>
+          <td class="text-sm">${getValue(theEtcDetail[`taxable_income_${i}`], true)}</td>
+          <td class="text-sm">${getValue(theEtcDetail[`receipt_no_${i}`])}</td>
+        </tr>
+      `;
+    }
+
+    // Generate the HTML
     $("#previewCard").html(`
       <div class="invoicetop"></div>
 
@@ -55,27 +79,22 @@ async function getEtccDetails() {
 
       <div class="flex justify-between px-6 mt-4">
         <h1 class="text-xl fontBold text-black">TAX CLEARANCE CERTIFICATE</h1>
-
-        <p><span class="text-lg fontBold text-black">Certificate Number:</span> ${theEtcDetail.etcc_no}</p>
+        <p><span class="text-lg fontBold text-black">Certificate Number:</span> ${getValue(theEtcDetail.etcc_no)}</p>
       </div>
 
       <div class="px-6 mt-4">
         <table>
           <tr>
             <th class="fontBold text-black pr-4">Name:</th>
-            <td>${theEtcDetail.fullname}</td>
+            <td>${getValue(theEtcDetail.fullname)}</td>
           </tr>
-          <!-- <tr>
-            <th class="fontBold text-black pr-4">Email:</th>
-            <td>gukus@gmail.com</td>
-          </tr> -->
           <tr>
             <th class="fontBold text-black pr-4">Address:</th>
-            <td>Office: kkk test address</td>
+            <td>Office: ${getValue(theEtcDetail.address, 'N/A')}</td>
           </tr>
           <tr>
             <th class="fontBold text-black pr-4">TIN:</th>
-            <td>${theEtcDetail.applicant_tin}</td>
+            <td>${getValue(theEtcDetail.applicant_tin)}</td>
           </tr>
           <tr>
             <th class="fontBold text-black pr-4">Sector:</th>
@@ -85,8 +104,8 @@ async function getEtccDetails() {
       </div>
 
       <p class="px-6">This is to certify that Taxpayer with Tax Identification Number <span
-          class="text-lg fontBold text-black">${theEtcDetail.applicant_tin}</span> has settled his/her tax
-        assessment for the following 2 year(s) for the specified source of income.</p>
+          class="text-lg fontBold text-black">${getValue(theEtcDetail.applicant_tin)}</span> has settled his/her tax
+        assessment for the following year(s) for the specified source of income.</p>
 
       <div class="px-6 mt-4">
         <p class="fontBold text-xl text-black mb-2">Details of Assessment</p>
@@ -96,49 +115,29 @@ async function getEtccDetails() {
             <tr class="bg-[#CDA545]">
               <td class="text-[#fff] text-sm">Year</td>
               <td class="text-[#fff] text-sm">Total Income</td>
-              <td class="text-[#fff] text-sm">Taxable Income </td>
               <td class="text-[#fff] text-sm">Tax Paid</td>
+              <td class="text-[#fff] text-sm">Taxable Income</td>
+              <td class="text-[#fff] text-sm">Receipt No.</td>
             </tr>
           </thead>
           <tbody>
-
-            <tr>
-              <td class="text-sm">${theEtcDetail.year1}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.income1)}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.income1)}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.tax_paid_3)}</td>
-            </tr>
-            <tr>
-              <td class="text-sm">${theEtcDetail.year2}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.income2)}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.income2)}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.tax_paid_3)}</td>
-            </tr>
-            <tr>
-              <td class="text-sm">${theEtcDetail.year3}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.income3)}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.income3)}</td>
-              <td class="text-sm">${formatMoney(theEtcDetail.tax_paid_3)}</td>
-            </tr>
-
+            ${assessmentRows}
           </tbody>
         </table>
 
         <table>
           <tr>
             <th class="text-black fontBold pr-4">Source of Income:</th>
-            <td>SALARY</td>
+            <td>${getValue(theEtcDetail.income_source, 'N/A')}</td>
           </tr>
           <tr>
             <th class="text-black fontBold pr-4">Expiry Date:</th>
-            <td>Dec 31, 2023</td>
+            <td>${getValue(theEtcDetail.expiry_date, 'N/A')}</td>
           </tr>
         </table>
       </div>
 
-
       <div class="flex justify-around items-center px-6 mt-5">
-
         <div class="sig1 w-4/12">
           <div class="border-b-2"></div>
           <p class="fontBold text-black text-center mt-1">Official stamp Impression</p>
@@ -152,13 +151,10 @@ async function getEtccDetails() {
           <div class="border-b-2"></div>
           <p class="fontBold text-black text-center mt-1">Official date and stamp</p>
         </div>
-
       </div>
 
-      <p class="text-center mt-2">Three year(s) copies of Official receipts MUST be attached to this certificate to
+      <p class="text-center mt-2">Years copies of Official receipts MUST be attached to this certificate to
         make it valid</p>
-
-
 
       <hr class="my-4 md:mx-10 mx-4">
 
@@ -175,18 +171,19 @@ async function getEtccDetails() {
             </div>
           </div>
         </div>
-
       </div>
-    `)
+    `);
 
-    const qrCodeContainer = document.getElementById("qrContainer")
-
-    const qrCode = new QRCode(qrCodeContainer, {
-      text: `https://plateauigr.com/dashboard/etcc-preview.html?theid=${theEtcDetail.refe}`,
-      colorDark: '#000000',
-      colorLight: '#ffffff',
-      version: 10,
-    });
+    // Generate QR code
+    const qrCodeContainer = document.getElementById("qrContainer");
+    if (qrCodeContainer) {
+      new QRCode(qrCodeContainer, {
+        text: `https://plateauigr.com/dashboard/etcc-preview.html?theid=${theEtcDetail.refe}`,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        version: 10,
+      });
+    }
   }
 }
 

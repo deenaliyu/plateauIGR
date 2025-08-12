@@ -168,50 +168,46 @@
         <!-- / Navbar -->
 
         <!-- Content wrapper -->
-        <section class="content-wrapper border-t-2 bg-white">
+        <section class="content-wrapper border-t-2">
           <div class="container-xxl flex-grow-1 container-p-y taxes">
-            <div class="border-1 rounded-xl px-4">
-              <h1 class="text-2xl text-[#282828] fontBold mt-4">
-                Collection Report
-              </h1>
-              <hr class="text-[#F4F4F4] my-3" />
-              <div class="table-responsive p-3">
-                <table class="table theTable table-striped" id="dataTable">
-                  <thead class="text-center">
-                    <th class="fontBold text-sm text-gray-500">
-                      <div class="flex flex-row">
-                        S/N
-                        <iconify-icon icon="material-symbols:arrow-downward-rounded"></iconify-icon>
-                      </div>
-                    </th>
-                    <th class="fontBold text-sm text-gray-500">
-                      Revenue Head
-                    </th>
 
-                    <!-- <th class="fontBold text-sm text-gray-500">TIN</th> -->
-                    <th class="fontBold text-sm text-gray-500">
-                      Name
-                    </th>
-
-                    <th class="fontBold text-gray-500">INVOICE NUMBER</th>
-                    <th class="fontBold text-gray-500">AMOUNT PAYMENT</th>
-                    <th class="fontBold text-gray-500">PAYMENT DATE</th>
-                    <th class="fontBold text-gray-500">PAYMENT CHANNEL</th>
-                    <th class="fontBold text-gray-500">PAYMENT REFERENCE NUMBER</th>
-                    <th class="fontBold text-gray-500">
-                      VIEW RECIEPT
-                    </th>
-                  </thead>
-                  <tbody id="showCollections">
-
-
-                  </tbody>
-                </table>
+            <div class="card">
+              <div class="card-header">
+                <h1 class="text-2xl text-[#282828] fontBold mt-4">
+                  Collection Report
+                </h1>
               </div>
-              <div class="flex justify-center items-center mt-4" id="loader">
-                <div class="animate-spin rounded-full h-10 w-10 border-b-2 mr-4 border-gray-900"></div>
-                loading...
+              <div class="card-body">
+                <div class="table-responsive p-3">
+                  <table class="table theTable table-striped" id="dataTable">
+                    <thead class="text-center">
+                      <th class="fontBold text-sm text-gray-500">S/N</th>
+                      <th class="fontBold text-sm text-gray-500">Revenue Head</th>
+                      <th class="fontBold text-sm text-gray-500">Name</th>
+                      <th class="fontBold text-sm text-gray-500">TIN</th>
+                      <th class="fontBold text-gray-500">INVOICE NUMBER</th>
+                      <th class="fontBold text-gray-500">AMOUNT PAYMENT</th>
+                      <th class="fontBold text-gray-500">PAYMENT DATE</th>
+                      <th class="fontBold text-gray-500">PAYMENT CHANNEL</th>
+                      <th class="fontBold text-gray-500">PAYMENT REFERENCE NUMBER</th>
+                      <th class="fontBold text-gray-500">
+                        VIEW RECIEPT
+                      </th>
+                    </thead>
+                    <tbody id="showCollections">
+
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="flex justify-center items-center mt-4" id="loader">
+                  <div class="animate-spin rounded-full h-10 w-10 border-b-2 mr-4 border-gray-900"></div>
+                  loading...
+                </div>
               </div>
+
+
+
             </div>
           </div>
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
@@ -240,7 +236,7 @@
   <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="./assets/js/nav.js"></script>
   <script src="./assets/vendor/js/menu.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="./assets/js/session.js"></script>
   <!-- endbuild -->
   <script src="./assets/js/collection.js"></script>
@@ -254,23 +250,25 @@
   <script>
     function exportData() {
       var csv = [];
-      var table = document.getElementById("showCollections");
+      // Get the table element
+      var table = document.querySelector("table");
+      var thead = table.querySelector("thead");
+      var tbody = table.querySelector("tbody");
 
-      // Add header to CSV
+      // Add header to CSV, excluding the last column
       var header = [];
-      for (var h = 0; h < table.rows[0].cells.length; h++) {
-        header.push(table.rows[0].cells[h].innerText);
+      var headerCells = thead.rows[0].cells;
+      for (var h = 0; h < headerCells.length - 1; h++) {
+        header.push(headerCells[h].innerText);
       }
       csv.push(header.join(','));
 
-      // Add rows to CSV
-      for (var i = 1; i < table.rows.length; i++) {
-        var row = [], cols = table.rows[i].querySelectorAll('td, th');
-
-        for (var j = 0; j < cols.length; j++) {
+      // Add rows to CSV, excluding the last column
+      for (var i = 0; i < tbody.rows.length; i++) {
+        var row = [], cols = tbody.rows[i].cells;
+        for (var j = 0; j < cols.length - 1; j++) {
           row.push(cols[j].innerText);
         }
-
         csv.push(row.join(','));
       }
 
@@ -279,7 +277,7 @@
       var encodedUri = encodeURI(csvContent);
       var link = document.createElement('a');
       link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'invoice_report');
+      link.setAttribute('download', 'mda_collection_report');
       document.body.appendChild(link);
       link.click();
     }
@@ -290,11 +288,6 @@
   <!-- Main JS -->
 
   <script src="./assets/js/main.js"></script>
-
-  <!-- Page JS -->
-
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>

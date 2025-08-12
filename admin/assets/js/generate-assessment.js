@@ -843,10 +843,23 @@ async function generateInvoiceNum(taxNumber, amountCal) {
 
   let sectorAndIndustry = `${sectorSelect} - ${industrySelect}`;
   let descriptionVal = $("#description").val();
-
+  
+  let dataToSendOut = {
+      "generateSingleInvoices": true,
+      "tax_number": taxNumber,
+      "revenue_head_id": "328",
+      "price": amountCal,
+      "category_pre": category_pre,
+      "sector": sectorAndIndustry,
+      "description": descriptionVal,
+      "invoice_type": "direct",
+      "created_by": "admin",
+      "by_account": userInfo2?.id,
+    }    
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=328&price=${amountCal}&category_pre=${category_pre}&sector=${sectorAndIndustry}&description=${descriptionVal}&invoice_type=direct`,
+    url: HOST,
+    data: dataToSendOut,
     dataType: 'json',
     success: function (data) {
       clearTimeout(timer); // Clear the timer if the request succeeds

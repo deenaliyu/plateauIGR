@@ -27,12 +27,12 @@ async function fetchPayeUsers() {
 
   } else {
 
-    let theRightUSers = specialUsers.message.reverse().filter(rihuser => rihuser.category.toLowerCase() === category)
+    let theRightUSers = specialUsers.message.filter(rihuser => rihuser.category.toLowerCase() === category)
     dataToExport = theRightUSers
 
     theRightUSers.forEach((rhUser, i) => {
-      let annual = parseFloat(rhUser.monthly_estimate * 12) || 0
-      let monthly = parseFloat(rhUser.monthly_estimate) || 0
+      let annual = parseFloat(rhUser.monthly_estimate * 12)
+      let monthly = parseFloat(rhUser.monthly_estimate)
 
       let htmlData = ""
       let defaultersData = ""
@@ -43,10 +43,8 @@ async function fetchPayeUsers() {
         theStatus = `<span class="badge bg-danger rounded-pill">Defaulter</span>`
       } else if (rhUser.status === "Current") {
         theStatus = `<span class="badge bg-success rounded-pill">Current</span>`
-      } else if (rhUser.status === "Assessed") {
-        theStatus = `<span class="badge bg-info rounded-pill">${rhUser.status}</span>`
       } else {
-        theStatus = `<span class="badge bg-warning rounded-pill">${rhUser.status}</span>`
+        theStatus = `<span class="badge bg-info rounded-pill">${rhUser.status}</span>`
       }
       htmlData = `
         <tr>
@@ -64,6 +62,7 @@ async function fetchPayeUsers() {
           <td><a href="payedetails.html?payerID=${rhUser.payer_id}" class="btn btn-sm button-3">View</a></td>
         </tr>
       `
+      
       if (rhUser.status === 'defaulter') {
         defaultersData = `
             <tr>

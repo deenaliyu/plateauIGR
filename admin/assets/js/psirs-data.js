@@ -306,6 +306,7 @@ $("#searchBtn").on('click', async function () {
             <td>${searched.user_tin}</td>
             <td>${searched.category}</td>
             <td>${searched.name}</td>
+            <td>${searched.sector ? searched.sector : '-'}</td>
             <td>
               ${searched.status === "Unlinked" ? '<span class="badge bg-danger">un-linked</span>' : '<span class="badge bg-success">linked</span>'}
             </td>

@@ -35,7 +35,7 @@ async function getTaxPayer() {
               <p><span class="font-bold">Tin Status:</span> ${taxPayerData.tin_status}</p>
               <p><span class="font-bold">Tax Number:</span> ${taxPayerData.tin == "" ? '-' : taxPayerData.tin}</p>
               <p><span class="font-bold">Business Type:</span> ${taxPayerData.business_type == "" ? '-' : taxPayerData.business_type}</p>
-              <p><span class="font-bold">Emplyment Status:</span> ${taxPayerData.employment_status == "" ? '-' : taxPayerData.employment_status}</p>
+              <p><span class="font-bold">Employment Status:</span> ${taxPayerData.employment_status == "" ? '-' : taxPayerData.employment_status}</p>
               <p><span class="font-bold">Number of Staff:</span> ${taxPayerData.number_of_staff == "" ? '-' : taxPayerData.number_of_staff}</p>
             </div>
 
