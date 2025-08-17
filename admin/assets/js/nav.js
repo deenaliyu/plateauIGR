@@ -37,11 +37,11 @@ $(".aside").html(`
         </a>
       </li>
       <li class="menu-item">
-        <a href="mda.html" class="menu-link mddd">
-          <i class='menu-icon tf-icons bx bx-buildings' ></i>
-          <div data-i18n="Basic">MDAs</div>
-        </a>
-      </li>
+      <a href="mda.html" class="menu-link mddd">
+        <i class='menu-icon tf-icons bx bx-buildings' ></i>
+        <div data-i18n="Basic">MDAs</div>
+      </a>
+    </li>
 
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle dggg">
@@ -60,53 +60,40 @@ $(".aside").html(`
               <div data-i18n="Input groups">Collection Report</div>
             </a>
           </li>
-
+            
           <li class="menu-item">
             <a href="tinmanagement.html" class="menu-link">
               <div data-i18n="Input groups">TIN Report</div>
             </a>
           </li>
           
-          <li class="menu-item">
-            <a href="expiredinvoice.html" class="menu-link">
-              <div data-i18n="Input groups">Expired Invoice</div>
-            </a>
-          </li>
-
-          ${userInfo2.email === "primeguage@gmail.com" ?
-    `
-            <!-- <li class="menu-item">
-              <a href="settlement.html" class="menu-link">
-                <div data-i18n="Input groups">Settlement Report</div>
-              </a>
-            </li> -->
-          `
-    : ''}
-          
           
         </ul>
       </li>
-
+      
       <li class="menu-item">
         <a href="demandnotice.html" class="menu-link dmn">
            <iconify-icon icon="stash:invoice" class="menu-icon"></iconify-icon>
           <div data-i18n="Basic">Demand Notice</div>
         </a>
       </li>
-
+      
+      
       <li class="menu-item">
         <a href="taxpayer.html" class="menu-link mdd">
-          <i class='menu-icon tf-icons bx bxs-group' ></i>
+        <i class='menu-icon tf-icons bx bxs-group' ></i>
           <div data-i18n="Basic">Tax Payer</div>
         </a>
       </li>
-
+      
       <li class="menu-item">
         <a href="psirs-data.html" class="menu-link psirs">
           <iconify-icon icon="material-symbols:database" class="menu-icon"></iconify-icon>
           <div data-i18n="Basic">Migrated Data</div>
         </a>
       </li>
+
+      
 
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle enu">
@@ -126,7 +113,7 @@ $(".aside").html(`
               <div data-i18n="Basic Inputs">Enumeration Map</div>
             </a>
           </li>
-
+          
           <li class="menu-item">
             <a href="hospital-report.html" class="menu-link">
               <div data-i18n="Basic Inputs">Health Sectors</div>
@@ -135,21 +122,21 @@ $(".aside").html(`
 
         </ul>
       </li>
-
+      
       <li class="menu-item">
         <a href="enduseraudit.html" class="menu-link auditt">
         <i class='menu-icon tf-icons bx bxs-group' ></i>
           <div data-i18n="Basic">Audit Trail</div>
         </a>
       </li>
-
+      
       <li class="menu-item">
         <a href="direct-assessment.html" class="menu-link direct-assessment">
           <iconify-icon icon="fluent-mdl2:assessment-group" class="menu-icon"></iconify-icon>
           <div data-i18n="Basic">Direct Assessment</div>
         </a>
       </li>
-
+      
       <li class="menu-item">
         <a href="cms.html" class="menu-link mdo">
         <i class='menu-icon tf-icons bx bxs-group' ></i>
@@ -192,12 +179,14 @@ $(".aside").html(`
 
         </ul>
       </li>
-    <li class="menu-item">
-      <a href="etcc-management.html?type=private" class="menu-link mdoetcc">
-     <iconify-icon icon="tabler:world-dollar" class="menu-icon"></iconify-icon>
-        <div data-i18n="Basic">eTCC Manager</div>
-      </a>
-    </li>
+
+        <li class="menu-item">
+            <a href="etcc-management.html?type=private" class="menu-link mdoetcc">
+                <iconify-icon icon="tabler:world-dollar" class="menu-icon"></iconify-icon>
+                <div data-i18n="Basic">eTCC Manager</div>
+            </a>
+        </li>
+
 
     <li class="menu-item">
       <a href="service.html" class="menu-link mdol">
@@ -205,12 +194,13 @@ $(".aside").html(`
         <div data-i18n="Basic">Tax Filing</div>
       </a>
     </li>
+    
     <li class="menu-item">
-    <a href="user.html" class="menu-link mdoc">
-    <i class='menu-icon tf-icons bx bxs-group' ></i>
-      <div data-i18n="Basic">User Management</div>
-    </a>
-  </li>
+        <a href="user.html" class="menu-link mdoc">
+        <i class='menu-icon tf-icons bx bxs-group' ></i>
+          <div data-i18n="Basic">User Management</div>
+        </a>
+      </li>
 
     <h4 class="menu-link pl-8 mt-5">YOUR ACCOUNT</h4>
       
@@ -278,11 +268,9 @@ $(".footer").html(`
 </div>
 </div>
 `);
-
 const currentDate = new Date();
 
 function getFormattedDate(date) {
-  date = new Date(date);
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
   const year = date.getFullYear();
@@ -392,43 +380,9 @@ function downloadInvoice(thecard) {
 }
 
 let STATES = `
-  <option value="Abia">Abia</option>
-  <option value="Adamawa">Adamawa</option>
-  <option value="Akwa Ibom">Akwa Ibom</option>
-  <option value="Anambra">Anambra</option>
-  <option value="Bauchi">Bauchi</option>
-  <option value="Bayelsa">Bayelsa</option>
-  <option value="Benue">Benue</option>
-  <option value="Borno">Borno</option>
-  <option value="Cross River">Cross River</option>
-  <option value="Delta">Delta</option>
-  <option value="Ebonyi">Ebonyi</option>
-  <option value="Edo">Edo</option>
-  <option value="Ekiti">Ekiti</option>
-  <option value="Enugu">Enugu</option>
-  <option value="FCT">Federal Capital Territory</option>
-  <option value="Gombe">Gombe</option>
-  <option value="Imo">Imo</option>
-  <option value="Jigawa">Jigawa</option>
-  <option value="Kaduna">Kaduna</option>
-  <option value="Kano">Kano</option>
-  <option value="Katsina">Katsina</option>
-  <option value="Kebbi">Kebbi</option>
-  <option value="Kogi">Kogi</option>
-  <option value="Kwara">Kwara</option>
-  <option value="Lagos">Lagos</option>
-  <option value="Nasarawa">Nasarawa</option>
-  <option value="Niger">Niger</option>
-  <option value="Ogun">Ogun</option>
-  <option value="Ondo">Ondo</option>
-  <option value="Osun">Osun</option>
-  <option value="Oyo">Oyo</option>
+  <option disabled selected>--Select State--</option>
   <option value="Plateau" selected>Plateau</option>
-  <option value="Rivers">Rivers</option>
-  <option value="Sokoto">Sokoto</option>
-  <option value="Taraba">Taraba</option>
-  <option value="Yobe">Yobe</option>
-  <option value="Zamfara">Zamfara</option>
+ 
 `
 
 let lgaList = {
@@ -1290,30 +1244,27 @@ let lgaList = {
 let stateSelect = document.querySelector("#STATES")
 let lgaSelect = document.querySelector('#LGAs')
 if (stateSelect) {
-
-  stateSelect.innerHTML = STATES
-
   lgaList["Plateau"].forEach(lga => {
     lgaSelect.innerHTML += `
       <option value="${lga}">${lga}</option>
     `
   })
-  stateSelect.addEventListener('change', function () {
-    let selectedState = $(this).val()
+//   stateSelect.addEventListener('change', function () {
+//     let selectedState = $(this).val()
 
-    let arrStates = Object.values(lgaList)
-    let finalarrState = arrStates[stateSelect.selectedIndex]
+//     let arrStates = Object.values(lgaList)
+//     let finalarrState = arrStates[stateSelect.selectedIndex - 1]
 
-    lgaSelect.innerHTML = ''
+//     lgaSelect.innerHTML = ''
 
-    finalarrState.forEach((opt, ii) => {
-      lgaSelect.innerHTML += `
-          <option value="${opt}">${opt}</option>
-        `
-    })
+//     finalarrState.forEach((opt, ii) => {
+//       lgaSelect.innerHTML += `
+//         <option value="${opt}">${opt}</option>
+//       `
+//     })
 
 
-  })
+//   })
 
 }
 
@@ -1325,22 +1276,22 @@ if (stateSelect2) {
       <option value="${lga}">${lga}</option>
     `
   })
-  //   stateSelect2.addEventListener('change', function () {
-  //     let selectedState = $(this).val()
+//   stateSelect2.addEventListener('change', function () {
+//     let selectedState = $(this).val()
 
-  //     let arrStates = Object.values(lgaList)
-  //     let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
+//     let arrStates = Object.values(lgaList)
+//     let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
 
-  //     lgaSelect2.innerHTML = ''
+//     lgaSelect2.innerHTML = ''
 
-  //     finalarrState.forEach((opt, ii) => {
-  //       lgaSelect2.innerHTML += `
-  //         <option value="${opt}">${opt}</option>
-  //       `
-  //     })
+//     finalarrState.forEach((opt, ii) => {
+//       lgaSelect2.innerHTML += `
+//         <option value="${opt}">${opt}</option>
+//       `
+//     })
 
 
-  //   })
+//   })
 
 }
 
@@ -1376,8 +1327,8 @@ function convertNumberToWords(number) {
 
   if (fraction > 0) {
     output += " naira and";
-    output += " " + numberToWords(fraction);
-
+    output += " " + numberToWords(parseInt(fraction));
+    
     output += " Kobo"
   }
 
@@ -1537,44 +1488,44 @@ function numberToWords(num) {
   const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
   function convertLessThanOneThousand(n) {
-    let word = '';
-    if (n >= 100) {
-      word += ones[Math.floor(n / 100)] + ' hundred ';
-      n %= 100;
-    }
-    if (n >= 20) {
-      word += tens[Math.floor(n / 10)] + ' ';
-      n %= 10;
-    }
-    if (n > 0) {
-      if (n < 10) word += ones[n] + ' ';
-      else word += teens[n - 10] + ' ';
-    }
-    return word.trim();
+      let word = '';
+      if (n >= 100) {
+          word += ones[Math.floor(n / 100)] + ' hundred ';
+          n %= 100;
+      }
+      if (n >= 20) {
+          word += tens[Math.floor(n / 10)] + ' ';
+          n %= 10;
+      }
+      if (n > 0) {
+          if (n < 10) word += ones[n] + ' ';
+          else word += teens[n - 10] + ' ';
+      }
+      return word.trim();
   }
 
   if (num === 0) return 'zero';
 
   let words = '';
   if (num < 0) {
-    words += 'negative ';
-    num = Math.abs(num);
+      words += 'negative ';
+      num = Math.abs(num);
   }
 
   if (num >= 1000000000) {
-    words += convertLessThanOneThousand(Math.floor(num / 1000000000)) + ' billion ';
-    num %= 1000000000;
+      words += convertLessThanOneThousand(Math.floor(num / 1000000000)) + ' billion ';
+      num %= 1000000000;
   }
   if (num >= 1000000) {
-    words += convertLessThanOneThousand(Math.floor(num / 1000000)) + ' million ';
-    num %= 1000000;
+      words += convertLessThanOneThousand(Math.floor(num / 1000000)) + ' million ';
+      num %= 1000000;
   }
   if (num >= 1000) {
-    words += convertLessThanOneThousand(Math.floor(num / 1000)) + ' thousand ';
-    num %= 1000;
+      words += convertLessThanOneThousand(Math.floor(num / 1000)) + ' thousand ';
+      num %= 1000;
   }
   if (num > 0) {
-    words += convertLessThanOneThousand(num);
+      words += convertLessThanOneThousand(num);
   }
 
   return words.trim();

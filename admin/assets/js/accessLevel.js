@@ -16,10 +16,9 @@ async function getRolesAdmin() {
     $(".main_section").removeClass("hidden")
     let adminRoles = userRoles.dashboard_access
 
-    let full_access = adminRoles.find(ff => ff === "dashboard_access")
+    let full_access = adminRoles.find(ff => ff === "full")
     let no_access = adminRoles.find(ff => ff === "no_access")
 
-    
     if (no_access === undefined && full_access === undefined) {
       $(".main_section").html(`<p class="text-center text-xl fontBold">No Access</p>`)
 
@@ -144,7 +143,6 @@ async function getRolesAdmin() {
     let acti_taxpayer = taxPayers.find(ff => ff === "acti_taxpayer")
     let allocate_appli = taxPayers.find(ff => ff === "allocate_appli")
     let download_report = taxPayers.find(ff => ff === "download_report")
-    let edit_tax_detail = taxPayers.find(ff => ff === "edit_tax_detail")
 
     if (download_report === undefined) {
       $("#txdReport").addClass("disabled")
@@ -157,19 +155,13 @@ async function getRolesAdmin() {
       $(".txTable2").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
       `)
-
+      
       $("#createTaxP").remove()
     }
 
     if (view_tax_detail === undefined) {
       let txViews = document.querySelectorAll(".txView")
       txViews.forEach(dd => {
-        dd.classList.add("disabled")
-      })
-    }
-    if (edit_tax_detail === undefined) {
-      let txEdit = document.querySelectorAll(".txEdit")
-      txEdit.forEach(dd => {
         dd.classList.add("disabled")
       })
     }
@@ -215,8 +207,9 @@ async function getRolesAdmin() {
 
     $('#userDisplay').removeClass('hidden')
     $('#theLoader').remove()
-
+    
     $("#userAccessor a").removeClass('hidden')
+    
     if (view_admin === undefined) {
       $(".userTable").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
@@ -287,48 +280,48 @@ async function getRolesAdmin() {
     }
 
   } else if (currentPage.includes("etcc-management.html")) {
-    let etccRoles = userRoles.etcc_access;
-
-    $(".main_section").removeClass('hidden');
-    $("#theLoader").remove();
-
-    const firstReviewer = etccRoles.includes("first_reviewer");
-    const secondReviewer = etccRoles.includes("second_reviewer");
-    const thirdReviewer = etccRoles.includes("third_reviewer");
-
-    // Check if the user has no access
-    if (!firstReviewer && !secondReviewer && !thirdReviewer) {
-        $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access!</p>`);
-        $("#initiateEtcc").remove();
-    } else {
-        // Handle role-based UI adjustments for multiple roles
-        if (thirdReviewer && secondReviewer && firstReviewer) {
-            // All three roles are present, no need to remove anything
-        } else if (thirdReviewer && secondReviewer) {
-            // If both thirdReviewer and secondReviewer are present
-            $("#first_reviewer").remove();
-        } else if (secondReviewer && firstReviewer) {
-            // If both secondReviewer and firstReviewer are present
-            $("#third_reviewer").remove();
-        } else if (thirdReviewer && firstReviewer) {
-            // If both thirdReviewer and firstReviewer are present
-            $("#second_reviewer").remove();
-        } else if (thirdReviewer) {
-            // If only thirdReviewer is present
-            $("#second_reviewer").remove();
-            $("#first_reviewer").remove();
-        } else if (secondReviewer) {
-            // If only secondReviewer is present
-            $("#third_reviewer").remove();
-            $("#first_reviewer").remove();
-        } else if (firstReviewer) {
-            // If only firstReviewer is present
-            $("#second_reviewer").remove();
-            $("#third_reviewer").remove();
+        let etccRoles = userRoles.etcc_access;
+    
+        $(".main_section").removeClass('hidden');
+        $("#theLoader").remove();
+    
+        const firstReviewer = etccRoles.includes("first_reviewer");
+        const secondReviewer = etccRoles.includes("second_reviewer");
+        const thirdReviewer = etccRoles.includes("third_reviewer");
+    
+        // Check if the user has no access
+        if (!firstReviewer && !secondReviewer && !thirdReviewer) {
+            $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access!</p>`);
+            $("#initiateEtcc").remove();
+        } else {
+            // Handle role-based UI adjustments for multiple roles
+            if (thirdReviewer && secondReviewer && firstReviewer) {
+                // All three roles are present, no need to remove anything
+            } else if (thirdReviewer && secondReviewer) {
+                // If both thirdReviewer and secondReviewer are present
+                $("#first_reviewer").remove();
+            } else if (secondReviewer && firstReviewer) {
+                // If both secondReviewer and firstReviewer are present
+                $("#third_reviewer").remove();
+            } else if (thirdReviewer && firstReviewer) {
+                // If both thirdReviewer and firstReviewer are present
+                $("#second_reviewer").remove();
+            } else if (thirdReviewer) {
+                // If only thirdReviewer is present
+                $("#second_reviewer").remove();
+                $("#first_reviewer").remove();
+            } else if (secondReviewer) {
+                // If only secondReviewer is present
+                $("#third_reviewer").remove();
+                $("#first_reviewer").remove();
+            } else if (firstReviewer) {
+                // If only firstReviewer is present
+                $("#second_reviewer").remove();
+                $("#third_reviewer").remove();
+            }
         }
-    }
-}
- else if (currentPage.includes("service.html")) {
+        
+    } else if (currentPage.includes("service.html")) {
     if (adminInfo.email === "primeguage@gmail.com") {
 
     } else {

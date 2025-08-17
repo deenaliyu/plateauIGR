@@ -6,6 +6,19 @@ function formatMoney(amount) {
   });
 }
 
+function getFormattedDate(date) {
+  date = new Date(date)
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
+$("#genInvBtn").on("click", function(){
+    window.location.href = `../generateinvoice.html?created_by=admin&id=${userInfo2?.id}`
+})
+
 let AllInvoiceData = {}
 
 async function fetchInvoice() {
@@ -49,35 +62,22 @@ function displayData(userInvoices) {
       let addd = ""
       addd += `
         <tr class="relative">
-        <td>${i + 1}</td>
-        <td>${userInvoice.tax_number}</td>
-        <td>${userInvoice.COL_3}</td>
-        <td>${userInvoice.COL_4}</td>
-        <td>${userInvoice.first_name} ${userInvoice.surname}</td>
-        <td>${userInvoice.invoice_number}</td>
-        <td>&#8358; ${parseFloat(userInvoice.amount_paid).toLocaleString()}</td>
-        <td>${userInvoice.date_created.split(" ")[0]}</td>
-        <td>${userInvoice.due_date}</td>
-          `
-      if (userInvoice.payment_status === "paid") {
-        addd += `
+            <td>${i + 1}</td>
+            <td>${userInvoice.tax_number}</td>
+            <td>${userInvoice.COL_3}</td>
+            <td>${userInvoice.COL_4}</td>
+            <td>${userInvoice.first_name} ${userInvoice.surname}</td>
+            <td>${userInvoice.invoice_number}</td>
+            <td>&#8358; ${parseFloat(userInvoice.amount_paid).toLocaleString()}</td>
             <td id="" class="checking">
-              <p class='text-success'>${userInvoice.payment_status}</p>
+              ${userInvoice.payment_status === "paid" ? "<span class='badge bg-success'>Paid</span>" : "<span class='badge bg-danger'>Unpaid</span>"}
             </td>
-            
-            `
-      } else {
-        addd += `
-            <td id="" class="checking">
-              <p class='text-danger'>${userInvoice.payment_status}</p>
+            <td>${userInvoice.admin_email ? userInvoice.admin_email : "self" }</td>
+            <td>${getFormattedDate(userInvoice.date_created)}</td>
+            <td>${getFormattedDate(userInvoice.due_date)}</td>
+            <td>
+              <a href="./viewinvoice.html?invnumber=${userInvoice.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Invoice</a>
             </td>
-            `
-      }
-
-      addd += `
-        <td>
-          <a href="./viewinvoice.html?invnumber=${userInvoice.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Invoice</a>
-        </td>
         </tr>
         `
       $("#showThem").append(addd);
@@ -87,11 +87,11 @@ function displayData(userInvoices) {
             <td>${userInvoice.tax_number}</td>
             <td>${userInvoice.COL_3.replace(/,/g, '')}</td>
             <td>${userInvoice.COL_4}</td>
-            <td>${userInvoice.first_name.replace(/,/g, '')} ${userInvoice.surname.replace(/,/g, '')}</td>
+            <td>${userInvoice.first_name.replace(/,/g, '')} ${userInvoice.surname?.replace(/,/g, '')}</td>
             <td>${userInvoice.invoice_number}</td>
-            <td>&#8358; ${userInvoice.amount_paid}</td>
-            <td>${userInvoice.date_created.split(" ")[0]}</td>
-            <td>${userInvoice.due_date}</td>
+            <td>${userInvoice.amount_paid}</td>
+            <td>${getFormattedDate(userInvoice.date_created)}</td>
+            <td>${getFormattedDate(userInvoice.due_date)}</td>
             <td>${userInvoice.payment_status}</td>
         </tr>
       `)

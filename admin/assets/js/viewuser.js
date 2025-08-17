@@ -19,7 +19,6 @@ async function fetchUSER() {
       uu.value = theUSER[uu.dataset.name]
     })
 
-    
     const checkboxGroups = document.querySelectorAll('.checkbox-group');
 
     checkboxGroups.forEach(checkboxGroup => {

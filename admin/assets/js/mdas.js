@@ -2,8 +2,17 @@ $("#STATES").html(STATES)
 $("#STATE").html(STATES)
 let adminInfo2 = JSON.parse(localStorage.getItem("adminDataPrime"))
 
+function getFormattedDate(date) {
+  date = new Date(date)
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
 
 let ALLMDA = ""
+
 async function fetchMDAs() {
   $("#showThem").html("")
   $("#loader").css("display", "flex")
@@ -31,11 +40,11 @@ async function fetchMDAs() {
       addd += `
         <tr class="relative">
           <td>${i + 1}</td>
-          <td><a class="text-primary" href="./mdadetails.html?id=${MDA.id}&name=${MDA.fullname}">${MDA.fullname}</a></td>
+         <td><a class="text-primary" href="./mdadetails.html?id=${MDA.id}&name=${encodeURIComponent(MDA.fullname)}">${MDA.fullname.replace(/'/g, "&#39;")}</a></td>
           <td>${MDA.state}</td>
-          <td>${MDA["COUNT(*)"]}</td>
+          <td>${MDA.total_count}</td>
           <td>&#8358; ${(MDA.total_gen_revenue === "" ? 0 : MDA.total_gen_revenue.toLocaleString())}</td>
-          <td>${MDA.time_in}</td>
+          <td>${getFormattedDate(MDA.time_in)}</td>
           `;
       if (MDA.status === "active") {
         addd += `

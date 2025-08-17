@@ -134,3 +134,13 @@ function fetchCateg3(e) {
       $("#totalRegCategRege").html(theData.total_users)
     }
 }  
+
+
+  
+
+  
+
+
+
+
+

@@ -106,11 +106,11 @@ function showPass(pos) {
       AllF[pos].type = "password"
     }
   }
+  
 $("#updateProfile").on("click", function (e) {
   e.preventDefault()
 
   let allInputs = document.querySelectorAll(".updtProf")
-  let allRadioBoxs = document.querySelectorAll(".form-check-input")
   $("#msg_box").html(`
       <div class="flex justify-center items-center mt-4">
         <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
@@ -119,16 +119,9 @@ $("#updateProfile").on("click", function (e) {
   $("#updateProfile").addClass("hidden")
 
   let obj = {
-    // id: userDATA.id,
-    ...userDATA,
-         "dashboard_access": "1",
-          "analytics_access": "1",
-          "mda_access": "1",
-          "reports_access": "1",
-          "tax_payer_access": "1",
-          "users_access": "1",
-          "cms_access": "1",
-          "support": "1"
+    id: userDATA.id
+    // ...userDATA
+        
   }
   delete obj.img
   allInputs.forEach(allInput => {

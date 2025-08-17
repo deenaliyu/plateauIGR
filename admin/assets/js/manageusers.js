@@ -25,8 +25,7 @@ let definition = {
   view_settle_list: "View Settlement list",
   generate_settle_report: "Generate Settlement Report",
   view_tax_list: "View Tax Payer list",
-  view_tax_detail: "View Tax Payer details",
-  edit_tax_detail: "Edit Tax Payer details",
+  view_tax_detail: "Edit Tax Payer details",
   acti_taxpayer: "Activate/deactivate Taxpayer",
   allocate_appli: "Allocate applicable taxes",
   download_report: "Download report",
@@ -83,7 +82,7 @@ $("#createUser").on("click", function () {
       let obj = {
         id: theUserID,
         img: "",
-        verification_status: "",
+        verification_status: 1,
       };
 
       allInputs.forEach((allInput) => {
@@ -247,3 +246,46 @@ $("#opPas").on("click", function () {
     pasInp.type = "password";
   }
 })
+
+
+$("#changePass").on("click", (e) => {
+
+    let emailAdd = document.querySelector("#email").value
+  
+    e.preventDefault()
+    $(".msg_box").html(`
+      <div class="flex justify-center items-center mt-4">
+        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+      </div>
+    `)
+  
+    $("#changePass").addClass("hidden")
+    
+    $.ajax({
+      type: "GET",
+      url: `${HOST}/?resetPasswordAmin&email=${emailAdd}`,
+      dataType: 'json',
+      success: function (data) {
+      if (data.status === 1) {
+          $("#msg_box").html(`
+            <p class="text-success text-center mt-4 text-lg">${data.message}</p>
+          `)
+          setTimeout(() => {
+            window.location.href = `user.html`
+          }, 1500);
+
+        } else if (data.status === 0) {
+          $("#msg_box").html(`
+            <p class="text-warning text-center mt-4 text-base">${data.message}</p>
+          `)
+        }
+      },
+      error: function (request, error) {
+        console.log(error);
+        $("#msg_box").html(`
+          <p class="text-danger text-center mt-4 text-lg">Something went wrong try again !</p>
+        `)
+      }
+    });
+  
+  })

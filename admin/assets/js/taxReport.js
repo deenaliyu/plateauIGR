@@ -4,6 +4,15 @@ let ALLTaxP = ""
 let numberOfAll = 0
 let numberOfAll2 = 0
 
+function getFormattedDate(date) {
+  date = new Date(date)    
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 async function fetchTaxPayers() {
   $("#showreport").html("")
   $("#loader").css("display", "flex")
@@ -52,12 +61,14 @@ async function fetchTaxPayers() {
           <td class="text-success">${taxPayer.tin_status}</td>
         `
       }
+        
+        showRe += `
+          <td>₦ ${taxPayer.annual_income ? parseFloat(taxPayer.annual_income).toLocaleString() : 0}</td>
+          <td>${taxPayer.annual_income && parseFloat(taxPayer.annual_income) >= 20000000 ? `<span class='badge bg-success'>High Income</span>` : `<span class='badge bg-warning'>Low Income</span>`}</td>
+          `
+
       showRe += `
-      <td>₦ ${taxPayer.annual_income ? parseFloat(taxPayer.annual_income).toLocaleString() : 0}</td>
-      <td>${taxPayer.annual_income && parseFloat(taxPayer.annual_income) >= 20000000 ? `<span class='badge bg-success'>High Income</span>` : `<span class='badge bg-warning'>Low Income</span>`}</td>
-      `
-      showRe += `
-          <td>${taxPayer.timeIn}</td>
+          <td>${getFormattedDate(taxPayer.timeIn)}</td>
           <td>
           <div class="flex items-center gap-3">
        `
@@ -65,16 +76,27 @@ async function fetchTaxPayers() {
         <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txEdit"><iconify-icon
         icon="material-symbols:edit-square-outline"></iconify-icon></a>
       `
-
       showRe += `
       <a href="./taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
-
           </div>
       
         </tr>
         `
 
       $("#showreport").append(showRe)
+      
+      $("#showThem2").append(`
+        <tr>
+            <td>${i + 1}</td>
+            <td>${taxPayer.tax_number}</td>
+            <td>${taxPayer.first_name.replace(/,/g, '')} ${taxPayer.surname.replace(/,/g, '')}</td>
+            <td>${taxPayer.category}</td>
+            <td>${taxPayer.tin}</td>
+            <td>${taxPayer.email.replace(/,/g, '')}</td>
+            <td>${taxPayer.tin_status}</td>
+            <td>${getFormattedDate(taxPayer.timeIn)}</td>
+        </tr>
+      `)
 
       if (i === taxPayers.message.length - 1) {
         $('#dataTable').DataTable();
@@ -112,14 +134,13 @@ async function fetchTaxPayers() {
           `
         }
 
-
         showRe += `
-            <td>${taxPayer.timeIn}</td>
+            <td>${getFormattedDate(taxPayer.timeIn)}</td>
             <td>
             <div class="flex items-center gap-3">
          `
         showRe += `
-          <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser txEdit"><iconify-icon
+          <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser txView"><iconify-icon
           icon="material-symbols:edit-square-outline"></iconify-icon></button>
         `
         showRe += `
@@ -146,7 +167,6 @@ async function fetchTaxPayers() {
 fetchTaxPayers().then(ee => {
 
 })
-{/* <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser btn btn-primary btn-s txView">Update</button> */ }
 
 async function fetchEnutaxP() {
   $("#showreport2").html("")
@@ -176,7 +196,7 @@ async function fetchEnutaxP() {
       <td><a class="text-primary" href="./taxpayerlist.html?id=${txpayer.id}&enumerated=true">${txpayer.tax_number}</a></td>
       <td>${txpayer.first_name} ${txpayer.last_name}</td>
       <td>${txpayer.email}</td>
-      <td>${txpayer.account_type}</td>
+      <td>${txpayer.category}</td>
       <td>${txpayer.fullname}</td>
       <td>${txpayer.tin}</td>
       <td>
@@ -187,10 +207,10 @@ async function fetchEnutaxP() {
       `}
         
       </td>
-      <td>${txpayer.timeIn.split(" ")[0]}</td>
+      <td>${getFormattedDate(txpayer.timeIn)}</td>
       <td>
         <div class="flex gap-3 items-center">
-          <button data-theid="${txpayer.tax_number}" onclick="editThis(this)" data-usertype="enumerator_tax_payers" class="txEdit EditUser"><iconify-icon
+          <button data-theid="${txpayer.tax_number}" onclick="editThis(this)" data-usertype="enumerator_tax_payers" class="txView EditUser"><iconify-icon
           icon="material-symbols:edit-square-outline"></iconify-icon></button>
 
             <a href="./taxpayerlist.html?id=${txpayer.tax_number}&enumerated=true" class="btn txView btn-primary btn-sm viewUser">View</a>
@@ -208,7 +228,6 @@ async function fetchEnutaxP() {
 // <td>
 //   <img src="${txpayer.img}" class="w-[40px] rounded-full h-[40px] object-cover" alt="" />
 // </td>
-
 
 fetchEnutaxP().then(dd => {
   $('#dataTable2').DataTable();

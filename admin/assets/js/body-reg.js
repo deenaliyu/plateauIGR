@@ -55,8 +55,6 @@ async function fetchUserDetails() {
         $('.enumInput[data-name="fullname"]').val(data.user.first_name + " " + data.user.surname);
         $('.enumInput[data-name="staff"]').val(data.user.number_of_staff);
 
-
-
         allInputs.forEach((inputt, i) => {
           let theValuee = data.user[inputt.dataset.name]
           let theInputt = document.querySelector(`.enumInput[data-name='${inputt.dataset.name}']`)
@@ -74,7 +72,6 @@ async function fetchUserDetails() {
         });
 
         if (data.user.old_user && data.user.category === "Individual") {
-          
 
         } else if (data.user.old_user && data.user.category === "Corporate") {
           document.querySelector(".enumInput[data-name='fullname']").value = data.user.company_name
@@ -291,6 +288,8 @@ async function createUserFirst() {
     "data": {
       "category": "Corporate",
       "first_name": fullname,
+      "created_by": "admin",
+      "by_account": userInfo2?.id,
       "surname": "",
       "email": email,
       "phone": phone,

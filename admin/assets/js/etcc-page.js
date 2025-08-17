@@ -1,8 +1,10 @@
 let dataToExport;
 
-async function getEtccRequests(fromDate, toDate) {
+$("#initorBtn").attr("href", `../etcc-initiate.html?initiator=admin&id=${userInfo2.id}`)
 
-  const response = await fetch(`${HOST}/?getETCC&type=&fromDate=${fromDate}&toDate=${toDate}`)
+async function getEtccRequests() {
+
+  const response = await fetch(`${HOST}/?getETCC&type=`)
   const etccReqs = await response.json()
 
   $("#loader").css("display", "none")
@@ -25,7 +27,7 @@ async function getEtccRequests(fromDate, toDate) {
     dataToExport = etccReqs.message
     etccReqs.message.forEach((etcReq, i) => {
       let etccStatus = ""
-
+      
       let allStatusTable = ""
       if (etcReq.app_status === "Accepted") {
         allStatusTable = `<span class="badge bg-success">Approved</span>`
@@ -43,11 +45,9 @@ async function getEtccRequests(fromDate, toDate) {
           <td>${etcReq.fullname}</td>
           <td>${etcReq.email}</td>
           <td>${etcReq.category}</td>
+          <td>${etcReq.admin_email ? etcReq.admin_email : "self"}</td>
           <td>${allStatusTable}</td>
           <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
-          <td>
-            <a href="./etcc-details.html?theid=${etcReq.refe}&level=3&payer_id=${etcReq.payer_id}" class="button button-sm">View</a>
-          </td>
           <td>${etcReq.app_status === "Accepted" ? `<a href="./etcc-preview.html?theid=${etcReq.refe}" class="textPrimary fontBold">Preview</a>` : '-'}</td>
         </tr>
       `)
@@ -60,6 +60,9 @@ async function getEtccRequests(fromDate, toDate) {
             <td>${ii}</td>
             <td>${etcReq.timeIn}</td>
             <td>${etcReq.refe}</td>
+            <td>${etcReq.fullname}</td>
+            <td>${etcReq.email}</td>
+            <td>${etcReq.category}</td>
             <td>${etccStatus}</td>
             <td>${etcReq.date_approved === "" ? '-' : etcReq.date_approved}</td>
             <td>
@@ -144,11 +147,12 @@ async function getEtccRequests(fromDate, toDate) {
         etccStatus = `<span class="badge bg-warning">Pending</span>`
       }
 
+
     });
   }
 }
 
-getEtccRequests(null, null).then(tt => {
+getEtccRequests().then(tt => {
   $('#dataTable').DataTable();
   $('#dataTable2').DataTable();
   $('#dataTable3').DataTable();
@@ -157,12 +161,7 @@ getEtccRequests(null, null).then(tt => {
   $('#dataTable6').DataTable();
 })
 
-function applyFilter() {
-  let fromDate = document.querySelector('#etccFrom').value
-  let toDate = document.querySelector('#etccTo').value
 
-  getEtccRequests(fromDate, toDate)
-}
 
 
 $("#checkStatus").on("click", function () {

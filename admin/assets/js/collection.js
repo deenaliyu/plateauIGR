@@ -6,6 +6,15 @@ function formatMoney(amount) {
   });
 }
 
+function getFormattedDate(date) {
+  date = new Date(date)    
+  const day = String(date.getDate()).padStart(2, '0');
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+  const year = date.getFullYear();
+
+  return `${day}/${month}/${year}`;
+}
+
 let AllInvoiceData = {}
 
 async function fetchInvoice() {
@@ -15,8 +24,8 @@ async function fetchInvoice() {
 
   const response = await fetch(`${HOST}?fetchAllPayment`);
   const userInvoices = await response.json();
-
-  console.log(userInvoices);
+  
+//   console.log(userInvoices);
 
   $("#loader").css("display", "none");
   if (userInvoices.status === 1) {

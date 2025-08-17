@@ -1,6 +1,12 @@
 const urlParamshard = new URLSearchParams(window.location.search);
 const theid2 = urlParamshard.get('theid');
 
+function getTheYear(dateString) {
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  return year;
+}
+
 async function getEtccDetailsHard() {
     const response = await fetch(`${HOST}/?getETCC&type=ref&id=${theid2}`)
     const etccDetail = await response.json()
@@ -16,17 +22,17 @@ async function getEtccDetailsHard() {
 
         $("#receiptHardCopy").html(`
   
-            <div class="px-6" style="height: 260px">
+            <div class="px-6" style="height: 260px; margin-left: 150px">
                 <div class="flex justify-end mt-5">
                     <div>
                         <div>
                             <p class="text-sm text-center">Certificate Number</p>
                             <div class="border border-2 p-2" style="border: 2px solid #000 !important">
-                                <p class"text-xs" style="color: brown">${theEtcDetail.refe}</p>
+                                <p class"text-xs" style="color: brown">${theEtcDetail.etcc_no}</p>
                             </div>
                         </div>
 
-                        <div class="flex justify-center mt-4">
+                        <div class="flex justify-center mt-[100px]">
                             <div id="qrContainer" class="w-[100px] h-[100px]"></div>
                         </div>
 
@@ -54,14 +60,14 @@ async function getEtccDetailsHard() {
                 </tr>
                 <tr>
                 <th class="fontBold text-black pr-4">Sector:</th>
-                <td>${theEtcDetail.sector}</td>
+                <td>${theEtcDetail.private_or_public}</td>
                 </tr>
             </table>
             </div>
     
             <p class="px-6">This is to certify that Taxpayer with Tax Identification Number <span
                 class="text-lg fontBold text-black">${theEtcDetail.applicant_tin}</span> has settled his/her tax
-            assessment for the following 2 year(s) for the specified source of income.</p>
+            assessment for the following 3 year(s) for the specified source of income.</p>
     
             <div class="px-6 mt-4">
             <p class="fontBold text-xl text-black mb-2">Details of Assessment</p>
@@ -81,13 +87,13 @@ async function getEtccDetailsHard() {
                     <td class="text-sm">${theEtcDetail.year1}</td>
                     <td class="text-sm">₦ ${parseFloat(theEtcDetail.income1).toLocaleString()}</td>
                     <td class="text-sm">₦ ${parseFloat(theEtcDetail.income1).toLocaleString()}</td>
-                    <td class="text-sm">₦ ${parseFloat(theEtcDetail.tax_paid_3).toLocaleString()}</td>
+                    <td class="text-sm">₦ ${parseFloat(theEtcDetail.tax_paid_1).toLocaleString()}</td>
                 </tr>
                 <tr>
                     <td class="text-sm">${theEtcDetail.year2}</td>
                     <td class="text-sm">₦ ${parseFloat(theEtcDetail.income2).toLocaleString()}</td>
                     <td class="text-sm">₦ ${parseFloat(theEtcDetail.income2).toLocaleString()}</td>
-                    <td class="text-sm">₦ ${parseFloat(theEtcDetail.tax_paid_3).toLocaleString()}</td>
+                    <td class="text-sm">₦ ${parseFloat(theEtcDetail.tax_paid_2).toLocaleString()}</td>
                 </tr>
                 <tr>
                     <td class="text-sm">${theEtcDetail.year3}</td>
@@ -102,11 +108,11 @@ async function getEtccDetailsHard() {
             <table>
                 <tr>
                 <th class="text-black fontBold pr-4">Source of Income:</th>
-                <td>${theEtcDetail.sector ? theEtcDetail.sector : ''}</td>
+                <td>${theEtcDetail.sector ? theEtcDetail.sector : 'N/A'}</td>
                 </tr>
                 <tr>
                 <th class="text-black fontBold pr-4">Expiry Date:</th>
-                <td>Dec 31, 2024</td>
+                <td>31 December ${getTheYear(theEtcDetail.date_approved)}</td>
                 </tr>
             </table>
             </div>

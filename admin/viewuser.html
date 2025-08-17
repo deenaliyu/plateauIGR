@@ -103,64 +103,65 @@
         <section class="content-wrapper">
           <div class="container-xxl flex-grow-1 container-p-y">
             <section class="w-12/12 main_section">
-              <div class="w-full p-2">
-                <a type="button" style='color: #CDA545; font-weight: 500;' onclick="history.back()">Back to User
-                  list</a>
-                <h1 class="fontBold text-xl mb-4">View User</h1>
+                <div class="w-full">
+                  <a type="button" style='color: #CDA545; font-weight: 500;' onclick="history.back()">Back to User
+                    list</a>
+                  <h1 class="fontBold text-xl mb-4">View User</h1>
 
                 <section class="card-body card mt-4">
 
-                  <form action="">
-                    <div class="row md:w-[800px]">
-                      <div class="col mb-3">
-                        <label for="defaultSelect" class="form-label text-[16px]">Name of User <span
-                            class="text-[red]">*</span></label>
-                        <input required type="text" class="form-control userInputs" data-name="fullname"
-                          placeholder="Enter Full Name.." readonly />
-                      </div>
-                    </div>
-                    <div class="row md:w-[800px]">
-                      <div class="col mb-3">
-                        <label for="defaultSelect" class="form-label text-[16px]">Email Address <span
-                            class="text-[red]">*</span></label>
-                        <input required type="email" class="form-control userInputs" data-name="email"
-                          placeholder="Email address" readonly />
-                      </div>
-                    </div>
 
-                    <div class="row md:w-[800px]">
-                      <div class="col mb-3">
-                        <label for="defaultSelect" class="form-label text-[16px]">Role<span
-                            class="text-[red]">*</span></label>
-                        <input type="text" class="form-control userInputs" data-name="role" readonly />
-                      </div>
-                    </div>
-
-                    <div class="row md:w-[800px]">
-                      <div class="col mb-3">
-                        <label for="defaultSelect" class="form-label text-[16px]">Phone Number <span
-                            class="text-[red]">*</span></label>
-                        <input required type="number" class="form-control userInputs" data-name="phone"
-                          placeholder="Phone Number" readonly />
-                      </div>
-                    </div>
-                    <div class="row md:w-[800px]">
-                      <div class="col mb-3">
-                        <label for="defaultSelect" class="form-label text-[16px]">Password <span
-                            class="text-[red]">*</span></label>
-                        <div class=" input-group">
-                          <input required type="password" class="form-control passInput userInputs" data-name="password"
-                            id="basic-default-password12" readonly>
-
-                          <span id="opPas" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                    <form action="">
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Name of User <span
+                              class="text-[red]">*</span></label>
+                          <input required type="text" class="form-control userInputs" data-name="fullname"
+                            placeholder="Enter Full Name.." readonly />
                         </div>
                       </div>
-                    </div>
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Email Address <span
+                              class="text-[red]">*</span></label>
+                          <input required type="email" class="form-control userInputs" data-name="email"
+                            placeholder="Email address" readonly />
+                        </div>
+                      </div>
 
-                    <div id="msg_box"></div>
-                  </form>
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Role<span
+                              class="text-[red]">*</span></label>
+                          <input  type="text" class="form-control userInputs" data-name="role" readonly />
+                        </div>
+                      </div>
 
-                  <div class="mt-3">
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Phone Number <span
+                              class="text-[red]">*</span></label>
+                          <input required type="number" class="form-control userInputs" data-name="phone"
+                            placeholder="Phone Number" readonly />
+                        </div>
+                      </div>
+                      <div class="row md:w-[800px]">
+                        <div class="col mb-3">
+                          <label for="defaultSelect" class="form-label text-[16px]">Password <span
+                              class="text-[red]">*</span></label>
+                          <div class=" input-group">
+                            <input required type="password" class="form-control passInput userInputs"
+                              data-name="password" id="basic-default-password12" readonly>
+
+                            <span id="opPas" class="input-group-text cursor-pointer"><i class="bx bx-hide"></i></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div id="msg_box"></div>
+                    </form>
+                    
+                    <div class="mt-3">
                     <p class="text-[#555555] mb-5">Access Level</p>
 
 
@@ -223,8 +224,7 @@
                           <label for="">Tax Payers</label>
                           <div class="checkbox-group">
                             <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" disabled data-name="tax_payer_access" value="view_tax_list"> View Tax Payer list</label>
-                            <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" disabled data-name="tax_payer_access" value="view_tax_detail"> View Tax Payer details</label>
-                            <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" disabled data-name="tax_payer_access" value="edit_tax_detail"> Edit Tax Payer details</label>
+                            <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" disabled data-name="tax_payer_access" value="view_tax_detail"> Edit Tax Payer details</label>
                             <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" disabled data-name="tax_payer_access" value="acti_taxpayer"> Activate/deactivate Taxpayer</label>
                             <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" disabled data-name="tax_payer_access" value="allocate_appli"> Allocate applicable taxes</label>
                             <label class="block mb-2"><input type="checkbox" class="acclvl form-check-input" disabled data-name="tax_payer_access" value="download_report"> Download report</label>
@@ -327,10 +327,12 @@
 
                     </div>
                   </div>
-                </section>
 
+                  </section>
+                
+                
 
-              </div>
+                </div>
             </section>
           </div>
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
@@ -362,7 +364,7 @@
   <script src="./assets/js/nav.js"></script>
   <!-- <script src="./assets/js/session.js"></script> -->
   <script src="./assets/vendor/js/menu.js"></script>
-  <script src="./assets/js/viewuser.js"></script>
+  <script src="./assets/js/viewuser.js?v=1.1"></script>
   <script src="./assets/js/main.js"></script>
 </body>
 

@@ -87,6 +87,11 @@ async function fetchInvoice() {
       },
       { data: 'sector' },
       { data: 'business_cat' },
+      { data: 'admin_email',
+        render: function (data, type, row) {
+          return `${data ? data : 'self'}`;
+        }
+      },
       { data: 'date_created' },
       { data: 'due_date' },
       {

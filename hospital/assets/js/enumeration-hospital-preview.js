@@ -57,105 +57,20 @@ function renderFacilitySummary(facility) {
     let typeSpecificFields = '';
     for (const [key, value] of Object.entries(typeData)) {
         if (!['id', 'facility_hospital_id', 'created_at', 'updated_at', 'services_offered', 'primary_services_offered'].includes(key)) {
-            // Format the key: replace underscores with spaces and capitalize each word
             const label = key.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase());
             let displayValue = value;
 
-            // Handle different value types
-            if (typeof value === 'string' && (value.startsWith('[') && value.endsWith(']'))) {
-                // Handle JSON arrays (services lists)
-                try {
-                    const parsedArray = JSON.parse(value);
-                    displayValue = Array.isArray(parsedArray) ? parsedArray.join(', ') : value;
-                } catch (e) {
-                    displayValue = value;
-                }
-            } else if (key.includes('fee') || key.includes('cost') || key.includes('price')) {
-                // Format currency values
+            if (key.includes('fee') || key.includes('cost') || key.includes('price')) {
                 displayValue = formatCurrency(value);
-            } else if (key.includes('count')) {
-                // Format count values
-                displayValue = value || '0';
             }
 
             typeSpecificFields += `
-                <div class="col-6">
-                    <div class="mb-1 flex space-x-6">
-                        <strong style="font-size: 13px;">${label}:</strong><br>
-                        <span style="font-size: 13px;">${displayValue || 'N/A'}</span>
-                    </div>
-                </div>
+                <tr>
+                    <th width="40%">${label}:</th>
+                    <td>${displayValue || 'N/A'}</td>
+                </tr>
             `;
         }
-    }
-
-    // Generate branch data HTML
-    let branchDataHTML = '';
-    const facilityBranches = facility.facility_branches || [];
-
-    // Handle both single object and array cases
-    let branchesArray = [];
-    if (Array.isArray(facilityBranches)) {
-        branchesArray = facilityBranches;
-    } else if (facilityBranches && typeof facilityBranches === 'object' && facilityBranches.branch_name) {
-        // Single branch object
-        branchesArray = [facilityBranches];
-    }
-
-    if (branchesArray.length > 0) {
-        branchesArray.forEach((branch, index) => {
-            branchDataHTML += `
-                <div>
-                    <h6 class="fw-bold mb-2" style="font-size: 14px; color: #495057;">Branch ${index + 1}</h6>
-                    <div class="row">
-                        <div class="col-6">
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">Branch Name:</strong><br>
-                                <span style="font-size: 13px;">${branch.branch_name || 'N/A'}</span>
-                            </div>
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">Physical Address:</strong><br>
-                                <span style="font-size: 13px;">${branch.physical_address || 'N/A'}</span>
-                            </div>
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">City:</strong><br>
-                                <span style="font-size: 13px;">${branch.city || 'N/A'}</span>
-                            </div>
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">LGA:</strong><br>
-                                <span style="font-size: 13px;">${branch.lga || 'N/A'}</span>
-                            </div>
-                        </div>
-                        <div class="col-6">
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">Phone Numbers:</strong><br>
-                                <span style="font-size: 13px;">${branch.phone_numbers || 'N/A'}</span>
-                            </div>
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">Email:</strong><br>
-                                <span style="font-size: 13px;">${branch.email || 'N/A'}</span>
-                            </div>
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">Website:</strong><br>
-                                <span style="font-size: 13px;">${branch.website || 'N/A'}</span>
-                            </div>
-                            <div class="mb-1 flex space-x-6">
-                                <strong style="font-size: 13px;">Coordinates:</strong><br>
-                                <span style="font-size: 13px;">${branch.latitude || 'N/A'}, ${branch.longitude || 'N/A'}</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `;
-        });
-    } else {
-        branchDataHTML = `
-            <div class="mb-3 p-3 border rounded" style="background-color: #f8f9fa;">
-                <div class="text-center" style="font-size: 13px; color: #6c757d;">
-                    No branch information available
-                </div>
-            </div>
-        `;
     }
 
     // Generate HTML
@@ -180,23 +95,13 @@ function renderFacilitySummary(facility) {
 
         <!-- Photo and QR Code Row -->
         <div class="d-flex justify-content-between align-items-start mb-4">
-            
+            <div style="width: 280px;">
+                <img src="${facilityData.facility_photo || './assets/img/proppicture.png'}" 
+                     class="img-fluid" style="width: 100%; height: 160px; object-fit: cover; border: 1px solid #ccc;" alt="Facility Photo" />
+            </div>
             <div class="text-center" >
-                <div id="qrContainer" style="width: 100px;" ></div>
+                <div id="qrContainer" style="width: 200px;" ></div>
             </div>
-
-            <!-- Tax Liabilities -->
-        <div class="mb-2">
-            <h6 class="fw-bold mb-2" style="font-size: 15px;">TAX LIABILITIES</h6>
-            <div>
-                ${facilityData.liabilities &&
-            facilityData.liabilities !== 'null' &&
-            facilityData.liabilities.trim() !== ''
-            ? facilityData.liabilities.split('\n').map(tax => `<div class="mb-1 flex space-x-6" style="font-size: 13px;">${tax}</div>`).join('')
-            : '<div style="font-size: 13px;">No taxes selected</div>'
-        }
-            </div>
-        </div>
         </div>
 
         <!-- Facility Info -->
@@ -210,7 +115,7 @@ function renderFacilitySummary(facility) {
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Facility Name:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.first_name || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.branch_name || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Facility Type:</strong><br>
@@ -218,7 +123,7 @@ function renderFacilitySummary(facility) {
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">CAC Number:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.cac_rc_number || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.cac_number || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Type of Ownership:</strong><br>
@@ -240,7 +145,7 @@ function renderFacilitySummary(facility) {
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">National Health Facility Code:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.health_facility_code || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.nhfc_code || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">NHIS Accreditation Number:</strong><br>
@@ -248,7 +153,7 @@ function renderFacilitySummary(facility) {
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Certificate of Standards No.:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.certificate_of_standards || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.standards_cert || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">TIN:</strong><br>
@@ -256,9 +161,16 @@ function renderFacilitySummary(facility) {
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Date of Establishment:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.date_established || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.establishment_date || 'N/A'}</span>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- Operations Info -->
+        <div class="mb-3">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">OPERATIONS INFO</h6>
+            <div class="row">
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Primary Services Offered:</strong><br>
@@ -270,7 +182,7 @@ function renderFacilitySummary(facility) {
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Number of Employees:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.number_of_employees || '0'}</span>
+                        <span style="font-size: 13px;">${facilityData.employee_count || '0'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Number of Beds:</strong><br>
@@ -284,21 +196,13 @@ function renderFacilitySummary(facility) {
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Number of Surgeries/Procedures per Month:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.monthly_surgeries || '0'}</span>
+                        <span style="font-size: 13px;">${facilityData.monthly_procedures || '0'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Cost of Hospital Card/Registration Fee:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.card_fee || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.registration_fee || 'N/A'}</span>
                     </div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Operations Info -->
-        <div class="mb-3">
-            <h6 class="fw-bold mb-2" style="font-size: 15px;">OPERATIONS INFO</h6>
-            <div class="row">
-                ${typeSpecificFields}
             </div>
         </div>
 
@@ -309,11 +213,11 @@ function renderFacilitySummary(facility) {
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Physical Address:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.address || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.physical_address || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">City/Town:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.lga || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.city || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">LGA:</strong><br>
@@ -335,11 +239,11 @@ function renderFacilitySummary(facility) {
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Latitude:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.enumlatitude || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.latitude || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Longitude:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.enumlongitude || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.longitude || 'N/A'}</span>
                     </div>
                 </div>
             </div>
@@ -352,15 +256,15 @@ function renderFacilitySummary(facility) {
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Full Name of Representative:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.rep_firstname + ' ' + facilityData.rep_surname || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.representative_name || facilityData.first_name || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Address:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.rep_address || facilityData.address || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.representative_address || facilityData.address || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Phone Number:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.rep_phone || facilityData.phone || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.representative_phone || facilityData.phone || 'N/A'}</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -379,14 +283,18 @@ function renderFacilitySummary(facility) {
                 </div>
             </div>
         </div>
-
-        <!-- Branch Information -->
-        <div class="mb-3">
-            <h6 class="fw-bold mb-2" style="font-size: 15px;">BRANCH INFORMATION</h6>
-            ${branchDataHTML}
+        <!-- Tax Liabilities -->
+        <div class="mb-2">
+            <h6 class="fw-bold mb-2" style="font-size: 15px;">TAX LIABILITIES</h6>
+            <div>
+                ${facilityData.liabilities &&
+            facilityData.liabilities !== 'null' &&
+            facilityData.liabilities.trim() !== ''
+            ? facilityData.liabilities.split('\n').map(tax => `<div class="mb-1 flex space-x-6" style="font-size: 13px;">${tax}</div>`).join('')
+            : '<div style="font-size: 13px;">No taxes selected</div>'
+        }
+            </div>
         </div>
-
-        
     </div>
 </div>`;
 
@@ -422,7 +330,7 @@ async function loadFacilityDetails(facilityId) {
         const data = await response.json();
 
         if (data.status === 1 && data.facilities && data.facilities.length > 0) {
-            // console.log('Facility details loaded:', data.facilities[0]);
+            console.log('Facility details loaded:', data.facilities[0]);
             renderFacilitySummary(data.facilities[0]);
         } else {
             reviewSummaryElement.innerHTML = `

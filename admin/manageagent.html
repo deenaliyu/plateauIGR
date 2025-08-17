@@ -37,13 +37,6 @@
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
   <script src="./assets/vendor/js/helpers.js"></script>
   <script src="./assets/js/config.js"></script>
-
-  <style>
-    .theChart {
-      max-width: 100%;
-      height: 400px;
-    }
-  </style>
 </head>
 
 <body class="taxpayer">
@@ -77,6 +70,12 @@
             </div>
 
             <div class="mt-4 flex gap-x-5 ms-auto">
+              <div class="input-group input-group-merge md:w-72 hidden md:flex">
+                <span class="input-group-text" id="basic-addon-search31"><i class="bx bx-search"></i></span>
+                <input type="text" class="form-control" placeholder="Search..." aria-label="Search..."
+                  aria-describedby="basic-addon-search31">
+              </div>
+              <a href="newagent.html" class="button">Create New Field Agent</a>
               <div class="avatar avatar-online flex gap-x-2 items-center">
                 <img src="" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
                 <p class="adminName">-</p>
@@ -96,8 +95,9 @@
               <a type="button" style='color: #CDA545; font-weight: 500;' onclick="history.back()">Back to
                 Agent list</a>
             </div>
+            <div class="card">
 
-            <div id="user-profile" class="card card-body mt-4 mb-4">
+            <div id="user-profile" class="p-3 mt-2 md:mx-10">
               <div class="flex gap-x-2">
                 <img id="avatar" src="./assets/img/avatars/1.png" class="h-[70px] w-[70px] object-cover rounded-full" />
                 <div class="mt-2">
@@ -105,7 +105,7 @@
                   <p><span class="font-bold">Agent ID: <span id="agent-id">---</span></span></p>
                 </div>
               </div>
-
+            
               <div class="flex flex-wrap gap-x-5 gap-y-3 mt-2">
                 <p><span class="font-bold">Email address: <span id="email">---</span></span></p>
                 <p><span class="font-bold">Contact: <span id="contact">---</span></span></p>
@@ -116,92 +116,46 @@
               </div>
             </div>
 
-            <div class="grid md:grid-cols-4 grid-cols-2 gap-3">
+              <div class="px-4">
+                <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-3" id="pills-tab" role="tablist">
+                  <li class="nav-item text-center" role="presentation">
+                    <button class="nav-link active" id="pills-app-tab" data-bs-toggle="pill" data-bs-target="#pills-app"
+                      type="button" role="tab" aria-controls="pills-app" aria-selected="true">
+                      Registered tax payers
+                    </button>
+                  </li>
+                </ul>
+                <div class="tab-content" id="pills-tabContent">
+                  <div class="tab-pane fade show active" id="pills-app" role="tabpanel" aria-labelledby="pills-app-tab">
+                    <div class="table-responsive">
+                <table class="table invoiceTable" id="dataTable">
+                  <thead>
+                    <tr>  
+                        <th>S/N</th>
+                        <th>Payer ID</th>
+                        <th>Name</th>
+                        <th>Category</th>
+                        <th>Date created</th>
+                        <th>Date verified</th>
+                        <th>Account status</th>
+                        <th>TIN Status</th>
+                    </tr>
+                  </thead>
 
-              <div class="dashCards  card w-full">
-                <p class="headder text-gray-500">TOTAL TAXPAYER REGISTERED</p>
-                <p class="zanumbers "><span class="invNumbers" id="totalRegis">-</span></p>
+                  <tbody id="showTaxPayers">
+
+
+
+
+                  </tbody>
+                </table>
+
               </div>
-
-              <div class="dashCards card w-full">
-
-                <div class="headder">
-                  <p class="text-gray-500">TOTAL TAXPAYER REGISTERED</p>
-                  <small>By category</small>
-                </div>
-
-                <div class="flex items-center justify-between gap-4">
-                  <select class="form-select form-select-sm" onchange="fetchCateg(this)" id="categgg">
-
-                  </select>
-
-                  <p class="zanumbers" id="totalRegCateg">-</p>
-                </div>
-
-              </div>
-
-              <div class=" dashCards card w-full">
-                <p class="headder text-gray-500">TOTAL MONTHLY REGISTRATION</p>
-
-                <div class="flex items-center justify-between gap-4">
-                  <select class="form-select form-select-sm" onchange="fetchCateg2(this)" id="categgg2">
-
-                  </select>
-
-                  <p class="zanumbers" id="totalRegCategRege">-</p>
-                </div>
-              </div>
-
-
-            </div>
-
-            <section class="mt-4">
-              <div class="card card-body h-full">
-                <h1 class="font-bold uppercase text-[#000]">% Of Taxpayers Registered(By Category)</h1>
-
-                <div id="dashbordChart" class="theChart"></div>
-              </div>
-            </section>
-
-            <div class="px-4 card card-body mt-5">
-              <ul class="nav nav-pills mb-3 flex md:gap-x-10 pt-3" id="pills-tab" role="tablist">
-                <li class="nav-item text-center" role="presentation">
-                  <button class="nav-link active" id="pills-app-tab" data-bs-toggle="pill" data-bs-target="#pills-app"
-                    type="button" role="tab" aria-controls="pills-app" aria-selected="true">
-                    Registered tax payers
-                  </button>
-                </li>
-              </ul>
-              <div class="tab-content" id="pills-tabContent">
-                <div class="tab-pane fade show active" id="pills-app" role="tabpanel" aria-labelledby="pills-app-tab">
-                  <div class="table-responsive">
-                    <table class="table invoiceTable" id="dataTable">
-                      <thead>
-                        <tr>
-                          <th>S/N</th>
-                          <th>Payer ID</th>
-                          <th>Name</th>
-                          <th>Category</th>
-                          <th>Date created</th>
-                          <th>Date verified</th>
-                          <th>Account status</th>
-                          <th>TIN Status</th>
-                        </tr>
-                      </thead>
-
-                      <tbody id="showTaxPayers">
-
-
-
-
-                      </tbody>
-                    </table>
-
+                   
                   </div>
+               
 
                 </div>
-
-
               </div>
             </div>
 
@@ -221,6 +175,34 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
 
+  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body mb-5">
+
+          <h1 class="text-center text-2xl">TIN Status</h1>
+          <form action="">
+            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
+              Number.</p>
+
+            <select name="" id="selectInput" class="form-select mt-5">
+              <option disabled selected>update status</option>
+              <option value="0">Un-verfied</option>
+              <option value="1">Verified</option>
+            </select>
+
+            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
+            <div id="msg_box" class="w-full"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
 
   <!-- build:js assets/vendor/js/core.js -->
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
@@ -237,7 +219,7 @@
   <script src="./assets/vendor/libs/export-table/src/tableHTMLExport.js"></script>
   <!-- <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script> -->
   <!-- <script src="./assets/js/session.js"></script> -->
-  <script src="./assets/js/manageagent.js"></script>
+  <script src="./assets/js/manageagent.js?v=5.0"></script>
   <script src="./assets/js/table2CSV.js"></script>
   <!-- endbuild -->
   <script>

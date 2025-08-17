@@ -98,6 +98,7 @@ async function fetchInvoice() {
           return formatMoney(row.total_amount_paid);
         }
       },
+      { data: 'admin_email' },
       { data: 'sector' },
       { data: 'date_created' },
       { data: 'due_date' },
@@ -119,6 +120,7 @@ async function fetchInvoice() {
 }
 
 fetchInvoice()
+
 
 $("#filterDemand").on('click', function () {
   $("#filterInvoice").modal('hide')

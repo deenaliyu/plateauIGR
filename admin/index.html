@@ -59,6 +59,7 @@
             Remember me
           </label>
         </div>
+         <a href="forgetpass.html" class="textPrimary text-right">forgot password ?</a>
       </div>
 
       <button class="button block w-full mt-6" id="LoginAmin" type="button">Login Now</button>
@@ -66,14 +67,17 @@
         Terms of Service and that you have read and acknowledge our Global Privacy Statement.</p>
 
       <div class="w-full mt-3 msg_box"></div>
+
     </form>
   </section>
 
+  <footer class=" bg-[#CDA545] mt-2  w-full p-4 text-xl flex items-center justify-center gap-3">
+    <p class="text-white text-center text-[14px] items-center">Copyright 2021 - <span id="cc"></span> Primeguage Solutions Limited Portal. All rights reserved.</p>
+    <div class="flex gap-3 items-center justify-center">
+        <img src='../assets/img/ncc.svg' alt=""  width="60" />
+        <img src='../assets/img/pci.svg' alt="" width="60" />
+    </div>
 
-  <footer class=" bg-[#CDA545] mt-2  w-full p-4 text-xl">
-    <p class="text-white text-center text-[14px] items-center">
-      Copyright 2021 - <span id="cc"></span> Primeguage Solutions Limited Portal. All rights reserved.
-    </p>
   </footer>
 
 
@@ -109,7 +113,7 @@
     document.getElementById("cc").textContent = new Date().getFullYear();
   </script>
   <script src="../assets/js/nav.js"></script>
-  <script src="../assets/js/signin.js"></script>
+  <script src="../assets/js/signin.js?v=1.3"></script>
 </body>
 
 </html>
