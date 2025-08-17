@@ -2,6 +2,50 @@ let USER_SESSION = localStorage.getItem("MDAINFO");
 let finalUSER_SESSION = JSON.parse(USER_SESSION);
 let mdaID = finalUSER_SESSION.fullname;
 
+function formatMoney(amount) {
+  return parseFloat(amount).toLocaleString('en-US', {
+    style: 'currency',
+    currency: 'NGN', // Change this to your desired currency code
+    minimumFractionDigits: 2,
+  });
+}
+
+async function getDailyRemittance(date) {
+
+  $.ajax({
+    url: `${HOST}?getDailyRemittance&mda_id=${mdaID}`, // Replace with the actual path
+    type: 'GET',
+    data: { date: date },
+    dataType: 'json',
+    success: function (response) {
+      if (response.status === 1) {
+        const data = response.message[0];
+        $('#numberOfdailyRemittance').html(data.total_daily_remittances.toLocaleString());
+        $('#amountOfdailyRemittance').html(formatMoney(parseFloat(data.total_daily_amount)));
+      } else {
+        // console.log('No data found for today');
+        $('#numberOfdailyRemittance').html(0);
+        $('#amountOfdailyRemittance').html(formatMoney(parseFloat(0)));
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error('AJAX Error:', status, error);
+      $('#numberOfdailyRemittance').html(0);
+      $('#amountOfdailyRemittance').html(formatMoney(parseFloat(0)));
+    }
+  });
+
+}
+
+$("#dateFilter").val(new Date().toISOString().split('T')[0])
+
+$('#dateFilter').on('change', function () {
+  $('#numberOfdailyRemittance').html(`<div class="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-900"></div>`);
+  $('#amountOfdailyRemittance').html(`<div class="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-900"></div>`);
+  getDailyRemittance($(this).val());
+});
+
+getDailyRemittance(new Date().toISOString().split('T')[0])
 
 async function fetchPayment() {
   $("#recentPayment").html("");
@@ -56,7 +100,7 @@ async function getDashboardAnalyticsAdmin() {
   $("#totalInv").html(dashboardAnalytics.total_invoice.toLocaleString())
   $("#totalRem").html("₦" + dashboardAnalytics.total_amount_paid.toLocaleString())
 
- 
+
 
   var chartDom = document.getElementById('dashboardPie');
   var myChart = echarts.init(chartDom);
@@ -93,13 +137,13 @@ async function getDashboardAnalyticsAdmin() {
           { value: dashboardAnalytics.total_amount_invoiced, name: 'Total Amount Invoiced' },
           { value: dashboardAnalytics.total_amount_paid, name: 'Total Amount Paid' },
           { value: dashboardAnalytics.due_invoices, },
-          { value: dashboardAnalytics.due_amount,},
+          { value: dashboardAnalytics.due_amount, },
         ]
       }
     ]
   };
 
-  
+
   option && myChart.setOption(option);
 
   fetchInvoicess(dashboardAnalytics.total_amount_paid)
@@ -158,7 +202,7 @@ async function fetchInvoicess(dash) {
     };
 
     option && myChart.setOption(option);
-  
+
   } else {
 
   }

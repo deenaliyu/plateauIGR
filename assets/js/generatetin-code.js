@@ -36,6 +36,9 @@ let plateauLGAs = {
   "Shendam": "16",
   "Wase": "17"
 }
+
+
+
 const urlParams = new URLSearchParams(window.location.search);
 let myParam = urlParams.get('category');
 
@@ -80,6 +83,9 @@ function previewPage() {
           theInputt.value = inputt.value
         }
       });
+
+      const isForeigner2 = document.getElementById("foreigner_yes").checked;
+      document.querySelector(`.payInputs2[data-name='foreigner']`).value = isForeigner2 ? 'Yes' : 'No'
       nextPrev(1)
 
     }
@@ -130,6 +136,39 @@ async function getIndustriesSectors() {
 
 getIndustriesSectors();
 
+function toggleForeignerFields() {
+  const isForeigner = document.getElementById("foreigner_yes").checked;
+  const passportField = document.querySelector(".passportField");
+  const nationalitySelect = document.getElementById("nationalitySelect");
+
+  nationalitySelect.innerHTML = "";
+
+  if (isForeigner) {
+    // Show passport field
+    passportField.classList.remove("hidden");
+    nationalitySelect.innerHTML = `
+      <option value="" disabled selected>Select your Nationality --</option>
+    `;
+
+    countriesList.forEach(country => {
+      const option = document.createElement("option");
+      option.value = country.name;
+      option.textContent = country.name;
+      nationalitySelect.appendChild(option);
+    });
+  } else {
+    // Hide passport field
+    passportField.classList.add("hidden");
+
+    // Reset nationality to only Nigeria
+    const option = document.createElement("option");
+    option.value = "Nigeria";
+    option.textContent = "Nigeria";
+    option.selected = true;
+    nationalitySelect.appendChild(option);
+  }
+}
+
 
 async function generateTin(accountType) {
   try {
@@ -142,10 +181,12 @@ async function generateTin(accountType) {
     $("#generateTinBtn").addClass("hidden")
     let allInputs = document.querySelectorAll(".payInputs")
     let lgaInput = document.querySelector("#selectLGA")
-
+    let isForeigner3 = document.getElementById("foreigner_yes").checked;
+    
     let dataToSend = {
       type: accountType,
-      created_by: regType ? regType : null
+      created_by: regType ? regType : null,
+      foreigner: isForeigner3 ? "yes": 'no'
     }
 
     allInputs.forEach(allInput => {
@@ -177,8 +218,8 @@ async function generateTin(accountType) {
           <a href="${callbackParam}" class="button" id="goHomeBtn">Continue</a> 
         `)
       }
-      
-      
+
+
       nextPrev(1)
     } else {
       $("#msg_box").html(`<p class="text-warning text-center mt-4 text-lg">${resdata.error}.</p>`)

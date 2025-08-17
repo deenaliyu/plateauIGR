@@ -38,6 +38,24 @@
       <h1 class="fontBold text-2xl">Generate Tin</h1>
       <h1 class="mb-3 mt-3">Personal Details</h1>
 
+      <div class="form-group w-full mb-4">
+        <p class="text-lg fontBold">Are you a Foreign Expatriates?*</p>
+        <div class="flex items-center gap-4 mt-2">
+          <div class="flex items-center gap-2">
+            <input type="radio" id="foreigner_yes" name="foreigner" value="Yes" class="form-check-input" required
+              onchange="toggleForeignerFields()">
+            <label for="foreigner_yes" class="mb-0">Yes</label>
+          </div>
+          <div class="flex items-center gap-2">
+            <input type="radio" id="foreigner_no" checked name="foreigner" value="No" class="form-check-input" required
+              onchange="toggleForeignerFields()">
+            <label for="foreigner_no" class="mb-0">No</label>
+          </div>
+        </div>
+      </div>
+
+
+
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
           <label for="">First name*</label>
@@ -77,6 +95,8 @@
           <input type="date" class="form-control payInputs" data-name="date_of_birth" required>
         </div>
       </div>
+
+
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
@@ -122,14 +142,25 @@
         </div>
       </div>
 
-
-      <div class="flex items-center mb-4 gap-2">
+      <div id="ForeignerFields" class="flex  gap-2 mb-4">
         <div class="form-group w-full">
           <label for="">Nationality*</label>
-          <select class="form-select payInputs" id="nationality" data-name="nationality" required>
-            <option value="Nigeria">Nigeria</option>
+          <select class="form-select payInputs" id="nationalitySelect" data-name="nationality" required>
+            <option value="Nigeria" selected>Nigeria</option>
           </select>
         </div>
+
+        <div class="passportField w-full hidden">
+          <div class="form-group">
+            <label for="">Passport Number*</label>
+            <input type="text" class="form-control payInputs" data-name="passport_number"
+              placeholder="Enter your passport number">
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center mb-4 gap-2">
+
 
         <div class="form-group w-full">
           <label for="">State of Residence*</label>
@@ -145,7 +176,7 @@
       </div>
 
       <div class="form-group w-full mb-4">
-        <label for="">Address*</label>
+        <label for="">Resident Address*</label>
         <input type="text" class="form-control payInputs" data-name="address" placeholder="" required>
       </div>
 
@@ -198,6 +229,20 @@
           <input type="text" class="form-control payInputs2" data-name="date_of_birth" readonly>
         </div>
       </div>
+
+      <div class="flex items-center mb-4 gap-2">
+        <div class="form-group w-full">
+          <label for="">Are you a Foreign Expatriates?</label>
+          <input type="text" class="form-control payInputs2" data-name="foreigner" readonly>
+        </div>
+        
+        <div class="form-group w-full">
+          <label for="">Passport Number</label>
+          <input type="text" class="form-control payInputs2" data-name="passport_number" readonly>
+        </div>
+      </div>
+
+
 
       <div class="flex items-center mb-4 gap-2">
         <div class="form-group w-full">
@@ -289,7 +334,7 @@
 
   </script>
   <script src="assets/js/nav.js"></script>
-  <!-- <script src="assets/js/nationality.js"></script> -->
+  <script src="assets/js/nationality.js"></script>
   <script src="assets/js/generatetin-code.js"></script>
 </body>
 

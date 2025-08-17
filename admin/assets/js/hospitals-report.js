@@ -134,8 +134,8 @@ function renderFacilities(facilities) {
         <td>${facility.enumeration_id}</td>
         <td>${facility.first_name || 'N/A'}</td>
         <td>${formatFacilityType(facility.facility_type) || 'N/A'}</td>
-        <td>${facility.number_of_beds || '0'}</td>
-        <td>${facility.avg_monthly_visits || '0'}</td>
+        <td>${facility.number_of_employees || '0'}</td>
+        <td>${facility.tin_response.toUpperCase() || 'NO'}</td>
         <td>${facility.state || 'N/A'}</td>
         <td>${facility.lga || 'N/A'}</td>
         <td>${facility.phone || 'N/A'}</td>

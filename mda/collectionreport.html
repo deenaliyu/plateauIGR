@@ -147,7 +147,7 @@
               <!-- modals for filtering invoice -->
 
 
-              <button data-bs-target="#generateInvModal" onclick="exportData()"
+              <button data-bs-target="#generateInvModal" onclick="exportToExcel()"
                 class="button mt-[3.2vh] md:py-0 py-2 w-[30vh] mx-3 md:w-[37vh] md:text-[2.2vh] text-[2vh] hover:text-white flex justify-content-center align-items-center">
                 <iconify-icon icon="material-symbols:cloud-download-rounded"
                   style="font-size: 3vh; padding-right: 1.5vh"></iconify-icon>
@@ -237,6 +237,7 @@
   <script src="./assets/js/nav.js"></script>
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="./assets/js/session.js"></script>
   <!-- endbuild -->
   <script src="./assets/js/collection.js"></script>
@@ -245,44 +246,6 @@
     let theAtivo = document.querySelector(`.dggg`);
     theAtivo.parentElement.classList.add("active");
   </script>
-
-
-  <script>
-    function exportData() {
-      var csv = [];
-      // Get the table element
-      var table = document.querySelector("table");
-      var thead = table.querySelector("thead");
-      var tbody = table.querySelector("tbody");
-
-      // Add header to CSV, excluding the last column
-      var header = [];
-      var headerCells = thead.rows[0].cells;
-      for (var h = 0; h < headerCells.length - 1; h++) {
-        header.push(headerCells[h].innerText);
-      }
-      csv.push(header.join(','));
-
-      // Add rows to CSV, excluding the last column
-      for (var i = 0; i < tbody.rows.length; i++) {
-        var row = [], cols = tbody.rows[i].cells;
-        for (var j = 0; j < cols.length - 1; j++) {
-          row.push(cols[j].innerText);
-        }
-        csv.push(row.join(','));
-      }
-
-      // Download CSV file
-      var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement('a');
-      link.setAttribute('href', encodedUri);
-      link.setAttribute('download', 'mda_collection_report');
-      document.body.appendChild(link);
-      link.click();
-    }
-  </script>
-
   <!-- Vendors JS -->
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <!-- Main JS -->

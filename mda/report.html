@@ -89,82 +89,83 @@
                   aria-describedby="basic-addon-search31" />
               </div> -->
 
-            <button class="flex gap-1 align-items-center mt-4" type="button" data-bs-toggle="modal"
-              data-bs-target="#filterInvoice">
-              <iconify-icon icon="mdi:filter-variant" style="font-size: 3vh"></iconify-icon>
-              Filter
-            </button>
+              <button class="flex gap-1 align-items-center mt-4" type="button" data-bs-toggle="modal"
+                data-bs-target="#filterInvoice">
+                <iconify-icon icon="mdi:filter-variant" style="font-size: 3vh"></iconify-icon>
+                Filter
+              </button>
 
-            <!-- modals for filtering invoice -->
+              <!-- modals for filtering invoice -->
 
-            <a href="#">
-              <button data-bs-toggle="modal" data-bs-target="#generateInvModal" onclick="tableToCSV()"
-                class="button mt-[3.2vh] md:py-0 py-2 w-[30vh] mx-3 md:w-[37vh] md:text-[2.2vh] text-[2vh] hover:text-white flex justify-content-center align-items-center">
-                <iconify-icon icon="material-symbols:cloud-download-rounded"
-                  style="font-size: 3vh; padding-right: 1.5vh"></iconify-icon>
-                Download Report
-              </button></a>
+              <a href="#">
+                <button data-bs-toggle="modal" data-bs-target="#generateInvModal" onclick="exportToExcel()"
+                  class="button mt-[3.2vh] md:py-0 py-2 w-[30vh] mx-3 md:w-[37vh] md:text-[2.2vh] text-[2vh] hover:text-white flex justify-content-center align-items-center">
+                  <iconify-icon icon="material-symbols:cloud-download-rounded"
+                    style="font-size: 3vh; padding-right: 1.5vh"></iconify-icon>
+                  Download Report
+                </button></a>
 
-            <a class="mt-4 flex flex-row gap-2" href="./profile.html">
-              <div class="">
-                <img src="./assets/img/userprofile.png" alt class="md:w-[5vh] w-10 h-auto rounded-circle"
-                  id="theProfImg1" />
-              </div>
-              <p id="mdName"></p>
-            </a>
-          </div>
+              <a class="mt-4 flex flex-row gap-2" href="./profile.html">
+                <div class="">
+                  <img src="./assets/img/userprofile.png" alt class="md:w-[5vh] w-10 h-auto rounded-circle"
+                    id="theProfImg1" />
+                </div>
+                <p id="mdName"></p>
+              </a>
+            </div>
         </nav>
 
         <!-- / Navbar -->
 
         <!-- Content wrapper -->
-        <section class="content-wrapper bg-white border-t-2">
+        <section class="content-wrapper border-t-2">
           <div class="container-xxl flex-grow-1 container-p-y taxes">
-            <div class="border-1 px-4 rounded-xl">
-              <h1 class="text-2xl text-[#282828] fontBold mt-4">
-                Invoice Report
-              </h1>
-              <hr class="text-[#F4F4F4] my-3" />
-              <div class="table-responsive p-3">
-                <table class="table theTable table-striped" id="dataTable">
-                  <thead class="text-center">
-                    <th class="fontBold text-sm text-gray-500">
-                      <div class="flex flex-row">
-                        S/N
-                        <iconify-icon icon="material-symbols:arrow-downward-rounded"></iconify-icon>
-                      </div>
-                    </th>
-                    <th class="fontBold text-sm text-gray-500">
-                      Revenued Head
-                    </th>
-                    <th class="fontBold text-sm text-gray-500">
-                      Name of citizen
-                    </th>
-                    <th class="fontBold text-sm text-gray-500">
-                      Invoice number
-                    </th>
 
-                    <th class="fontBold text-sm text-gray-500">Amount</th>
-
-                    <th class="fontBold text-gray-500">Invoice due date</th>
-                    <th class="fontBold text-gray-500">
-                      Payment Status
-                    </th>
-                    <th class="fontBold text-gray-500">Actions</th>
-                    <!-- <th class="fontBold text-gray-500">Payment status</th> -->
-                    <!-- <th class="fontBold text-gray-500">Download</th> -->
-                  </thead>
-                  <tbody id="showInvoices">
-
-                  </tbody>
-                </table>
+            <div class="card">
+              <div class="card-header">
+                <h1 class="text-2xl text-[#282828] fontBold mt-4">
+                  Invoice Report
+                </h1>
               </div>
-              <div class="flex justify-center items-center mt-4" id="loader">
-                <div class="animate-spin rounded-full h-10 w-10 border-b-2 mr-4 border-gray-900"></div>
-                loading...
+
+              <div class="card-body">
+                <div class="table-responsive">
+                  <table class="table theTable table-striped" id="dataTable">
+                    <thead>
+                      <th class="fontBold text-sm text-gray-500">S/N</th>
+                      <th class="fontBold text-sm text-gray-500">
+                        Revenued Head
+                      </th>
+                      <th class="fontBold text-sm text-gray-500">
+                        Name of citizen
+                      </th>
+                      <th class="fontBold text-sm text-gray-500">
+                        Invoice number
+                      </th>
+
+                      <th class="fontBold text-sm text-gray-500">Amount</th>
+
+                      <th class="fontBold text-gray-500">Invoice due date</th>
+                      <th class="fontBold text-gray-500">
+                        Payment Status
+                      </th>
+                      <th class="fontBold text-gray-500">Actions</th>
+                      <!-- <th class="fontBold text-gray-500">Payment status</th> -->
+                      <!-- <th class="fontBold text-gray-500">Download</th> -->
+                    </thead>
+                    <tbody id="showInvoices">
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="flex justify-center items-center mt-4" id="loader">
+                  <div class="animate-spin rounded-full h-10 w-10 border-b-2 mr-4 border-gray-900"></div>
+                  loading...
+                </div>
               </div>
             </div>
           </div>
+
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
           <div class="content-backdrop fade"></div>
         </section>
@@ -227,7 +228,7 @@
     </div>
   </div>
 
-  
+
 
   <!-- / Layout wrapper -->
   <!-- Core JS -->
@@ -241,7 +242,10 @@
   <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
   <script src="./assets/js/nav.js"></script>
   <script src="./assets/vendor/js/menu.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   <script src="./assets/js/session.js"></script>
 
   <!-- endbuild -->
@@ -252,80 +256,8 @@
     theAtivo.parentElement.classList.add("active");
   </script>
 
-
-  <script>
-    function tableToCSV() {
-      /* Get the HTML data using Element by Id */
-      var table = document.querySelector(".table");
-
-      /* Declaring array variable */
-      var rows = [];
-
-      //iterate through rows of table
-      for (var i = 0, row; row = table.rows[i]; i++) {
-        //rows would be accessed using the "row" variable assigned in the for loop
-        //Get each cell value/column from the row
-        column1 = row.cells[0].innerText;
-        column2 = row.cells[1].innerText;
-        column3 = row.cells[2].innerText;
-        column4 = row.cells[3].innerText;
-        column5 = row.cells[4].innerText;
-        column6 = row.cells[5].innerText;
-        column7 = row.cells[6].innerText;
-
-
-
-
-        /* add a new records in the array */
-        rows.push(
-          [
-            column1,
-            column2,
-            column3,
-            column4,
-            column5,
-            column6,
-            column7,
-
-
-          ]
-        );
-
-      }
-      csvContent = "data:text/csv;charset=utf-8,";
-      /* add the column delimiter as comma(,) and each row splitted by new line character (\n) */
-      rows.forEach(function (rowArray) {
-        row = rowArray.join(",");
-        csvContent += row + "\r\n";
-      });
-
-      /* create a hidden <a> DOM node and set its download attribute */
-      var encodedUri = encodeURI(csvContent);
-      var link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", "Invoice_Report.csv");
-      document.body.appendChild(link);
-      /* download the data file named "Stock_Price_Report.csv" */
-      link.click();
-    }
-
-  </script>
-
-
-
-
-
-
-  <!-- Vendors JS -->
-  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
-  <!-- Main JS -->
-
   <script src="./assets/js/main.js"></script>
 
-  <!-- Page JS -->
-
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>

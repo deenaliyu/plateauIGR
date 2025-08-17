@@ -84,23 +84,32 @@ function removeDoubleSpaces(inputText) {
 
 $("#filterMda").on('click', () => {
   const selRevv = document.getElementById('listOfpayable');
-  const selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
+  let selectedRevenueHead = selRevv.options[selRevv.selectedIndex].text;
 
   const selectedPaymentStatus = document.getElementById('paymentStatusSelect').value;
   const fromDate = document.getElementById('fromDateInput').value;
   const toDate = document.getElementById('toDateInput').value;
 
   // console.log(selectedMda, selectedRevenueHead)
+  if (selectedRevenueHead === "All") {
+    selectedRevenueHead = ""
+  }
 
-  const filteredData = AllInvoiceData.filter(item =>
-    (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
-    (!selectedPaymentStatus || item.payment_status.toLowerCase() === selectedPaymentStatus.toLowerCase()) &&
-    (!fromDate || item.date_created >= fromDate) &&
-    (!toDate || item.date_created <= toDate)
-  );
+  const filteredData = AllInvoiceData.filter(item => {
+     const itemDate = item.date_created ? item.date_created.substring(0, 10) : null;
+
+    return (
+      (!selectedRevenueHead || removeDoubleSpaces(item.COL_4.toLowerCase()).includes(removeDoubleSpaces(selectedRevenueHead.toLowerCase()))) &&
+      (!selectedPaymentStatus || item.payment_status.toLowerCase() === selectedPaymentStatus.toLowerCase()) &&
+      (!fromDate || itemDate >= fromDate) &&
+      (!toDate || itemDate <= toDate)
+    )
+  });
 
   // console.log(selectedRevenueHead.toLowerCase() )
   // console.log(filteredData)
+
+
 
   $("#dataTable").DataTable().clear().draw()
   $("#dataTable").DataTable().destroy()
@@ -148,7 +157,7 @@ $("#filterMda2").on('click', () => {
 
   if (selectedRevenueHead === "All") {
     selectedRevenueHead = ""
-  } 
+  }
 
   const filteredData = AllInvoiceData.filter(item => {
     const itemDate = item.timeIn ? item.timeIn.substring(0, 10) : null;
