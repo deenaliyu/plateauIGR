@@ -98,7 +98,9 @@
               <form class="p-10">
 
                 <section class="mb-3" id="updtProfile">
-
+                  <div class="flex justify-center items-center mt-4">
+                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                  </div>
                   <!-- Coming from JS -->
 
                 </section>
@@ -108,6 +110,40 @@
                 <div class="w-full" id="msg_box"></div>
               </form>
 
+            </div>
+
+            <div class="card mt-5">
+              <div class="card-header">
+                <h3 class="card-title fontBold">Password Reset</h3>
+              </div>
+              <div class="card-body">
+                <!-- <form>
+                  <div class="form-group mb-3">
+                    <label for="email">Email Address</label>
+                    <input type="email" class="form-control" id="emailPassReset" placeholder="Enter your email address"
+                      readonly>
+                  </div>
+                  <button class="button" type="button" onclick="sendResetEmail()">Send Reset Link</button>
+                  <div id="email-message" class="alert"></div>
+                </form> -->
+
+                <form class="mt-5">
+                  <input type="hidden" id="tax-numberReset">
+                  <div class="form-group mb-3">
+                    <label for="new-password">New Password</label>
+                    <input class="form-control" type="password" id="new-password" placeholder="Enter new password">
+                  </div>
+                  <div class="form-group mb-3">
+                    <label for="confirm-password">Confirm Password</label>
+                    <input class="form-control" type="password" id="confirm-password" placeholder="Confirm new password">
+                  </div>
+                  <button class="button" type="button" id="restPassBtn" onclick="adminResetPassword()">Reset Password</button>
+                  <div id="admin-message" class="alert" role="alert"></div>
+                </form>
+
+
+
+              </div>
             </div>
 
           </div>

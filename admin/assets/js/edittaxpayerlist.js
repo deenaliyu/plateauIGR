@@ -4,19 +4,21 @@ const userIdo = urlParams.get('id');
 
 const enumerated = urlParams.get('enumerated')
 let userrrData = {}
+let userDATA = {}
 
 async function getTaxPayer() {
   try {
     const response = await fetch(`${HOST}/?userProfile&id=${userIdo}`);
     const data = await response.json();
-    localStorage.setItem("singleUser", JSON.stringify(data.user));
+    userDATA = data.user;
 
     let taxPayerData = data.user;
     let theimg = taxPayerData.img;
     if (theimg === "") {
       theimg = "./assets/img/avatars/1.png";
     }
-
+    $("#emailPassReset").val(taxPayerData.email)
+    $("#tax-numberReset").val(taxPayerData.tax_number)
     // Update user info
     $("#userInfo").html(`
       <div class="flex gap-x-2">
@@ -73,7 +75,7 @@ async function getTaxPayer() {
      <div class="flex justify-between mt-2">
           <label class="w-4/12">Tax Identification Number</label>
           <div class="form-group w-8/12">
-            <input class="form-control mt-1 updtProf" type="text" name="tin" data-name="tin" value="${taxPayerData.tin}" maxlength="15" />
+            <input class="form-control mt-1 updtProf" type="text" name="tin" data-name="tin" value="${taxPayerData.tin}" maxlength="15" readonly />
           </div>
         </div>
       <div class="flex justify-between mt-2 items-center">
@@ -123,7 +125,7 @@ async function getTaxPayer() {
       <div class="flex justify-between mt-2">
         <label class="w-4/12">Email</label>
         <div class="form-group w-8/12">
-          <input class="form-control mt-1 updtProf" data-name="email" type="text" value="${taxPayerData.email}" />
+          <input class="form-control mt-1 updtProf" data-name="email" type="text" value="${taxPayerData.email}" readonly />
         </div>
       </div>
 
@@ -208,6 +210,7 @@ async function getTaxPayer2() {
     if (taxPayerData.img === "") {
       theimg = "./assets/img/avatars/1.png"
     }
+    $("#emailPassReset").val(taxPayerData.email)
     $("#userInfo").html(`
         <div class="flex gap-x-2">
         <img src="${theimg}" class="h-[70px] w-[70px] object-cover rounded-full" />
@@ -234,9 +237,9 @@ async function getTaxPayer2() {
   }
 
 }
-getTaxPayer2()
+// getTaxPayer2()
 
-let userDATA = JSON.parse(localStorage.getItem("singleUser"))
+
 $("#updateProfile").on("click", function (e) {
   e.preventDefault()
 
@@ -268,7 +271,14 @@ $("#updateProfile").on("click", function (e) {
 
   })
 
-  // console.log(finalObj)
+  // Remove any keys that are empty, null, or undefined
+  Object.keys(obj).forEach(key => {
+    if (obj[key] === "" || obj[key] === null || obj[key] === undefined) {
+      delete obj[key];
+    }
+  });
+
+  console.log(obj)
   let queryString = new URLSearchParams(obj).toString();
   console.log(queryString)
 
@@ -288,11 +298,10 @@ $("#updateProfile").on("click", function (e) {
         $("#msg_box").html(`
           <p class="text-success text-center mt-4 text-lg">${data.message}</p>
         `)
-        let newObj = obj
-        localStorage.setItem("singleUser", JSON.stringify(obj))
+
 
         setTimeout(() => {
-          window.location.href = "./taxpayer.html";
+          window.location.reload()
         }, 1000);
 
       }
@@ -341,66 +350,155 @@ function profileChanged() {
   }
 }
 
-$("#updatePic").on("click", function () {
-  let obj = {
-    "endpoint": "updatePix",
-    "data": {
-      "id": userDATA.id,
-      "img": thePicUrl
-    }
+function sendResetEmail() {
+  const email = document.getElementById('emailPassReset').value.trim();
+  const messageElement = document.getElementById('email-message');
 
+  // Validate email
+  if (!email) {
+    showMessage(messageElement, 'Please enter your email address', 'error');
+    return;
   }
 
-  $("#msg_center").html(`
-    <div class="flex justify-center items-center mt-4">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-    </div>
-  `)
-  $("#updatePic").addClass("hidden")
-  $.ajax({
-    type: "POST",
-    url: HOST,
-    data: JSON.stringify(obj),
-    dataType: 'json',
-    success: function (data) {
+  if (!isValidEmail(email)) {
+    showMessage(messageElement, 'Please enter a valid email address', 'error');
+    return;
+  }
+
+  const endpoint = `${HOST}?resetPassword&email=${email}&type=email`;
+
+  async function callApi(endpoint) {
+    setButtonLoading('sendResetBtn', true, 'Sending...');
+    try {
+      const response = await fetch(endpoint, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+
+      const data = await response.json()
+
       console.log(data)
       if (data.status === 1) {
-
-        document.querySelector("#theProfImg").src = thePicUrl
-
-        let storedData = JSON.parse(localStorage.getItem("userDataPrime"))
-        storedData.img = thePicUrl
-        localStorage.setItem("userDataPrime", JSON.stringify(storedData))
-
-        $("#msg_center").html(`
-          <p class="text-success">Picture updated successfully !</p>
-        `)
-
-        setTimeout(() => {
-          $("#proffer").addClass("hidden")
-          $("#msg_center").html(``)
-          $("#updatePic").removeClass("hidden")
-        }, 1000);
-
-        setTimeout(() => {
-          window.location.reload()
-        }, 2000);
-
-
+        showMessage(messageElement, "Password reset link sent Successfully!", 'success')
       } else {
-        $("#msg_center").html(`
-          <p class="text-danger">Network Error, Try again</p>
-        `)
-        $("#updatePic").removeClass("hidden")
-
+        throw new Error(data.message);
       }
-    },
-    error: function (request, error) {
-      console.log(error);
-      $("#msg_center").html(`
-        <p class="text-danger">something went wrong ! Try again</p>
-      `)
-      $("#updatePic").removeClass("hidden")
+
+    } catch (error) {
+      console.error('Error calling API:', error);
+      showMessage(messageElement, error || "An Error occured while updating password", 'error')
+    } finally {
+      setButtonLoading('sendResetBtn', false);
     }
-  });
-})
+  }
+  callApi(endpoint)
+}
+
+function adminResetPassword() {
+  const taxNumber = document.getElementById('tax-numberReset').value.trim();
+  const newPassword = document.getElementById('new-password').value;
+  const confirmPassword = document.getElementById('confirm-password').value;
+  const messageElement = document.getElementById('admin-message');
+
+  // Validate inputs
+  if (!taxNumber) {
+    showMessage(messageElement, 'Please enter the tax number/ID', 'error');
+    return;
+  }
+
+  if (!newPassword) {
+    showMessage(messageElement, 'Please enter a new password', 'error');
+    return;
+  }
+
+  if (newPassword !== confirmPassword) {
+    showMessage(messageElement, 'Passwords do not match', 'error');
+    return;
+  }
+
+  if (newPassword.length < 8) {
+    showMessage(messageElement, 'Password must be at least 8 characters long', 'error');
+    return;
+  }
+
+  const endpoint = `${HOST}?userPassword&id=${taxNumber}&password=${encodeURIComponent(newPassword)}&set_by=${userInfo2?.id}`;
+
+  async function callApi(endpoint) {
+    setButtonLoading('restPassBtn', true, 'Resetting...');
+    try {
+      const response = await fetch(endpoint, {
+        method: 'GET', // or 'POST' depending on your API
+        headers: {
+          'Content-Type': 'application/json',
+          // Add any other required headers (e.g., authorization)
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const data = await response.json()
+
+      if (data.status === 1) {
+        showMessage(messageElement, "Password Updated Successfully", 'success')
+      } else {
+        throw new Error('An Error occured while updating password');
+      }
+    } catch (error) {
+      console.error('Error calling API:', error);
+      showMessage(messageElement, "An Error occured while updating password", 'error')
+    } finally {
+      setButtonLoading('restPassBtn', false);
+    }
+  }
+  callApi(endpoint)
+}
+
+// Helper to toggle loading state on a button
+function setButtonLoading(buttonId, isLoading, loadingText) {
+  const btn = document.getElementById(buttonId);
+  if (!btn) return;
+
+  if (isLoading) {
+    if (!btn.dataset.originalText) {
+      btn.dataset.originalText = btn.innerHTML;
+    }
+    btn.disabled = true;
+    btn.innerHTML = `${loadingText || 'Processing...'} <span class="spinner-border spinner-border-sm align-middle ms-2" role="status" aria-hidden="true"></span>`;
+  } else {
+    btn.disabled = false;
+    if (btn.dataset.originalText) {
+      btn.innerHTML = btn.dataset.originalText;
+      delete btn.dataset.originalText;
+    }
+  }
+}
+
+// Helper function to show messages
+function showMessage(element, message, type) {
+  if (!element) return;
+  element.textContent = message;
+
+  // Reset classes then add proper Bootstrap alert classes
+  element.classList.remove('alert-success', 'alert-danger', 'alert-warning', 'alert-info');
+  element.classList.add('alert');
+  element.classList.add(type === 'success' ? 'alert-success' : 'alert-danger');
+  element.style.display = 'block';
+
+  // Hide message after 5 seconds
+  setTimeout(() => {
+    element.style.display = 'none';
+  }, 5000);
+}
+
+// Helper function to validate email
+function isValidEmail(email) {
+  const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return re.test(email);
+}

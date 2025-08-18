@@ -5,7 +5,7 @@ let numberOfAll = 0
 let numberOfAll2 = 0
 
 function getFormattedDate(date) {
-  date = new Date(date)    
+  date = new Date(date)
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
   const year = date.getFullYear();
@@ -35,56 +35,32 @@ async function fetchTaxPayers() {
     numberOfAll = taxPayers.message.length
     sessionStorage.setItem('numberOfAll', numberOfAll);
 
-
-
     taxPayers.message.reverse().forEach((taxPayer, i) => {
       let showRe = ""
 
       showRe += `
         <tr class="relative">
           <td>${i + 1}</td>
-        `
-
-      showRe += `
-        <td><a class="text-primary" href="./taxpayerlist.html?id=${taxPayer.tax_number}">${taxPayer.tax_number}</a></td>
-        <td>${taxPayer.first_name} ${taxPayer.surname}</td>
-        <td>${taxPayer.category}</td>
-        <td>${taxPayer.tin}</td>
-        <td>${taxPayer.email}</td>
-      `
-      if (taxPayer.tin_status === "Unverified") {
-        showRe += `
-          <td class="text-danger">${taxPayer.tin_status}</td>
-        `
-      } else if (taxPayer.tin_status === "Verified") {
-        showRe += `
-          <td class="text-success">${taxPayer.tin_status}</td>
-        `
-      }
-        
-        showRe += `
+          <td><a class="text-primary" href="./taxpayerlist.html?id=${taxPayer.tax_number}">${taxPayer.tax_number}</a></td>
+          <td>${taxPayer.first_name} ${taxPayer.surname}</td>
+          <td>${taxPayer.category}</td>
+          <td>${taxPayer.tin}</td>
+          <td>${taxPayer.email}</td>
+          <td class="text-${taxPayer.tin_status === 'Unverified' ? 'danger' : 'success'}">${taxPayer.tin_status}</td>
           <td>₦ ${taxPayer.annual_income ? parseFloat(taxPayer.annual_income).toLocaleString() : 0}</td>
           <td>${taxPayer.annual_income && parseFloat(taxPayer.annual_income) >= 20000000 ? `<span class='badge bg-success'>High Income</span>` : `<span class='badge bg-warning'>Low Income</span>`}</td>
-          `
-
-      showRe += `
           <td>${getFormattedDate(taxPayer.timeIn)}</td>
           <td>
-          <div class="flex items-center gap-3">
-       `
-      showRe += `
-        <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txEdit"><iconify-icon
-        icon="material-symbols:edit-square-outline"></iconify-icon></a>
-      `
-      showRe += `
-      <a href="./taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
-          </div>
-      
+            <div class="flex items-center gap-3">
+              <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txEdit"><iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon></a>
+              <a href="./taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
+            </div>
+          </td>
         </tr>
         `
 
       $("#showreport").append(showRe)
-      
+
       $("#showThem2").append(`
         <tr>
             <td>${i + 1}</td>
@@ -98,66 +74,6 @@ async function fetchTaxPayers() {
         </tr>
       `)
 
-      if (i === taxPayers.message.length - 1) {
-        $('#dataTable').DataTable();
-      }
-    });
-
-    let numberrr = 0
-    taxPayers.message.reverse().forEach((taxPayer, i) => {
-      if (taxPayer.business_type === "") {
-
-      } else {
-        numberrr++
-
-        let showRe = ""
-
-        showRe += `
-          <tr class="relative">
-            <td>${i + 1}</td>
-          `
-
-        showRe += `
-          <td><a class="text-primary" href="./taxpayerlist.html?id=${taxPayer.id}">${taxPayer.tax_number}</a></td>
-          <td>${taxPayer.first_name} ${taxPayer.surname}</td>
-          <td>${taxPayer.category}</td>
-          <td>${taxPayer.tin}</td>
-          <td>${taxPayer.email}</td>
-        `
-        if (taxPayer.tin_status === "Unverified") {
-          showRe += `
-            <td class="text-danger">${taxPayer.tin_status}</td>
-          `
-        } else if (taxPayer.tin_status === "Verified") {
-          showRe += `
-            <td class="text-success">${taxPayer.tin_status}</td>
-          `
-        }
-
-        showRe += `
-            <td>${getFormattedDate(taxPayer.timeIn)}</td>
-            <td>
-            <div class="flex items-center gap-3">
-         `
-        showRe += `
-          <button data-theid="${taxPayer.tax_number}" onclick="editThis(this)" data-usertype="payer_user" class="EditUser txView"><iconify-icon
-          icon="material-symbols:edit-square-outline"></iconify-icon></button>
-        `
-        showRe += `
-        <a href="./presumptive-taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
-            </div>
-        
-          </tr>
-          `
-
-        $("#showreportP").append(showRe)
-      }
-
-
-      if (i === taxPayers.message.length - 1) {
-        $('#dataTableP').DataTable();
-        $("#selfRegisP").html(numberrr)
-      }
     });
 
   }
@@ -165,7 +81,7 @@ async function fetchTaxPayers() {
 }
 
 fetchTaxPayers().then(ee => {
-
+  $('#dataTable').DataTable();
 })
 
 async function fetchEnutaxP() {
@@ -190,35 +106,25 @@ async function fetchEnutaxP() {
 
       let showRe1 = ""
 
-      showRe1 += `<tr>
-      <td>${i + 1}</td>
-     
-      <td><a class="text-primary" href="./taxpayerlist.html?id=${txpayer.id}&enumerated=true">${txpayer.tax_number}</a></td>
-      <td>${txpayer.first_name} ${txpayer.last_name}</td>
-      <td>${txpayer.email}</td>
-      <td>${txpayer.category}</td>
-      <td>${txpayer.fullname}</td>
-      <td>${txpayer.tin}</td>
-      <td>
-      ${txpayer.tin_status === "Verified" ? `
-       <div class="badge bg-success">${txpayer.tin_status}</div>
-      ` : `
-        <div class="badge bg-danger">${txpayer.tin_status}</div>
-      `}
-        
-      </td>
-      <td>${getFormattedDate(txpayer.timeIn)}</td>
-      <td>
-        <div class="flex gap-3 items-center">
-          <button data-theid="${txpayer.tax_number}" onclick="editThis(this)" data-usertype="enumerator_tax_payers" class="txView EditUser"><iconify-icon
-          icon="material-symbols:edit-square-outline"></iconify-icon></button>
-
-            <a href="./taxpayerlist.html?id=${txpayer.tax_number}&enumerated=true" class="btn txView btn-primary btn-sm viewUser">View</a>
-        </div>
-      </td>
-      </tr>`
-
-
+      showRe1 += `
+        <tr>
+          <td>${i + 1}</td>
+          <td><a class="text-primary" href="./taxpayerlist.html?id=${txpayer.id}&enumerated=true">${txpayer.tax_number}</a></td>
+          <td>${txpayer.first_name} ${txpayer.last_name}</td>
+          <td>${txpayer.email}</td>
+          <td>${txpayer.category}</td>
+          <td>${txpayer.fullname}</td>
+          <td>${txpayer.tin}</td>
+          <td><span class="badge bg-${tin_status === "Unverified" ? 'danger' : 'success'}">${txpayer.tin_status}</span></td>
+          <td>${getFormattedDate(txpayer.timeIn)}</td>
+          <td>
+            <div class="flex gap-3 items-center">
+              <button data-theid="${txpayer.tax_number}" onclick="editThis(this)" data-usertype="enumerator_tax_payers" class="txView EditUser"><iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon></button>
+              <a href="./taxpayerlist.html?id=${txpayer.tax_number}&enumerated=true" class="btn txView btn-primary btn-sm viewUser">View</a>
+            </div>
+          </td>
+        </tr>
+      `
       $("#showreport2").append(showRe1)
     });
 

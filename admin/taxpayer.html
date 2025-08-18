@@ -73,14 +73,14 @@
 
 
               <div class="flex items-center gap-2">
-                <button  class="button flex gap-x-1"
-                  onclick="exportData()">
+                <button class="button flex gap-x-1" onclick="exportData()">
 
                   <iconify-icon icon="material-symbols:cloud-download" width="28" height="28"></iconify-icon> Download
                   Report</button>
-                  
-                  
-                <a href="../regcategory.html?user=admin" target="_blank" class="button flex gap-x-1 items-center" id="createTaxP">
+
+
+                <a href="../regcategory.html?user=admin" target="_blank" class="button flex gap-x-1 items-center"
+                  id="createTaxP">
                   <iconify-icon icon="ph:plus-bold"></iconify-icon>
                   <span>New Tax Payer</span>
                 </a>
@@ -107,7 +107,7 @@
 
               <div class="grid lg:grid-cols-5 md:grid-cols-3 grid-cols-2 gap-3">
 
-                <div class="dashCards card md:w-[180px]">
+                <div class="dashCards card">
                   <div class="flex items-center gap-3">
                     <div class="icoCont bg-[#1c315c1f] p-2">
                       <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
@@ -118,7 +118,7 @@
                   <p class="zanumbers text-end mt-4"><span class="fontBold mt-4 registered">-</span></p>
                 </div>
 
-                <div class="dashCards card md:w-[180px]">
+                <div class="dashCards card">
                   <div class="flex items-center gap-3">
                     <div class="icoCont bg-[#1c315c1f] p-2">
                       <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
@@ -130,7 +130,7 @@
 
                 </div>
 
-                <div class="dashCards card md:w-[180px]">
+                <div class="dashCards card">
                   <div class="flex items-center gap-3">
                     <div class="icoCont bg-[#1c315c1f] p-2">
                       <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
@@ -142,7 +142,7 @@
 
                 </div>
 
-                <div class="dashCards card md:w-[180px]">
+                <div class="dashCards card">
                   <div class="flex items-center gap-3">
                     <div class="icoCont bg-[#1c315c1f] p-2">
                       <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
@@ -153,7 +153,7 @@
 
                 </div>
 
-                <div class="dashCards card md:w-[180px]">
+                <div class="dashCards card">
                   <div class="flex items-center gap-3">
                     <div class="icoCont bg-[#1c315c1f] p-2">
                       <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
@@ -247,25 +247,25 @@
                     <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
                   </div>
                 </div>
-                
-                
+
+
                 <table class="table invoiceTable hidden" id="invoiceTableFull">
                   <thead>
                     <tr class="text-center">
                       <th></th>
-                              <!-- <th>Picture</th> -->
-                              <th>Payer ID</th>
-                              <th>Name of Tax payer</th>
-                              <th>Category</th>
-                              <th>TIN</th>
-                              <th>Email</th>
-                              <th>TIN Status</th>
-                              <th>Date created</th>
-                              
+                      <!-- <th>Picture</th> -->
+                      <th>Payer ID</th>
+                      <th>Name of Tax payer</th>
+                      <th>Category</th>
+                      <th>TIN</th>
+                      <th>Email</th>
+                      <th>TIN Status</th>
+                      <th>Date created</th>
+
                     </tr>
                   </thead>
                   <tbody class="table-border-bottom-0" id="showThem2">
-    
+
                   </tbody>
                 </table>
 
@@ -347,35 +347,35 @@
   </script>
   <script>
     function exportData() {
-        var csv = [];
-        var table = document.getElementById("invoiceTableFull");
-        
-        // Add header to CSV
-        var header = [];
-        for (var h = 0; h < table.rows[0].cells.length; h++) {
-            header.push(table.rows[0].cells[h].innerText);
-        }
-        csv.push(header.join(','));
+      var csv = [];
+      var table = document.getElementById("invoiceTableFull");
 
-        // Add rows to CSV
-        for (var i = 1; i < table.rows.length; i++) {
-            var row = [], cols = table.rows[i].querySelectorAll('td, th');
+      // Add header to CSV
+      var header = [];
+      for (var h = 0; h < table.rows[0].cells.length; h++) {
+        header.push(table.rows[0].cells[h].innerText);
+      }
+      csv.push(header.join(','));
 
-            for (var j = 0; j < cols.length; j++) {
-                row.push(cols[j].innerText);
-            }
+      // Add rows to CSV
+      for (var i = 1; i < table.rows.length; i++) {
+        var row = [], cols = table.rows[i].querySelectorAll('td, th');
 
-            csv.push(row.join(','));
+        for (var j = 0; j < cols.length; j++) {
+          row.push(cols[j].innerText);
         }
 
-        // Download CSV file
-        var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement('a');
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'Taxpayer_report');
-        document.body.appendChild(link);
-        link.click();
+        csv.push(row.join(','));
+      }
+
+      // Download CSV file
+      var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'Taxpayer_report');
+      document.body.appendChild(link);
+      link.click();
     }
 
   </script>
