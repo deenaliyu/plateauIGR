@@ -52,7 +52,7 @@ async function fetchTaxPayers() {
           <td>${getFormattedDate(taxPayer.timeIn)}</td>
           <td>
             <div class="flex items-center gap-3">
-              <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class=" viewUser txEdit"><iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon></a>
+              <a href="./managetaxpayer.html?id=${taxPayer.tax_number}" class="txEdit"><iconify-icon icon="material-symbols:edit-square-outline"></iconify-icon></a>
               <a href="./taxpayerlist.html?id=${taxPayer.tax_number}" class="btn btn-primary btn-sm viewUser txView">View</a>
             </div>
           </td>
@@ -115,7 +115,7 @@ async function fetchEnutaxP() {
           <td>${txpayer.category}</td>
           <td>${txpayer.fullname}</td>
           <td>${txpayer.tin}</td>
-          <td><span class="badge bg-${tin_status === "Unverified" ? 'danger' : 'success'}">${txpayer.tin_status}</span></td>
+          <td><span class="badge bg-${txpayer.tin_status === "Unverified" ? 'danger' : 'success'}">${txpayer.tin_status}</span></td>
           <td>${getFormattedDate(txpayer.timeIn)}</td>
           <td>
             <div class="flex gap-3 items-center">

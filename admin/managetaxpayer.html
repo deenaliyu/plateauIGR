@@ -85,7 +85,11 @@
         <!-- Content wrapper -->
         <section class="content-wrapper">
 
-          <div class="container-xxl flex-grow-1 container-p-y taxes">
+          <!-- <div class="flex justify-center items-center mt-4" id="theLoader">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div> -->
+
+          <div class="container-xxl flex-grow-1 container-p-y taxes" id="taxPContainerItems">
             <div class="flex align-items-center gap-1 mb-3">
               <a type="button" style='color: #CDA545; font-weight: 500;' onclick="history.back()">Back to
                 Tax payer list</a>
@@ -205,7 +209,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"></script>
   <script src="./assets/vendor/libs/export-table/src/tableHTMLExport.js"></script>
   <!-- <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script> -->
-  <!-- <script src="./assets/js/session.js"></script> -->
+  <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/edittaxpayerlist.js?v=1.0"></script>
   <!-- endbuild -->
   <script>
@@ -222,11 +226,6 @@
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <!-- Main JS -->
   <script src="./assets/js/main.js"></script>
-
-  <!-- Page JS -->
-
-  <!-- Place this tag in your head or just before your close body tag. -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>

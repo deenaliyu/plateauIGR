@@ -135,11 +135,12 @@ async function getRolesAdmin() {
 
 
 
-  } else if (currentPage.includes("taxpayer.html")) {
+  } else if (currentPage.includes("taxpayer.html") || currentPage.includes("managetaxpayer.html")) {
     let taxPayers = userRoles.tax_payer_access
 
     let view_tax_list = taxPayers.find(ff => ff === "view_tax_list")
     let view_tax_detail = taxPayers.find(ff => ff === "view_tax_detail")
+    let edit_tax_payer = taxPayers.find(ff => ff === "edit_tax_detail")
     let acti_taxpayer = taxPayers.find(ff => ff === "acti_taxpayer")
     let allocate_appli = taxPayers.find(ff => ff === "allocate_appli")
     let download_report = taxPayers.find(ff => ff === "download_report")
@@ -164,6 +165,14 @@ async function getRolesAdmin() {
       txViews.forEach(dd => {
         dd.classList.add("disabled")
       })
+    }
+
+    if(edit_tax_payer) {
+      $("#taxPContainerItems").html(`
+        <p class="text-lg text-center p-5">No Access to Edit Taxpayer</p>  
+      `)
+
+      
     }
 
   } else if (currentPage.includes("enumeration.html")) {
