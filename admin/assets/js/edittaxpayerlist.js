@@ -6,6 +6,50 @@ const enumerated = urlParams.get('enumerated')
 let userrrData = {}
 let userDATA = {}
 
+
+async function getIndustriesSectors() {
+  try {
+    const response = await fetch(`${HOST}?getIndustriesSectors`);
+    const resdata = await response.json();
+
+    if (resdata.status === 1) {
+      const data = resdata.message;
+
+      const sectors = [...new Set(data.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect');
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        sectorSelect.appendChild(option);
+      });
+
+      sectorSelect.addEventListener('change', () => {
+        const selectedSector = sectorSelect.value;
+
+        const filteredIndustries = data.filter(
+          item => item.SectorName === selectedSector
+        );
+
+        const industrySelect = document.getElementById('industrySelect');
+        industrySelect.innerHTML = '<option value="">Select</option>';
+
+        filteredIndustries.forEach(industry => {
+          const option = document.createElement('option');
+          option.value = industry.IndustryName;
+          option.textContent = industry.IndustryName;
+          industrySelect.appendChild(option);
+        });
+      });
+    }
+  } catch (error) {
+    console.error('Error fetching data:', error);
+  }
+}
+
+getIndustriesSectors();
+
 async function getTaxPayer() {
   try {
     const response = await fetch(`${HOST}/?userProfile&id=${userIdo}`);
@@ -89,7 +133,23 @@ async function getTaxPayer() {
         </select>
       </div>
 
-     <div class="flex gap-x-20 mt-3">
+       <div class="flex justify-between mt-2 items-center">
+        <label class="w-4/12">Sector</label>
+        <select class="form-select mt-1 w-8/12" id="sectorSelect" data-name="sector" required>
+          <option value="">-Select--</option>
+        </select>
+      </div>
+
+      <div class="flex justify-between mt-2 items-center">
+        <label class="w-4/12">Industry</label>
+        <select class="form-select mt-1 w-8/12 updtProf" id="industrySelect" data-name="industry" required>
+          <option value="">-Select--</option>
+          <option value="${taxPayerData.industry}" selected>${taxPayerData.industry}</option>
+        </select>
+      </div>
+
+
+      <div class="flex gap-x-20 mt-3">
         <label class="w-4/12">Are you a business owner?</label>
         <div class='flex gap-x-2 w-8/12'>
           <div class="form-check">
@@ -102,7 +162,8 @@ async function getTaxPayer() {
           </div>
         </div>
       </div>
-      <div class="flex justify-between mt-2 items-center" id="businessTypeContainer" style="display: none;">
+
+      <div class="flex justify-between mt-2 items-center" id="businessTypeContainer">
         <label class="w-4/12">Type of business</label>
         <select class="form-select mt-1 w-8/12 updtProf" data-name="business_type">
           <option value="" ${!taxPayerData.business_type ? "selected" : ""}>-Select--</option>
@@ -168,24 +229,6 @@ async function getTaxPayer() {
 
     $("#updtProfile").html(profilo);
 
-    function toggleBusinessType() {
-      const businessOwnerYes = document.getElementById("businessOwnerYes");
-      const businessOwnerNo = document.getElementById("businessOwnerNo");
-      const businessTypeContainer = document.getElementById("businessTypeContainer");
-
-      if (businessOwnerYes.checked) {
-        businessTypeContainer.style.display = "flex";
-      } else {
-        businessTypeContainer.style.display = "none";
-      }
-    }
-
-    // Event listener for radio buttons to toggle business type field
-    document.querySelectorAll('input[name="businessOwner"]').forEach((radio) => {
-      radio.addEventListener('change', toggleBusinessType);
-    });
-
-    toggleBusinessType();
     let lgaSelect = document.querySelector('#selectLGA');
 
     lgaList["Plateau"].forEach(lga => {
@@ -193,6 +236,62 @@ async function getTaxPayer() {
         <option value="${lga}">${lga}</option>
       `;
     });
+
+    // ---- Populate Sector & Industry ----
+    const sectorRes = await fetch(`${HOST}?getIndustriesSectors`);
+    const sectorData = await sectorRes.json();
+
+    if (sectorData.status === 1) {
+      const allData = sectorData.message;
+      const sectors = [...new Set(allData.map(item => item.SectorName))];
+
+      const sectorSelect = document.getElementById('sectorSelect');
+      const industrySelect = document.getElementById('industrySelect');
+
+      // populate sectors
+      sectors.forEach(sector => {
+        const option = document.createElement('option');
+        option.value = sector;
+        option.textContent = sector;
+        if (taxPayerData.sector === sector) option.selected = true;
+        sectorSelect.appendChild(option);
+      });
+
+      // helper: fill industries for given sector
+      function populateIndustries(selectedSector, preselectIndustry = null) {
+        industrySelect.innerHTML = '<option value="">-Select--</option>';
+        const filtered = allData.filter(item => item.SectorName === selectedSector);
+
+        filtered.forEach(ind => {
+          const opt = document.createElement('option');
+          opt.value = ind.IndustryName;
+          opt.textContent = ind.IndustryName;
+          if (preselectIndustry && preselectIndustry === ind.IndustryName) {
+            opt.selected = true;
+          }
+          industrySelect.appendChild(opt);
+        });
+      }
+
+      // --- check industry first ---
+      if (taxPayerData.industry && taxPayerData.industry.trim() !== "") {
+        const match = allData.find(i => i.IndustryName === taxPayerData.industry);
+        if (match) {
+          sectorSelect.value = match.SectorName; // auto-set sector
+          populateIndustries(match.SectorName, taxPayerData.industry); // populate industries + preselect
+        }
+      } else if (taxPayerData.sector && taxPayerData.sector.trim() !== "") {
+        // fallback: if only sector is set
+        sectorSelect.value = taxPayerData.sector;
+        populateIndustries(taxPayerData.sector);
+      }
+
+      // when sector changes manually
+      sectorSelect.addEventListener('change', () => {
+        populateIndustries(sectorSelect.value);
+      });
+    }
+
   } catch (error) {
     console.log(error);
   }
