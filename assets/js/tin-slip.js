@@ -8,81 +8,81 @@ async function fetchTinData() {
     const response = await fetch(`https://plateauigr.com/php/tinGeneration/fetch.php?tin=${tinGot}`,)
     const data = await response.json()
 
-    if (data.success) {
-      theuser = data.data[0]
-      $('#invoiceCard').html(`
-        <h1 class="text-center text-2xl mb-4">TIN Slip</h1>
-        <div class="flex justify-center items-center mb-3">
-          <div>
-            <img src="./assets/img/logo.png" alt="">
-          </div>
-          <div>
-            <img src="./assets/img/psirs.png" width="80" alt="">
-          </div>
-        </div>
-        <table class="table">
-          <tr>
-            <th>TIN</th>
-            <td>${theuser.tin}</td>
-          </tr>
-          <tr>
-            <th>Name</th>
-            <td>${theuser.type === 'corporate' ? '-' : `${theuser.first_name} ${theuser.last_name}`}</td>
-          </tr>
-          <tr>
-            <th>Name of business</th>
-            <td>${theuser.organization_name}</td>
-          </tr>
-          <tr>
-            <th>Category</th>
-            <td>${theuser.type}</td>
-          </tr>
-          <tr>
-            <th>Email</th>
-            <td>${theuser.email}</td>
-          </tr>
-          
-          <tr>
-            <th>Phone</th>
-            <td>${theuser.phone_number}</td>
-          </tr>
-          <tr>
-            <th>Sector</th>
-            <td>${theuser.sector ? theuser.sector : '-'}</td>
-          </tr>
-          <tr>
-            <th>Industry</th>
-            <td>${theuser.industry ? theuser.industry : '-'}</td>
-          </tr>
-          <tr>
-            <th>State</th>
-            <td>${theuser.state}</td>
-          </tr>
-          <tr>
-            <th>LGA</th>
-            <td>${theuser.lga}</td>
-          </tr>
-          
-          <tr>
-            <th>Created by</th>
-            <td>${theuser.payer_id === null ? 'Self' : 'Admin'}</td>
-          </tr>
-          <tr>
-            <th>Date Created</th>
-            <td>${new Date(theuser.created_at).toDateString()}</td>
-          </tr>
-        </table>
-      `)
-
-    } else {
-      $("#invoiceCard").html(`
+   if (data.success) {
+  theuser = data.data[0]
+  $('#invoiceCard').html(`
+    <h1 class="text-center text-2xl mb-4">TIN Slip</h1>
+    <div class="flex justify-center items-center mb-3">
+      <div>
+        <img src="./assets/img/logo.png" alt="">
+      </div>
+      <div>
+        <img src="./assets/img/psirs.png" width="80" alt="">
+      </div>
+    </div>
+    <table class="table">
+      <tr>
+        <th>TIN</th>
+        <td>${theuser.tin}</td>
+      </tr>
+      ${theuser.type === 'corporate' ? `
         <tr>
-          <td colspan="2" class="text-center">No TIN Found</td>
+          <th>Name of Organisation</th>
+          <td>${theuser.organization_name}</td>
         </tr>
-      `)
-    }
-
-
+      ` : `
+        <tr>
+          <th>Name</th>
+          <td>${theuser.first_name} ${theuser.last_name}</td>
+        </tr>
+      `}
+      <tr>
+        <th>Category</th>
+        <td>${theuser.type}</td>
+      </tr>
+      <tr>
+        <th>Email</th>
+        <td>${theuser.email}</td>
+      </tr>
+      
+      <tr>
+        <th>Phone</th>
+        <td>${theuser.phone_number}</td>
+      </tr>
+      <tr>
+        <th>Sector</th>
+        <td>${theuser.sector ? theuser.sector : '-'}</td>
+      </tr>
+      <tr>
+        <th>Industry</th>
+        <td>${theuser.industry ? theuser.industry : '-'}</td>
+      </tr>
+      <tr>
+        <th>State</th>
+        <td>${theuser.state}</td>
+      </tr>
+      <tr>
+        <th>LGA</th>
+        <td>${theuser.lga}</td>
+      </tr>
+      
+      <tr>
+        <th>Created by</th>
+        <td>${theuser.payer_id === null ? 'Self' : 'Admin'}</td>
+      </tr>
+      <tr>
+        <th>Date Created</th>
+        <td>${new Date(theuser.created_at).toDateString()}</td>
+      </tr>
+    </table>
+  `)
+} else {
+  $("#invoiceCard").html(`
+    <tr>
+      <td colspan="2" class="text-center">No TIN Found</td>
+    </tr>
+  `)
+}
   } catch (error) {
     $("#invoiceCard").html(`
       <tr>

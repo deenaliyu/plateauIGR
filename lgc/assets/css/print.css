@@ -1,0 +1,14 @@
+@media print and (orientation: portrait) {
+    @page {
+      width: 210mm;
+    }
+  
+    body {
+      background: red !important;
+    }
+  
+    .hardReceiptCopy {
+      width: 600px !important;
+    }
+  
+  }
