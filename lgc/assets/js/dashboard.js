@@ -328,7 +328,7 @@ async function getMonthlyRevenue() {
     `)
     
     try {
-        const response = await fetch(`${HOST}?getMonthlyRevenueByMda&sort=all&mda_id=${mdaID}`);
+        const response = await fetch(`${HOST}?getMonthlyRevenueByMda&mda_id=${mdaID}`);
         const userAnalytics = await response.json();
         
         // console.log(userAnalytics)
