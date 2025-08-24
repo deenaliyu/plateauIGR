@@ -25,8 +25,9 @@ async function fetchMDAs() {
       "Access-Control-Allow-Methods": "*"
     }
   }
-  const response = await fetch(`${HOST}/?getMDAs`)
+  const response = await fetch(`${HOST}/?getLGCs`)
   const MDAs = await response.json()
+  console.log(MDAs)
   ALLMDA = MDAs
 
   $("#loader").css("display", "none")
@@ -41,8 +42,10 @@ async function fetchMDAs() {
         <tr class="relative">
           <td>${i + 1}</td>
          <td><a class="text-primary" href="./mdadetails.html?id=${MDA.id}&name=${encodeURIComponent(MDA.fullname)}">${MDA.fullname.replace(/'/g, "&#39;")}</a></td>
-          <td>${MDA.total_count}</td>
+          <td>${MDA.total_revenue_heads}</td>
+        <td>${MDA.total_users}</td>
           <td>&#8358; ${(MDA.total_gen_revenue === "" ? 0 : MDA.total_gen_revenue.toLocaleString())}</td>
+          <td>&#8358; ${(MDA.total_invoiced_amount === "" ? 0 : MDA.total_invoiced_amount.toLocaleString())}</td>
           <td>${getFormattedDate(MDA.time_in)}</td>
           `;
       if (MDA.status === "active") {

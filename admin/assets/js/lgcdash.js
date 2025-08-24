@@ -66,7 +66,7 @@ async function getYearlyRevenue() {
     `)
     
     try {
-        const response = await fetch(`${HOST}?getYearlyRevenue&year=${theCurrentYear}`);
+        const response = await fetch(`${HOST}?getYearlyRevenueByLGC&year=${theCurrentYear}`);
         const userAnalytics = await response.json();
         
         // console.log(userAnalytics)
@@ -125,7 +125,7 @@ async function getMonthlyRevenue() {
     `)
     
     try {
-        const response = await fetch(`${HOST}?getMonthlyRevenue`);
+        const response = await fetch(`${HOST}?getMonthlyRevenueByLGC`);
         const userAnalytics = await response.json();
         
         // console.log(userAnalytics)
@@ -188,7 +188,7 @@ async function getExpectedMonthlyRevenue() {
     `)
     
     try {
-        const response = await fetch(`${HOST}?getMonthlyRevenue&sort=expected`);
+        const response = await fetch(`${HOST}?getMonthlyRevenueByLGC&sort=expected`);
         const userAnalytics = await response.json();
         
         // console.log(userAnalytics)
@@ -249,7 +249,7 @@ async function getExpectedMonthlyRevenuettl() {
     `)
     
     try {
-        const response = await fetch(`${HOST}?getMonthlyRevenue&sort=expected`);
+        const response = await fetch(`${HOST}?getMonthlyRevenueByLGC&sort=expected`);
         const userAnalytics = await response.json();
         
         // console.log(userAnalytics)
@@ -312,7 +312,7 @@ async function getAccruedData() {
     `)
     
     try {
-        const response = await fetch(`${HOST}?getMonthlyUnpaidRevenue`);
+        const response = await fetch(`${HOST}?getMonthlyUnpaidRevenueByLGC`);
         const userAnalytics = await response.json();
         
         // console.log(userAnalytics)
@@ -353,164 +353,6 @@ async function getAccruedData() {
 
 getAccruedData()
 
-async function getDailyRevenue() {
 
-  const response = await fetch(`${HOST}/?getDailyRevenue`)
-  const MDAs = await response.json()
-
-  if(MDAs.status === 1){
-      $("#avg_daily_rev").html(formatMoney(MDAs.message[0].total_daily_revenue))
-  } else{
-     $("#avg_daily_rev").html(formatMoney(0)) 
-  }
-
-
-}
-
-getDailyRevenue()
-
-
-async function getDailyRemittance(date) {
-
-    $.ajax({
-        url: `${HOST}?getDailyRemittance`, // Replace with the actual path
-        type: 'GET',
-        data: { date: date },
-        dataType: 'json',
-        success: function(response) {
-            if (response.status === 1) {
-                const data = response.message[0];
-                $('#numberOfdailyRemittance').html(data.total_daily_remittances.toLocaleString());
-                $('#amountOfdailyRemittance').html(formatMoney(parseFloat(data.total_daily_amount)));
-            } else {
-                // console.log('No data found for today');
-                $('#numberOfdailyRemittance').html(0);
-                $('#amountOfdailyRemittance').html(formatMoney(parseFloat(0)));
-            }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', status, error);
-            $('#numberOfdailyRemittance').html(0);
-            $('#amountOfdailyRemittance').html(formatMoney(parseFloat(0)));
-        }
-    });
-
-}
-
-$("#dateFilter").val(new Date().toISOString().split('T')[0])
-
-$('#dateFilter').on('change', function() {
-    $('#numberOfdailyRemittance').html(`<div class="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-900"></div>`);
-    $('#amountOfdailyRemittance').html(`<div class="animate-spin rounded-full h-3 w-3 border-b-2 border-gray-900"></div>`);
-    getDailyRemittance($(this).val());
-});
-
-getDailyRevenue()
-getDailyRemittance(new Date().toISOString().split('T')[0])
-
-
-
-var myCharter;
-
-async function fetchAnalytics() {
-
-  let config = {
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  };
-  try {
-    const response = await fetch(
-      `${HOST}/php/index.php?getDashboardAnalyticsAdmin`
-    );
-
-    const userAnalytics = await response.json();
-
-    // console.log(userAnalytics)
-
-    
-    // $("#due_amount").html(userAnalytics.due_amount.toLocaleString())
-    $("#due_invoices").html(userAnalytics.due_invoices.toLocaleString())
-    $("#total_amount_invoiced3").html(formatMoney(userAnalytics.total_amount_invoiced))
-    $("#total_amountP").html(formatMoney(userAnalytics.total_amount_paid))
-    $("#due_amount2").html(formatMoney(userAnalytics.due_amount))
-    $("#total_invoice").html(userAnalytics.total_invoice.toLocaleString())
-    $("#total_amount").html(userAnalytics.total_invoice_paid.toLocaleString())
-    $("#reg_taxP").html(userAnalytics.total_user.toLocaleString())
-
-    let tt = parseFloat(userAnalytics.total_amount_paid);
-    let ti = parseFloat(userAnalytics.total_amount_invoiced);
-   
-   
-      total = (tt / ti) * 100;
-  
-//   console.log(total)
-  
-  
-   
-
-      var chartDom = document.getElementById('Compliance');
-      myCharter = echarts.init(chartDom);
-      var option;
-      
-      option = {
-        xAxis: {
-          type: 'category',
-          data: ['','','','','Tax performance',]
-        },
-        yAxis: {
-          type: 'value'
-        },
-        series: [
-          {
-            data: [0,0, 0, 0, total],
-            type: 'line'
-          }
-        ]
-      };
-      
-      option && myCharter.setOption(option);
-    
-      // }
-    
-   
-   
-  } catch (error) {
-    console.log(error)
-  }
-
-
-}
-
-fetchAnalytics()
-
-
-
-async function fetchMDAs() {
-
-  const response = await fetch(`${HOST}/?getMDAsCount`)
-  const MDAs = await response.json()
-// console.log(MDAs.message[0].total)
-  $("#totalMDAs").html(MDAs.message[0].total)
-
-
-}
-
-fetchMDAs()
-
-async function fetchRevHeads() {
-
-  const response = await fetch(`${HOST}/?getRevenueCount`)
-  const MDAs = await response.json()
-
-  $("#totalrevs").html(MDAs.message[0].total)
-
-
-}
-
-fetchRevHeads()
 
 

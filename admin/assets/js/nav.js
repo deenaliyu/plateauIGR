@@ -58,7 +58,7 @@ $(".aside").html(`
           </li>
 
           <li class="menu-item">
-            <a href="invoice.html" class="menu-link">
+            <a href="invoiceLGC.html" class="menu-link">
               <div data-i18n="Basic Inputs">Invoice Report</div>
             </a>
           </li>
