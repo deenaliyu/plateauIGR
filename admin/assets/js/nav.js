@@ -43,6 +43,38 @@ $(".aside").html(`
       </a>
     </li>
 
+    <li class="menu-item">
+        <a href="javascript:void(0);" class="menu-link menu-toggle lgc">
+           <i class='menu-icon tf-icons bx bx-buildings' ></i>
+          <div data-i18n="Form Elements">LGC</div>
+        </a>
+
+       
+        <ul class="menu-sub">
+         <li class="menu-item">
+            <a href="lgcmanagement.html" class="menu-link">
+              <div data-i18n="Input groups">LGCs</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="invoice.html" class="menu-link">
+              <div data-i18n="Basic Inputs">Invoice Report</div>
+            </a>
+          </li>
+
+          <li class="menu-item">
+            <a href="collection.html" class="menu-link">
+              <div data-i18n="Input groups">Collection Report</div>
+            </a>
+          </li>
+            
+          
+          
+          
+        </ul>
+      </li>
+
       <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle dggg">
           <iconify-icon icon="mdi:report-bell-curve-cumulative" class="menu-icon"></iconify-icon>
@@ -1249,22 +1281,22 @@ if (stateSelect) {
       <option value="${lga}">${lga}</option>
     `
   })
-//   stateSelect.addEventListener('change', function () {
-//     let selectedState = $(this).val()
+  //   stateSelect.addEventListener('change', function () {
+  //     let selectedState = $(this).val()
 
-//     let arrStates = Object.values(lgaList)
-//     let finalarrState = arrStates[stateSelect.selectedIndex - 1]
+  //     let arrStates = Object.values(lgaList)
+  //     let finalarrState = arrStates[stateSelect.selectedIndex - 1]
 
-//     lgaSelect.innerHTML = ''
+  //     lgaSelect.innerHTML = ''
 
-//     finalarrState.forEach((opt, ii) => {
-//       lgaSelect.innerHTML += `
-//         <option value="${opt}">${opt}</option>
-//       `
-//     })
+  //     finalarrState.forEach((opt, ii) => {
+  //       lgaSelect.innerHTML += `
+  //         <option value="${opt}">${opt}</option>
+  //       `
+  //     })
 
 
-//   })
+  //   })
 
 }
 
@@ -1276,22 +1308,22 @@ if (stateSelect2) {
       <option value="${lga}">${lga}</option>
     `
   })
-//   stateSelect2.addEventListener('change', function () {
-//     let selectedState = $(this).val()
+  //   stateSelect2.addEventListener('change', function () {
+  //     let selectedState = $(this).val()
 
-//     let arrStates = Object.values(lgaList)
-//     let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
+  //     let arrStates = Object.values(lgaList)
+  //     let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
 
-//     lgaSelect2.innerHTML = ''
+  //     lgaSelect2.innerHTML = ''
 
-//     finalarrState.forEach((opt, ii) => {
-//       lgaSelect2.innerHTML += `
-//         <option value="${opt}">${opt}</option>
-//       `
-//     })
+  //     finalarrState.forEach((opt, ii) => {
+  //       lgaSelect2.innerHTML += `
+  //         <option value="${opt}">${opt}</option>
+  //       `
+  //     })
 
 
-//   })
+  //   })
 
 }
 
@@ -1328,7 +1360,7 @@ function convertNumberToWords(number) {
   if (fraction > 0) {
     output += " naira and";
     output += " " + numberToWords(parseInt(fraction));
-    
+
     output += " Kobo"
   }
 
@@ -1488,44 +1520,44 @@ function numberToWords(num) {
   const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
 
   function convertLessThanOneThousand(n) {
-      let word = '';
-      if (n >= 100) {
-          word += ones[Math.floor(n / 100)] + ' hundred ';
-          n %= 100;
-      }
-      if (n >= 20) {
-          word += tens[Math.floor(n / 10)] + ' ';
-          n %= 10;
-      }
-      if (n > 0) {
-          if (n < 10) word += ones[n] + ' ';
-          else word += teens[n - 10] + ' ';
-      }
-      return word.trim();
+    let word = '';
+    if (n >= 100) {
+      word += ones[Math.floor(n / 100)] + ' hundred ';
+      n %= 100;
+    }
+    if (n >= 20) {
+      word += tens[Math.floor(n / 10)] + ' ';
+      n %= 10;
+    }
+    if (n > 0) {
+      if (n < 10) word += ones[n] + ' ';
+      else word += teens[n - 10] + ' ';
+    }
+    return word.trim();
   }
 
   if (num === 0) return 'zero';
 
   let words = '';
   if (num < 0) {
-      words += 'negative ';
-      num = Math.abs(num);
+    words += 'negative ';
+    num = Math.abs(num);
   }
 
   if (num >= 1000000000) {
-      words += convertLessThanOneThousand(Math.floor(num / 1000000000)) + ' billion ';
-      num %= 1000000000;
+    words += convertLessThanOneThousand(Math.floor(num / 1000000000)) + ' billion ';
+    num %= 1000000000;
   }
   if (num >= 1000000) {
-      words += convertLessThanOneThousand(Math.floor(num / 1000000)) + ' million ';
-      num %= 1000000;
+    words += convertLessThanOneThousand(Math.floor(num / 1000000)) + ' million ';
+    num %= 1000000;
   }
   if (num >= 1000) {
-      words += convertLessThanOneThousand(Math.floor(num / 1000)) + ' thousand ';
-      num %= 1000;
+    words += convertLessThanOneThousand(Math.floor(num / 1000)) + ' thousand ';
+    num %= 1000;
   }
   if (num > 0) {
-      words += convertLessThanOneThousand(num);
+    words += convertLessThanOneThousand(num);
   }
 
   return words.trim();
