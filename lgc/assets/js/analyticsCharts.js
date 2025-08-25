@@ -26,7 +26,7 @@ async function revenueTrendSelectPerformance() {
   const selectInput = document.querySelector('#revenueTrendSelect')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?filteredRevenue&mda_id=${userInfo2Mda.id}`)
+    const response = await fetch(`https://plateauigr.com/php/?filteredRevenueMda&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
