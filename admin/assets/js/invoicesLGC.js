@@ -38,7 +38,7 @@ async function fetchInvoice() {
     `${HOST}?getAllInvoiceLGC`
   );
   const userInvoices = await response.json();
-  console.log(userInvoices);
+  // console.log(userInvoices);
   if (userInvoices.status === 0){
     let tt = 0;
     $("#totalInv").html(tt)
@@ -53,7 +53,7 @@ async function fetchInvoice() {
     displayData(userInvoices.message.reverse())
   } else {
     // $("#showInvoice").html("<tr></tr>");
-    $("#dataTable").DataTable();
+    $("#dataTable1").DataTable();
   }
 }
 
@@ -99,7 +99,7 @@ function displayData(userInvoices) {
 }
 
 fetchInvoice().then((uu) => {
-  $("#dataTable").DataTable();
+  $("#dataTable1").DataTable();
 });
 
 async function fetchAnalytics() {

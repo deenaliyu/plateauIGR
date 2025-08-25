@@ -38,8 +38,8 @@
   <script src="./assets/vendor/js/helpers.js"></script>
   <script src="./assets/js/config.js"></script>
 
-
   <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/polyfills.umd.js"></script> -->
 
 </head>
 
@@ -67,7 +67,7 @@
             </a>
           </div>
 
-          <div class="navbar-nav-right relative flex items-center gap-x-5" id="navbar-collapse">
+          <div class="navbar-nav-right flex items-center gap-x-5" id="navbar-collapse">
             <div class="">
               <p class="text-sm text-black">Date: <span id="datei"> </span></p>
               <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">LGC Reports</h1>
@@ -80,11 +80,10 @@
                 <iconify-icon icon="mdi:filter-variant" style="font-size: 24px"></iconify-icon>
                 Filter
               </button>
-              <button class="button items-center flex gap-x-1" id="invReportd" onclick="exportData()">
+              <button class="button flex gap-x-1 items-center" id="collReportd" onclick="exportData()">
                 <iconify-icon icon="material-symbols:cloud-download" width="28" height="28"></iconify-icon> Download
                 Report</button>
-
-              <div class="avatar avatar-online items-center flex gap-x-5">
+              <div class="avatar avatar-online flex gap-x-5 items-center">
                 <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
                 <p class="adminName">-</p>
               </div>
@@ -99,69 +98,40 @@
         <section class="content-wrapper">
 
           <div class="container-xxl flex-grow-1 container-p-y taxes">
-            <div class="flex justify-between items-center mb-4">  
-                <p class="font-bold text-2xl text-black">LGC Invoice Report</p>
-            
-                <button class="button" id="genInvBtn">Generate Invoice</button>
-            </div>
+            <p class="font-bold text-2xl text-black">LGC Collection report</p>
 
-            <div class="grid grid-cols-3 gap-3 mt-2" id="cardsForSummaray">
+            <div class="card px-2 py-4 mt-6 table-responsive">
 
-              <div class="card dashCards">
-                <div class="icoCont bg-[#e850391f]">
-                  <iconify-icon class="text-[#E85039]" icon="material-symbols:finance-chip"></iconify-icon>
-                </div>
-                <p class="headder">TOTAL INVOICES</p>
-                <p class="zanumbers" id="totalInv">-</p>
-              </div>
-              <!-- 7ad0c7 -->
-              <div class="card dashCards">
-                <div class="icoCont bg-[#7ad0c714]">
-                  <iconify-icon class="text-[#7ad0c7]" icon="la:file-invoice-dollar"></iconify-icon>
-                </div>
-                <p class="headder">TOTAL INVOICED</p>
-                <p class="zanumbers">&#8358; <span id="total_amount_invoiced">-</span></p>
-              </div>
+              <table class="table invoiceTable colet table-sm myTable collTab" id="dataTable">
+                <thead>
+                  <tr class="text-center">
+                    <th></th>
+                    <th>MDAS</th>
+                    <th>Revenue Head</th>
+                    <th>Name</th>
+                    <th>Payer ID</th>
+                    <th>TIN</th>
+                    <th>Industry</th>
+                    <th>Invoice Number</th>
+                    <th>Amount Paid</th>
+                    <th>Payment Gateway</th>
+                    <th>Payment Method</th>
+                    <th>Payment Bank</th>
+                    <th>Payment Refrence<br /> Number</th>
+                    <th>Receipt Number</th>
+                    <th>Payment Date</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="showThem">
 
-              <div class="card dashCards">
-                <div class="icoCont bg-[#d7a1271f]">
-                  <iconify-icon class="text-[#D7A127]" icon="mdi:recurring-payment"></iconify-icon>
-                </div>
-                <p class="headder">PAID</p>
-                <p class="zanumbers">&#8358; <span id="total_amountP">-</span></p>
-              </div>
+                </tbody>
+              </table>
 
             </div>
-            <div class="card py-4 mt-6">
-              <div class="table-responsive p-2">
-                <table class="table invoiceTable" id="dataTable1">
-                  <thead>
-                    <tr class="text-center">
-                      <th></th>
-                      <th>Payer ID</th>
-                      <th>MDA</th>
-                      <th>Revenue Head</th>
-                      <th>Name</th>
-                      <!-- <th>TIN</th> -->
-                      <th>Invoice Number</th>
-                      <th>Amount</th>
-                      <th>Payment Status</th>
-                      <th>Generated by</th>
-                      <th>Date Created</th>
-                      <th>Due Date</th>
-                      <th></th>
-                    </tr>
-                  </thead>
-                  <tbody class="table-border-bottom-0" id="showThem">
 
-                  </tbody>
-                </table>
-
-
-              </div>
-              <div class="flex justify-center items-center mt-4" id="loader">
-                <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-              </div>
+            <div class="flex justify-center items-center mt-4" id="loader">
+              <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
             </div>
 
           </div>
@@ -170,21 +140,27 @@
             <thead>
               <tr class="text-center">
                 <th></th>
-                <th>Payer ID</th>
-                <th>MDA</th>
+                <th>MDAS</th>
                 <th>Revenue Head</th>
                 <th>Name</th>
+                <th>Payer ID</th>
+                <th>TIN</th>
+                <th>Industry</th>
                 <th>Invoice Number</th>
-                <th>Amount</th>
-                <th>Date Created</th>
-                <th>Due Date</th>
-                <th>Payment Status</th>
+                <th>Amount Paid</th>
+                <th>Payment Gateway</th>
+                <th>Payment Method</th>
+                <th>Payment Bank</th>
+                <th>Payment Refrence Number</th>
+                <th>Receipt Number</th>
+                <th>Payment Date</th>
               </tr>
             </thead>
             <tbody class="table-border-bottom-0" id="showThem2">
 
             </tbody>
           </table>
+
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">
 
           </section>
@@ -200,37 +176,7 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
 
-  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
-      <div class="modal-content">
-        <div class="modal-header ">
-          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
-            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
-        </div>
-        <div class="modal-body mb-5">
-
-          <h1 class="text-center text-2xl">TIN Status</h1>
-          <form action="">
-            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
-              Number.</p>
-
-            <select name="" id="selectInput" class="form-select mt-5">
-              <option disabled selected>update status</option>
-              <option value="0">Un-verfied</option>
-              <option value="1">Verified</option>
-            </select>
-
-            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
-            <div id="msg_box" class="w-full"></div>
-          </form>
-        </div>
-
-      </div>
-    </div>
-  </div>
-
-  <!-- build:js assets/vendor/js/core.js -->
-  <div class="modal fade" id="filterInvoice" role="dialog" aria-hidden="true">
+  <div class="modal fade" id="filterInvoice" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header ">
@@ -238,38 +184,72 @@
           <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
             aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
         </div>
-        <div class="modal-body" style="overflow:hidden;">
+        <div class="modal-body">
+
           <div class="flex justify-end">
-            <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
+            <button class="btn btn-primary btn-sm" onclick="clearfilter2()">clear filter</button>
           </div>
           <div class="row">
             <div class="col mb-3" id="mdass">
               <label for="defaultSelect" class="form-label">MDA</label>
               <div class="form-group">
                 <select name="" id="getMDAs" class="form-select">
-                  <option selected value="">--- All ---</option>
+                  <option  selected>--- All ---</option>
                 </select>
               </div>
             </div>
           </div>
-          <div class="row">
+
+          <div class="row mb-4">
             <div class="col mb-0" id="the_rev">
               <label for="defaultSelect" class="form-label">Revenue Head</label>
               <div class="form-group">
-                <select name="" id="getRevs" class="form-select">
-                  <option selected value="">All</option>
+                <select name="" id="getMDAs" class="form-select">
+                  <option  selected>--- All---</option>
                 </select>
               </div>
             </div>
-            <div class="col mb-0">
-              <label for="paymentStatusSelect" class="form-label">Payment status</label>
-              <select id="paymentStatusSelect" class="form-select">
-                <option value="">All</option>
-                <option value="paid">Paid</option>
-                <option value="unpaid">Un-paid</option>
-              </select>
+
+            <div class="col mb-0" id="payment_channel">
+              <label for="defaultSelect" class="form-label">Payment Bank</label>
+              <div class="form-group">
+                <select name="" id="getPayment" class="form-select ">
+                  <option  selected value="">--- All---</option>
+                </select>
+              </div>
             </div>
           </div>
+          
+          <div class="row">
+            <div class="col mb-0">
+              <label for="defaultSelect" class="form-label">Payment Gateway</label>
+              <div class="form-group">
+                <select name="" id="paymentGateway" class="form-select">
+                  <option  selected value="">--- All---</option>
+                  <option value="Credo">Credo</option>
+                  <option value="Paystack">Paystack</option>
+                  <option value="InterSwitch">InterSwitch</option>
+                  <option value="null">Null</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col mb-0">
+              <label for="defaultSelect" class="form-label">Payment Method</label>
+              <div class="form-group">
+                <select name="" id="paymentMethod" class="form-select">
+                  <option  selected value="">--- All---</option>
+                  <option value="Debit Card">Debit Card</option>
+                  <option value="Internal Transfer">Internal Transfer</option>
+                  <option value="null">Null</option>
+                </select>
+              </div>
+            </div>
+          </div>
+    
+    
+               
+                
           <div class="row g-2">
             <label for="" class="mt-3">Date</label>
             <div class="col mb-0">
@@ -281,77 +261,77 @@
               <input class="form-control" type="date" value="" id="toDateInput">
             </div>
           </div>
+
         </div>
         <div class="modal-footer ">
-          <button type="button" class="btn btn-prime w-full" id="filterMda">Apply</button>
+          <button type="button" class="btn btn-prime w-full" id="filterMda2">Apply</button>
         </div>
       </div>
     </div>
   </div>
-  <!-- Core JS -->
+
   <!-- build:js assets/vendor/js/core.js -->
+
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
   <script src="./assets/vendor/libs/popper/popper.js"></script>
-  <script src="./assets/vendor/js/bootstrap.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="./assets/vendor/js/bootstrap.js"></script>
   <script src="./assets/js/jquery.datatables.min.js"></script>
   <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
+
   <script>
     $('#searching').keyup(function () {
       var table = $('.table').DataTable();
       table.search($(this).val()).draw();
     });
   </script>
-  <script src="./assets/js/nav.js?v=1.2"></script>
+
+  <script>
+
+
+    function exportData() {
+      var csv = [];
+      var table = document.getElementById("invoiceTableFull");
+
+      // Add header to CSV
+      var header = [];
+      for (var h = 0; h < table.rows[0].cells.length; h++) {
+        header.push(table.rows[0].cells[h].innerText);
+      }
+      csv.push(header.join(','));
+
+      // Add rows to CSV
+      for (var i = 1; i < table.rows.length; i++) {
+        var row = [], cols = table.rows[i].querySelectorAll('td, th');
+
+        for (var j = 0; j < cols.length; j++) {
+          row.push(cols[j].innerText);
+        }
+
+        csv.push(row.join(','));
+      }
+
+      // Download CSV file
+      var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'payment_report');
+      document.body.appendChild(link);
+      link.click();
+    }
+  </script>
+  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="./assets/js/nav.js"></script>
   <script>
     let theAtivo = document.querySelector(".lgc")
     theAtivo.parentElement.classList.add("active")
   </script>
-  <script>
-
-    
-    function exportData() {
-        var csv = [];
-        var table = document.getElementById("invoiceTableFull");
-        
-        // Add header to CSV
-        var header = [];
-        for (var h = 0; h < table.rows[0].cells.length; h++) {
-            header.push(table.rows[0].cells[h].innerText);
-        }
-        csv.push(header.join(','));
-
-        // Add rows to CSV
-        for (var i = 1; i < table.rows.length; i++) {
-            var row = [], cols = table.rows[i].querySelectorAll('td, th');
-
-            for (var j = 0; j < cols.length; j++) {
-                row.push(cols[j].innerText);
-            }
-
-            csv.push(row.join(','));
-        }
-
-        // Download CSV file
-        var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
-        var encodedUri = encodeURI(csvContent);
-        var link = document.createElement('a');
-        link.setAttribute('href', encodedUri);
-        link.setAttribute('download', 'invoice_report');
-        document.body.appendChild(link);
-        link.click();
-    }
-
-              
-
-  </script>
-
-
-
-  </script>
   <!-- <script src="./assets/js/session.js"></script> -->
+  <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/vendor/js/menu.js"></script>
+  <script src="./assets/js/collectionLGC.js"></script>
+  <script src="./assets/js/filterInv.js?v=4.0"></script>
   <!-- endbuild -->
 
   <!-- Vendors JS -->
@@ -365,20 +345,19 @@
       $("#listOfpayable").select2({
         dropdownParent: $("#filterInvoice")
       })
-
+      $("#listOfchannel").select2({
+        dropdownParent: $("#filterInvoice")
+      })
     })
   </script>
   <!-- Main JS -->
-  <script src="./assets/js/accessLevel.js?v=1.4"></script>
-  <script src="./assets/js/invoicesLGC.js"></script>
-  <script src="./assets/js/filterInv.js"></script>
   <script src="./assets/js/main.js"></script>
 
   <!-- Page JS -->
 
   <!-- Place this tag in your head or just before your close body tag. -->
   <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <script>
+   <script>
         // Function to format and display the current date
         function displayDate() {
             const now = new Date();

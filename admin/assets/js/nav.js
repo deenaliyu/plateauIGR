@@ -64,7 +64,7 @@ $(".aside").html(`
           </li>
 
           <li class="menu-item">
-            <a href="collection.html" class="menu-link">
+            <a href="collectionLGC.html" class="menu-link">
               <div data-i18n="Input groups">Collection Report</div>
             </a>
           </li>
