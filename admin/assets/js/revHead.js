@@ -31,6 +31,7 @@ async function fetchRevHeads() {
   let status = 'approved';
   const response = await fetch(`${HOST}/?getRevenueHeadByStatus&mdaName=${mdn}&status=${status}`)
   const revHeads = await response.json()
+  console.log(revHeads)
   ALLREV = revHeads
 
   // console.log(ALLREV)
@@ -51,9 +52,9 @@ async function fetchRevHeads() {
           <td>${revHd["COL_5"]}</td>
           <td>${revHd["demand_notice"]}</td>
           <td>${revHd["sector"]}</td>
+          <td>${revHd["sub_sector"] || 'NA'}</td>
           <td>${revHd["frequency"]}</td>
           <td>&#8358; ${revHd["COL_6"]}</td>
-          
           <td>&#8358; ${(revHd.total_gen_revenue === null ? 0 : revHd.total_gen_revenue.toLocaleString())}</td>
           <td>
             <div class="flex items-center gap-3" id="updtCont">
@@ -103,8 +104,11 @@ async function fetchRevHeadsPending() {
       addd += `
         <tr class="relative">
           <td>${i + 1}</td>
-          <td>${revHd["COL_4"]}</td>
+         <td>${revHd["COL_4"]}</td>
           <td>${revHd["COL_5"]}</td>
+          <td>${revHd["demand_notice"]}</td>
+          <td>${revHd["sector"]}</td>
+          <td>${revHd["sub_sector"] || 'NA'}</td>
           <td>${revHd["frequency"]}</td>
           <td>&#8358; ${revHd["COL_6"]}</td>
           

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+
+
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="./assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>PlateauIGR</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+
+  <!-- Fonts -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="./assets/css/dataTable.css">
+  <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <script src="./assets/vendor/js/helpers.js"></script>
+  <script src="./assets/js/config.js"></script>
+
+  <link href="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/css/select2.min.css" rel="stylesheet" />
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/polyfills.umd.js"></script> -->
+
+</head>
+
+<body class="taxpayer">
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside id="layout-menu" class="aside layout-menu menu-vertical menu bg-menu-theme">
+
+      </aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav
+          class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          id="layout-navbar">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+              <i class="bx bx-menu bx-sm"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right flex items-center gap-x-5" id="navbar-collapse">
+            <div class="">
+              <p class="text-sm text-black">Date: <span id="datei"> </span></p>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">LGC Reports</h1>
+            </div>
+
+            <div class="mt-4 flex gap-x-5 absolute right-24">
+
+              <button class="flex gap-1 align-items-center" type="button" data-bs-toggle="modal"
+                data-bs-target="#filterInvoice">
+                <iconify-icon icon="mdi:filter-variant" style="font-size: 24px"></iconify-icon>
+                Filter
+              </button>
+              <button class="button flex gap-x-1 items-center" id="collReportd" onclick="exportData()">
+                <iconify-icon icon="material-symbols:cloud-download" width="28" height="28"></iconify-icon> Download
+                Report</button>
+              <div class="avatar avatar-online flex gap-x-5 items-center">
+                <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
+                <p class="adminName">-</p>
+              </div>
+            </div>
+
+          </div>
+        </nav>
+
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <section class="content-wrapper">
+
+          <div class="container-xxl flex-grow-1 container-p-y taxes">
+            <p class="font-bold text-2xl text-black">LGC Collection report</p>
+
+            <div class="card px-2 py-4 mt-6 table-responsive">
+
+              <table class="table invoiceTable colet table-sm myTable collTab" id="dataTable">
+                <thead>
+                  <tr class="text-center">
+                    <th></th>
+                    <th>MDAS</th>
+                    <th>Revenue Head</th>
+                    <th>Name</th>
+                    <th>Payer ID</th>
+                    <th>TIN</th>
+                    <th>Industry</th>
+                    <th>Invoice Number</th>
+                    <th>Amount Paid</th>
+                    <th>Payment Gateway</th>
+                    <th>Payment Method</th>
+                    <th>Payment Bank</th>
+                    <th>Payment Refrence<br /> Number</th>
+                    <th>Receipt Number</th>
+                    <th>Payment Date</th>
+                    <th></th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0" id="showThem">
+
+                </tbody>
+              </table>
+
+            </div>
+
+            <div class="flex justify-center items-center mt-4" id="loader">
+              <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+            </div>
+
+          </div>
+
+          <table class="table invoiceTable hidden" id="invoiceTableFull">
+            <thead>
+              <tr class="text-center">
+                <th></th>
+                <th>MDAS</th>
+                <th>Revenue Head</th>
+                <th>Name</th>
+                <th>Payer ID</th>
+                <th>TIN</th>
+                <th>Industry</th>
+                <th>Invoice Number</th>
+                <th>Amount Paid</th>
+                <th>Payment Gateway</th>
+                <th>Payment Method</th>
+                <th>Payment Bank</th>
+                <th>Payment Refrence Number</th>
+                <th>Receipt Number</th>
+                <th>Payment Date</th>
+              </tr>
+            </thead>
+            <tbody class="table-border-bottom-0" id="showThem2">
+
+            </tbody>
+          </table>
+
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">
+
+          </section>
+          <div class="content-backdrop fade"></div>
+        </section>
+
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+
+  <div class="modal fade" id="filterInvoice" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <h5 class="modal-title text-center text-2xl font-bold" id="exampleModalLabel3">Filter</h5>
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body">
+
+          <div class="flex justify-end">
+            <button class="btn btn-primary btn-sm" onclick="clearfilter2()">clear filter</button>
+          </div>
+          <div class="row">
+            <div class="col mb-3" id="mdass">
+              <label for="defaultSelect" class="form-label">MDA</label>
+              <div class="form-group">
+                <select name="" id="getMDAs" class="form-select">
+                  <option  selected>--- All ---</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="row mb-4">
+            <div class="col mb-0" id="the_rev">
+              <label for="defaultSelect" class="form-label">Revenue Head</label>
+              <div class="form-group">
+                <select name="" id="getMDAs" class="form-select">
+                  <option  selected>--- All---</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col mb-0" id="payment_channel">
+              <label for="defaultSelect" class="form-label">Payment Bank</label>
+              <div class="form-group">
+                <select name="" id="getPayment" class="form-select ">
+                  <option  selected value="">--- All---</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          
+          <div class="row">
+            <div class="col mb-0">
+              <label for="defaultSelect" class="form-label">Payment Gateway</label>
+              <div class="form-group">
+                <select name="" id="paymentGateway" class="form-select">
+                  <option  selected value="">--- All---</option>
+                  <option value="Credo">Credo</option>
+                  <option value="Paystack">Paystack</option>
+                  <option value="InterSwitch">InterSwitch</option>
+                  <option value="null">Null</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="col mb-0">
+              <label for="defaultSelect" class="form-label">Payment Method</label>
+              <div class="form-group">
+                <select name="" id="paymentMethod" class="form-select">
+                  <option  selected value="">--- All---</option>
+                  <option value="Debit Card">Debit Card</option>
+                  <option value="Internal Transfer">Internal Transfer</option>
+                  <option value="null">Null</option>
+                </select>
+              </div>
+            </div>
+          </div>
+    
+    
+               
+                
+          <div class="row g-2">
+            <label for="" class="mt-3">Date</label>
+            <div class="col mb-0">
+              <label for="emailLarge" class="form-label">From</label>
+              <input class="form-control" type="date" value="" id="fromDateInput">
+            </div>
+            <div class="col mb-0">
+              <label for="dobLarge" class="form-label">To</label>
+              <input class="form-control" type="date" value="" id="toDateInput">
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer ">
+          <button type="button" class="btn btn-prime w-full" id="filterMda2">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- build:js assets/vendor/js/core.js -->
+
+  <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="./assets/vendor/libs/popper/popper.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+  <script src="./assets/vendor/js/bootstrap.js"></script>
+  <script src="./assets/js/jquery.datatables.min.js"></script>
+  <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
+
+  <script>
+    $('#searching').keyup(function () {
+      var table = $('.table').DataTable();
+      table.search($(this).val()).draw();
+    });
+  </script>
+
+  <script>
+
+
+    function exportData() {
+      var csv = [];
+      var table = document.getElementById("invoiceTableFull");
+
+      // Add header to CSV
+      var header = [];
+      for (var h = 0; h < table.rows[0].cells.length; h++) {
+        header.push(table.rows[0].cells[h].innerText);
+      }
+      csv.push(header.join(','));
+
+      // Add rows to CSV
+      for (var i = 1; i < table.rows.length; i++) {
+        var row = [], cols = table.rows[i].querySelectorAll('td, th');
+
+        for (var j = 0; j < cols.length; j++) {
+          row.push(cols[j].innerText);
+        }
+
+        csv.push(row.join(','));
+      }
+
+      // Download CSV file
+      var csvContent = 'data:text/csv;charset=utf-8,' + csv.join('\n');
+      var encodedUri = encodeURI(csvContent);
+      var link = document.createElement('a');
+      link.setAttribute('href', encodedUri);
+      link.setAttribute('download', 'payment_report');
+      document.body.appendChild(link);
+      link.click();
+    }
+  </script>
+  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="./assets/js/nav.js"></script>
+  <script>
+    let theAtivo = document.querySelector(".lgc")
+    theAtivo.parentElement.classList.add("active")
+  </script>
+  <!-- <script src="./assets/js/session.js"></script> -->
+  <script src="./assets/js/accessLevel.js"></script>
+  <script src="./assets/vendor/js/menu.js"></script>
+  <script src="./assets/js/collectionLGC.js"></script>
+  <script src="./assets/js/filterInv.js?v=4.0"></script>
+  <!-- endbuild -->
+
+  <!-- Vendors JS -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/select2@4.0.13/dist/js/select2.min.js"></script>
+  <script>
+    $(document).ready(function () {
+      $("#getMDAs").select2({
+        dropdownParent: $("#filterInvoice")
+      })
+      $("#listOfpayable").select2({
+        dropdownParent: $("#filterInvoice")
+      })
+      $("#listOfchannel").select2({
+        dropdownParent: $("#filterInvoice")
+      })
+    })
+  </script>
+  <!-- Main JS -->
+  <script src="./assets/js/main.js"></script>
+
+  <!-- Page JS -->
+
+  <!-- Place this tag in your head or just before your close body tag. -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+   <script>
+        // Function to format and display the current date
+        function displayDate() {
+            const now = new Date();
+            const options = { 
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric' 
+            };
+            const formattedDate = now.toLocaleDateString('en-US', options);
+            document.getElementById('datei').textContent = formattedDate;
+        }
+        
+        // Call the function when the page loads
+        window.onload = displayDate;
+    </script>
+</body>
+
+</html>

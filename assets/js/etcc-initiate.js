@@ -5,7 +5,7 @@ const initiator = urlParamsEtcc.get('initiator');
 
 let theFetchedDetails = null
 
-async function fetchUserDetails() {
+async function fetchUserDetails() { 
   let tinOrEmail = document.querySelector("#tinOrEmail").value;
 
   // Check if tinOrEmail is empty

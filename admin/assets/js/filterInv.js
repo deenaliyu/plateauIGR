@@ -155,22 +155,28 @@ $("#filterMda").on('click', () => {
 
   $("#dataTable").DataTable().clear().draw()
   $("#dataTable").DataTable().destroy()
+  $("#dataTable1").DataTable().clear().draw()
+  $("#dataTable1").DataTable().destroy()
   $("#showThem2").html('')
   displayData(filteredData)
 
   $("#dataTable").DataTable()
+  $("#dataTable1").DataTable()
   $("#filterInvoice").modal("hide")
 })
 
 function clearfilter() {
   $("#dataTable").DataTable().clear().draw()
   $("#dataTable").DataTable().destroy()
+  $("#dataTable1").DataTable().clear().draw()
+  $("#dataTable1").DataTable().destroy()
   $("#showThem2").html('')
 
 
   displayData(AllInvoiceData)
 
   $("#dataTable").DataTable()
+  $("#dataTable1").DataTable()
   $("#filterInvoice").modal("hide")
 
   const selectedMda = document.getElementById('getMDAs').value = "";
@@ -242,10 +248,13 @@ $("#filterMda2").on('click', () => {
 
   $("#dataTable").DataTable().clear().draw();
   $("#dataTable").DataTable().destroy();
+  $("#dataTable1").DataTable().clear().draw();
+  $("#dataTable1").DataTable().destroy();
   $("#showThem2").html('');
   displayData(filteredData);
 
   $("#dataTable").DataTable();
+  $("#dataTable1").DataTable();
   $("#filterInvoice").modal("hide");
 });
 
@@ -253,11 +262,14 @@ $("#filterMda2").on('click', () => {
 function clearfilter2() {
   $("#dataTable").DataTable().clear().draw()
   $("#dataTable").DataTable().destroy()
+  $("#dataTable1").DataTable().clear().draw()
+  $("#dataTable1").DataTable().destroy()
   $("#showThem2").html('')
 
   displayData(AllInvoiceData)
 
   $("#dataTable").DataTable()
+    $("#dataTable1").DataTable()
   $("#filterInvoice").modal("hide")
 
   const selectedMda = document.getElementById('getMDAs').value = ""
