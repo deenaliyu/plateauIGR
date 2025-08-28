@@ -25,7 +25,7 @@ $(".aside").html(`
       <!-- Dashboard -->
       <h4 class="menu-link pl-8 pt-5">MENU</h4>
       <li class="menu-item">
-        <a href="dashboard.html"  class="menu-link dass">
+        <a href="dashboard.html" class="menu-link dass">
           <i class="menu-icon tf-icons bx bx-home-circle"></i>
           <div data-i18n="Analytics">Dashboard</div>
         </a>
