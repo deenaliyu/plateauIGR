@@ -142,12 +142,17 @@ function renderFacilities(facilities) {
         <td>${facility.email || 'N/A'}</td>
         <td>${facility.status || 'Active'}</td>
         <td>
+        <div class="btn-group d-flex space-x-4">
          <button class="btn btn-sm btn-outline-primary view-facility" 
               data-id="${facility.payer_user_id}" 
               title="View Details">
         <iconify-icon icon="mdi:eye-outline"></iconify-icon>
       </button>
+      <a class="btn btn-secondary btn-sm print-btn" href="../hospital/enumeration-hospital-preview.html?id=${facility.payer_user_id}">
+          <i class="fas fa-print"></i> Print
+        </a>
         </td>
+        </div>
       </tr>
     `;
   });
