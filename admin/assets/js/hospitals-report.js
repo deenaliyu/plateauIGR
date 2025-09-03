@@ -144,11 +144,11 @@ function renderFacilities(facilities) {
         <td>
         <div class="btn-group d-flex space-x-4">
          <button class="btn btn-sm btn-outline-primary view-facility" 
-              data-id="${facility.payer_user_id}" 
+              data-id="${facility.enumeration_id}" 
               title="View Details">
         <iconify-icon icon="mdi:eye-outline"></iconify-icon>
       </button>
-      <a class="btn btn-secondary btn-sm print-btn" href="../hospital/enumeration-hospital-preview.html?id=${facility.payer_user_id}">
+      <a class="btn btn-secondary btn-sm print-btn" href="../hospital/enumeration-hospital-preview.html?id=${facility.enumeration_id}">
           <i class="fas fa-print"></i> Print
         </a>
         </td>
@@ -273,7 +273,7 @@ function showFacilityDetails(facilityId) {
   `);
 
 
-  fetch(`https://plateauigr.com/php/?gettHospitalFacilities`)
+  fetch(`https://plateauigr.com/php/?gettHospitalFacilities&enumeration_id=${facilityId}`)
     .then(response => response.json())
     .then(data => {
       if (data.status === 1 && data.facilities.length > 0) {
@@ -405,7 +405,7 @@ function renderFacilityDetails(facility) {
         <h5 class="text-xl fontBold text-black">Facility Information</h5>
         <table class="table table-sm">
         <tr>
-            <th>Legal Name:</th>
+            <th>Enumeration ID:</th>
             <td>${facilityData.enumeration_id ||'N/A'}</td>
           </tr>
           <tr>
@@ -544,13 +544,22 @@ function exportData(format) {
             "Branch Email": facility.branch_email,
             "Branch Website": facility.branch_website,
             "CAC Certificate Path": facility.cac_certificate_path,
-            "Operating License Path": facility.operating_license_path
+            "Operating License Path": facility.operating_license_path,
+            "TIN Response": facility.tin_response
           };
 
           // Merge type_data if available
           if (facility.type_data) {
             Object.entries(facility.type_data).forEach(([key, value]) => {
-              row[`TypeData: ${key}`] = value;
+              // Use the original key as heading
+              row[key] = value;
+            });
+          }
+
+          if (facility.facility_classification) {
+            Object.entries(facility.facility_classification).forEach(([key, value]) => {
+              // Use the original key as heading
+              row[key] = value;
             });
           }
 
@@ -593,6 +602,8 @@ function exportData(format) {
       });
     });
 }
+
+
 // function exportData(format) {
 //   const facilityType = $('#facilityTypeFilter').val();
 //   const lga = $('#lgaFilter').val();

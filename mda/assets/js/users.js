@@ -79,6 +79,7 @@ $("#createUser").on("click", function () {
           report_access: "full",
           offices: "full",
           passwd: generatePassword(8),
+          type: "mda"
         },
       };
 

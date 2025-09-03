@@ -167,7 +167,7 @@ async function getRolesAdmin() {
       })
     }
 
-    if(edit_tax_payer) {
+    if(edit_tax_payer === undefined) {
       $("#taxPContainerItems").html(`
         <p class="text-lg text-center p-5">No Access to Edit Taxpayer</p>  
       `)
