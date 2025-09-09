@@ -518,7 +518,7 @@ function exportData(format) {
     .then(data => {
       if (data.status === 1) {
         const facilities = data.facilities;
-
+console.log('Facilities to export:', facilities);
         // Map facilities and merge type_data dynamically
         const exportData = facilities.map(facility => {
           // Base fields

@@ -70,7 +70,7 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
   let demandInvoice = ""
 
   demandInvoice += `
-      <div class="demanInvoiceBody w-fit bg-white">
+      <div class="demanInvoiceBody w-fit bg-white mx-4">
           <!--header-->
 
           <div>
@@ -175,7 +175,8 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
               </tr>
             </tbody>
           </table>
-
+         <div class="flex justify-between mt-2">
+         <div>
           <div class="space-y-4 mb-8 text-sm">
             <p>
               By this notice, the Service is making a demand on you for the payment of
@@ -191,7 +192,12 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
             <div class="border-t border-black w-48"></div>
             <p class="font-bold mt-1">Executive Chairman</p>
           </div>
+          </div>
 
+          <div id="qrContainer" class="mt-16"></div>
+          <div>
+          </div>
+         </div>
           <div class="border-t border-black w-full mt-5"></div>
           <p class="text-sm text-center">KEY: MOC & I = Ministry of Commerce & Industry, TCOR = Tourism Corporation, MOL & S = Ministry of Lands, Survey & Town Planning, PSIRS = Plateau State Internal Revenue Service, MOENV = Ministry of Environment, LGOVT = Local Government</p>
 
@@ -478,18 +484,27 @@ async function openInvoice(invoicenum, price) {
       $("#auditLetter").html(displayAuditLetter(demandInvoiceInfo))
       $("#invoiceCardSecond").html(TotalInvoice)
 
+       const qrCodeContainer = document.getElementById("qrContainer")
+
+      const qrCode = new QRCode(qrCodeContainer, {
+        text: `https://plateauigr.com/viewinvoice.html?invnumber=${invoicenum}&load=true`,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        version: 10,
+      });
+
     } else {
       $("#invoiceCard").html(TotalInvoice)
       $("#invoiceCardSecond").html(TotalInvoice)
 
-      // const qrCodeContainer = document.getElementById("qrContainer")
+      const qrCodeContainer = document.getElementById("qrContainer")
 
-      // const qrCode = new QRCode(qrCodeContainer, {
-      //   text: `https://plateauigr.com/viewinvoice.html?invnumber=${invoicenum}&load=true`,
-      //   colorDark: '#000000',
-      //   colorLight: '#ffffff',
-      //   version: 10,
-      // });
+      const qrCode = new QRCode(qrCodeContainer, {
+        text: `https://plateauigr.com/viewinvoice.html?invnumber=${invoicenum}&load=true`,
+        colorDark: '#000000',
+        colorLight: '#ffffff',
+        version: 10,
+      });
 
     }
 
