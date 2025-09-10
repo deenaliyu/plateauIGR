@@ -143,7 +143,7 @@ function renderFacilities(facilities) {
         <td>${facility.status || 'Active'}</td>
         <td>
          <button class="btn btn-sm btn-outline-primary view-facility" 
-              data-id="${facility.payer_user_id}" 
+              data-id="${facility.enumeration_id}" 
               title="View Details">
         <iconify-icon icon="mdi:eye-outline"></iconify-icon>
       </button>
@@ -273,7 +273,7 @@ function showFacilityDetails(facilityId) {
   `);
 
 
-  fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}&facility_hospital_id=${facilityId}`)
+  fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}&enumeration_id=${facilityId}`)
     .then(response => response.json())
     .then(data => {
       if (data.status === 1 && data.facilities.length > 0) {
@@ -546,13 +546,21 @@ function exportData(format) {
             "Branch Email": facility.branch_email,
             "Branch Website": facility.branch_website,
             "CAC Certificate Path": facility.cac_certificate_path,
-            "Operating License Path": facility.operating_license_path
+            "Operating License Path": facility.operating_license_path,
+            "TIN Response": facility.tin_response
           };
 
           // Merge type_data if available
           if (facility.type_data) {
             Object.entries(facility.type_data).forEach(([key, value]) => {
-              row[`TypeData: ${key}`] = value;
+              // Use the original key as heading
+              row[key] = value;
+            });
+          }
+          if (facility.facility_classification) {
+            Object.entries(facility.facility_classification).forEach(([key, value]) => {
+              // Use the original key as heading
+              row[key] = value;
             });
           }
 

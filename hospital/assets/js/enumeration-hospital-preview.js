@@ -302,11 +302,11 @@ function renderFacilitySummary(facility) {
     document.getElementById('reviewSummary').innerHTML = html;
 
     // Generate QR code
-    if (facilityData.facility_hospital_id) {
+    if (facilityData.enumeration_id) {
         const qrContainer = document.getElementById('qrContainer');
         if (qrContainer) {
             new QRCode(qrContainer, {
-                text: `https://plateauigr.com/hospital/enumeration-hospital-preview.html?id=${facilityData.payer_user_id}`,
+                text: `https://plateauigr.com/hospital/enumeration-hospital-preview.html?id=${facilityData.enumeration_id}`,
                 width: 150,
                 height: 150,
                 colorDark: '#000000',
@@ -326,7 +326,7 @@ async function loadFacilityDetails(facilityId) {
     }
 
     try {
-        const response = await fetch(`https://plateauigr.com/php/index.php?gettHospitalFacilities&facility_hospital_id=${facilityId}`);
+        const response = await fetch(`https://plateauigr.com/php/index.php?gettHospitalFacilities&enumeration_id=${facilityId}`);
         const data = await response.json();
 
         if (data.status === 1 && data.facilities && data.facilities.length > 0) {
