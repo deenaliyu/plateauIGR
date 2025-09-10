@@ -53,6 +53,12 @@ $("#makePayment").html(`
         <p class="text-center">PayStack </p>
     </div>
 
+    <div class="payCards">
+      <div class="flex justify-center">
+        <img src="./assets/img/remita-icon.png" alt="Remita" width="30" />
+      </div>
+      <p class="text-center">Remita</p>
+    </div>
 
     <div class="payCards">
         <div class="flex justify-center">
@@ -221,6 +227,44 @@ $("#makePayment").html(`
 
     </div>
   
+    <div class="px-20 tab_steps">
+            <p class="fontBold text-center text-lg">Follow the steps below to make online payments with Remita</p>
+            <div class="flex justify-center mt-2">
+              <img src="./assets/img/linebig.png" alt="">
+            </div>
+        
+            <div class="mt-2">
+                <div class="mb-2">
+                    <h1 class="text-lg fontBold">Step 1</h1>
+                    <p>When you click on proceed, you'll be redirected to a secure payment gateway.</p>
+                 </div>
+                  
+                <div class="mb-2">
+                    <h1 class="text-lg fontBold">Step 2</h1>
+                    <p>Select your preferred payment method from the options provided.</p>
+                </div>
+                  
+                <div class="mb-2">
+                    <h1 class="text-lg fontBold">Step 3</h1>
+                    <p>Follow the prompt and provide all necessary details as it relates to the payment method chosen.</p>
+                </div>
+                  
+                <div class="mb-2">
+                    <h1 class="text-lg fontBold">Step 4</h1>
+                    <p>Confirm the payment amount.</p>
+                </div>
+                  
+                <div class="mb-2">
+                    <h1 class="text-lg fontBold">Step 5</h1>
+                    <p>Once the payment is processed successfully, you will receive a confirmation and and a receipt is generated.</p>
+                </div>
+                  
+                  
+                <div class="flex justify-center">
+                    <button class="button w-[60%] mt-3" id="makePaymentRemitaMain" onclick="makePaymentRemitaMain()">Proceed</button> 
+                </div>
+                <div id="msg_boxas"></div>
+        </div>
     
 
 
@@ -292,87 +336,119 @@ async function upDateEmail(tin) {
 }
 
 
-function makePaymentRemita() {
-  let thePay = document.querySelector("#theBal").textContent
-  console.log(thePay)
-
-  async function openInvoice(invoicenum) {
-    const response = await fetch(
-      // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-      `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-    );
-    const userInvoices = await response.json();
-    // console.log(userInvoices);
-
-    if (userInvoices.status === 1) {
-      if (userInvoices.message[0].payment_status === "paid") {
-        alert("This Invoice has already been paid")
-      } else {
-
-
-        let invoiceDetails = userInvoices.message[0]
-
-        var paymentEngine = RmPaymentEngine.init({
-          key: 'QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=',
-          transactionId: Math.floor(Math.random() * 1101233), // Replace with a reference you generated or remove the entire field for us to auto-generate a reference for you. Note that you will be able to check the status of this transaction using this transaction Id
-          customerId: invoiceDetails.email,
-          firstName: invoiceDetails.first_name,
-          lastName: invoiceDetails.surname,
-          email: invoiceDetails.email,
-          amount: parseFloat(invoiceDetails.amount_paid),
-          narration: invoiceDetails.COL_4,
-          onSuccess: function (response) {
-            console.log('callback Successful Response', response);
-
-            alert("payment success")
-            nextPrev(1)
-            openReceipt(invoicenum)
-
-            // let dataToPush = {
-            //   "endpoint": "createInvidualPayment",
-            //   "data": {
-            //     "invoice_number": invoicenum,
-            //     "payment_channel": "paystack",
-            //     "payment_reference_number": reference,
-            //     "receipt_number": reference,
-            //     "amount_paid": invoiceDetails.amount_paid
-            //   }
-            // }
-            // $.ajax({
-            //   type: "POST",
-            //   url: HOST,
-            //   dataType: 'json',
-            //   data: JSON.stringify(dataToPush),
-            //   success: function (data) {
-            //     console.log(data)
-            //     alert("payment success")
-            //     nextPrev(1)
-            //     openReceipt(invoicenum)
-            //   },
-            //   error: function (request, error) {
-            //     console.log(error)
-            //   }
-            // });
-          },
-          onError: function (response) {
-            console.log('callback Error Response', response);
-
-          },
-          onClose: function () {
-            console.log("closed");
-          },
-        });
-        paymentEngine.showPaymentWidget();
-
-      }
-    } else {
-      alert("Wrong Invoice")
-    }
+async function makePaymentRemitaMain() {
+  // Check if Remita Payment Engine is available
+  if (typeof RmPaymentEngine === 'undefined') {
+    showError("Payment service is currently unavailable. Please try another payment method.");
+    return;
   }
-  let invoicenn = sessionStorage.getItem("invoice_number")
-  openInvoice(invoicenn)
 
+  const invoiceNum = sessionStorage.getItem("invoice_number");
 
+  if (!invoiceNum) {
+    showError("Invoice information not found. Please try again.");
+    return;
+  }
+
+  showLoading();
+
+  try {
+    const invoice = await fetchInvoice(invoiceNum);
+
+    if (invoice.payment_status === "paid") {
+      showMessage("This invoice has already been paid", "warning");
+      return;
+    }
+
+    processPayment(invoice, invoiceNum);
+  } catch (error) {
+    console.error("Payment processing error:", error);
+    showError("Unable to process invoice. Please try other payment channels.");
+  }
+}
+
+// Helper functions
+function showLoading() {
+  $("#msg_boxas").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `);
+  $("#makePaymentRemitaMain").addClass("hidden");
+}
+
+function showError(message) {
+  $("#msg_boxas").html(`
+    <p class="text-danger text-center mt-4 text-lg">${message}</p>
+  `);
+  $("#makePaymentRemitaMain").removeClass("hidden");
+}
+
+function showMessage(message, type = "warning") {
+  $("#msg_boxas").html(`
+    <p class="text-${type} text-center mt-4 text-lg">${message}</p>
+  `);
+  $("#makePaymentRemitaMain").removeClass("hidden");
+}
+
+async function fetchInvoice(invoiceNum) {
+  const response = await fetch(`${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoiceNum}`);
+  const data = await response.json();
+
+  if (data.status !== 1) {
+    throw new Error("Invalid invoice data");
+  }
+
+  return data.message[0];
+}
+
+function processPayment(invoice, invoiceNum) {
+  const paymentEngine = RmPaymentEngine.init({
+    key: 'QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=',
+    transactionId: Math.floor(Math.random() * 1101233),
+    customerId: invoice.email,
+    firstName: invoice.first_name,
+    lastName: invoice.surname,
+    email: invoice.email,
+    amount: parseFloat(invoice.amount_paid),
+    narration: invoice.COL_4,
+    onSuccess: function (response) {
+      showMessage("Payment successful!", "success");
+      // Ping API before showing the success message
+      let dataToPush = {
+        "endpoint": "createInvidualPayment",
+        "data": {
+          "invoice_number": invoiceNum,
+          "payment_channel": "remita",
+          "payment_reference_number": response.transactionId || response.reference || "",
+          "receipt_number": invoiceNum,
+          "amount_paid": invoice.amount_paid
+        }
+      };
+      $.ajax({
+        type: "POST",
+        url: HOST,
+        dataType: 'json',
+        data: JSON.stringify(dataToPush),
+        success: function (data) {
+          // Show success message and proceed
+          nextPrev(1);
+          openReceipt(invoiceNum);
+        },
+        error: function (request, error) {
+          showError("Payment was successful but could not update record. Please contact support.");
+        }
+      });
+    },
+    onError: function (response) {
+      showError("Error while processing payment. Try other payment channels.");
+    },
+    onClose: function () {
+      $("#msg_boxas").html("");
+      $("#makePaymentRemitaMain").removeClass("hidden");
+    },
+  });
+  paymentEngine.showPaymentWidget();
 }
 
 function makePaymentRemita2() {
