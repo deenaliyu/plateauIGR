@@ -227,8 +227,7 @@ $("#makePayment").html(`
 
     </div>
   
-    
-  <div class="px-20 tab_steps">
+    <div class="px-20 tab_steps">
             <p class="fontBold text-center text-lg">Follow the steps below to make online payments with Remita</p>
             <div class="flex justify-center mt-2">
               <img src="./assets/img/linebig.png" alt="">
@@ -266,6 +265,8 @@ $("#makePayment").html(`
                 </div>
                 <div id="msg_boxas"></div>
         </div>
+    
+
 
 
   <div class="px-20 tab_steps">
@@ -294,11 +295,6 @@ if (payCards) {
       tab_steps[i].classList.add("active")
     })
   })
-}
-
-function isValidEmail(email) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
 }
 
 async function upDateEmail(tin) {
@@ -364,17 +360,7 @@ async function makePaymentRemitaMain() {
       return;
     }
 
-    let full_amount_paid = 0
-    invoice.forEach(usr => {
-      full_amount_paid += parseFloat(usr.amount_paid)
-
-      if (usr.invoice_type === "demand notice") {
-        full_amount_paid += parseFloat(usr.previous_year_value)
-        full_amount_paid += parseFloat(usr.previous_year_value_2)
-      }
-    })
-
-    processPayment(invoice[0], full_amount_paid, invoiceNum);
+    processPayment(invoice, invoiceNum);
   } catch (error) {
     console.error("Payment processing error:", error);
     showError("Unable to process invoice. Please try other payment channels.");
@@ -413,10 +399,10 @@ async function fetchInvoice(invoiceNum) {
     throw new Error("Invalid invoice data");
   }
 
-  return data.message;
+  return data.message[0];
 }
 
-function processPayment(invoice, amount_paid, invoiceNum) {
+function processPayment(invoice, invoiceNum) {
   const paymentEngine = RmPaymentEngine.init({
     key: 'QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=',
     transactionId: Math.floor(Math.random() * 1101233),
@@ -424,7 +410,7 @@ function processPayment(invoice, amount_paid, invoiceNum) {
     firstName: invoice.first_name,
     lastName: invoice.surname,
     email: invoice.email,
-    amount: parseFloat(amount_paid),
+    amount: parseFloat(invoice.amount_paid),
     narration: invoice.COL_4,
     onSuccess: function (response) {
       showMessage("Payment successful!", "success");
@@ -436,7 +422,7 @@ function processPayment(invoice, amount_paid, invoiceNum) {
           "payment_channel": "remita",
           "payment_reference_number": response.transactionId || response.reference || "",
           "receipt_number": invoiceNum,
-          "amount_paid": amount_paid
+          "amount_paid": invoice.amount_paid
         }
       };
       $.ajax({
@@ -466,10 +452,10 @@ function processPayment(invoice, amount_paid, invoiceNum) {
 }
 
 function makePaymentRemita2() {
-  //   let thePay = document.querySelector("#theBal")
-  //   let finalPay = thePay.dataset.money
+  let thePay = document.querySelector("#theBal")
+  let finalPay = thePay.dataset.money
 
-  //   console.log(finalPay)
+  // console.log(finalPay)
 
   $("#makePBtn").addClass("hidden")
   $("#msg_boxx").html(`
@@ -481,12 +467,9 @@ function makePaymentRemita2() {
   async function openInvoice(invoicenum) {
     try {
 
-      const response = await fetch(
-        `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
-      );
+      const response = await fetch(`${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`);
 
       const userInvoices = await response.json();
-      // console.log(userInvoices);
 
       if (userInvoices.status === 1) {
 
@@ -498,26 +481,16 @@ function makePaymentRemita2() {
         } else {
 
           const userHasEmail = userInvoices.message[0].email;
-          let invoiceDetails = userInvoices.message[0]
 
-          let full_amount_paid = 0
-          userInvoices.message.forEach(usr => {
-            full_amount_paid += parseFloat(usr.amount_paid)
-            if (usr.invoice_type === "demand notice") {
-              full_amount_paid += parseFloat(usr.previous_year_value)
-              full_amount_paid += parseFloat(usr.previous_year_value_2)
-            }
-          })
+          if (userHasEmail && userHasEmail !== '') {
+            let invoiceDetails = userInvoices.message[0]
 
-
-          let finalAmount = full_amount_paid * 100
-
-          if (userHasEmail && isValidEmail(userHasEmail)) {
             let PaymentData = {
-              "amount": parseInt(finalAmount),
+              "amount": parseFloat(finalPay) * 100,
+              // "amount": 200.00,
               "bearer": 1,
-              "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalAmount)}`,
-              "channel": ["Card", "bank", "USSD"],
+              "callbackUrl": `https://plateauigr.com/receipt.html?invoice_num=${invoicenum}&amount=${parseFloat(finalPay)}`,
+              "channels": ["card", "bank"],
               "currency": "NGN",
               "customerFirstName": invoiceDetails.first_name + invoiceDetails.surname,
               "customerLastName": invoicenum,
@@ -546,10 +519,10 @@ function makePaymentRemita2() {
                 }
 
               },
-              error: function (request, error) {
-                console.log(error)
+              error: function (request) {
+                let error = request.responseJSON
                 $("#makePBtn").removeClass("hidden")
-                $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Error while processing payment, try another payment gateway!</p>`)
+                $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">${error.error.amount ? error.error.amount : error.error.message} - Try another payment gateway.</p>`)
               }
             });
 
@@ -566,7 +539,7 @@ function makePaymentRemita2() {
 
     } catch (error) {
       $("#makePBtn").removeClass("hidden")
-      console.log(error)
+
       $("#msg_boxx").html(`<p class="text-danger text-center mt-4 text-lg">Network Error, Please Try Again!</p>`)
     }
 
@@ -581,12 +554,10 @@ function makePaymentRemita2() {
 }
 
 function makePayment() {
-  //   let thePay = document.querySelector("#theBal")
-  //   let finalPay = thePay.dataset.money
+  let thePay = document.querySelector("#theBal")
+  let finalPay = thePay.dataset.money
   //   console.log(finalPay)
   async function openInvoice(invoicenum) {
-
-
     const response = await fetch(
       // `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
       `${HOST}/php/index.php?getSingleInvoice&invoiceNumber=${invoicenum}`
@@ -601,29 +572,15 @@ function makePayment() {
 
         const userHasEmail = userInvoices.message[0].email;
 
-        let full_amount_paid = 0
-        userInvoices.message.forEach(usr => {
-          full_amount_paid += parseFloat(usr.amount_paid)
-
-          if (usr.invoice_type === "demand notice") {
-            console.log(usr.previous_year_value, usr.previous_year_value_2)
-            full_amount_paid += parseFloat(usr.previous_year_value)
-            full_amount_paid += parseFloat(usr.previous_year_value_2)
-          }
-        })
-
-        console.log(full_amount_paid)
-
-        let finalAmount = full_amount_paid * 100
-
-        if (userHasEmail && isValidEmail(userHasEmail)) {
+        if (userHasEmail && userHasEmail !== '') {
           let invoiceDetails = userInvoices.message[0]
 
           var handler = PaystackPop.setup({
+            //   key: 'pk_test_a00bd73aad869339803b75183303647b5dcd8305', // Replace with your public key
             key: 'pk_live_6e4b6e158fb0047173174b9f6958d4e14556c790', // Replace with your public key
             "subaccount": "ACCT_govno1idl9hxudv",
             email: invoiceDetails.email,
-            amount: parseInt(finalAmount),
+            amount: finalPay * 100,
             currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
             "metadata": {
               "custom_fields": [
@@ -639,34 +596,31 @@ function makePayment() {
               var reference = response.reference;
               alert('Payment complete! Reference: ' + reference);
               // Make an AJAX call to your server with the reference to verify the transaction
-              window.location.href = `./viewreceipt.html?invnumber=${invoicenum}&load=true`
-              // let dataToPush = {
-              //   "endpoint": "createInvidualPayment",
-              //   "data": {
-              //     "invoice_number": invoicenum,
-              //     "payment_channel": "paystack",
-              //     "payment_reference_number": reference,
-              //     "receipt_number": reference,
-              //     "amount_paid": finalPay
-              //   }
-              // }
-              // $.ajax({
-              //   type: "POST",
-              //   url: HOST,
-              //   dataType: 'json',
-              //   data: JSON.stringify(dataToPush),
-              //   success: function (data) {
-              //     // console.log(data)
-
-              //     alert("payment success")
-
-              //     nextPrev(1)
-              //     openReceipt(invoicenum)
-              //   },
-              //   error: function (request, error) {
-              //     console.log(error)
-              //   }
-              // });
+              let dataToPush = {
+                "endpoint": "createInvidualPayment",
+                "data": {
+                  "invoice_number": invoicenum,
+                  "payment_channel": "paystack",
+                  "payment_reference_number": reference,
+                  "receipt_number": reference,
+                  "amount_paid": finalPay
+                }
+              }
+              $.ajax({
+                type: "POST",
+                url: HOST,
+                dataType: 'json',
+                data: JSON.stringify(dataToPush),
+                success: function (data) {
+                  // console.log(data)
+                  alert("payment success")
+                  nextPrev(1)
+                  openReceipt(invoicenum)
+                },
+                error: function (request, error) {
+                  console.log(error)
+                }
+              });
 
             },
             onClose: function () {
@@ -678,8 +632,101 @@ function makePayment() {
         } else {
           upDateEmail(userInvoices.message[0].tin)
         }
+        // const modal = FlutterwaveCheckout({
+        //   public_key: "FLWPUBK_TEST-b75c6102b14be3e6292bc9eca05a3497-X",
+        //   tx_ref: "titanic" + Math.floor(Math.random() * 1101233),
+        //   amount: parseFloat(invoiceDetails.amount_paid),
+        //   currency: "NGN",
+        //   payment_options: "card, banktransfer, ussd",
+        //   customer: {
+        //     email: invoiceDetails.email,
+        //     phone_number: invoiceDetails.phone,
+        //     name: invoiceDetails.first_name + " " + invoiceDetails.surname,
+        //   },
+        //   customizations: {
+        //     title: "PlateauIGR",
+        //     description: "Payment of tax",
+        //     logo: "https://plateaugr.useibs.com/assets/img/logo.png",
+        //   },
+        //   callback: function (payment) {
+        //     let dataToPush = {
+        //       "endpoint": "createInvidualPayment",
+        //       "data": {
+        //         "invoice_number": invoicenum,
+        //         "payment_channel": "FlutterWave",
+        //         "payment_reference_number": payment.tx_ref,
+        //         "receipt_number": payment.tx_ref, 
+        //         "amount_paid" : invoiceDetails.amount_paid
+        //       }
+        //     }
+        //     $.ajax({
+        //       type: "POST",
+        //       url: HOST,
+        //       dataType: 'json',
+        //       data: JSON.stringify(dataToPush),
+        //       success: function (data) {
+        //         console.log(data)
+        //         alert("payment success")
+        //         modal.close();
+        //         nextPrev(1)
+        //         openReceipt(invoicenum)
+        //       },
+        //       error: function (request, error) {
+        //         console.log(error)
+        //       }
+        //     });
 
+        //   },
+        //   onclose: function (incomplete) {
+        //     if (incomplete === true) {
+        //       // Record event in analytics
+        //       console.log("Not completed")
+        //     }
+        //   }
+        // });
 
+        // var handler = PaystackPop.setup({
+        //   key: 'pk_test_f26de719a48fdedcf6788a6b8bba2d9bd2c3c0a4', // Replace with your public key
+        //   email: invoiceDetails.email,
+        //   amount: parseFloat(thePay) * 100,
+        //   currency: 'NGN', // Use GHS for Ghana Cedis or USD for US Dollars
+
+        //   callback: function (response) {
+        //     //this happens after the payment is completed successfully
+        //     var reference = response.reference;
+        //     alert('Payment complete! Reference: ' + reference);
+        //     // Make an AJAX call to your server with the reference to verify the transaction
+        //     let dataToPush = {
+        //       "endpoint": "createInvidualPayment",
+        //       "data": {
+        //         "invoice_number": invoicenum,
+        //         "payment_channel": "paystack",
+        //         "payment_reference_number": reference,
+        //         "receipt_number": reference
+        //       }
+        //     }
+        //     $.ajax({
+        //       type: "POST",
+        //       url: HOST,
+        //       dataType: 'json',
+        //       data: JSON.stringify(dataToPush),
+        //       success: function (data) {
+        //         console.log(data)
+        //         alert("payment success")
+        //         nextPrev(1)
+        //         openReceipt(invoicenum)
+        //       },
+        //       error: function (request, error) {
+        //         console.log(error)
+        //       }
+        //     });
+
+        //   },
+        //   onClose: function () {
+        //     alert('Transaction was not completed, window closed.');
+        //   },
+        // });
+        // handler.openIframe();
       }
     } else {
       alert("Wrong Invoice")
@@ -716,27 +763,25 @@ function getFormattedDate(date) {
 }
 
 async function openReceipt(invoicenum) {
-  console.log(invoicenum)
+  // console.log(invoicenum)
 
   const response = await fetch(
     `${HOST}/php/index.php?getSinglePayment&invoiceNumber=${invoicenum}`
   );
   const userInvoices = await response.json();
-  console.log(userInvoices);
+  // console.log(userInvoices);
 
   if (userInvoices.status === 1) {
 
     let invoice_info = userInvoices.message[0]
     let allReceipt = ""
 
+    let hardCopyReceipt = ""
     let theTotal = []
 
     allReceipt += `
         <div class="flex px-6 pt-3 items-center justify-between">
-          <div>
-            <p class="text-lg text-[#6F6F84]">Unique payment ID</p>
-            <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
-          </div>
+          <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
 
           <div>
             <img src="./assets/img/akwaimage.png" alt="" class="">
@@ -773,7 +818,7 @@ async function openReceipt(invoicenum) {
           </div>
 
           <div class="w-full flex justify-end">
-           <p class="text-[#555555]">This is to : <span class="fontBold text-black capitalize">${invoice_info.surname === 'undefined' ? '' : invoice_info.surname} ${invoice_info.first_name}</span></p>
+           <p class="text-[#555555]">This is to : <span class="fontBold text-black capitalize">${invoice_info.surname} ${invoice_info.first_name}</span></p>
           </div>
         </div>
 
@@ -845,12 +890,11 @@ async function openReceipt(invoicenum) {
               <div>
                 <p class="mb-2 fontBold">Payer ID: ${(invoice_info.tax_number === true) ? invoice_info.tax_number : invoice_info.payer_id}</p>
                 <p class="mb-2 fontBold">TIN: ${invoice_info.tin}</p>
+                <p class="mb-2">Due Date: ${getFormattedDate(invoice_info.due_date)}</p>
               </div>
               <div>
                 <p class="mb-2">Invoice Date: ${getFormattedDate(invoice_info.timeIn)}</p>
-                <p class="mb-2">Start Date: ${invoice_info.start_date ? getFormattedDate(invoice_info.start_date) : '-'}</p>
-                
-                <p class="mb-2">End Date: ${invoice_info.start_date ? getFormattedDate(invoice_info.end_date) : '-'}</p>
+                <p class="mb-2">Expiry Date: ${getFormattedDate(invoice_info.due_date)}</p>
               </div>
             </div>
 
@@ -879,8 +923,95 @@ async function openReceipt(invoicenum) {
     `
 
     $("#receiptCard").html(allReceipt)
+    let theItems = []
+    let theAmount = 0
+    userInvoices.message.forEach(userInfo => {
+      theItems.push(userInfo.COL_4)
+      theAmount += parseFloat(userInfo.amount_paid)
+    })
+
+    hardCopyReceipt += `
+        <div class="hardReceiptCopy">
+          <div class="h-[185px]">
+          
+          </div>
+
+          <div class="flex justify-end mx-6">
+            <h1 class="fontBold text-2xl">${invoice_info.invoice_number}</h1>
+          </div>
+
+
+          <table class="table table-borderless mx-6 mt-4">
+            <tr>
+              <td>MDA</td>
+              <td>${invoice_info['COL_3']}</td>
+            </tr>
+            <tr>
+              <td>Status</td>
+              <td>${invoice_info.payment_status.toUpperCase()}</td>
+            </tr>
+            <tr>
+              <td>Tax Item</td>
+              <td>${theItems.join(', ')}</td>
+            </tr>
+            <tr>
+              <td>Amount</td>
+              <td>${formatMoney(theAmount)}</td>
+            </tr>
+            <tr>
+              <td>PAYER NAME</td>
+              <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+            </tr>
+            <tr>
+              <td>Payer ID</td>
+              <td>${invoice_info.tax_number}</td>
+            </tr>
+            <tr>
+              <td>JTB TIN</td>
+              <td>${invoice_info.tin ? invoice_info.tin : '-'}</td>
+            </tr>
+            <tr>
+              <td>Description</td>
+              <td>${invoice_info.description}</td>
+            </tr>
+            <tr>
+              <td>Period</td>
+              <td>${formatDateRange(invoice_info.timeIn)}</td>
+            </tr>
+            <tr>
+              <td>Billing Ref</td>
+              <td>${invoice_info.invoice_number}</td>
+            </tr>
+            <tr>
+              <td>Created By</td>
+              <td>${invoice_info.first_name} ${invoice_info.surname}</td>
+            </tr>
+            <tr>
+              <td>Date Paid</td>
+              <td>${formatDate(invoice_info.timeIn)}</td>
+            </tr>
+
+          </table>
+
+          <div class='mx-6 flex justify-between mt-5'>
+            <div>
+              <div class="border-b border-b border-[#6F6F84] mb-2">
+                <img src="./assets/img/sign.png" alt="" class="pb-2">
+              </div>
+            
+              
+              <h4 class="fontBold">Executive Chairman PSIRS</h4>
+            </div>
+
+            <div class="w-[18%] pr-8" id="qrContainer2"></div>
+          </div>
+        </div>
+    `
+
+    $("#receiptHardCopy").html(hardCopyReceipt)
 
     const qrCodeContainer = document.getElementById("qrContainer")
+    const qrCodeContainer2 = document.getElementById("qrContainer2")
 
     const qrCode = new QRCode(qrCodeContainer, {
       text: `https://plateauigr.com/viewreceipt.html?invnumber=${invoicenum}&load=true`,
@@ -889,7 +1020,15 @@ async function openReceipt(invoicenum) {
       version: 10,
     });
 
+    const qrCode2 = new QRCode(qrCodeContainer2, {
+      text: `https://plateauigr.com/viewreceipt.html?invnumber=${invoicenum}&load=true`,
+      colorDark: '#000000',
+      colorLight: '#ffffff',
+      version: 10,
+    });
+
     qrCode.makeCode();
+    qrCode2.makeCode();
 
   } else {
     $("#invoiceCard").html(`Invalid Invoice, or expired invoice`)
@@ -944,6 +1083,20 @@ function printInvoice(thecard) {
   document.body.innerHTML = originalContent;
 
 }
+
+function printInvoiceHard(thecard) {
+  var originalContent = document.body.innerHTML;
+
+  document.querySelector("#receiptHardCopy").classList.remove('hidden')
+
+  var printContent = document.getElementById(thecard).innerHTML;
+
+  document.body.innerHTML = printContent;
+  window.print();
+  document.body.innerHTML = originalContent;
+
+}
+
 
 function generateRandomString() {
   const timestamp = new Date().getTime().toString(); // Get current timestamp as a string
@@ -1000,3 +1153,4 @@ function addSuffix(day) {
       return `${day}th`;
   }
 }
+
