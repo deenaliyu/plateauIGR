@@ -83,19 +83,78 @@
                   <p class="zanumbers text-end" id="totalInv">-</p>
                 </div>
 
-                <div class="dashCards card card-hidden w-full flex-col space-y-2">
+                <div class="dashCards card w-full flex-col space-y-2">
                   <div class="flex items-center  justify-start">
                     <div class="icoCont bg-[#d7a1271f] mr-auto">
-                      <iconify-icon class="text-[#D7A127]" icon="mdi:recurring-payment"></iconify-icon>
+                      <iconify-icon class="text-[#D7A127]" icon="clarity:employee-group-solid"></iconify-icon>
                     </div>
-                    <p class=" text-gray-500 text-xs text-end">
-                      TOTAL REMITTANCE
-                    </p>
+                    <p class=" text-gray-500 text-xs impMetrics">TOTAL MONTHLY REVENUE</p>
+                  </div>
+
+
+                  <div class="form-group  ml-auto" style="margin-top: 52px;">
+                    <select class="form-select" id="monthlyYear" onchange="refreshTheCards2()">
+                    </select>
                   </div>
 
                   <p class="zanumbers text-end">
-                    <!-- &#8358; -->
-                    <span id="totalRem">-</span>
+                    <span id="total_amount_invoiced">-</span>
+                  </p>
+                </div>
+
+                <div class="dashCards card w-full flex-col space-y-2">
+                  <div class="flex items-center  justify-start">
+                    <div class="icoCont bg-[#1c315c1f] mr-auto">
+                      <iconify-icon class="text-[#1C315C]" icon="clarity:employee-group-solid"></iconify-icon>
+                    </div>
+                    <p class=" text-gray-500 text-xs impMetrics">TOTAL ACCRUED REVENUE</p>
+                  </div>
+
+
+                  <div class="form-group ml-auto" style="margin-top: 52px;">
+                    <select class="form-select" id="accruedRev" onchange="refreshTheCardsAcr()">
+                    </select>
+                  </div>
+
+                  <p class="zanumbers text-end">
+                    <span id="accruedRevText">-</span>
+                  </p>
+                </div>
+                <div class="dashCards card w-full flex-col space-y-2">
+                  <div class="flex items-center  justify-start">
+                    <div class="icoCont bg-[#f890301f] mr-auto">
+                      <iconify-icon class="text-[#D7A127]" icon="solar:wallet-bold"></iconify-icon>
+                    </div>
+                    <p class="text-gray-500 text-xs impMetrics">TOTAL INVOICES GENERATED</p>
+                  </div>
+
+
+                  <div class="form-group  ml-auto" style="margin-top: 52px;">
+                    <select class="form-select" id="monthlyYear2ttl" onchange="refreshTheCardsttl()">
+                    </select>
+                  </div>
+
+                  <p class="zanumbers text-end">
+                    <span id="due_amountttl">-</span>
+                  </p>
+                </div>
+
+                <div class="dashCards card w-full flex-col space-y-2">
+                  <div class="flex items-center  justify-start">
+                    <div class="icoCont bg-[#d7a1271f] mr-auto">
+                      <iconify-icon class="text-[#D7A127]" icon="clarity:employee-group-solid"></iconify-icon>
+                    </div>
+                    <p class=" text-gray-500 text-xs impMetrics">EXPECTED ANNUAL REVENUE</p>
+                  </div>
+
+
+                  <div class="form-group w-1/2 ml-auto" style="margin-top: 52px;">
+                    <select class="form-select" id="annualYear" onchange="refreshTheCards()">
+                    </select>
+                  </div>
+
+                  <p class="zanumbers text-end">
+                    <span id="total_amount_invoiced2">-</span>
                   </p>
                 </div>
 
