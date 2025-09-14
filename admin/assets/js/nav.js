@@ -43,7 +43,7 @@ $(".aside").html(`
       </a>
     </li>
 
-    <li class="menu-item">
+      <li class="menu-item">
         <a href="javascript:void(0);" class="menu-link menu-toggle lgc">
            <i class='menu-icon tf-icons bx bx-buildings' ></i>
           <div data-i18n="Form Elements">LGC</div>
@@ -52,26 +52,22 @@ $(".aside").html(`
        
         <ul class="menu-sub">
          <li class="menu-item">
-            <a href="lgcmanagement.html" class="menu-link">
+            <a href="lgc-management.html" class="menu-link">
               <div data-i18n="Input groups">LGCs</div>
             </a>
           </li>
 
           <li class="menu-item">
-            <a href="invoiceLGC.html" class="menu-link">
+            <a href="lgc-invoice.html" class="menu-link">
               <div data-i18n="Basic Inputs">Invoice Report</div>
             </a>
           </li>
 
           <li class="menu-item">
-            <a href="collectionLGC.html" class="menu-link">
+            <a href="lgc-collection.html" class="menu-link">
               <div data-i18n="Input groups">Collection Report</div>
             </a>
           </li>
-            
-          
-          
-          
         </ul>
       </li>
 
