@@ -95,6 +95,10 @@ function displayDemandNotice(demandInvoiceInfo, heading, the_date, the2item) {
                 <span class="fontBold text-sm">ADDRESS:</span>
                 <p>${demandInvoiceInfo[0].address}</p>
               </div>
+              <div class="flex gap-2">
+                <span class="fontBold text-sm">TIN:</span>
+                <p>${demandInvoiceInfo[0].tin}</p>
+              </div>
             </div>
             <div class="space-y-2">
               <div class="flex gap-2">
