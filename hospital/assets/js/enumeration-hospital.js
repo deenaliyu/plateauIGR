@@ -195,7 +195,7 @@ async function validateTIN() {
       document.getElementById('taxIdentificationNumber').value = data.user.tin;
       document.getElementById('taxIdentificationNumber').readOnly = true;
       document.getElementById('address').value = data.user.address;
-      document.getElementById('address').readOnly = true;
+      // document.getElementById('address').readOnly = true;
       document.getElementById('city').value = data.user.lga;
       // document.getElementById('city').readOnly = true;
       document.getElementById('lga').value = data.user.lga;
@@ -490,11 +490,11 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <h5 class="mt-4">Maternal & Child Health (MCH) Services</h5>
     <div class="row mb-3">
       <div class="col-md-3">
-        <label class="form-label required">ANC Fee – Initial Visit (₦)</label>
+        <label class="form-label required">ANC Fee - Initial Visit (₦)</label>
         <input type="number" class="form-control" id="ancInitialFee" required>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">ANC Fee – Subsequent Visit (₦)</label>
+        <label class="form-label required">ANC Fee - Subsequent Visit (₦)</label>
         <input type="number" class="form-control" id="ancSubsequentFee" required>
       </div>
       <div class="col-md-3">
@@ -534,8 +534,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Average Cost for Injectable Contraceptive (₦)</label>
-        <input type="number" class="form-control" id="injectableCost" required>
+        <label class="form-label">Average Cost for Injectable Contraceptive (₦)</label>
+        <input type="number" class="form-control" id="injectableCost">
       </div>
     </div>
 
@@ -613,12 +613,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Fee for Eye Test (₦)</label>
-        <input type="number" class="form-control" id="eyeTestFee" required>
+        <label class="form-label">Fee for Eye Test (₦)</label>
+        <input type="number" class="form-control" id="eyeTestFee">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Cost of Eye Drops (₦)</label>
-        <input type="number" class="form-control" id="eyeDropsCost" required>
+        <label class="form-label">Average Cost of Eye Drops (₦)</label>
+        <input type="number" class="form-control" id="eyeDropsCost">
       </div>
     </div>
 
@@ -643,12 +643,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
     </div>
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Average Normal Delivery Fee (₦)</label>
-        <input type="number" class="form-control" id="normalDeliveryFee" required>
+        <label class="form-label">Average Normal Delivery Fee (₦)</label>
+        <input type="number" class="form-control" id="normalDeliveryFee">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average C-Section Fee (₦)</label>
-        <input type="number" class="form-control" id="cSectionFee" required>
+        <label class="form-label">Average C-Section Fee (₦)</label>
+        <input type="number" class="form-control" id="cSectionFee">
       </div>
       <div class="col-md-4">
         <label class="form-label required">Number of Labour Wards/Beds</label>
@@ -672,12 +672,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Teeth Whitening Cost (₦)</label>
-        <input type="number" class="form-control" id="teethWhiteningCost" required>
+        <label class="form-label">Average Teeth Whitening Cost (₦)</label>
+        <input type="number" class="form-control" id="teethWhiteningCost">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Implant Cost (₦)</label>
-        <input type="number" class="form-control" id="implantCost" required>
+        <label class="form-label">Average Implant Cost (₦)</label>
+        <input type="number" class="form-control" id="implantCost">
       </div>
     </div>
 
@@ -696,12 +696,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average MRI Fee (₦)</label>
-        <input type="number" class="form-control" id="mriFee" required>
+        <label class="form-label">Average MRI Fee (₦)</label>
+        <input type="number" class="form-control" id="mriFee">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average CT Scan Fee (₦)</label>
-        <input type="number" class="form-control" id="ctFee" required>
+        <label class="form-label">Average CT Scan Fee (₦)</label>
+        <input type="number" class="form-control" id="ctFee">
       </div>
     </div>
 
@@ -719,8 +719,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Average Cost of Genotype Test (₦)</label>
-        <input type="number" class="form-control" id="genotypeTestCost" required>
+        <label class="form-label">Average Cost of Genotype Test (₦)</label>
+        <input type="number" class="form-control" id="genotypeTestCost">
       </div>
     </div>
   `;
@@ -763,12 +763,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Fee for Eye Test (₦)</label>
-        <input type="number" class="form-control" id="eyeTestFee" required>
+        <label class="form-label">Fee for Eye Test (₦)</label>
+        <input type="number" class="form-control" id="eyeTestFee">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Cost of Eye Drops (₦)</label>
-        <input type="number" class="form-control" id="eyeDropsCost" required>
+        <label class="form-label">Average Cost of Eye Drops (₦)</label>
+        <input type="number" class="form-control" id="eyeDropsCost">
       </div>
     </div>
 
@@ -793,16 +793,16 @@ document.getElementById('facilityType').addEventListener('change', function () {
     </div>
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Average Normal Delivery Fee (₦)</label>
-        <input type="number" class="form-control" id="normalDeliveryFee" required>
+        <label class="form-label">Average Normal Delivery Fee (₦)</label>
+        <input type="number" class="form-control" id="normalDeliveryFee">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average C-Section Fee (₦)</label>
-        <input type="number" class="form-control" id="cSectionFee" required>
+        <label class="form-label">Average C-Section Fee (₦)</label>
+        <input type="number" class="form-control" id="cSectionFee">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Number of Labour Wards/Beds</label>
-        <input type="number" class="form-control" id="labourWards" required>
+        <label class="form-label">Number of Labour Wards/Beds</label>
+        <input type="number" class="form-control" id="labourWards">
       </div>
     </div>
 
@@ -822,12 +822,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Teeth Whitening Cost (₦)</label>
-        <input type="number" class="form-control" id="teethWhiteningCost" required>
+        <label class="form-label">Average Teeth Whitening Cost (₦)</label>
+        <input type="number" class="form-control" id="teethWhiteningCost">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Implant Cost (₦)</label>
-        <input type="number" class="form-control" id="implantCost" required>
+        <label class="form-label">Average Implant Cost (₦)</label>
+        <input type="number" class="form-control" id="implantCost">
       </div>
     </div>
 
@@ -846,12 +846,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average MRI Fee (₦)</label>
-        <input type="number" class="form-control" id="mriFee" required>
+        <label class="form-label">Average MRI Fee (₦)</label>
+        <input type="number" class="form-control" id="mriFee">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average CT Scan Fee (₦)</label>
-        <input type="number" class="form-control" id="ctFee" required>
+        <label class="form-label">Average CT Scan Fee (₦)</label>
+        <input type="number" class="form-control" id="ctFee">
       </div>
     </div>
 
@@ -869,8 +869,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Average Cost of Genotype Test (₦)</label>
-        <input type="number" class="form-control" id="genotypeTestCost" required>
+        <label class="form-label">Average Cost of Genotype Test (₦)</label>
+        <input type="number" class="form-control" id="genotypeTestCost">
       </div>
     </div>
 
@@ -882,12 +882,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         <input type="number" class="form-control" id="operatingTheatres" required>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average Cost of Major Surgery (₦)</label>
-        <input type="number" class="form-control" id="majorSurgeryCost" required>
+        <label class="form-label">Average Cost of Major Surgery (₦)</label>
+        <input type="number" class="form-control" id="majorSurgeryCost">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average Cost of Minor Surgery (₦)</label>
-        <input type="number" class="form-control" id="minorSurgeryCost" required>
+        <label class="form-label">Average Cost of Minor Surgery (₦)</label>
+        <input type="number" class="form-control" id="minorSurgeryCost">
       </div>
     </div>
     <div class="row mb-3">
@@ -958,18 +958,18 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- Revenue Related Questions -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Standard Consultation Fee (₦)</label>
-        <input type="number" class="form-control" id="consultationFee" required>
+        <label class="form-label">Standard Consultation Fee (₦)</label>
+        <input type="number" class="form-control" id="consultationFee">
         <div class="invalid-feedback">Please provide consultation fee.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average Charge for Normal Delivery (₦)</label>
-        <input type="number" class="form-control" id="normalDeliveryCost" required>
+        <label class="form-label">Average Charge for Normal Delivery (₦)</label>
+        <input type="number" class="form-control" id="normalDeliveryCost">
         <div class="invalid-feedback">Please provide average cost for normal delivery.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average Fee for Caesarean Section (₦)</label>
-        <input type="number" class="form-control" id="cSectionCost" required>
+        <label class="form-label">Average Fee for Caesarean Section (₦)</label>
+        <input type="number" class="form-control" id="cSectionCost">
         <div class="invalid-feedback">Please provide average cost for C-section.</div>
       </div>
     </div>
@@ -977,18 +977,18 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- Capacity / Operations -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Number of Beds</label>
-        <input type="number" class="form-control" id="numberOfBeds" required>
+        <label class="form-label">Number of Beds</label>
+        <input type="number" class="form-control" id="numberOfBeds">
         <div class="invalid-feedback">Please provide number of beds.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average Monthly Patient Visits</label>
-        <input type="number" class="form-control" id="avgMonthlyPatientVisits" required>
+        <label class="form-label">Average Monthly Patient Visits</label>
+        <input type="number" class="form-control" id="avgMonthlyPatientVisits">
         <div class="invalid-feedback">Please provide monthly patient visits.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Number of Surgeries/Procedures per Month</label>
-        <input type="number" class="form-control" id="surgeriesPerMonth" required>
+        <label class="form-label">Number of Surgeries/Procedures per Month</label>
+        <input type="number" class="form-control" id="surgeriesPerMonth">
         <div class="invalid-feedback">Please provide surgeries per month.</div>
       </div>
     </div>
@@ -1168,29 +1168,29 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Revenue & Capacity</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Standard Consultation Fee (Consultant Gynecologist)</label>
-                  <input type="number" class="form-control" id="consultationFee" required>
+                  <label class="form-label">Standard Consultation Fee (Consultant Gynecologist)</label>
+                  <input type="number" class="form-control" id="consultationFee">
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Number of Labour Wards/Beds</label>
-                  <input type="number" class="form-control" id="labourWards" required>
+                  <label class="form-label">Number of Labour Wards/Beds</label>
+                  <input type="number" class="form-control" id="labourWards">
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Fee for Ultrasound Scan</label>
-                  <input type="number" class="form-control" id="ultrasoundFee" required>
+                  <label class="form-label">Fee for Ultrasound Scan</label>
+                  <input type="number" class="form-control" id="ultrasoundFee">
               </div>
               
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Fee for Antenatal Care (Package/Visit)</label>
-                  <input type="number" class="form-control" id="antenatalFee" required>
+                  <label class="form-label">Fee for Antenatal Care (Package/Visit)</label>
+                  <input type="number" class="form-control" id="antenatalFee">
               </div>
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Charge for Normal Delivery</label>
-                  <input type="number" class="form-control" id="normalDeliveryFee" required>
+                  <label class="form-label">Average Charge for Normal Delivery</label>
+                  <input type="number" class="form-control" id="normalDeliveryFee">
               </div>
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Fee for Caesarean Section (C-section)</label>
-                  <input type="number" class="form-control" id="csectionFee" required>
+                  <label class="form-label">Average Fee for Caesarean Section (C-section)</label>
+                  <input type="number" class="form-control" id="csectionFee">
               </div>
               
               <div class="col-md-4 mt-3">
@@ -1202,13 +1202,13 @@ document.getElementById('facilityType').addEventListener('change', function () {
                   <input type="number" class="form-control" id="implantCost">
               </div>
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Number of Antenatal/Postnatal Visits per Week</label>
-                  <input type="number" class="form-control" id="visitsPerWeek" required>
+                  <label class="form-label">Average Number of Antenatal/Postnatal Visits per Week</label>
+                  <input type="number" class="form-control" id="visitsPerWeek">
               </div>
               
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Number of Births per Week</label>
-                  <input type="number" class="form-control" id="birthsPerWeek" required>
+                  <label class="form-label">Average Number of Births per Week</label>
+                  <input type="number" class="form-control" id="birthsPerWeek">
               </div>
               <div class="col-md-4 mt-3">
                   <label class="form-label">Average Cost of Cervical Cancer Screening</label>
@@ -1278,29 +1278,29 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Pricing & Revenue Indicators</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Average Cost for Teeth Whitening</label>
-                  <input type="number" class="form-control" id="whiteningCost" required>
+                  <label class="form-label">Average Cost for Teeth Whitening</label>
+                  <input type="number" class="form-control" id="whiteningCost">
                   <div class="invalid-feedback">Please provide the cost.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Average Cost of a Dental Implant (Including Crown)</label>
-                  <input type="number" class="form-control" id="implantCost" required>
+                  <label class="form-label">Average Cost of a Dental Implant (Including Crown)</label>
+                  <input type="number" class="form-control" id="implantCost">
                   <div class="invalid-feedback">Please provide the cost.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Typical Fee for Scaling & Polishing</label>
-                  <input type="number" class="form-control" id="scalingCost" required>
+                  <label class="form-label">Typical Fee for Scaling & Polishing</label>
+                  <input type="number" class="form-control" id="scalingCost">
                   <div class="invalid-feedback">Please provide the fee.</div>
               </div>
               
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Cost of a Simple Extraction</label>
-                  <input type="number" class="form-control" id="extractionCost" required>
+                  <label class="form-label">Average Cost of a Simple Extraction</label>
+                  <input type="number" class="form-control" id="extractionCost">
                   <div class="invalid-feedback">Please provide the cost.</div>
               </div>
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Typical Cost for Orthodontic Wiring (Braces) per Arch</label>
-                  <input type="number" class="form-control" id="bracesCost" required>
+                  <label class="form-label">Typical Cost for Orthodontic Wiring (Braces) per Arch</label>
+                  <input type="number" class="form-control" id="bracesCost">
                   <div class="invalid-feedback">Please provide the cost.</div>
               </div>
           </div>
@@ -1310,18 +1310,18 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Operations Overview</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Average Number of Patients per Week</label>
-                  <input type="number" class="form-control" id="patientsPerWeek" required>
+                  <label class="form-label">Average Number of Patients per Week</label>
+                  <input type="number" class="form-control" id="patientsPerWeek">
                   <div class="invalid-feedback">Please provide the number of patients.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Number of Dental Chairs/Units</label>
-                  <input type="number" class="form-control" id="dentalChairs" required>
+                  <label class="form-label">Number of Dental Chairs/Units</label>
+                  <input type="number" class="form-control" id="dentalChairs">
                   <div class="invalid-feedback">Please provide the number of chairs.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Number of Clinical Staff (Dentists, Hygienists, Assistants)</label>
-                  <input type="number" class="form-control" id="clinicalStaff" required>
+                  <label class="form-label">Number of Clinical Staff (Dentists, Hygienists, Assistants)</label>
+                  <input type="number" class="form-control" id="clinicalStaff">
                   <div class="invalid-feedback">Please provide the number of staff.</div>
               </div>
           </div>
@@ -1368,29 +1368,29 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Pricing Information</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Average Fee for MRI Scan</label>
-                  <input type="number" class="form-control" id="mriFee" required>
+                  <label class="form-label">Average Fee for MRI Scan</label>
+                  <input type="number" class="form-control" id="mriFee">
                   <div class="invalid-feedback">Please provide the fee.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Average Fee for CT Scan</label>
-                  <input type="number" class="form-control" id="ctFee" required>
+                  <label class="form-label">Average Fee for CT Scan</label>
+                  <input type="number" class="form-control" id="ctFee">
                   <div class="invalid-feedback">Please provide the fee.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Average Price for Obstetric Ultrasound</label>
-                  <input type="number" class="form-control" id="obstetricUltrasoundFee" required>
+                  <label class="form-label">Average Price for Obstetric Ultrasound</label>
+                  <input type="number" class="form-control" id="obstetricUltrasoundFee">
                   <div class="invalid-feedback">Please provide the price.</div>
               </div>
               
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Fee for Standard X-Ray</label>
-                  <input type="number" class="form-control" id="xrayFee" required>
+                  <label class="form-label">Average Fee for Standard X-Ray</label>
+                  <input type="number" class="form-control" id="xrayFee">
                   <div class="invalid-feedback">Please provide the fee.</div>
               </div>
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Cost of 3D Tomosynthesis Mammogram</label>
-                  <input type="number" class="form-control" id="mammogram3dFee" required>
+                  <label class="form-label">Average Cost of 3D Tomosynthesis Mammogram</label>
+                  <input type="number" class="form-control" id="mammogram3dFee">
                   <div class="invalid-feedback">Please provide the cost.</div>
               </div>
           </div>
@@ -1400,13 +1400,13 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Operational Capacity</h5>
               
               <div class="col-md-6">
-                  <label class="form-label required">Average Number of Scans/Procedures per Week</label>
-                  <input type="number" class="form-control" id="scansPerWeek" required>
+                  <label class="form-label">Average Number of Scans/Procedures per Week</label>
+                  <input type="number" class="form-control" id="scansPerWeek">
                   <div class="invalid-feedback">Please provide the number of scans.</div>
               </div>
               <div class="col-md-6">
-                  <label class="form-label required">Number of Staff (Radiologists, Technicians, Support)</label>
-                  <input type="number" class="form-control" id="staffCount" required>
+                  <label class="form-label">Number of Staff (Radiologists, Technicians, Support)</label>
+                  <input type="number" class="form-control" id="staffCount">
                   <div class="invalid-feedback">Please provide the number of staff.</div>
               </div>
           </div>
@@ -1456,8 +1456,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         <input type="number" class="form-control" id="eyeTestFee" required>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Cost of Sodium Hyaluronate Drops (₦)</label>
-        <input type="number" class="form-control" id="eyeDropsCost" required>
+        <label class="form-label">Average Cost of Sodium Hyaluronate Drops (₦)</label>
+        <input type="number" class="form-control" id="eyeDropsCost">
       </div>
     </div>
 
@@ -1494,8 +1494,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Average Cost of Contact Lens Fitting (₦)</label>
-        <input type="number" class="form-control" id="contactLensCost" required>
+        <label class="form-label">Average Cost of Contact Lens Fitting (₦)</label>
+        <input type="number" class="form-control" id="contactLensCost">
       </div>
     </div>
 
@@ -1503,12 +1503,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <h5 class="mt-4">Eye Surgeries (Based on Services Selected)</h5>
     <div class="row mb-3">
       <div class="col-md-6">
-        <label class="form-label required">Average Cost of Retina Surgery (₦)</label>
-        <input type="number" class="form-control" id="retinaSurgeryCost" required>
+        <label class="form-label">Average Cost of Retina Surgery (₦)</label>
+        <input type="number" class="form-control" id="retinaSurgeryCost">
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Average Cost of Glaucoma Surgery (₦)</label>
-        <input type="number" class="form-control" id="glaucomaSurgeryCost" required>
+        <label class="form-label">Average Cost of Glaucoma Surgery (₦)</label>
+        <input type="number" class="form-control" id="glaucomaSurgeryCost">
       </div>
     </div>
 
@@ -1598,8 +1598,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Capacity</h5>
               
               <div class="col-md-6">
-                  <label class="form-label required">Number of Therapy Rooms/Treatment Bays</label>
-                  <input type="number" class="form-control" id="therapyRooms" required>
+                  <label class="form-label">Number of Therapy Rooms/Treatment Bays</label>
+                  <input type="number" class="form-control" id="therapyRooms">
                   <div class="invalid-feedback">Please provide the number of therapy rooms.</div>
               </div>
               <div class="col-md-6">
@@ -1732,8 +1732,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
                   </div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Average Number of Diagnostic Tests per Week</label>
-                  <input type="number" class="form-control" id="testsPerWeek" required>
+                  <label class="form-label">Average Number of Diagnostic Tests per Week</label>
+                  <input type="number" class="form-control" id="testsPerWeek">
                   <div class="invalid-feedback">Please provide the number of tests.</div>
               </div>
               <div class="col-md-4">
@@ -1805,18 +1805,18 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Pricing & Revenue Indicators</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Average Fee for Massage Session</label>
-                  <input type="number" class="form-control" id="massageFee" required>
+                  <label class="form-label">Average Fee for Massage Session</label>
+                  <input type="number" class="form-control" id="massageFee">
                   <div class="invalid-feedback">Please provide the fee.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Typical Cost of Spa Treatment</label>
-                  <input type="number" class="form-control" id="spaTreatmentCost" required>
+                  <label class="form-label">Typical Cost of Spa Treatment</label>
+                  <input type="number" class="form-control" id="spaTreatmentCost">
                   <div class="invalid-feedback">Please provide the cost.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Fee for Personal Training Session</label>
-                  <input type="number" class="form-control" id="trainingFee" required>
+                  <label class="form-label">Fee for Personal Training Session</label>
+                  <input type="number" class="form-control" id="trainingFee">
                   <div class="invalid-feedback">Please provide the fee.</div>
               </div>
               
@@ -1825,8 +1825,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
                   <input type="number" class="form-control" id="membershipCost">
               </div>
               <div class="col-md-4 mt-3">
-                  <label class="form-label required">Average Number of Customers per Week</label>
-                  <input type="number" class="form-control" id="customersPerWeek" required>
+                  <label class="form-label">Average Number of Customers per Week</label>
+                  <input type="number" class="form-control" id="customersPerWeek">
                   <div class="invalid-feedback">Please provide the number of customers.</div>
               </div>
           </div>
@@ -1836,13 +1836,13 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Facility Capacity & Staffing</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Number of Treatment Rooms/Massage Tables</label>
-                  <input type="number" class="form-control" id="treatmentRooms" required>
+                  <label class="form-label">Number of Treatment Rooms/Massage Tables</label>
+                  <input type="number" class="form-control" id="treatmentRooms">
                   <div class="invalid-feedback">Please provide the number of rooms/tables.</div>
               </div>
               <div class="col-md-4">
-                  <label class="form-label required">Number of Fitness Studios/Workout Stations</label>
-                  <input type="number" class="form-control" id="fitnessStations" required>
+                  <label class="form-label">Number of Fitness Studios/Workout Stations</label>
+                  <input type="number" class="form-control" id="fitnessStations">
                   <div class="invalid-feedback">Please provide the number of studios/stations.</div>
               </div>
               <div class="col-md-4">
@@ -1958,14 +1958,14 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Operational Capacity</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Average Number of Customers per Week</label>
-                  <input type="number" class="form-control" id="customersPerWeek" required>
+                  <label class="form-label">Average Number of Customers per Week</label>
+                  <input type="number" class="form-control" id="customersPerWeek">
                   <div class="invalid-feedback">Please provide the number of customers.</div>
               </div>
               
               <div class="col-md-4">
-                  <label class="form-label required">Number of Herbal Medicines Dispensed per Month</label>
-                  <input type="number" class="form-control" id="herbalMedicineDispensed" required>
+                  <label class="form-label">Number of Herbal Medicines Dispensed per Month</label>
+                  <input type="number" class="form-control" id="herbalMedicineDispensed">
                   <div class="invalid-feedback">Please provide the number of herbal medicines dispensed.</div>
               </div>
               

@@ -294,9 +294,9 @@
           <p class="mt-2 mb-5">Choose the type of facility owner</p>
 
           <div class="flex gap-x-5 justify-center flex-wrap">
-            <div class="md:w-8/12">
+            <div class="md:w-5/12">
               <div class="flex gap-x-5 mt-3 justify-center flex-wrap">
-                <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="individual">
+                <!-- <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="individual">
                   <div class="flex justify-center pt-2">
                     <img src="./assets/img/individual.png" class="text-center" alt="">
                   </div>
@@ -304,7 +304,7 @@
                   <p class="text-center pt-2">These are individuals who are required to
                     pay taxes on their personal income, such as salary, freelance work, rental
                     income, etc.</p>
-                </div>
+                </div> -->
                 <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="corporate">
                   <div class="flex justify-center pt-2">
                     <img src="./assets/img/corporate.png" class="text-center" alt="">
@@ -315,7 +315,7 @@
                     profits.</p>
                 </div>
               </div>
-              <div class="flex gap-x-5 mt-4 justify-center flex-wrap">
+              <!-- <div class="flex gap-x-5 mt-4 justify-center flex-wrap">
                 <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="state">
                   <div class="flex justify-center pt-2">
                     <img src="./assets/img/properties.png" class="text-center" alt="">
@@ -334,7 +334,7 @@
                     departments at the federal level that are responsible for paying taxes on their
                     operations.</p>
                 </div>
-              </div>
+              </div> -->
             </div>
 
           </div>
@@ -674,8 +674,8 @@
 
           <div class="row mb-3">
             <div class="col-md-6">
-              <label for="repTIN" class="form-label required">TIN</label>
-              <input type="text" class="form-control" id="repTIN" required>
+              <label for="repTIN" class="form-label">TIN</label>
+              <input type="text" class="form-control" id="repTIN">
               <div class="invalid-feedback">Please provide a TIN Number.</div>
             </div>
             <div class="col-md-6">
@@ -833,36 +833,60 @@
                 </div>
 
                 <div class="form-check">
-                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-premise-levy" value="Business Premise Levy">
-                  <label class="form-check-label" for="tax-premise-levy">Business Premise Levy</label>
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-withholding"
+                    value="Withholding Tax">
+                  <label class="form-check-label" for="tax-withholding">Withholding Tax</label>
                 </div>
 
                 <div class="form-check">
-                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-trade-permit" value="Shop/Trade Permit">
-                  <label class="form-check-label" for="tax-trade-permit">Shop/Trade Permit</label>
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-stamp-duty" value="Stamp Duty">
+                  <label class="form-check-label" for="tax-stamp-duty">Stamp Duty</label>
                 </div>
 
                 <div class="form-check">
-                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-billboard-levy" value="Bill Board Levy">
-                  <label class="form-check-label" for="tax-billboard-levy">Bill Board Levy</label>
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-dev-levy"
+                    value="Development Levy">
+                  <label class="form-check-label" for="tax-dev-levy">Development Levy</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-premise-license"
+                    value="Business Premise license">
+                  <label class="form-check-label" for="tax-premise-license">Business Premise License</label>
                 </div>
               </div>
 
               <div class="col-md-6">
                 <div class="form-check">
-                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-dev-levy" value="Development Levy">
-                  <label class="form-check-label" for="tax-dev-levy">Development Levy</label>
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-health-license"
+                    value="Health facility licensing/registration & inspections">
+                  <label class="form-check-label" for="tax-health-license">Health Facility Licensing/Registration &
+                    Inspections</label>
                 </div>
 
                 <div class="form-check">
-                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-env-fee"
-                    value="Environmental and Waste Management Fees">
-                  <label class="form-check-label" for="tax-env-fee">Environmental and Waste Management Fees</label>
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-medical-waste"
+                    value="Medical/Healthcare waste management charges">
+                  <label class="form-check-label" for="tax-medical-waste">Medical/Healthcare Waste Management
+                    Charges</label>
                 </div>
 
                 <div class="form-check">
-                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-tenement-rate" value="Tenement Rate">
-                  <label class="form-check-label" for="tax-tenement-rate">Tenement Rate</label>
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-signage"
+                    value="Signage & outdoor advertising permits">
+                  <label class="form-check-label" for="tax-signage">Signage & Outdoor Advertising Permits</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-fire-safety"
+                    value="Fire Safety Certificate/inspection">
+                  <label class="form-check-label" for="tax-fire-safety">Fire Safety Certificate/Inspection</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-water-permits"
+                    value="Water & environmental permits">
+                  <label class="form-check-label" for="tax-water-permits">Water & Environmental Permits</label>
                 </div>
               </div>
             </div>
@@ -904,7 +928,10 @@
           <div class="form-check mb-4">
             <input class="form-check-input" type="checkbox" id="declaration" required>
             <label class="form-check-label" for="declaration">
-             By checking this box, I confirm that I have been fully informed about the purpose of this enumeration (to identify healthcare facilities and ensure their tax compliance) and how the data will be processed; I freely give my explicit consent for this processing, and I declare that all information provided is accurate, complete, and true to the best of my knowledge.
+              By checking this box, I confirm that I have been fully informed about the purpose of this enumeration (to
+              identify healthcare facilities and ensure their tax compliance) and how the data will be processed; I
+              freely give my explicit consent for this processing, and I declare that all information provided is
+              accurate, complete, and true to the best of my knowledge.
             </label>
             <div class="invalid-feedback">You must agree to the declaration before submitting.</div>
           </div>
