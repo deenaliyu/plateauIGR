@@ -446,13 +446,13 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- General Information -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Number of Departments</label>
-        <input type="number" class="form-control" id="departmentsCount" required>
+        <label class="form-label">Number of Departments</label>
+        <input type="number" class="form-control" id="departmentsCount">
         <div class="invalid-feedback">Please provide the number of departments.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Number of Wards</label>
-        <input type="number" class="form-control" id="wardsCount" required>
+        <label class="form-label">Number of Wards</label>
+        <input type="number" class="form-control" id="wardsCount">
         <div class="invalid-feedback">Please provide the number of wards.</div>
       </div>
       <div class="col-md-4">
@@ -475,14 +475,14 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Standard Consultation Fee (₦)</label>
-        <input type="number" class="form-control" id="consultationFee" required>
+        <label class="form-label">Standard Consultation Fee (₦)</label>
+        <input type="number" class="form-control" id="consultationFee">
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-md-6">
-        <label class="form-label required">Average Number of Consultations per Week</label>
-        <input type="number" class="form-control" id="consultationsPerWeek" required>
+        <label class="form-label">Average Number of Consultations per Week</label>
+        <input type="number" class="form-control" id="consultationsPerWeek">
       </div>
     </div>
 
@@ -490,26 +490,26 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <h5 class="mt-4">Maternal & Child Health (MCH) Services</h5>
     <div class="row mb-3">
       <div class="col-md-3">
-        <label class="form-label required">ANC Fee - Initial Visit (₦)</label>
-        <input type="number" class="form-control" id="ancInitialFee" required>
+        <label class="form-label">ANC Fee - Initial Visit (₦)</label>
+        <input type="number" class="form-control" id="ancInitialFee">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">ANC Fee - Subsequent Visit (₦)</label>
-        <input type="number" class="form-control" id="ancSubsequentFee" required>
+        <label class="form-label">ANC Fee - Subsequent Visit (₦)</label>
+        <input type="number" class="form-control" id="ancSubsequentFee">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Pregnant Women per Week</label>
-        <input type="number" class="form-control" id="pregnantWomenWeekly" required>
+        <label class="form-label">Average Pregnant Women per Week</label>
+        <input type="number" class="form-control" id="pregnantWomenWeekly">
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Average Deliveries per Week</label>
-        <input type="number" class="form-control" id="deliveriesWeekly" required>
+        <label class="form-label">Average Deliveries per Week</label>
+        <input type="number" class="form-control" id="deliveriesWeekly">
       </div>
     </div>
     <div class="row mb-3">
       <div class="col-md-6">
-        <label class="form-label required">Postnatal Care Fee (₦)</label>
-        <input type="number" class="form-control" id="postnatalFee" required>
+        <label class="form-label">Postnatal Care Fee (₦)</label>
+        <input type="number" class="form-control" id="postnatalFee">
       </div>
       <div class="col-md-6">
         <label class="form-label required">Is Immunization Free?</label>
@@ -556,8 +556,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Average Cost of Malaria Test (₦)</label>
-        <input type="number" class="form-control" id="malariaTestCost" required>
+        <label class="form-label">Average Cost of Malaria Test (₦)</label>
+        <input type="number" class="form-control" id="malariaTestCost">
       </div>
     </div>
 
@@ -579,13 +579,13 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- General Information -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Number of Departments</label>
-        <input type="number" class="form-control" id="departmentsCount" required>
+        <label class="form-label">Number of Departments</label>
+        <input type="number" class="form-control" id="departmentsCount">
         <div class="invalid-feedback">Please provide the number of departments.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Number of Wards</label>
-        <input type="number" class="form-control" id="wardsCount" required>
+        <label class="form-label">Number of Wards</label>
+        <input type="number" class="form-control" id="wardsCount">
         <div class="invalid-feedback">Please provide the number of wards.</div>
       </div>
       <div class="col-md-4">
@@ -637,8 +637,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Consultation Fee with Gynecologist (₦)</label>
-        <input type="number" class="form-control" id="gyneConsultationFee" required>
+        <label class="form-label">Consultation Fee with Gynecologist (₦)</label>
+        <input type="number" class="form-control" id="gyneConsultationFee">
       </div>
     </div>
     <div class="row mb-3">
@@ -651,8 +651,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         <input type="number" class="form-control" id="cSectionFee">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Number of Labour Wards/Beds</label>
-        <input type="number" class="form-control" id="labourWards" required>
+        <label class="form-label">Number of Labour Wards/Beds</label>
+        <input type="number" class="form-control" id="labourWards">
       </div>
     </div>
 
@@ -729,13 +729,13 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- General Information -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Number of Departments</label>
-        <input type="number" class="form-control" id="departmentsCount" required>
+        <label class="form-label">Number of Departments</label>
+        <input type="number" class="form-control" id="departmentsCount">
         <div class="invalid-feedback">Please provide the number of departments.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Number of Wards</label>
-        <input type="number" class="form-control" id="wardsCount" required>
+        <label class="form-label">Number of Wards</label>
+        <input type="number" class="form-control" id="wardsCount">
         <div class="invalid-feedback">Please provide the number of wards.</div>
       </div>
       <div class="col-md-4">
@@ -787,8 +787,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Consultation Fee with Gynecologist (₦)</label>
-        <input type="number" class="form-control" id="gyneConsultationFee" required>
+        <label class="form-label">Consultation Fee with Gynecologist (₦)</label>
+        <input type="number" class="form-control" id="gyneConsultationFee">
       </div>
     </div>
     <div class="row mb-3">
@@ -878,8 +878,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <h5 class="mt-4">Surgical & Critical Care Services</h5>
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Number of Operating Theatres</label>
-        <input type="number" class="form-control" id="operatingTheatres" required>
+        <label class="form-label">Number of Operating Theatres</label>
+        <input type="number" class="form-control" id="operatingTheatres">
       </div>
       <div class="col-md-4">
         <label class="form-label">Average Cost of Major Surgery (₦)</label>
@@ -892,12 +892,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
     </div>
     <div class="row mb-3">
       <div class="col-md-6">
-        <label class="form-label required">Number of ICU Beds</label>
-        <input type="number" class="form-control" id="icuBeds" required>
+        <label class="form-label">Number of ICU Beds</label>
+        <input type="number" class="form-control" id="icuBeds">
       </div>
       <div class="col-md-6">
-        <label class="form-label required">Daily Charge for ICU Bed (₦)</label>
-        <input type="number" class="form-control" id="icuDailyCharge" required>
+        <label class="form-label">Daily Charge for ICU Bed (₦)</label>
+        <input type="number" class="form-control" id="icuDailyCharge">
       </div>
     </div>
   `;
@@ -906,13 +906,13 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- General Information -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Number of Departments</label>
-        <input type="number" class="form-control" id="departmentsCount" required>
+        <label class="form-label">Number of Departments</label>
+        <input type="number" class="form-control" id="departmentsCount">
         <div class="invalid-feedback">Please provide the number of departments.</div>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Number of Wards</label>
-        <input type="number" class="form-control" id="wardsCount" required>
+        <label class="form-label">Number of Wards</label>
+        <input type="number" class="form-control" id="wardsCount">
         <div class="invalid-feedback">Please provide the number of wards.</div>
       </div>
       <div class="col-md-4">
@@ -1452,8 +1452,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-3">
-        <label class="form-label required">Standard Fee for Eye Test (₦)</label>
-        <input type="number" class="form-control" id="eyeTestFee" required>
+        <label class="form-label">Standard Fee for Eye Test (₦)</label>
+        <input type="number" class="form-control" id="eyeTestFee">
       </div>
       <div class="col-md-3">
         <label class="form-label">Average Cost of Sodium Hyaluronate Drops (₦)</label>
@@ -1473,12 +1473,12 @@ document.getElementById('facilityType').addEventListener('change', function () {
         </select>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Typical Price Range for Eyeglasses (₦)</label>
-        <input type="number" class="form-control" id="eyeglassesPriceRange" required>
+        <label class="form-label">Typical Price Range for Eyeglasses (₦)</label>
+        <input type="number" class="form-control" id="eyeglassesPriceRange">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Average Number of Eyeglasses Dispensed per Month</label>
-        <input type="number" class="form-control" id="glassesDispensedPerMonth" required>
+        <label class="form-label">Average Number of Eyeglasses Dispensed per Month</label>
+        <input type="number" class="form-control" id="glassesDispensedPerMonth">
       </div>
     </div>
 
@@ -1908,8 +1908,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
               <h5 class="mb-3">Service Fees</h5>
               
               <div class="col-md-4">
-                  <label class="form-label required">Standard Consultation Fee (₦)</label>
-                  <input type="number" class="form-control" id="consultationFee" required>
+                  <label class="form-label">Standard Consultation Fee (₦)</label>
+                  <input type="number" class="form-control" id="consultationFee">
                   <div class="invalid-feedback">Please provide the consultation fee.</div>
               </div>
               
