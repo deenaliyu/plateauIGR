@@ -60,7 +60,7 @@ async function getAllMda() {
         <option value="${revHd["fullname"]}">${revHd["fullname"]}</option>
       `)
 
-    });f
+    }); f
 
   }
 }
@@ -226,10 +226,10 @@ async function fetchRevHeads(sector) {
     console.log(sectorAndCol3Filtered, sectorFiltered)
     // Merge both filtered results
     const filteredItems = [...new Set([...sectorFiltered, ...sectorAndCol3Filtered])];
-    
+
     let dateCurrent = new Date();
     let yearCurrent = dateCurrent.getFullYear();
-    
+
     filteredItems.forEach((dd, i) => {
       revenueArr.push(dd);
       theItemNo++;
@@ -515,47 +515,54 @@ function goToPreviewPage() {
   amountto = []
   prevYears = []
   prevYearsAmount = []
-
   prevYears2 = []
   prevYearsAmount2 = []
-
   revenueHeader = []
 
   let payInputs = document.querySelectorAll(".payInputs")
   let genInv2Inputs = document.querySelectorAll(".genInv2")
 
-
   let thePayInputs = document.querySelectorAll(".thePaymentInput")
   let prevYearsAll = document.querySelectorAll(".prevYears")
   let prevYearsAllAmount = document.querySelectorAll(".prevAmounts")
-
   let prevYearsAll2 = document.querySelectorAll(".prevYears2")
   let prevYearsAllAmount2 = document.querySelectorAll(".prevAmounts2")
-
   let allTheRevenues = document.querySelectorAll(".revenueHeader")
-
   let revHeadsss = document.querySelectorAll(".revHeadsss")
-  //let mdaSelected = document.querySelector("#mda").value
+
   let previewAmount = 0
+  let validItems = [] // Array to track valid (non-zero) items
 
+  // Filter out items where all amounts are zero
   thePayInputs.forEach((payIn, i) => {
-    let mm = payIn.value.replace(/,/g, '');
+    let currentAmount = parseFloat(payIn.value.replace(/,/g, '')) || 0;
+    let prevYear1Amount = parseFloat(prevYearsAllAmount[i].value.replace(/,/g, '')) || 0;
+    let prevYear2Amount = parseFloat(prevYearsAllAmount2[i].value.replace(/,/g, '')) || 0;
 
-    amountto.push(parseFloat(mm))
+    // Check if all amounts are zero
+    if (currentAmount === 0 && prevYear1Amount === 0 && prevYear2Amount === 0) {
+      return; // Skip this item
+    }
 
-    previewAmount += parseFloat(mm)
-    previewAmount += prevYearsAllAmount[i].value === "" ? 0 : parseFloat(prevYearsAllAmount[i].value)
-    previewAmount += prevYearsAllAmount2[i].value === "" ? 0 : parseFloat(prevYearsAllAmount2[i].value)
+    // Add to valid items arrays
+    validItems.push(i);
+    amountto.push(currentAmount);
+    prevYears.push(prevYearsAll[i].value);
+    prevYearsAmount.push(prevYear1Amount);
+    prevYears2.push(prevYearsAll2[i].value);
+    prevYearsAmount2.push(prevYear2Amount);
+    revenueHeader.push(allTheRevenues[i].value);
 
-    prevYears.push(prevYearsAll[i].value)
-    prevYearsAmount.push(prevYearsAllAmount[i].value === "" ? 0 : parseFloat(prevYearsAllAmount[i].value))
+    previewAmount += currentAmount + prevYear1Amount + prevYear2Amount;
+  });
 
-    prevYears2.push(prevYearsAll2[i].value)
-    prevYearsAmount2.push(prevYearsAllAmount2[i].value === "" ? 0 : parseFloat(prevYearsAllAmount2[i].value))
+  // Check if there are any valid items
+  if (validItems.length === 0) {
+    alert("Please add at least one assessment item with a non-zero amount");
+    return;
+  }
 
-
-    revenueHeader.push(allTheRevenues[i].value)
-  })
+  // Rest of your function remains the same but only for valid items
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
 
   if (categOfTax === "Corporate" || categOfTax === "State Agency" || categOfTax === "Federal Agency") {
@@ -581,26 +588,23 @@ function goToPreviewPage() {
     </div>
   `
 
-  revHeadsss.forEach((revHd, i) => {
+  // Only show valid items in preview
+  validItems.forEach((itemIndex, displayIndex) => {
     theSpace += `
         <div class="flex space-x-3">
-          <p>Item ${i + 1}:</p>
-          <p>${revHd.options[revHd.selectedIndex].text}</p>
+          <p>Item ${displayIndex + 1}:</p>
+          <p>${revHeadsss[itemIndex].options[revHeadsss[itemIndex].selectedIndex].text}</p>
         </div>  
         <div class="flex space-x-3">
           <p>Amount:</p>
-          <p>${formatMoney(parseFloat(thePayInputs[i].value.replace(/,/g, '')))}</p>
+          <p>${formatMoney(parseFloat(thePayInputs[itemIndex].value.replace(/,/g, '')))}</p>
         </div>  
         <div class="flex space-x-3">
           <p>Outstanding Amount:</p>
-          <p>${prevYearsAllAmount[i].value === "" ? formatMoney(0) : formatMoney(parseFloat(prevYearsAllAmount[i].value.replace(/,/g, '')))}</p>
+          <p>${prevYearsAllAmount[itemIndex].value === "" ? formatMoney(0) : formatMoney(parseFloat(prevYearsAllAmount[itemIndex].value.replace(/,/g, '')))}</p>
         </div>  
       `
   })
-
-
-
-  // revHeadInputSel
 
   theSpace += `
     <div class="flex space-x-3">
@@ -740,36 +744,48 @@ async function generateInvoiceNon() {
 }
 
 async function generateInvoiceNum(taxNumber) {
-
   let description = document.querySelector("#thedescripInput").value
-  //   let previous_year = document.querySelector("#previous_year").value
-  // let file_no = document.querySelector("#file_no").value
   let business_own = document.querySelector("#business_own").value
-
-  // let lga = $("#LGAaas").val()
-  // let zonalOff = $("#zonalOff").val()
   let the_sector = $("#sectorSelect").val()
-  
-    const the_payload = {
-      generateSingleInvoices: true,
-      tax_number: taxNumber,
-      revenue_head_id: revenueHeader.join(','),
-      price: amountto.join(','),
-      description: description,
-      lga: null,
-      zonalOffice: null,
-      business_type: business_own,
-      previous_year: prevYears.join(','),
-      previous_year_value: prevYearsAmount.join(','),
-      previous_year2: prevYears2.join(','),
-      previous_year_value2: prevYearsAmount2.join(','),
-      sector: the_sector,
-      file_no: "0001",
-      invoice_type: "demand notice",
-      created_by: "admin",
-      by_account: userInfo2?.id
-    };
 
+  // Filter out zero-amount items before creating the payload
+  let validRevenueHeaders = [];
+  let validAmounts = [];
+  let validPrevYears = [];
+  let validPrevYearsAmount = [];
+  let validPrevYears2 = [];
+  let validPrevYearsAmount2 = [];
+
+  for (let i = 0; i < amountto.length; i++) {
+    if (amountto[i] !== 0 || prevYearsAmount[i] !== 0 || prevYearsAmount2[i] !== 0) {
+      validRevenueHeaders.push(revenueHeader[i]);
+      validAmounts.push(amountto[i]);
+      validPrevYears.push(prevYears[i]);
+      validPrevYearsAmount.push(prevYearsAmount[i]);
+      validPrevYears2.push(prevYears2[i]);
+      validPrevYearsAmount2.push(prevYearsAmount2[i]);
+    }
+  }
+
+  const the_payload = {
+    generateSingleInvoices: true,
+    tax_number: taxNumber,
+    revenue_head_id: validRevenueHeaders.join(','),
+    price: validAmounts.join(','),
+    description: description,
+    lga: null,
+    zonalOffice: null,
+    business_type: business_own,
+    previous_year: validPrevYears.join(','),
+    previous_year_value: validPrevYearsAmount.join(','),
+    previous_year2: validPrevYears2.join(','),
+    previous_year_value2: validPrevYearsAmount2.join(','),
+    sector: the_sector,
+    file_no: "0001",
+    invoice_type: "demand notice",
+    created_by: "admin",
+    by_account: userInfo2?.id
+  };
 
   $.ajax({
     type: "GET",

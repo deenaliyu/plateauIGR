@@ -39,6 +39,8 @@ async function openHardReceipt(invoicenum) {
     userInvoices.message.forEach(userInfo => {
       theItems.push(userInfo.COL_4)
       theAmount += parseFloat(userInfo.amount_paid)
+      theAmount += parseFloat(userInfo.previous_year_value) || 0
+      theAmount += parseFloat(userInfo.previous_year_value_2) || 0
     })
     
     function formatDateRange(originalDate) {
