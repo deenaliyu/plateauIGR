@@ -116,6 +116,7 @@ function loadFacilities() {
   }
 }
 
+
 // Render facilities table
 function renderFacilities(facilities) {
   const list = document.getElementById('showFacilitiesList');
@@ -134,13 +135,14 @@ function renderFacilities(facilities) {
         <td>${facility.enumeration_id}</td>
         <td>${facility.first_name || 'N/A'}</td>
         <td>${formatFacilityType(facility.facility_type) || 'N/A'}</td>
-        <td>${facility.number_of_employees || '0'}</td>
+        <!-- <td>${facility.number_of_employees || '0'}</td> -->
         <td>${facility.tin_response.toUpperCase() || 'NO'}</td>
         <td>${facility.state || 'N/A'}</td>
         <td>${facility.lga || 'N/A'}</td>
         <td>${facility.phone || 'N/A'}</td>
         <td>${facility.email || 'N/A'}</td>
         <td>${facility.status || 'Active'}</td>
+        <td>${facility.created_at.split(" ")[0]}</td>
         <td>
         <div class="btn-group d-flex space-x-4">
          <button class="btn btn-sm btn-outline-primary view-facility" 

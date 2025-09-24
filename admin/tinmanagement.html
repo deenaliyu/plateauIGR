@@ -192,14 +192,14 @@
 
             <div class="card py-4 mt-6 px-2">
               <div class="flex justify-end mb-4">
-                <button class="button flex gap-2 items-center" onclick="exportData()">
+                <button class="button flex gap-2 items-center" onclick="downloadData()">
                   <iconify-icon icon="cuida:download-outline"></iconify-icon>
                   <span>Download Report</span>
                 </button>
               </div>
 
               <div class="table-responsive">
-                <table class="table txTable" id="dataTable">
+                <table class="table txTable" id="tinTable">
                   <thead>
                     <tr>
                       <th></th>
@@ -223,10 +223,10 @@
                 </table>
               </div>
 
-              <div class="flex justify-center items-center mt-4" id="loader">
+              <!-- <div class="flex justify-center items-center mt-4" id="loader">
                 <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900">
                 </div>
-              </div>
+              </div> -->
 
               <table class="table hidden" id="tinTableFull">
                 <thead>
