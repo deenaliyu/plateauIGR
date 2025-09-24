@@ -286,10 +286,6 @@ function renderFacilitySummary(facility) {
                         <strong style="font-size: 13px;">Number of Surgeries/Procedures per Month:</strong><br>
                         <span style="font-size: 13px;">${facilityData.monthly_surgeries || '0'}</span>
                     </div>
-                    <div class="mb-1 flex space-x-6">
-                        <strong style="font-size: 13px;">Cost of Hospital Card/Registration Fee:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.card_fee || 'N/A'}</span>
-                    </div>
                 </div>
             </div>
         </div>

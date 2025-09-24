@@ -525,7 +525,7 @@ console.log('Facilities to export:', facilities);
         const exportData = facilities.map(facility => {
           // Base fields
           let row = {
-            "Payer User ID": facility.payer_user_id,
+            "Enumeration ID": facility.enumeration_id,
             "Facility Name": facility.first_name,
             "Email": facility.email,
             "Phone": facility.phone,
@@ -533,8 +533,7 @@ console.log('Facilities to export:', facilities);
             "LGA": facility.lga,
             "TIN": facility.tin,
             "Address": facility.address,
-            "Enumerator ID": facility.enumerator_id,
-            "Facility Hospital ID": facility.facility_hospital_id,
+            // "Facility Hospital ID": facility.facility_hospital_id,
             "Facility Type": facility.facility_type,
             "Number of Beds": facility.number_of_beds,
             "Liabilities": facility.liabilities,
