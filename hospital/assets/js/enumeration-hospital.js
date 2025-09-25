@@ -191,7 +191,7 @@ async function validateTIN() {
     if (data.status === 1 && data.user) {
       // Populate the form fields with user data
       document.getElementById('legalName').value = `${data.user.first_name} ${data.user.surname}`;
-      document.getElementById('legalName').readOnly = true;
+      // document.getElementById('legalName').readOnly = true;
       document.getElementById('taxIdentificationNumber').value = data.user.tin;
       document.getElementById('taxIdentificationNumber').readOnly = true;
       document.getElementById('address').value = data.user.address;
@@ -199,13 +199,13 @@ async function validateTIN() {
       document.getElementById('city').value = data.user.lga;
       // document.getElementById('city').readOnly = true;
       document.getElementById('lga').value = data.user.lga;
-      document.getElementById('lga').disabled = true;
+      // document.getElementById('lga').disabled = true;
       document.getElementById('state').value = data.user.state;
-      document.getElementById('state').readOnly = true;
+      // document.getElementById('state').readOnly = true;
       document.getElementById('phoneNumber').value = data.user.phone;
-      document.getElementById('phoneNumber').readOnly = true;
+      // document.getElementById('phoneNumber').readOnly = true;
       document.getElementById('email').value = data.user.email;
-      document.getElementById('email').readOnly = true;
+      // document.getElementById('email').readOnly = true;
 
       // Select the appropriate category card
       const categoryCards = document.querySelectorAll(".cardi");
@@ -2245,12 +2245,12 @@ function generateSummary() {
   let html = `
         <h3 class="mb-2">Payer Information</h3>
         <img src="${imageUrlInput.value || 'assets/img/userprofile.png'}" alt="Facility Image" style="max-width:150px;max-height:150px;display:block;margin-bottom:15px;border-radius:8px;">
-        <p><strong>Legal Name:</strong> ${document.getElementById('repName').value}</p>
-        <p><strong>TIN:</strong> ${document.getElementById('repTIN').value}</p>
+        <p><strong>Legal Name:</strong> ${document.getElementById('legalName').value}</p>
+        <p><strong>TIN:</strong> ${document.getElementById('taxIdentificationNumber').value}</p>
         <p><strong>Category:</strong> ${document.querySelector('.selectedcat')?.getAttribute('data-name') || "Not selected"}</p>
-        <p><strong>Email:</strong> ${document.getElementById('repemail').value}</p>
-        <p><strong>Phone:</strong> ${document.getElementById('repphonenumber').value}</p>
-        <p><strong>Address:</strong> ${document.getElementById('repAddress').value}</p>
+        <p><strong>Email:</strong> ${document.getElementById('email').value}</p>
+        <p><strong>Phone:</strong> ${document.getElementById('phoneNumber').value}</p>
+        <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
         <p><strong>State/LGA:</strong> ${document.getElementById('state').value} / ${document.getElementById('lga').value}</p>
         
         <h3 class="mt-4 mb-2">Facility Information</h3>
@@ -2263,6 +2263,13 @@ function generateSummary() {
         <p><strong>License Expiry:</strong> ${document.getElementById('licenseExpiryDate').value}</p>
         <p><strong>Health Facility Code:</strong> ${document.getElementById('healthFacilityCode').value}</p>
         <p><strong>Date Established:</strong> ${document.getElementById('dateOfEstablishment').value}</p>
+
+        <h3 class="mt-4 mb-2">Representative Information</h3>
+        <p><strong>Full Name:</strong> ${document.getElementById('repName').value}</p>
+        <p><strong>TIN:</strong> ${document.getElementById('repTIN').value}</p>
+        <p><strong>Email:</strong> ${document.getElementById('repemail').value}</p>
+        <p><strong>Phone:</strong> ${document.getElementById('repphonenumber').value}</p>
+        <p><strong>Address:</strong> ${document.getElementById('repAddress').value}</p>
     `;
 
   // Add facility type specific details

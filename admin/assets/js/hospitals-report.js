@@ -541,12 +541,13 @@ console.log('Facilities to export:', facilities);
             "Branch Name": facility.branch_name,
             "Physical Address": facility.physical_address,
             "City": facility.city,
-            "Branch Phone Numbers": facility.branch_phone_numbers,
+            "Branch Name": facility.branch_name,
             "Branch Email": facility.branch_email,
-            "Branch Website": facility.branch_website,
-            "CAC Certificate Path": facility.cac_certificate_path,
-            "Operating License Path": facility.operating_license_path,
-            "TIN Response": facility.tin_response
+            "TIN Response": facility.tin_response,
+            "Staff Range": facility.facility_classification.staff_range,
+            "Payment Point Range": facility.facility_classification.payment_point_range,
+            "Room Range": facility.facility_classification.room_range,
+            "Branch Range": facility.facility_classification.branch_range,
           };
 
           // Merge type_data if available
@@ -557,12 +558,12 @@ console.log('Facilities to export:', facilities);
             });
           }
 
-          if (facility.facility_classification) {
-            Object.entries(facility.facility_classification).forEach(([key, value]) => {
-              // Use the original key as heading
-              row[key] = value;
-            });
-          }
+          // if (facility.facility_classification) {
+          //   Object.entries(facility.facility_classification).forEach(([key, value]) => {
+          //     // Use the original key as heading
+          //     row[key] = value;
+          //   });
+          // }
 
           return row;
         });
