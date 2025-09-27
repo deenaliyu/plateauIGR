@@ -286,10 +286,6 @@ function renderFacilitySummary(facility) {
                         <strong style="font-size: 13px;">Number of Surgeries/Procedures per Month:</strong><br>
                         <span style="font-size: 13px;">${facilityData.monthly_surgeries || '0'}</span>
                     </div>
-                    <div class="mb-1 flex space-x-6">
-                        <strong style="font-size: 13px;">Cost of Hospital Card/Registration Fee:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.card_fee || 'N/A'}</span>
-                    </div>
                 </div>
             </div>
         </div>
@@ -352,15 +348,15 @@ function renderFacilitySummary(facility) {
                 <div class="col-6">
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Full Name of Representative:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.rep_firstname + ' ' + facilityData.rep_surname || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.rep_firstname || 'N/A' + ' ' + facilityData.rep_surname}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Address:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.rep_address || facilityData.address || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.rep_address || 'N/A'}</span>
                     </div>
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Phone Number:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.rep_phone || facilityData.phone || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.rep_phone || 'N/A'}</span>
                     </div>
                 </div>
                 <div class="col-6">
@@ -368,13 +364,13 @@ function renderFacilitySummary(facility) {
                         <strong style="font-size: 13px;">Alternate Phone Number:</strong><br>
                         <span style="font-size: 13px;">${facilityData.alternate_phone || 'N/A'}</span>
                     </div>
-                    <div class="mb-1 flex space-x-6">
+                    <!-- <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">TIN:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.representative_tin || facilityData.tin || 'N/A'}</span>
-                    </div>
+                        <span style="font-size: 13px;">${facilityData.representative_tin || 'N/A'}</span>
+                    </div> -->
                     <div class="mb-1 flex space-x-6">
                         <strong style="font-size: 13px;">Email Address:</strong><br>
-                        <span style="font-size: 13px;">${facilityData.representative_email || facilityData.email || 'N/A'}</span>
+                        <span style="font-size: 13px;">${facilityData.rep_email || 'N/A'}</span>
                     </div>
                 </div>
             </div>

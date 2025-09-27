@@ -4,69 +4,163 @@ if (theUserDataTin) {
   $("#createTaxP").attr('href', `../generatetin.html?user=${theUserDataTin.id}`)
 }
 let allTinData = []
+let tinTable;
+let downloadLink = '';
 
-async function getTinManagements() {
-  try {
-    const response = await fetch(`https://plateauigr.com/php/tinGeneration/fetch.php`)
-    const data = await response.json()
-
-    $("#loader").html('')
-    allTinData = data.data
-
-    data.data.reverse().forEach((tinmngment, i) => {
-      $("#showreport").append(`
-        <tr>
-          <td>${i + 1}</td>
-          <td>${tinmngment.type}</td>
-          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
-          <td>${tinmngment.phone_number}</td>
-          <td>${tinmngment.email}</td>
-          <td>${tinmngment.tin}</td>
-          <td>${tinmngment.state}</td>
-          <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
-          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
-          <td>${tinmngment.admin_email ? tinmngment.admin_email : 'self'}</td>
-          <td>${getFormattedDate(tinmngment.created_at)}</td>
-          <td>
-          <div class="flex gap-3 items-center">
-            <a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a>
-            <a href="#EditInfo" data-bs-toggle="modal" onclick="editUser(this)" data-userid="${tinmngment.id}">
-              <iconify-icon icon="uil:edit"></iconify-icon></button>
-            </a>
-          </div>
-          </td>
-
-        </tr>
-      `)
-
-      $("#tinTableFull").append(`
-        <tr>
-          <td>${i + 1}</td>
-          <td>${tinmngment.type}</td>
-          <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
-          <td>${tinmngment.phone_number}</td>
-          <td>${tinmngment.email}</td>
-          <td>${tinmngment.tin}</td>
-          <td>${tinmngment.state}</td>
-          <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
-          <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
-          <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
-          <td>${getFormattedDate(tinmngment.created_at)}</td>
-        </tr>
-      `)
-    });
-
-
-
-  } catch (error) {
-    console.log(error)
+function initializeDataTable() {
+  if ($.fn.DataTable.isDataTable('#tinTable')) {
+    $('#tinTable').DataTable().destroy();
+    $('#tinTable').empty();
   }
 
+  tinTable = $('#tinTable').DataTable({
+    processing: true, // Show processing indicator
+    serverSide: true, // Enable server-side processing
+    paging: true,     // Enable pagination
+    pageLength: 50,   // Number of items per page
+    ajax: function (data, callback, settings) {
+      const pageNumber = Math.ceil(data.start / data.length) + 1;
+      $.ajax({
+        url: 'https://plateauigr.com/php/tinGeneration/fetch.php',
+        type: 'GET',
+        data: {
+          page: pageNumber,
+          // created_at_min: $('#startDate').val(),
+          // created_at_max: $('#endDate').val(),
+          limit: data.length, // Number of rows per page
+          search: data.search.value, // Search term
+          searchDelay: 1500,
+        },
+        success: function (response) {
+          // Map the API response to DataTables expected format
+
+          if (response.success) {
+            if (response.download_link) {
+              downloadLink = response.download_link;
+            }
+            callback({
+              draw: data.draw, // Pass through draw counter
+              recordsTotal: response.total_records, // Total records in your database
+              recordsFiltered: response.total_records, // Filtered records count
+              data: response.data, // The actual data array from your API
+            });
+          } else {
+            callback({
+              draw: data.draw, // Pass through draw counter
+              recordsTotal: 0, // Total records in your database
+              recordsFiltered: 0, // Filtered records count
+              data: [], // The actual data array from your API
+            });
+          }
+        },
+        error: function () {
+          alert('Failed to fetch data.');
+        }
+      });
+    },
+    columns: [
+      {
+        data: null,
+        orderable: false,
+        render: function (data, type, row, meta) {
+          return meta.row + meta.settings._iDisplayStart + 1;
+        }
+      },
+      {
+        data: 'type',
+        render: function (data) {
+          return data ? data.charAt(0).toUpperCase() + data.slice(1) : '-';
+        }
+      },
+      {
+        data: null,
+        render: function (data) {
+          if (data.type === 'corporate') {
+            return data.organization_name || '-';
+          } else {
+            const firstName = data.first_name || '';
+            const lastName = data.last_name || '';
+            return `${firstName} ${lastName}`.trim() || '-';
+          }
+        }
+      },
+      {
+        data: 'phone_number',
+        render: function (data) {
+          return data || '-';
+        }
+      },
+      {
+        data: 'email',
+        render: function (data) {
+          return data || '-';
+        }
+      },
+      {
+        data: 'tin',
+        render: function (data) {
+          return data || '-';
+        }
+      },
+      {
+        data: 'state',
+        render: function (data) {
+          return data || '-';
+        }
+      },
+      {
+        data: 'sector',
+        render: function (data) {
+          return data ? data : '-';
+        }
+      },
+      {
+        data: 'industry',
+        render: function (data) {
+          return data ? data : '-';
+        }
+      },
+      {
+        data: null,
+        render: function (data) {
+          return data.admin_email ? data.admin_email : 'Self';
+        }
+      },
+      {
+        data: 'created_at',
+        render: function (data) {
+          return data ? getFormattedDate(data) : '-';
+        }
+      },
+      {
+        data: 'id',
+        orderable: false,
+        render: function (data, type, row) {
+          return `
+                        <div class="flex gap-3 items-center">
+                            <a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-tin="${row.tin}" data-userid="${data}" class="btn btn-primary btn-sm">View</a>
+                            <a href="#EditInfo" data-bs-toggle="modal" onclick="editUser(this)" data-userid="${data}">
+                                <iconify-icon icon="uil:edit"></iconify-icon>
+                            </a>
+                        </div>
+                    `;
+        }
+      }
+    ]
+  });
 }
 
-getTinManagements().then(e => {
-  $("#dataTable").DataTable();
-})
+initializeDataTable()
+
+// Download data
+function downloadData() {
+  if (downloadLink) {
+    window.open(downloadLink, '_blank');
+  } else {
+    alert('No download link available. Please wait for the data to finish loading.');
+  }
+}
+
 
 async function getTinMetrics() {
   try {
@@ -102,67 +196,79 @@ function clearfilter() {
   })
 }
 
-function viewUser(e) {
-  let theID = e.dataset.userid
+async function viewUser(e) {
+  let theID = e.dataset.tin;
 
-  let theuser = allTinData.find(alluser => alluser.id === parseInt(theID))
-  // console.log(theuser, theID)
-  if (theuser) {
-    $('#userDataID').html(`
-      <tr>
-        <th>TIN</th>
-        <td>${theuser.tin}</td>
-      </tr>
-      <tr>
-        <th>Name</th>
-        <td>${theuser.type === 'corporate' ? '-' : `${theuser.first_name} ${theuser.last_name}`}</td>
-      </tr>
-      <tr>
-        <th>Name of business</th>
-        <td>${theuser.organization_name}</td>
-      </tr>
-      <tr>
-        <th>Category</th>
-        <td>${theuser.type}</td>
-      </tr>
-      <tr>
-        <th>Email</th>
-        <td>${theuser.email}</td>
-      </tr>
-      
-      <tr>
-        <th>Phone</th>
-        <td>${theuser.phone_number}</td>
-      </tr>
-      <tr>
-        <th>Sector</th>
-        <td>${theuser.sector ? theuser.sector : '-'}</td>
-      </tr>
-      <tr>
-        <th>Industry</th>
-        <td>${theuser.industry ? theuser.industry : '-'}</td>
-      </tr>
-      <tr>
-        <th>State</th>
-        <td>${theuser.state}</td>
-      </tr>
-      <tr>
-        <th>LGA</th>
-        <td>${theuser.lga}</td>
-      </tr>
-      <tr>
-        <th>Address</th>
-        <td>${theuser.address}</td>
-      </tr>
-      <tr>
-        <th>Created by</th>
-        <td>${theuser.payer_id === null ? 'Self' : 'Admin'}</td>
-      </tr>
-      <tr>
-        <th>Date Created</th>
-        <td>${new Date(theuser.created_at).toDateString()}</td>
-      </tr>
-    `)
+  try {
+    // Show loading indicator
+    $('#userDataID').html('<tr><td colspan="2">Loading...</td></tr>');
+
+    // Fetch single user data from endpoint
+    const response = await fetch(`https://plateauigr.com/php/tinGeneration/fetch.php?tin=${theID}`);
+    const result = await response.json();
+
+    if (result.success && result.data) {
+      const theuser = result.data[0];
+      $('#userDataID').html(`
+        <tr>
+          <th>TIN</th>
+          <td>${theuser.tin}</td>
+        </tr>
+        <tr>
+          <th>Name</th>
+          <td>${theuser.type === 'corporate' ? '-' : `${theuser.first_name} ${theuser.last_name}`}</td>
+        </tr>
+        <tr>
+          <th>Name of business</th>
+          <td>${theuser.organization_name}</td>
+        </tr>
+        <tr>
+          <th>Category</th>
+          <td>${theuser.type}</td>
+        </tr>
+        <tr>
+          <th>Email</th>
+          <td>${theuser.email}</td>
+        </tr>
+        <tr>
+          <th>Phone</th>
+          <td>${theuser.phone_number}</td>
+        </tr>
+        <tr>
+          <th>Sector</th>
+          <td>${theuser.sector ? theuser.sector : '-'}</td>
+        </tr>
+        <tr>
+          <th>Industry</th>
+          <td>${theuser.industry ? theuser.industry : '-'}</td>
+        </tr>
+        <tr>
+          <th>State</th>
+          <td>${theuser.state}</td>
+        </tr>
+        <tr>
+          <th>LGA</th>
+          <td>${theuser.lga}</td>
+        </tr>
+        <tr>
+          <th>Address</th>
+          <td>${theuser.address}</td>
+        </tr>
+        <tr>
+          <th>Created by</th>
+          <td>${theuser.payer_id === null ? 'Self' : 'Admin'}</td>
+        </tr>
+        <tr>
+          <th>Date Created</th>
+          <td>${new Date(theuser.created_at).toDateString()}</td>
+        </tr>
+      `);
+    } else {
+      $('#userDataID').html('<tr><td colspan="2">User data not found.</td></tr>');
+    }
+  } catch (error) {
+    $('#userDataID').html('<tr><td colspan="2">Error loading user data.</td></tr>');
+    console.error(error);
   }
 }
 
@@ -227,101 +333,6 @@ async function editTinModule() {
     console.log(error)
     $("#msg_boxeredit").html(`<p class="text-danger text-center mt-4 text-lg">${error.error ? error.error : 'something went wrong, Try Again.'}.</p>`)
     $("#editTinModule").removeClass("hidden")
-  }
-}
-
-async function filterTinModule() {
-  try {
-    $("#msg_boxer").html(`
-      <div class="flex justify-center items-center mt-4">
-        <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-      </div>
-    `)
-
-    $("#filterTinModule").addClass("hidden")
-
-    let allInputs = document.querySelectorAll(".payInputs")
-
-    let obj = {}
-    allInputs.forEach(allInput => {
-      if (allInput.value === "") {
-
-      } else {
-        obj[allInput.dataset.name] = allInput.value
-      }
-    })
-
-    const urlParam = new URLSearchParams(obj).toString()
-
-    // console.log(urlParam)
-
-    const response = await fetch(`https://plateauigr.com/php/tinGeneration/fetch.php?${urlParam}`)
-    const data = await response.json()
-
-    if (data.success) {
-      $("#filterTinModule").removeClass("hidden")
-      $("#msg_boxer").html('')
-
-      $("#showreport").html('')
-      $("#tinTableFull").html('')
-      $("#filterInvoice").modal('hide')
-
-      data.data.reverse().forEach((tinmngment, i) => {
-        $("#showreport").append(`
-          <tr>
-            <td>${i + 1}</td>
-            <td>${tinmngment.type}</td>
-            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
-            <td>${tinmngment.phone_number}</td>
-            <td>${tinmngment.email}</td>
-            <td>${tinmngment.tin}</td>
-            <td>${tinmngment.state}</td>
-            <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
-            <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
-            <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
-            <td>${getFormattedDate(tinmngment.created_at)}</td>
-            <td>
-            <div class="flex gap-3 items-center">
-              <a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-userid="${tinmngment.id}" class="btn btn-primary btn-sm">View</a>
-              <a href="#EditInfo" data-bs-toggle="modal" onclick="editUser(this)" data-userid="${tinmngment.id}">
-                <iconify-icon icon="uil:edit"></iconify-icon></button>
-              </a>
-            </div>
-            </td>
-
-          </tr>
-        `)
-
-        $("#tinTableFull").append(`
-          <tr>
-            <td>${i + 1}</td>
-            <td>${tinmngment.type}</td>
-            <td>${tinmngment.type === 'corporate' ? tinmngment.organization_name : `${tinmngment.first_name} ${tinmngment.last_name}`}</td>
-            <td>${tinmngment.phone_number}</td>
-            <td>${tinmngment.email}</td>
-            <td>${tinmngment.tin}</td>
-            <td>${tinmngment.state}</td>
-            <td>${tinmngment.sector ? tinmngment.sector : '-'}</td>
-            <td>${tinmngment.industry ? tinmngment.industry : '-'}</td>
-            <td>${tinmngment.payer_id === null ? 'Self' : 'Admin'}</td>
-            <td>${getFormattedDate(tinmngment.created_at)}</td>
-          </tr>
-        `)
-      });
-
-
-    } else {
-      $("#msg_boxer").html(`<p class="text-danger text-center">Something went wrong, Try again</p>`)
-
-      $("#filterTinModule").removeClass("hidden")
-    }
-
-
-  } catch (error) {
-    console.log(error)
-    $("#msg_boxer").html(`<p class="text-danger text-center">${error.error ? error.error : 'something went wrong, Try Again.'}</p>`)
-
-    $("#filterTinModule").removeClass("hidden")
   }
 }
 

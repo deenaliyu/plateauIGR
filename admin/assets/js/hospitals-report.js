@@ -116,6 +116,7 @@ function loadFacilities() {
   }
 }
 
+
 // Render facilities table
 function renderFacilities(facilities) {
   const list = document.getElementById('showFacilitiesList');
@@ -134,13 +135,14 @@ function renderFacilities(facilities) {
         <td>${facility.enumeration_id}</td>
         <td>${facility.first_name || 'N/A'}</td>
         <td>${formatFacilityType(facility.facility_type) || 'N/A'}</td>
-        <td>${facility.number_of_employees || '0'}</td>
+        <!-- <td>${facility.number_of_employees || '0'}</td> -->
         <td>${facility.tin_response.toUpperCase() || 'NO'}</td>
         <td>${facility.state || 'N/A'}</td>
         <td>${facility.lga || 'N/A'}</td>
         <td>${facility.phone || 'N/A'}</td>
         <td>${facility.email || 'N/A'}</td>
         <td>${facility.status || 'Active'}</td>
+        <td>${facility.created_at.split(" ")[0]}</td>
         <td>
         <div class="btn-group d-flex space-x-4">
          <button class="btn btn-sm btn-outline-primary view-facility" 
@@ -523,7 +525,7 @@ console.log('Facilities to export:', facilities);
         const exportData = facilities.map(facility => {
           // Base fields
           let row = {
-            "Payer User ID": facility.payer_user_id,
+            "Enumeration ID": facility.enumeration_id,
             "Facility Name": facility.first_name,
             "Email": facility.email,
             "Phone": facility.phone,
@@ -531,8 +533,7 @@ console.log('Facilities to export:', facilities);
             "LGA": facility.lga,
             "TIN": facility.tin,
             "Address": facility.address,
-            "Enumerator ID": facility.enumerator_id,
-            "Facility Hospital ID": facility.facility_hospital_id,
+            // "Facility Hospital ID": facility.facility_hospital_id,
             "Facility Type": facility.facility_type,
             "Number of Beds": facility.number_of_beds,
             "Liabilities": facility.liabilities,
@@ -540,12 +541,13 @@ console.log('Facilities to export:', facilities);
             "Branch Name": facility.branch_name,
             "Physical Address": facility.physical_address,
             "City": facility.city,
-            "Branch Phone Numbers": facility.branch_phone_numbers,
+            "Branch Name": facility.branch_name,
             "Branch Email": facility.branch_email,
-            "Branch Website": facility.branch_website,
-            "CAC Certificate Path": facility.cac_certificate_path,
-            "Operating License Path": facility.operating_license_path,
-            "TIN Response": facility.tin_response
+            "TIN Response": facility.tin_response,
+            "Staff Range": facility.facility_classification.staff_range,
+            "Payment Point Range": facility.facility_classification.payment_point_range,
+            "Room Range": facility.facility_classification.room_range,
+            "Branch Range": facility.facility_classification.branch_range,
           };
 
           // Merge type_data if available
@@ -556,12 +558,12 @@ console.log('Facilities to export:', facilities);
             });
           }
 
-          if (facility.facility_classification) {
-            Object.entries(facility.facility_classification).forEach(([key, value]) => {
-              // Use the original key as heading
-              row[key] = value;
-            });
-          }
+          // if (facility.facility_classification) {
+          //   Object.entries(facility.facility_classification).forEach(([key, value]) => {
+          //     // Use the original key as heading
+          //     row[key] = value;
+          //   });
+          // }
 
           return row;
         });

@@ -3,6 +3,21 @@ let theCateg = ["", "Corporate", "Individual", "State Agency", "Federal Agency"]
 let AllRevs;
 let theMda = {}
 
+const urlParamsGen = new URLSearchParams(window.location.search);
+
+const createdBy = urlParamsGen.get('created_by');
+const adminId = urlParamsGen.get('id');
+
+if (createdBy && createdBy === "admin") {
+  $("#adminPlace").html(`
+        <a href="./admin/invoice.html" class="button flex gap-3 items-center px-10">Open Invoice Report</a>
+    `)
+} else if (createdBy && createdBy === "enumerator") {
+  $("#adminPlace").html(`
+        <a href="./enumeration/invoice.html" class="button flex gap-3 items-center px-10">Open Invoice Report</a>
+    `)
+}
+
 function generateRandomString() {
   var result = '';
   var characters = 'qwertyuiopasdfghjklzxcvbnm';
@@ -18,8 +33,8 @@ function generateRandomString() {
 
 
 async function getAllMda() {
-  const response = await fetch(`${HOST}/?getMDAs`)
-  const revHeads = await response.json()
+  const response = await fetch(`${HOST}/?getMDAs`);
+  const revHeads = await response.json();
 
   if (revHeads.status === 0) {
   } else {
@@ -69,7 +84,7 @@ function updateSelectedOption() {
 
 
 async function getAllRevH(theVal) {
-  const response = await fetch(`${HOST}/?getMDAsRevenueHeads&mdName=${theVal}`)
+  const response = await fetch(`${HOST}/?getRevenueHeadByStatus&status=approved&mdaName=${theVal}`)
   const revHeads = await response.json()
 
   if (revHeads.status === 0) {
@@ -158,8 +173,11 @@ $(".mda").on("change", function () {
 
 })
 
+
+
+
 async function fetchRevHeads(theVal) {
-  const response = await fetch(`${HOST}/?getMDAsRevenueHeads&mdName=${theVal}`)
+  const response = await fetch(`${HOST}/?getRevenueHeadByStatus&status=approved&mdaName=${theVal}`)
   const revHeads = await response.json()
 
   if (revHeads.status === 0) {
@@ -235,7 +253,7 @@ async function fetchUserDetails() {
       
             <div class="form-group w-full hidden">
               <label for="">Surname *</label>
-              <input type="text" class="form-control payInputs" value="&nbsp;" readonly data-name="surname"
+              <input type="text" class="form-control payInputs" readonly data-name="surname"
               placeholder="" value="">
             </div>
           `)
@@ -401,14 +419,13 @@ document.getElementById("category").addEventListener("change", function () {
 
       <div class="form-group w-full hidden">
         <label for="">Surname *</label>
-        <input type="text" class="form-control payInputs" value="&nbsp;" data-name="surname"
+        <input type="text" class="form-control payInputs" data-name="surname"
         placeholder="" value="">
       </div>
   `)
   }
 
 });
-
 
 function goToPreviewPage() {
   let payInputs = document.querySelectorAll(".payInputs")
@@ -425,17 +442,32 @@ function goToPreviewPage() {
   })
   let categOfTax = document.querySelector(".selCateg option:checked").textContent
 
-  if (categOfTax === "Corporate") {
+  console.log(categOfTax)
+  if (categOfTax === "Individual") {
+
     $("#theName2").html(`
         <div class="form-group w-full">
-          <label for="">Organization Name *</label>
+          <label for="">First Name</label>
+          <input type="text" class="form-control payInputs2" readonly data-name="first_name">
+        </div>
+  
+        <div class="form-group w-full ">
+          <label for="">Surname</label>
+          <input type="text" class="form-control payInputs2" readonly data-name="surname">
+        </div>
+    `)
+
+  } else {
+    $("#theName2").html(`
+        <div class="form-group w-full">
+          <label for="">Organization Name</label>
           <input type="text" class="form-control payInputs2" readonly data-name="first_name"
           placeholder="" value="">
         </div>
   
         <div class="form-group w-full hidden">
-          <label for="">Surname *</label>
-          <input type="text" class="form-control payInputs" value="&nbsp;" readonly data-name="surname"
+          <label for="">Surname</label>
+          <input type="text" class="form-control payInputs2" readonly data-name="surname"
           placeholder="" value="">
         </div>
     `)
@@ -545,8 +577,11 @@ async function generateInvoiceNon() {
       let obj = {
         "endpoint": "createPayerAccount",
         "data": {
+
           "state": "Plateau",
           "category": categ,
+          "created_by": createdBy || "self",
+          "by_account": adminId || null,
           "employment_status": "",
           "business_type": "",
           "numberofstaff": "",
@@ -573,6 +608,7 @@ async function generateInvoiceNon() {
           "rep_state": "",
           "rep_lga": "",
           "rep_address": "",
+
         }
       }
       allInputs.forEach(allInput => {
@@ -625,6 +661,9 @@ async function generateInvoiceNum(taxNumber) {
   let thePayInputs = document.querySelectorAll(".thePaymentInput")
   let description = document.querySelector("#thedescripInput").value
 
+  let startInput = document.querySelector("#startInput").value
+  let endInput = document.querySelector("#endInput").value
+
   thePayInputs.forEach(payIn => {
     amountto.push(parseFloat(payIn.value.replace(/,/g, '')))
   })
@@ -643,9 +682,23 @@ async function generateInvoiceNum(taxNumber) {
     $("#generating_inv").removeClass("hidden");
   }, 15000);
 
+
+  let dataToSendOut = {
+    "generateSingleInvoices": true,
+    "tax_number": taxNumber,
+    "revenue_head_id": the_id,
+    "price": amountto.join(','),
+    "description": description,
+    "start_date": startInput,
+    "end_date": endInput,
+    "invoice_type": "invoice",
+    "created_by": createdBy || "self",
+    "by_account": adminId || null,
+  }
   $.ajax({
     type: "GET",
-    url: `${HOST}?generateSingleInvoices&tax_number=${taxNumber}&revenue_head_id=${the_id}&price=${amountto.join(',')}&description=${description}`,
+    url: HOST,
+    data: dataToSendOut,
     dataType: 'json',
     success: function (data) {
       clearTimeout(timer); // Clear the timer if the request succeeds
@@ -677,8 +730,8 @@ async function generateInvoiceNum(taxNumber) {
       clearTimeout(timer); // Clear the timer if the request fails
 
       $("#msg_box").html(`
-              <p class="text-danger text-center mt-4 text-lg">Something went wrong, Try again.</p>
-            `);
+                  <p class="text-danger text-center mt-4 text-lg">Something went wrong, Try again.</p>
+                `);
       $("#generating_inv").removeClass("hidden");
       console.log(error);
     }

@@ -191,7 +191,7 @@ async function validateTIN() {
     if (data.status === 1 && data.user) {
       // Populate the form fields with user data
       document.getElementById('legalName').value = `${data.user.first_name} ${data.user.surname}`;
-      document.getElementById('legalName').readOnly = true;
+      // document.getElementById('legalName').readOnly = true;
       document.getElementById('taxIdentificationNumber').value = data.user.tin;
       document.getElementById('taxIdentificationNumber').readOnly = true;
       document.getElementById('address').value = data.user.address;
@@ -199,13 +199,13 @@ async function validateTIN() {
       document.getElementById('city').value = data.user.lga;
       // document.getElementById('city').readOnly = true;
       document.getElementById('lga').value = data.user.lga;
-      document.getElementById('lga').disabled = true;
+      // document.getElementById('lga').disabled = true;
       document.getElementById('state').value = data.user.state;
-      document.getElementById('state').readOnly = true;
+      // document.getElementById('state').readOnly = true;
       document.getElementById('phoneNumber').value = data.user.phone;
-      document.getElementById('phoneNumber').readOnly = true;
+      // document.getElementById('phoneNumber').readOnly = true;
       document.getElementById('email').value = data.user.email;
-      document.getElementById('email').readOnly = true;
+      // document.getElementById('email').readOnly = true;
 
       // Select the appropriate category card
       const categoryCards = document.querySelectorAll(".cardi");
@@ -1763,7 +1763,84 @@ document.getElementById('facilityType').addEventListener('change', function () {
               </div>
           </div>
       `;
-  } else if (facilityType.includes('Wellness Centre')) {
+  } else if (facilityType.includes('Pharmacy')) {
+    html = `
+      <!-- ===== PHARMACY SERVICES & OPERATIONS ===== -->
+      <div class="row mb-3">
+          <h5 class="mb-3">Pharmacy Services & Operations Assessment</h5>
+          
+          <!-- Medication Pricing -->
+          <div class="col-md-4">
+              <label class="form-label">Average Cost of Amoxicillin (antibiotic course) (₦)</label>
+              <input type="number" class="form-control" id="avgCostAmoxicillin">
+              <div class="invalid-feedback">Please provide the cost of Amoxicillin.</div>
+          </div>
+          <div class="col-md-4">
+              <label class="form-label">Average Cost of Artemether-Lumefantrine (antimalarial) (₦)</label>
+              <input type="number" class="form-control" id="avgCostArtemether">
+              <div class="invalid-feedback">Please provide the cost of Artemether-Lumefantrine.</div>
+          </div>
+          <div class="col-md-4">
+              <label class="form-label">Average Cost of Painkiller (e.g., Paracetamol) (₦)</label>
+              <input type="number" class="form-control" id="avgCostPainkiller">
+              <div class="invalid-feedback">Please provide the cost of painkillers.</div>
+          </div>
+          
+          <!-- Blood Pressure Checks -->
+          <div class="col-md-6 mt-3">
+              <label class="form-label required">Do you offer blood pressure checks?</label>
+              <select class="form-select" id="offersBpCheck" required>
+                  <option value="">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+              </select>
+          </div>
+          <div class="col-md-6 mt-3" id="bpCheckCostContainer" style="display: none;">
+              <label class="form-label">Average Cost of Blood Pressure Check (₦)</label>
+              <input type="number" class="form-control" id="avgCostBpCheck">
+          </div>
+          
+          <!-- Convenience Store -->
+          <div class="col-md-6 mt-3">
+              <label class="form-label required">Does the pharmacy have a convenience store?</label>
+              <select class="form-select" id="hasConvenienceStore" required>
+                  <option value="">Select</option>
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+              </select>
+          </div>
+          <div class="col-md-6 mt-3">
+              <label class="form-label">Number of Payment Points</label>
+              <input type="number" class="form-control" id="paymentPoints">
+              <div class="invalid-feedback">Please provide the number of payment points.</div>
+          </div>
+          
+          <!-- Operations -->
+          <div class="col-md-6 mt-3">
+              <label class="form-label">Average Prescriptions Dispensed per Day</label>
+              <input type="number" class="form-control" id="avgPrescriptionsPerDay">
+              <div class="invalid-feedback">Please provide the average number of prescriptions.</div>
+          </div>
+          <div class="col-md-6 mt-3">
+              <label class="form-label required">Average Number of Pharmacy Staff</label>
+              <input type="number" class="form-control" id="avgPharmacyStaff" required>
+              <div class="invalid-feedback">Please provide the number of staff.</div>
+          </div>
+      </div>
+    `;
+
+    // Add event listener for BP check toggle
+    setTimeout(() => {
+      document.getElementById('offersBpCheck').addEventListener('change', function () {
+        const bpCostContainer = document.getElementById('bpCheckCostContainer');
+        bpCostContainer.style.display = this.value === 'Yes' ? 'block' : 'none';
+        if (this.value !== 'Yes') {
+          document.getElementById('avgCostBpCheck').value = '';
+        }
+      });
+    }, 100);
+  }
+  else if (facilityType.includes('Wellness Centre')) {
     html = `
           <!-- ===== SERVICES OFFERED ===== -->
           <div class="row mb-3">
@@ -2168,12 +2245,12 @@ function generateSummary() {
   let html = `
         <h3 class="mb-2">Payer Information</h3>
         <img src="${imageUrlInput.value || 'assets/img/userprofile.png'}" alt="Facility Image" style="max-width:150px;max-height:150px;display:block;margin-bottom:15px;border-radius:8px;">
-        <p><strong>Legal Name:</strong> ${document.getElementById('repName').value}</p>
-        <p><strong>TIN:</strong> ${document.getElementById('repTIN').value}</p>
+        <p><strong>Legal Name:</strong> ${document.getElementById('legalName').value}</p>
+        <p><strong>TIN:</strong> ${document.getElementById('taxIdentificationNumber').value}</p>
         <p><strong>Category:</strong> ${document.querySelector('.selectedcat')?.getAttribute('data-name') || "Not selected"}</p>
-        <p><strong>Email:</strong> ${document.getElementById('repemail').value}</p>
-        <p><strong>Phone:</strong> ${document.getElementById('repphonenumber').value}</p>
-        <p><strong>Address:</strong> ${document.getElementById('repAddress').value}</p>
+        <p><strong>Email:</strong> ${document.getElementById('email').value}</p>
+        <p><strong>Phone:</strong> ${document.getElementById('phoneNumber').value}</p>
+        <p><strong>Address:</strong> ${document.getElementById('address').value}</p>
         <p><strong>State/LGA:</strong> ${document.getElementById('state').value} / ${document.getElementById('lga').value}</p>
         
         <h3 class="mt-4 mb-2">Facility Information</h3>
@@ -2186,6 +2263,13 @@ function generateSummary() {
         <p><strong>License Expiry:</strong> ${document.getElementById('licenseExpiryDate').value}</p>
         <p><strong>Health Facility Code:</strong> ${document.getElementById('healthFacilityCode').value}</p>
         <p><strong>Date Established:</strong> ${document.getElementById('dateOfEstablishment').value}</p>
+
+        <h3 class="mt-4 mb-2">Representative Information</h3>
+        <p><strong>Full Name:</strong> ${document.getElementById('repName').value}</p>
+        <p><strong>TIN:</strong> ${document.getElementById('repTIN').value}</p>
+        <p><strong>Email:</strong> ${document.getElementById('repemail').value}</p>
+        <p><strong>Phone:</strong> ${document.getElementById('repphonenumber').value}</p>
+        <p><strong>Address:</strong> ${document.getElementById('repAddress').value}</p>
     `;
 
   // Add facility type specific details
@@ -2313,6 +2397,21 @@ function generateSummary() {
       <p><strong>Staff Count:</strong> ${document.getElementById('staffCount')?.value || "0"}</p>
       <p><strong>Physiotherapy Fee:</strong> ₦${document.getElementById('physioFee')?.value || "0"}</p>
     `;
+      break;
+
+    case "pharmacy":
+      html += `
+        <p><strong>Amoxicillin Cost:</strong> ₦${document.getElementById('avgCostAmoxicillin')?.value || "0"}</p>
+        <p><strong>Artemether-Lumefantrine Cost:</strong> ₦${document.getElementById('avgCostArtemether')?.value || "0"}</p>
+        <p><strong>Painkiller Cost:</strong> ₦${document.getElementById('avgCostPainkiller')?.value || "0"}</p>
+        <p><strong>BP Checks Offered:</strong> ${document.getElementById('offersBpCheck')?.value || "No"}</p>
+        ${document.getElementById('offersBpCheck')?.value === 'Yes' ?
+          `<p><strong>BP Check Cost:</strong> ₦${document.getElementById('avgCostBpCheck')?.value || "0"}</p>` : ''}
+        <p><strong>Convenience Store:</strong> ${document.getElementById('hasConvenienceStore')?.value || "No"}</p>
+        <p><strong>Payment Points:</strong> ${document.getElementById('paymentPoints')?.value || "0"}</p>
+        <p><strong>Prescriptions per Day:</strong> ${document.getElementById('avgPrescriptionsPerDay')?.value || "0"}</p>
+        <p><strong>Pharmacy Staff:</strong> ${document.getElementById('avgPharmacyStaff')?.value || "0"}</p>
+      `;
       break;
 
     case "wellness_centre":
@@ -2511,6 +2610,7 @@ function getFacilityTypeKey(facilityType) {
     "Imaging / Radiology Centre": "imaging_radiology_centre",
     "Eye Clinic": "eye_clinic",
     "Rehabilitation Centre": "rehabilitation_centre",
+    "Pharmacy": "pharmacy",
     "Wellness Centre": "wellness_centre",
     "Herbal Medicine Centre / Traditionalist Health Centre": "herbal_medicine_centre",
     "Nursing Health Sciences": "nursing_health_sciences"
@@ -2693,6 +2793,19 @@ function prepareFacilityTypeData(facilityTypeKey) {
       data.therapy_rooms_count = document.getElementById('therapyRooms')?.value || "0";
       data.staff_total_count = document.getElementById('staffCount')?.value || "0";
       data.therapy_services_offered = Array.from(document.getElementById('therapyServices')?.selectedOptions || []).map(opt => opt.value);
+      break;
+
+    case "pharmacy":
+      data.avg_cost_amoxicillin = document.getElementById('avgCostAmoxicillin')?.value || "0";
+      data.avg_cost_artemether_lumefantrine = document.getElementById('avgCostArtemether')?.value || "0";
+      data.avg_cost_painkiller = document.getElementById('avgCostPainkiller')?.value || "0";
+      data.offers_bp_check = document.getElementById('offersBpCheck')?.value || "No";
+      data.avg_cost_bp_check = document.getElementById('offersBpCheck')?.value === 'Yes' ?
+        (document.getElementById('avgCostBpCheck')?.value || "0") : "0";
+      data.has_convenience_store = document.getElementById('hasConvenienceStore')?.value || "No";
+      data.payment_points = document.getElementById('paymentPoints')?.value || "0";
+      data.avg_prescriptions_per_day = document.getElementById('avgPrescriptionsPerDay')?.value || "0";
+      data.avg_pharmacy_staff = document.getElementById('avgPharmacyStaff')?.value || "0";
       break;
 
     case "wellness_centre":

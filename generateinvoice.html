@@ -72,8 +72,8 @@
     </div>
 
     <div class="md:w-9/12 w-full bg-[url('./assets/img/slideimg.png')] bg-center overflow-y-scroll">
-
-      <section class="formTabs h-full">
+        
+    <section class="formTabs h-full">
 
         <div class="flex justify-center items-center h-full">
 
@@ -98,7 +98,7 @@
           </form>
 
         </div>
-      </section>
+      </section>    
 
       <section class="formTabs h-full">
         <div class="pt-10 md:px-10 px-4">
@@ -107,7 +107,7 @@
             <span>Go back</span>
           </button>
         </div>
-
+        
         <div class="flex justify-center items-center h-full">
 
           <form action="" class="md:w-[60%] w-[80%] ">
@@ -162,8 +162,8 @@
                     class="fontBold text-[#CDA545]">
                     Click here</a></p>
 
-                <p class="text-sm font-bold text-black">Can't remember TIN?<a href="#forgotTinModal"
-                    data-bs-toggle="modal" class="fontBold text-danger">
+                <p class="text-sm font-bold text-black">Can't remember TIN?<a href="#forgotTinModal" data-bs-toggle="modal"
+                    class="fontBold text-danger">
                     Forgot TIN</a></p>
               </div>
 
@@ -173,10 +173,9 @@
               <div class="form-group w-full">
                 <label for="">State*</label>
                 <select name="" id="selectState" class="form-select payInputs" data-name="state">
-                  <option value="Akwa Ibom">Akwa Ibom</option>
+                  <option value="Plateau">Plateau</option>
                 </select>
               </div>
-
               <div class="form-group w-full">
                 <label for="">LGA*</label>
                 <select name="" id="selectLGA" class="form-select payInputs" required data-name="lga">
@@ -255,6 +254,21 @@
               <label for="description">Description*</label>
               <input type="text" class="form-control genInv" id="thedescripInput" required>
             </div>
+            
+            <p class="font-bold mt-4 text-lg mb-3">Period</p>
+            <div class="flex items-center gap-2">
+                <div class="form-group mb-3">
+                  <label for="startInput">From</label>
+                  <input type="date" class="form-control genInv" id="startInput">
+                </div> 
+                
+                <div class="form-group mb-3">
+                  <label for="endInput">To</label>
+                  <input type="date" class="form-control genInv" id="endInput">
+                </div> 
+            </div>
+            
+            
 
             <button class="button w-full" type="button" onclick="goToPreviewPage()">Continue</button>
 
@@ -311,7 +325,7 @@
 
             <div class="flex items-center mb-4 gap-2">
               <div class="form-group w-full">
-                <label for="">TIN</label>
+                <label for="">TIN (Optional)</label>
                 <input type="text" class="form-control payInputs2" readonly data-name="tin">
               </div>
 
@@ -363,10 +377,10 @@
 
         <div class="flex justify-center px-4">
           <div>
-            <div class="mt-4">
-              <p class="text-xl">Note: You can make part payment by editing amount you are to pay</p>
-            </div>
+            
             <div class="flex justify-between flex-wrap mt-4 gap-3">
+              <div id="adminPlace"></div>   
+              
               <div class="flex gap-3 items-center">
                 <button class="outline-btn flex gap-3 items-center px-10" onclick="downloadInvoice('invoiceCard')">
                   <iconify-icon icon="mdi:printer-outline" class="text-xl"></iconify-icon>
@@ -454,9 +468,8 @@
     </div>
 
   </section>
-
-  <div id="ModalsContainer"></div>
-
+    
+  <div id="ModalsContainer"></div>    
 
 
 
@@ -472,47 +485,47 @@
     });
   </script>
 
-  <script>
+<script>
+ 
+ const amountInp = document.querySelector('.amountTopay');
+ 
+amountInp.addEventListener('input', function(e) {
+  let inputVal = e.target.value;
 
-    const amountInp = document.querySelector('.amountTopay');
+  // Immediately return if the first character is a dot to allow ".xx" inputs
+  if (inputVal === '.') {
+    return;
+  }
 
-    amountInp.addEventListener('input', function (e) {
-      let inputVal = e.target.value;
+  // Normalize the input by removing commas and any non-numeric characters except for the decimal point
+  let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
 
-      // Immediately return if the first character is a dot to allow ".xx" inputs
-      if (inputVal === '.') {
-        return;
-      }
+  // Split the input into whole and decimal parts
+  let [whole, decimal] = normalizedInput.split('.');
 
-      // Normalize the input by removing commas and any non-numeric characters except for the decimal point
-      let normalizedInput = inputVal.replace(/,/g, '').replace(/[^0-9.]/g, '');
+  // Ensure the whole part is only numeric
+  whole = whole.replace(/\D/g, '');
 
-      // Split the input into whole and decimal parts
-      let [whole, decimal] = normalizedInput.split('.');
+  // If there's a decimal part, limit it to two digits
+  if (decimal) {
+    decimal = decimal.substring(0, 2); // Limit decimal part to two digits
+  }
 
-      // Ensure the whole part is only numeric
-      whole = whole.replace(/\D/g, '');
+  // Format the whole part with commas
+  let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 
-      // If there's a decimal part, limit it to two digits
-      if (decimal) {
-        decimal = decimal.substring(0, 2); // Limit decimal part to two digits
-      }
-
-      // Format the whole part with commas
-      let formattedWhole = whole.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-
-      // Reconstruct the formatted value
-      e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
-    });
+  // Reconstruct the formatted value
+  e.target.value = decimal !== undefined ? `${formattedWhole}.${decimal}` : formattedWhole;
+});
   </script>
-
-
-  <script src="assets/js/nav.js"></script>
-  <script src="assets/js/payment.js"></script>
+  
+  
+  <script src="assets/js/nav.js?v=2.3"></script>
+  <script src="assets/js/payment.js?v=23.0"></script>
   <script src="assets/js/tabHandler.js"></script>
   <script src="assets/js/hadleTinGen.js"></script>
-  <script src="assets/js/generateinvoice.js"></script>
-  <script src="assets/js/invoice.js"></script>
+  <script src="assets/js/generateinvoice.js?v=21.1"></script>
+  <script src="assets/js/invoice.js?v=8.0"></script>
   <script src="assets/js/landingcms.js"></script>
 </body>
 

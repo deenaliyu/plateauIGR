@@ -23,6 +23,10 @@ $("#LoginNow").on("click", (e) => {
         `)
         $("#LoginNow").removeClass("hidden")
 
+        setTimeout(() => {
+          window.location.href = `verification.html?id=${data.data.id}&email=${data.data.email}&phone=${data.data.phone}`;
+        }, 1000);
+
       } else if (data.status === 1) {
         $("#msg_box4").html(`
           <p class="text-success text-center mt-4 text-lg">${data.message}</p>

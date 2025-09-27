@@ -746,6 +746,10 @@ async function generateInvoiceNon() {
 async function generateInvoiceNum(taxNumber) {
   let description = document.querySelector("#thedescripInput").value
   let business_own = document.querySelector("#business_own").value
+
+  let startInput = document.querySelector("#startInput").value
+  let endInput = document.querySelector("#endInput").value
+
   let the_sector = $("#sectorSelect").val()
 
   // Filter out zero-amount items before creating the payload
@@ -776,6 +780,8 @@ async function generateInvoiceNum(taxNumber) {
     lga: null,
     zonalOffice: null,
     business_type: business_own,
+    start_date: startInput,
+    end_date: endInput,
     previous_year: validPrevYears.join(','),
     previous_year_value: validPrevYearsAmount.join(','),
     previous_year2: validPrevYears2.join(','),
