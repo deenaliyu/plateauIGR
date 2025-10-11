@@ -250,7 +250,9 @@ function renderSummaryTiles(facilities) {
       <div class="col-md-3 mb-3">
         <div class="card h-100">
           <div class="card-body">
-            <h5 class="card-title text-black fontBold">${type.replaceAll('_', ' ')}</h5>
+           <h5 class="card-title text-black fontBold uppercase">
+  ${type.replaceAll('_', ' ')}
+</h5>
             <p class="card-text display-4 text-primary">${count}</p>
           </div>
         </div>
