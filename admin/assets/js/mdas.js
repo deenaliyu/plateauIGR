@@ -25,7 +25,7 @@ async function fetchMDAs() {
       "Access-Control-Allow-Methods": "*"
     }
   }
-  const response = await fetch(`${HOST}/?getMDAs`)
+  const response = await fetch(`${HOST}/?getMDAs&LGC=1`)
   const MDAs = await response.json()
   ALLMDA = MDAs
 

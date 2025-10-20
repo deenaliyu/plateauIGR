@@ -10,7 +10,7 @@ let downloadLink = '';
 function initializeDataTable() {
   if ($.fn.DataTable.isDataTable('#tinTable')) {
     $('#tinTable').DataTable().destroy();
-    $('#tinTable').empty();
+    // $('#tinTable').empty();
   }
 
   tinTable = $('#tinTable').DataTable({
@@ -18,6 +18,7 @@ function initializeDataTable() {
     serverSide: true, // Enable server-side processing
     paging: true,     // Enable pagination
     pageLength: 50,   // Number of items per page
+    searchDelay: 1500,
     ajax: function (data, callback, settings) {
       const pageNumber = Math.ceil(data.start / data.length) + 1;
       $.ajax({
@@ -25,11 +26,13 @@ function initializeDataTable() {
         type: 'GET',
         data: {
           page: pageNumber,
-          // created_at_min: $('#startDate').val(),
-          // created_at_max: $('#endDate').val(),
+          created_at_min: $('#dateStart').val(),
+          created_at_max: $('#dateEnd').val(),
+          type: $('#categorySel').val(),
+          industry: $('#industrySelect').val(),
+          sector: $('#sectorSelect').val(),
           limit: data.length, // Number of rows per page
           search: data.search.value, // Search term
-          searchDelay: 1500,
         },
         success: function (response) {
           // Map the API response to DataTables expected format
@@ -139,7 +142,7 @@ function initializeDataTable() {
           return `
                         <div class="flex gap-3 items-center">
                             <a href="#viewData" data-bs-toggle="modal" onclick="viewUser(this)" data-tin="${row.tin}" data-userid="${data}" class="btn btn-primary btn-sm">View</a>
-                            <a href="#EditInfo" data-bs-toggle="modal" onclick="editUser(this)" data-userid="${data}">
+                            <a href="#EditInfo" data-bs-toggle="modal" onclick="editUser(this)" data-userid="${data}" data-tin="${row.tin}" class="btn">
                                 <iconify-icon icon="uil:edit"></iconify-icon>
                             </a>
                         </div>
@@ -152,6 +155,19 @@ function initializeDataTable() {
 
 initializeDataTable()
 
+$("#filterTinData").on('click', function () {
+  $("#filterInvoice").modal('hide')
+  initializeDataTable()
+})
+
+function clearfilter() {
+ $("#filterInvoice").modal('hide')
+  $("#categorySel").val('')
+  $("#sectorSelect").val('')
+  $("#industrySelect").val('')
+
+  initializeDataTable()
+}
 // Download data
 function downloadData() {
   if (downloadLink) {
@@ -274,16 +290,44 @@ async function viewUser(e) {
 
 function editUser(e) {
   let theID = e.dataset.userid
+  let theTin = e.dataset.tin
 
   let payInputs = document.querySelectorAll(".payInputs2")
-  let theuser = allTinData.find(alluser => alluser.id === parseInt(theID))
+  // Show loading indicator
+  payInputs.forEach(payInpt => {
+    payInpt.value = '';
+  });
+
+  $("#msg_boxeredit").html(`
+    <div class="flex justify-center items-center mt-4">
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+    </div>
+  `);
+
+  // Fetch user data from endpoint
+  fetch(`https://plateauigr.com/php/tinGeneration/fetch.php?tin=${theTin}`)
+    .then(res => res.json())
+    .then(result => {
+      $("#msg_boxeredit").html('');
+      let theuser = result.success && result.data ? result.data[0] : null;
+      console.log(theuser)
+      if (theuser) {
+        payInputs.forEach(payInpt => {
+          payInpt.value = theuser[payInpt.dataset.name] || '';
+        });
+      }
+    })
+    .catch(error => {
+      $("#msg_boxeredit").html(`<p class="text-danger text-center mt-4 text-lg">Error loading user data.</p>`);
+      console.error(error);
+    });
   // console.log(theuser)
 
-  if (theuser) {
-    payInputs.forEach(payInpt => {
-      payInpt.value = theuser[payInpt.dataset.name]
-    })
-  }
+  // if (theuser) {
+  //   payInputs.forEach(payInpt => {
+  //     payInpt.value = theuser[payInpt.dataset.name]
+  //   })
+  // }
 
 }
 
@@ -371,7 +415,7 @@ async function filterSummary() {
     const data = await response.json()
 
     $("#filterSummary").removeClass("hidden")
-
+    initializeDataTable()
     if (data.success) {
 
       $("#summaryBox").html("")

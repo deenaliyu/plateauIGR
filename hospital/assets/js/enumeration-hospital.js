@@ -190,21 +190,31 @@ async function validateTIN() {
 
     if (data.status === 1 && data.user) {
       // Populate the form fields with user data
-      document.getElementById('legalName').value = `${data.user.first_name} ${data.user.surname}`;
+      console.log(data.user.old_user);
+      if (data.user.old_user) {
+        document.getElementById('legalName').value = data.user.company_name || data.user.name || "";
+        document.getElementById('phoneNumber').value = data.user.office_number || data.user.phone || "";
+        document.getElementById('email').value = data.user.office_email || data.user.email || "";
+      } else {
+        document.getElementById('phoneNumber').value = data.user.phone;
+        document.getElementById('email').value = data.user.email;
+        document.getElementById('legalName').value = `${data.user.first_name} ${data.user.surname}`;
+      }
+
       // document.getElementById('legalName').readOnly = true;
       document.getElementById('taxIdentificationNumber').value = data.user.tin;
       document.getElementById('taxIdentificationNumber').readOnly = true;
-      document.getElementById('address').value = data.user.address;
+      document.getElementById('address').value = data.user.address || data.user.payer_address || "";
       // document.getElementById('address').readOnly = true;
       document.getElementById('city').value = data.user.lga;
       // document.getElementById('city').readOnly = true;
       document.getElementById('lga').value = data.user.lga;
       // document.getElementById('lga').disabled = true;
-      document.getElementById('state').value = data.user.state;
+      document.getElementById('state').value = data.user.state || "Plateau";
       // document.getElementById('state').readOnly = true;
-      document.getElementById('phoneNumber').value = data.user.phone;
+      // document.getElementById('phoneNumber').value = data.user.phone;
       // document.getElementById('phoneNumber').readOnly = true;
-      document.getElementById('email').value = data.user.email;
+      // document.getElementById('email').value = data.user.email;
       // document.getElementById('email').readOnly = true;
 
       // Select the appropriate category card
@@ -1839,8 +1849,7 @@ document.getElementById('facilityType').addEventListener('change', function () {
         }
       });
     }, 100);
-  }
-  else if (facilityType.includes('Wellness Centre')) {
+  } else if (facilityType.includes('Wellness Centre')) {
     html = `
           <!-- ===== SERVICES OFFERED ===== -->
           <div class="row mb-3">
@@ -2073,8 +2082,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- School Category -->
     <div class="row mb-3">
       <div class="col-md-6">
-        <label class="form-label required">School Category</label>
-        <select class="form-select" id="schoolCategory" required>
+        <label class="form-label">School Category</label>
+        <select class="form-select" id="schoolCategory">
           <option value="">Select category</option>
           <option value="School of Nursing and Midwifery">School of Nursing and Midwifery</option>
           <option value="School of Health Technology">School of Health Technology</option>
@@ -2086,8 +2095,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- Programs Offered -->
     <div class="row mb-3">
       <div class="col-md-12">
-        <label class="form-label required">Programs Offered</label>
-        <select class="multiple-select" id="programsOffered" multiple required>
+        <label class="form-label">Programs Offered</label>
+        <select class="multiple-select" id="programsOffered" multiple>
           <!-- Nursing and Midwifery options -->
           <option value="National Diploma (ND) in Nursing">National Diploma (ND) in Nursing</option>
           <option value="Higher National Diploma (HND) in Nursing">Higher National Diploma (HND) in Nursing</option>
@@ -2126,32 +2135,32 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- Accreditation and Basic Info -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Is Fully Accredited?</label>
-        <select class="form-select" id="isAccredited" required>
+        <label class="form-label">Is Fully Accredited?</label>
+        <select class="form-select" id="isAccredited">
           <option value="">Select</option>
           <option value="Yes">Yes</option>
           <option value="No">No</option>
         </select>
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Academic Departments Count</label>
-        <input type="number" class="form-control" id="academicDepartmentsCount" required>
+        <label class="form-label">Academic Departments Count</label>
+        <input type="number" class="form-control" id="academicDepartmentsCount">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Clinical Labs Count</label>
-        <input type="number" class="form-control" id="clinicalLabsCount" required>
+        <label class="form-label">Clinical Labs Count</label>
+        <input type="number" class="form-control" id="clinicalLabsCount">
       </div>
     </div>
 
     <!-- Student and Staff Info -->
     <div class="row mb-3">
       <div class="col-md-4">
-        <label class="form-label required">Total Students Enrolled</label>
-        <input type="number" class="form-control" id="totalStudentsEnrolled" required>
+        <label class="form-label">Total Students Enrolled</label>
+        <input type="number" class="form-control" id="totalStudentsEnrolled">
       </div>
       <div class="col-md-4">
-        <label class="form-label required">Has External Placements?</label>
-        <select class="form-select" id="hasExternalPlacements" required>
+        <label class="form-label">Has External Placements?</label>
+        <select class="form-select" id="hasExternalPlacements">
           <option value="">Select</option>
           <option value="Yes">Yes</option>
           <option value="No">No</option>
@@ -2166,8 +2175,8 @@ document.getElementById('facilityType').addEventListener('change', function () {
     <!-- Additional Info -->
     <div class="row mb-3">
       <div class="col-md-6">
-        <label class="form-label required">Student-Lecturer Ratio</label>
-        <input type="text" class="form-control" id="studentLecturerRatio" placeholder="e.g., 30:1" required>
+        <label class="form-label">Student-Lecturer Ratio</label>
+        <input type="text" class="form-control" id="studentLecturerRatio" placeholder="e.g., 30:1">
       </div>
       <div class="col-md-6">
         <label class="form-label">Professional Exams per Session</label>

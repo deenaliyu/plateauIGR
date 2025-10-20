@@ -271,6 +271,57 @@
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
 
+  <div class="modal fade" id="filterInvoice" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <h5 class="modal-title text-center text-2xl font-bold" id="exampleModalLabel3">Filter</h5>
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body" style="overflow:hidden;">
+          <div class="flex justify-end">
+            <button class="btn btn-primary btn-sm" onclick="clearfilter()">clear filter</button>
+          </div>
+
+          <div class="row">
+            <div class="col mb-3" id="mdass">
+              <label for="defaultSelect" class="form-label">Category</label>
+              <div class="form-group">
+                <select name="" id="categorySel" class="form-select">
+                  <option selected value="">Select --</option>
+                  <option value="individual">Individual</option>
+                  <option value="corporate">Corporate</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center mb-4 gap-2">
+            <div class="form-group w-full">
+              <label for="">Sector*</label>
+              <select class="form-select payInputs" id="sectorSelect" data-name="sector">
+                <option value="">Select</option>
+              </select>
+            </div>
+
+            <div class="form-group w-full">
+              <label for="">Industry*</label>
+              <select name="" class="form-select payInputs" id="industrySelect" data-name="industry">
+                <option value="">Select</option>
+              </select>
+            </div>
+          </div>
+
+        </div>
+        <div class="modal-footer ">
+          <button type="button" class="btn btn-prime w-full" id="filterTinData">Apply</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
   <div class="modal fade" id="EditInfo" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
       <div class="modal-content">
@@ -372,14 +423,14 @@
               <div class="flex items-center mb-4 gap-2">
                 <div class="form-group w-full">
                   <label for="">Sector</label>
-                  <select class="form-select payInputs2" id="sectorSelect" data-name="sector">
+                  <select class="form-select payInputs2" id="sectorSelect2" data-name="sector">
                     <option value="">Select</option>
                   </select>
                 </div>
 
                 <div class="form-group w-full">
                   <label for="">Industry</label>
-                  <select name="" class="form-select payInputs2" id="industrySelect" data-name="industry">
+                  <select name="" class="form-select payInputs2" id="industrySelect2" data-name="industry">
                     <option value="">Select</option>
                   </select>
                 </div>
@@ -398,6 +449,7 @@
               <div class="form-group w-full">
                 <label for="">State</label>
                 <select id="STATES" class="form-select payInputs2" data-name="state" required>
+                  <option value="Plateau">Plateau</option>
                 </select>
               </div>
 
@@ -516,7 +568,7 @@
   <!-- Vendors JS -->
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/tinmanagement.js?v=3.0"></script>
+  <script src="./assets/js/tinmanagement.js?v=4.0"></script>
 </body>
 
 </html>

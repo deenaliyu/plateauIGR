@@ -1896,7 +1896,7 @@ async function invpaid() {
   const selectInput = document.querySelector('#invpaidSelected')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getAnalyticPaidInvoiceBasedOnCategories`)
+    const response = await fetch(`https://plateauigr.com/php/?getAnalyticPaidInvoiceBasedOnCategories&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -2000,7 +2000,7 @@ async function avgpayment() {
   const selectInput = document.querySelector('#avgpaymentSelected')
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?averagePaymentTime`)
+    const response = await fetch(`https://plateauigr.com/php/?averagePaymentTime&mda_id=${userInfo2Mda.id}`)
     const responseDta = await response.json()
 
     function padNumberWithZero(num) {
@@ -2555,7 +2555,7 @@ async function monthlyTinRequest() {
   const ctx = document.getElementById('monthlyTinRequest').getContext('2d');
 
   try {
-    const response = await fetch(`https://plateauigr.com/php/?getAnalyticsTINRequestPerMonth`);
+    const response = await fetch(`https://plateauigr.com/php/?getAnalyticsTINRequestPerMonth&mda_id=${userInfo2Mda.id}`);
     const responseDta = await response.json();
 
     const theMonth = responseDta.tinRequestsPerMonth.map(item => item.month)
