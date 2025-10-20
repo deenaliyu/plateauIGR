@@ -185,7 +185,8 @@ async function generateTin(accountType) {
     
     let dataToSend = {
       type: accountType,
-      created_by: regType ? regType : null,
+      created_by: regType ? "admin" : "self",
+      by_account: regType ? regType : null,
       foreigner: isForeigner3 ? "yes": 'no'
     }
 

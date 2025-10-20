@@ -106,6 +106,7 @@ async function generateTin(accountType) {
     let dataToSend = {
       type: accountType,
       created_by: 'enumerator',
+      by_account: userInfo2?.id || null,
     }
 
     allInputs.forEach(allInput => {
