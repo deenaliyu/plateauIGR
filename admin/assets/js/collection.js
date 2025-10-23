@@ -17,28 +17,101 @@ function getFormattedDate(date) {
 
 let AllInvoiceData = {}
 
-async function fetchInvoice() {
-
-  $("#showThem").html("");
-  $("#loader").css("display", "flex");
-
-  const response = await fetch(`${HOST}?fetchAllPayment`);
-  const userInvoices = await response.json();
-  
-//   console.log(userInvoices);
-
-  $("#loader").css("display", "none");
-  if (userInvoices.status === 1) {
-
-    AllInvoiceData = userInvoices.message
-
-    displayData(userInvoices.message)
-
-  } else {
-    // $("#showInvoice").html("<tr></tr>");
-    $("#dataTable").DataTable();
+function fetchInvoice() {
+  if ($.fn.DataTable.isDataTable('#dataTable')) {
+    $('#dataTable').DataTable().destroy();
   }
+
+  // $('#dataTable').empty(); 
+
+  $('#dataTable').DataTable({
+    processing: true, // Show processing indicator
+    serverSide: true, // Enable server-side processing
+    paging: true,     // Enable pagination
+    pageLength: 50,   // Number of items per page
+    searchDelay: 1500,
+    ajax: function (data, callback, settings) {
+      // Convert DataTables page number to your API page number
+      const pageNumber = Math.ceil(data.start / data.length) + 1;
+
+      // Call your API with the calculated page number
+      $.ajax({
+        url: HOST,
+        type: 'GET',
+        data: {
+          fetchAllPayment: true,
+          page: pageNumber,
+          limit: data.length,
+          search: data.search.value,
+          
+        },
+        success: function (response) {
+          // Map the API response to DataTables expected format
+          if (response.status === 1) {
+            callback({
+              draw: data.draw, // Pass through draw counter
+              recordsTotal: response.total_records, // Total records in your database
+              recordsFiltered: response.total_records, // Filtered records count
+              data: response.data, // The actual data array from your API
+            });
+          } else {
+            callback({
+              draw: data.draw, // Pass through draw counter
+              recordsTotal: 0, // Total records in your database
+              recordsFiltered: 0, // Filtered records count
+              data: [], // The actual data array from your API
+            });
+          }
+        },
+        error: function () {
+          alert('Failed to fetch data.');
+        },
+      });
+    },
+    columns: [
+      {
+        data: null,
+        orderable: false, // Disable ordering for the numbering column
+        render: function (data, type, row, meta) {
+          // Calculate the row number based on the page
+          return meta.row + 1 + meta.settings._iDisplayStart;
+        },
+      },
+      { data: 'mda_id' },
+      { data: 'COL_4' },
+      {
+        data: null,
+        render: function (data, type, row) {
+          return `${row.first_name} ${row.surname === '?' ? '' : row.surname}`;
+        }
+      },
+      { data: 'tax_number' },
+      { data: 'tin' },
+      { data: 'industry' },
+      { data: 'invoice_type' },
+      { data: 'invoice_number' },
+      {
+        data: 'amount_paid',
+        render: function (data, type, row) {
+          return formatMoney(parseFloat(data));
+        }
+      },
+      { data: 'payment_channel' },
+      { data: 'payment_method' },
+      { data: 'payment_bank' },
+      { data: 'payment_reference_number' },
+      { data: 'invoice_number' },
+      { data: 'timeIn' },
+      {
+        data: 'invoice_number',
+        render: function (data, type, row) {
+          return `<a href="./viewreceipt.html?invnumber=${data}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser">View Receipt</a>`;
+        }
+      }
+    ],
+  });
 }
+
 
 function displayData(userInvoices) {
   userInvoices.forEach((userInvoice, i) => {
