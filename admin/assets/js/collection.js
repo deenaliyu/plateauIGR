@@ -124,6 +124,8 @@ function displayData(userInvoices) {
         <td>${userInvoice.first_name} ${userInvoice.surname}</td>
         <td>${userInvoice.tax_number}</td>
         <td>${userInvoice.tin}</td>
+        <td>${userInvoice.business_type}</td>
+          <td>${userInvoice.industry}</td>
         <td>${userInvoice.invoice_type}</td>
         <td>${userInvoice.invoice_number}</td>
         <td>${formatMoney(parseFloat(userInvoice.amount_paid))}</td>
@@ -150,6 +152,8 @@ function displayData(userInvoices) {
           <td>${userInvoice.first_name?.replace(/,/g, '')} ${userInvoice.surname?.replace(/,/g, '')}</td>
           <td>${userInvoice.tax_number}</td>
           <td>${userInvoice.tin}</td>
+          <td>${userInvoice.business_type}</td>
+          <td>${userInvoice.industry}</td>
           <td>${userInvoice.invoice_type}</td>
           <td>${userInvoice.invoice_number}</td>
           <td>${(parseFloat(userInvoice.amount_paid))}</td>
