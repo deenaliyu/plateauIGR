@@ -422,13 +422,14 @@ async function fetchInvoice(invoiceNum) {
 function processPayment(invoice, amount_paid, invoiceNum) {
   const paymentEngine = RmPaymentEngine.init({
     key: 'QzAwMDAyNzEyNTl8MTEwNjE4NjF8OWZjOWYwNmMyZDk3MDRhYWM3YThiOThlNTNjZTE3ZjYxOTY5NDdmZWE1YzU3NDc0ZjE2ZDZjNTg1YWYxNWY3NWM4ZjMzNzZhNjNhZWZlOWQwNmJhNTFkMjIxYTRiMjYzZDkzNGQ3NTUxNDIxYWNlOGY4ZWEyODY3ZjlhNGUwYTY=',
+    processRrr: true,
     transactionId: Math.floor(Math.random() * 1101233),
-    customerId: invoice.email,
-    firstName: invoice.first_name,
-    lastName: invoice.surname || invoice.first_name,
-    email: invoice.email,
-    amount: parseFloat(amount_paid),
-    narration: invoice.COL_4,
+    extendedData: {
+      customFields: [{
+        name: "rrr",
+        value: invoice.rrr
+      }]
+    },
     onSuccess: function (response) {
       showMessage("Payment successful!", "success");
       // Ping API before showing the success message

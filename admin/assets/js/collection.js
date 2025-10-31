@@ -1,3 +1,5 @@
+let download_link = null;
+
 function formatMoney(amount) {
   return amount.toLocaleString('en-US', {
     style: 'currency',
@@ -7,7 +9,7 @@ function formatMoney(amount) {
 }
 
 function getFormattedDate(date) {
-  date = new Date(date)    
+  date = new Date(date)
   const day = String(date.getDate()).padStart(2, '0');
   const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
   const year = date.getFullYear();
@@ -22,7 +24,7 @@ function fetchInvoice() {
     $('#dataTable').DataTable().destroy();
   }
 
-  // $('#dataTable').empty(); 
+  $('#showThem').empty(); 
 
   $('#dataTable').DataTable({
     processing: true, // Show processing indicator
@@ -43,15 +45,22 @@ function fetchInvoice() {
           page: pageNumber,
           limit: data.length,
           search: data.search.value,
-          
+          revenue_head: $('#listOfpayable').val(),
+          mda_id: $('#getMDAs').val(),
+          payment_channel: $('#listOfchannel').val(),
+          payment_gateway: $('#paymentGateway').val(),
+          payment_method: $('#paymentMethod').val(),
+          start_date: $('#fromDateInput').val(),
+          end_date: $('#toDateInput').val(),
         },
         success: function (response) {
           // Map the API response to DataTables expected format
+          download_link = response.download_link;
           if (response.status === 1) {
             callback({
               draw: data.draw, // Pass through draw counter
-              recordsTotal: response.total_records, // Total records in your database
-              recordsFiltered: response.total_records, // Filtered records count
+              recordsTotal: response.filtered_total_records, // Total records in your database
+              recordsFiltered: response.filtered_total_records, // Filtered records count
               data: response.data, // The actual data array from your API
             });
           } else {
@@ -77,33 +86,39 @@ function fetchInvoice() {
           return meta.row + 1 + meta.settings._iDisplayStart;
         },
       },
-      { data: 'mda_id' },
-      { data: 'COL_4' },
+      { data: 'MDA ID' },
+      { data: 'Revenue Head' },
+      { data: 'Payer Name' },
+      { data: 'Tax Number' },
+      { data: 'Payer TIN' },
       {
-        data: null,
+        data: 'Sector',
         render: function (data, type, row) {
-          return `${row.first_name} ${row.surname === '?' ? '' : row.surname}`;
+          return data || 'N/A';
         }
       },
-      { data: 'tax_number' },
-      { data: 'tin' },
-      { data: 'industry' },
-      { data: 'invoice_type' },
-      { data: 'invoice_number' },
       {
-        data: 'amount_paid',
+        data: 'Industry',
+        render: function (data, type, row) {
+          return data || 'N/A';
+        }
+      },
+      { data: 'Invoice Type' },
+      { data: 'Invoice Number' },
+      {
+        data: 'Amount Paid',
         render: function (data, type, row) {
           return formatMoney(parseFloat(data));
         }
       },
-      { data: 'payment_channel' },
-      { data: 'payment_method' },
-      { data: 'payment_bank' },
-      { data: 'payment_reference_number' },
-      { data: 'invoice_number' },
-      { data: 'timeIn' },
+      { data: 'Payment Channel' },
+      { data: 'Payment Method' },
+      { data: 'Payment Bank' },
+      { data: 'Payment Reference' },
+      { data: 'Receipt Number' },
+      { data: 'Payment Date' },
       {
-        data: 'invoice_number',
+        data: 'Invoice Number',
         render: function (data, type, row) {
           return `<a href="./viewreceipt.html?invnumber=${data}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser">View Receipt</a>`;
         }
@@ -112,63 +127,18 @@ function fetchInvoice() {
   });
 }
 
+$("#filterMdaCollect").on("click", function () {
+  fetchInvoice()
+  $('#filterInvoice').modal('hide');
+})
 
-function displayData(userInvoices) {
-  userInvoices.forEach((userInvoice, i) => {
-    let addd = ""
-    addd += `
-        <tr class="relative">
-        <td>${i + 1}</td>
-        <td>${userInvoice.mda_id}</td>
-        <td>${userInvoice.COL_4}</td>
-        <td>${userInvoice.first_name} ${userInvoice.surname}</td>
-        <td>${userInvoice.tax_number}</td>
-        <td>${userInvoice.tin}</td>
-        <td>${userInvoice.business_type}</td>
-          <td>${userInvoice.industry}</td>
-        <td>${userInvoice.invoice_type}</td>
-        <td>${userInvoice.invoice_number}</td>
-        <td>${formatMoney(parseFloat(userInvoice.amount_paid))}</td>
-        <td>${userInvoice.payment_channel}</td>
-        <td>${userInvoice.payment_method}</td>
-        <td>${userInvoice.payment_bank}</td>
-        <td>${userInvoice.payment_reference_number}</td>
-        <td>${userInvoice.invoice_number}</td>
-        <td>${getFormattedDate(userInvoice.timeIn)}</td>
-        
-          `
-    addd += `
-      <td>
-      <a href="./viewreceipt.html?invnumber=${userInvoice.invoice_number}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View Receipt</a>
-    </td> 
-        </tr>
-        `
-    $("#showThem").append(addd);
-    $("#showThem2").append(`
-      <tr class="relative">
-          <td>${i + 1}</td>
-          <td>${userInvoice.mda_id.replace(/,/g, '')}</td>
-          <td>${userInvoice.COL_4.replace(/,/g, '')}</td>
-          <td>${userInvoice.first_name?.replace(/,/g, '')} ${userInvoice.surname?.replace(/,/g, '')}</td>
-          <td>${userInvoice.tax_number}</td>
-          <td>${userInvoice.tin}</td>
-          <td>${userInvoice.business_type}</td>
-          <td>${userInvoice.industry}</td>
-          <td>${userInvoice.invoice_type}</td>
-          <td>${userInvoice.invoice_number}</td>
-          <td>${(parseFloat(userInvoice.amount_paid))}</td>
-          <td>${userInvoice.payment_channel}</td>
-          <td>${userInvoice.payment_method}</td>
-          <td>${userInvoice.payment_bank}</td>
-          <td>${userInvoice.payment_reference_number}</td>
-          <td>${userInvoice.invoice_number}</td>
-          <td>${getFormattedDate(userInvoice.timeIn)}</td>
-      </tr>
-    `)
-  });
+
+fetchInvoice();
+
+function exportData() {
+  if (download_link) {
+    window.location.href = download_link;
+  } else {
+    alert('No download link available.');
+  }
 }
-
-fetchInvoice().then((uu) => {
-  $("#dataTable").DataTable();
-});
-
