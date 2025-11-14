@@ -78,7 +78,7 @@ async function fetchRevHeads(mdn) {
       `)
     revHeads.message.forEach((revHd, i) => {
       $("#listOfpayable").append(`
-      <option value="${revHd["COL_4"]}" id="${revHd["COL_4"]}" >${revHd["COL_4"]}</option>
+      <option value="${revHd["id"]}" id="${revHd["id"]}" >${revHd["COL_4"]}</option>
       `)
     });
 

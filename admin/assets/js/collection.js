@@ -136,9 +136,42 @@ $("#filterMdaCollect").on("click", function () {
 fetchInvoice();
 
 function exportData() {
-  if (download_link) {
-    window.location.href = download_link;
-  } else {
-    alert('No download link available.');
+  const $btn = $("#collReportd");
+  const originalText = ($btn && $btn.length) ? $btn.text() : null;
+  if ($btn && $btn.length) {
+    $btn.prop('disabled', true).text('Preparing download...');
   }
+
+  $.ajax({
+    url: HOST,
+    type: 'GET',
+    data: {
+      fetchAllPayment: true,
+      export: 'csv',
+      revenue_head: $('#listOfpayable').val(),
+      mda_id: $('#getMDAs').val(),
+      payment_channel: $('#listOfchannel').val(),
+      payment_gateway: $('#paymentGateway').val(),
+      payment_method: $('#paymentMethod').val(),
+      start_date: $('#fromDateInput').val(),
+      end_date: $('#toDateInput').val(),
+    },
+    success: function (response) {
+      download_link = response.download_link;
+      if (download_link) {
+        // trigger download
+        window.location.href = download_link;
+      } else {
+        alert('No download link available.');
+      }
+    },
+    error: function () {
+      alert('Failed to prepare download.');
+    },
+    complete: function () {
+      if ($btn && $btn.length && originalText !== null) {
+        $btn.prop('disabled', false).text(originalText);
+      }
+    }
+  });
 }

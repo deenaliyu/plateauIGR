@@ -431,7 +431,7 @@ function processPayment(invoice, amount_paid, invoiceNum) {
       }]
     },
     onSuccess: function (response) {
-      showMessage("Payment successful!", "success");
+      // showMessage("Payment successful! Proceeding to print invoice", "success");
       // Ping API before showing the success message
       let dataToPush = {
         "endpoint": "createInvidualPayment",
@@ -450,11 +450,15 @@ function processPayment(invoice, amount_paid, invoiceNum) {
         data: JSON.stringify(dataToPush),
         success: function (data) {
           // Show success message and proceed
-          nextPrev(1);
-          openReceipt(invoiceNum);
+          // nextPrev(1);
+          // openReceipt(invoiceNum);
+          window.location.href = `./viewreceipt.html?invnumber=${invoiceNum}&load=true`
         },
         error: function (request, error) {
-          showError("Payment was successful but could not update record. Please contact support.");
+          // showError("Payment was successful but could not update record. Please contact support.");
+          // nextPrev(1);
+          // openReceipt(invoiceNum);
+          window.location.href = `./viewreceipt.html?invnumber=${invoiceNum}&load=true`
         }
       });
     },
