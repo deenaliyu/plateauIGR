@@ -488,13 +488,16 @@ async function openInvoice(invoicenum, price) {
       $("#auditLetter").html(displayAuditLetter(demandInvoiceInfo))
       $("#invoiceCardSecond").html(TotalInvoice)
 
-       const qrCodeContainer = document.getElementById("qrContainer")
-
-      const qrCode = new QRCode(qrCodeContainer, {
-        text: `https://plateauigr.com/viewinvoice.html?invnumber=${invoicenum}&load=true`,
-        colorDark: '#000000',
-        colorLight: '#ffffff',
-        version: 10,
+      const qrContainers = document.querySelectorAll('#qrContainer');
+      qrContainers.forEach(container => {
+        if (!container) return;
+        container.innerHTML = ''; // clear any previous QR
+        new QRCode(container, {
+          text: `https://plateauigr.com/viewinvoice.html?invnumber=${invoicenum}&load=true`,
+          colorDark: '#000000',
+          colorLight: '#ffffff',
+          version: 10,
+        });
       });
 
     } else {
