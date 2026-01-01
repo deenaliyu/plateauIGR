@@ -1,535 +1,506 @@
+/**
+ * PayZamfara Dashboard - API Integration
+ * Integrates dashboard cards with backend APIs
+ * Charts excluded from this integration
+ */
 
-$("#viewmore").on("click", function () {
-  let theTextt = document.querySelector(".theText")
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
 
-  if (theTextt.textContent === "View More") {
-    theTextt.textContent = "See less"
-  } else {
-    theTextt.textContent = "View More"
-  }
-})
-
-function createLineChart() {
-
-  var chartDom = document.getElementById('Compliance');
-  var myChart = echarts.init(chartDom);
-  var option;
-
-  option = {
-    xAxis: {
-      type: 'category',
-      data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
-    },
-    yAxis: {
-      type: 'value'
-    },
-    series: [
-      {
-        data: [150, 230, 224, 218, 135, 147, 260],
-        type: 'line'
-      }
-    ]
-  };
-
-  option && myChart.setOption(option);
-
-  // }
-
+function getCurrentMonthYear() {
+  const now = new Date();
+  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
 }
-createLineChart();
-
-let monthss = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
 
 function formatMoney(amount) {
-  return parseFloat(amount).toLocaleString('en-US', {
-    style: 'currency',
-    currency: 'NGN', // Change this to your desired currency code
+  return `₦ ${Number(amount).toLocaleString("en-NG", {
     minimumFractionDigits: 2,
+  })}`;
+}
+
+function showSpinner(elementId) {
+  $(`#${elementId}`).html(
+    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+  );
+}
+
+// ============================================
+// YEAR DROPDOWN POPULATION
+// ============================================
+
+let remittanceDateInput = document.getElementById("remittanceDate");
+if (remittanceDateInput) {
+  remittanceDateInput.value = new Date().toISOString().split("T")[0];
+}
+
+function populateYearDropdown() {
+  const yearSelects = document.querySelectorAll(".annualRevFilter");
+  const currentYear = new Date().getFullYear();
+  const startYear = 2020;
+  const endYear = currentYear;
+
+  yearSelects.forEach((yearSelect) => {
+    // Clear existing options first
+    yearSelect.innerHTML = "";
+
+    for (let year = startYear; year <= endYear; year++) {
+      const option = document.createElement("option");
+      option.value = year;
+      option.textContent = year;
+      yearSelect.appendChild(option);
+    }
+
+    yearSelect.value = currentYear;
   });
 }
 
-function fillSelectOptions(selectId, start, end, selectedValue) {
-  var select = document.getElementById(selectId);
+// ============================================
+// REVENUE CARD APIs
+// ============================================
 
-  for (var i = start; i <= end; i++) {
-    var option = document.createElement("option");
-    option.value = i;
-    if (selectId === "selMonth") {
-      option.text = monthss[i - 1];
-    } else {
-      option.text = i;
-    }
-
-    if (i === selectedValue) {
-      option.selected = true;
-    }
-    select.add(option);
-  }
-}
-
-// Get current date
-var ThecurrentDate = new Date();
-var theCurrentYear = ThecurrentDate.getFullYear();
-var theCurrentMonth = ThecurrentDate.getMonth() + 1; // Months are zero-based
-
-fillSelectOptions("selMonth", 1, 12, theCurrentMonth);
-
-fillSelectOptions("selYear", theCurrentYear - 2, theCurrentYear + 8, theCurrentYear);
-
-function refreshTheCards() {
-  let theMonth = document.querySelector("#selMonth").value
-  let theYear = document.querySelector("#selYear").value
-
-  theCurrentYear = theYear
-  theCurrentMonth = theMonth
-
-  getMonthlyTCC()
-  getMonthlyPAYE()
-  getMonthlyInformalCollection()
-}
-
-async function getMonthlyTCC() {
-  try {
-    const response = await fetch(`${HOST}?getMonthlyTCC&year=${theCurrentYear}&month=${theCurrentMonth}`)
-    const data = await response.json()
-
-    const response2 = await fetch(`${HOST}?getMonthlyTCC&year=${theCurrentYear}`)
-    const data2 = await response2.json()
-
-    // console.log(data)
-    $("#tccMonth").text(data.message[0].record_count)
-    $("#tccYearly").text(data2.message[0].record_count)
-
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-async function getMonthlyPAYE() {
-  try {
-    const response = await fetch(`${HOST}?getMonthlyPAYE&year=${theCurrentYear}&month=${theCurrentMonth}`)
-    const data = await response.json()
-
-    const response2 = await fetch(`${HOST}?getMonthlyPAYE&year=${theCurrentYear}`)
-    const data2 = await response2.json()
-
-    // console.log(data, data2)
-    $("#payeMonth").text(data.message[0].total_remittance ? formatMoney(data.message[0].total_remittance) : formatMoney(0))
-    $("#payeYearly").text(data2.message[0].total_remittance? formatMoney(data2.message[0].total_remittance) : formatMoney(0))
-
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-async function getMonthlyInformalCollection() {
-  try {
-    const response = await fetch(`${HOST}?getMonthlyInformalCollection&year=${theCurrentYear}&month=${theCurrentMonth}`)
-    const data = await response.json()
-
-    const response2 = await fetch(`${HOST}?getMonthlyInformalCollection&year=${theCurrentYear}`)
-    const data2 = await response2.json()
-
-    // console.log(data, data2)
-    $("#informalMonth").text(data.message[0].informal_collection_count ? data.message[0].informal_collection_count : 0)
-    $("#informalYearly").text(data2.message[0].informal_collection_count? data2.message[0].informal_collection_count : 0)
-
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-$(document).ready(function () {
-  getMonthlyTCC()
-  getMonthlyPAYE()
-  getMonthlyInformalCollection()
-
-});
-// Chart
-
-
-// function createBarChart() {
-//   var chartDom = document.getElementById('report-bar-chart');
-//   var myChart = echarts.init(chartDom);
-//   var option;
-
-//   option = {
-//     tooltip: {
-//       trigger: 'axis',
-//       axisPointer: {
-//         type: 'shadow'
-//       }
-//     },
-//     color: ["#3A37D0", "#63B967", "#EC4899"],
-//     legend: {},
-//     grid: {
-//       left: '3%',
-//       right: '4%',
-//       bottom: '3%',
-//       containLabel: true
-//     },
-//     yAxis: {
-//       type: 'value',
-//       boundaryGap: [0, 0.01]
-//     },
-//     xAxis: {
-//       type: 'category',
-//       data: ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN']
-//     },
-//     series: [
-//       {
-//         name: 'Total Amount',
-//         type: 'bar',
-//         data: [2000, 1999, 1892, 1600, 2000, 1200]
-//       },
-//       {
-//         name: 'Amount Paid',
-//         type: 'bar',
-//         data: [832, 1000, 300, 854, 1800, 392]
-//       },
-//       {
-//         name: 'Amount Due',
-//         type: 'bar',
-//         data: [83, 203, 200, 90, 40, 30]
-//       }
-//     ]
-//   };
-
-//   option && myChart.setOption(option);
-//   // let ctxb = document.getElementById('report-bar-chart').getContext("2d");
-//   // let myChart = new Chart(ctxb, {
-//   //   type: "bar",
-//   //   data: {
-//   //     labels: [
-//   //       "Jan",
-//   //       "Feb",
-//   //       "Mar",
-//   //       "Apr",
-//   //       "May",
-//   //       "Jun",
-//   //       "Jul",
-//   //       "Aug",
-//   //     ],
-//   //     datasets: [
-//   //       {
-//   //         label: "Total Anual Invoice",
-//   //         barPercentage: 0.5,
-//   //         barThickness: 6,
-//   //         maxBarThickness: 8,
-//   //         minBarLength: 2,
-//   //         data: [0, 200, 250, 200, 500, 450, 850, 1050],
-//   //         backgroundColor: 'rgb(0, 39, 255)',
-//   //       },
-//   //       {
-//   //         label: "Total Anual Revenue",
-//   //         barPercentage: 0.5,
-//   //         barThickness: 6,
-//   //         maxBarThickness: 8,
-//   //         minBarLength: 2,
-//   //         data: [0, 300, 400, 560, 320, 600, 720, 850],
-//   //         backgroundColor: 'rgb(0, 255, 132)'
-//   //       },
-//   //     ],
-//   //   },
-//   //   options: {
-//   //     maintainAspectRatio: false,
-//   //     plugins: {
-//   //       legend: {
-//   //         labels: {
-//   //           color: 'rgb(0, 0, 0)',
-//   //         },
-//   //       },
-//   //     },
-//   //     scales: {
-//   //       x: {
-//   //         ticks: {
-//   //           font: {
-//   //             size: 12,
-//   //           },
-//   //           color: 'rgb(0,0,0)',
-//   //         },
-//   //         grid: {
-//   //           display: false,
-//   //           drawBorder: false,
-//   //         },
-//   //       },
-//   //       y: {
-//   //         ticks: {
-//   //           font: {
-//   //             size: "12",
-//   //           },
-//   //           color: 'rgb(0, 0, 0)',
-//   //           callback: function (value, index, values) {
-//   //             return "$" + value;
-//   //           },
-//   //         },
-//   //         grid: {
-//   //           color: 'rgb(0, 0, 0)',
-//   //           borderDash: [2, 2],
-//   //           drawBorder: false,
-//   //         },
-//   //       },
-//   //     },
-//   //   },
-//   // });
-// }
-
-// createBarChart();
-
-// function createDonutChart() {
-
-//   var chartDom = document.getElementById('donut-chart-widget');
-//   var myChart = echarts.init(chartDom);
-//   var option;
-
-//   option = {
-//     tooltip: {
-//       trigger: 'item'
-//     },
-//     legend: {
-//       top: '5%',
-//       left: 'center',
-//       position: 'right',
-//       orient: 'horizontal'
-//     },
-//     series: [
-//       {
-//         name: 'Rev. Generated',
-//         type: 'pie',
-//         radius: ['40%', '70%'],
-//         avoidLabelOverlap: false,
-//         itemStyle: {
-//           borderRadius: 10,
-//           borderColor: '#fff',
-//           borderWidth: 2
-//         },
-//         label: {
-//           show: false,
-//           position: 'right'
-//         },
-//         emphasis: {
-//           label: {
-//             show: false,
-//             fontSize: 40,
-//             fontWeight: 'bold'
-//           }
-//         },
-//         labelLine: {
-//           show: false
-//         },
-//         data: [
-//           { value: 1048, name: 'AKIRS' },
-//           { value: 735, name: 'Ministry of work' },
-//           { value: 580, name: 'Ministry of Justice' },
-//           { value: 484, name: 'AGRICULTURAL LOANS BOARD' },
-//           { value: 300, name: 'Ministry of work' }
-//         ]
-//       }
-//     ]
-//   };
-
-//   option && myChart.setOption(option);
-
-// }
-
-// createDonutChart();
-
-function convertToTwoDigitsEx(number) {
-  // Using padStart to add a leading zero if needed
-  return String(number).padStart(2, '0');
-}
-
-function sortByDateDescendingExpired4(data) {
-  return data.sort((a, b) => new Date(b.month) - new Date(a.month));
-}
-
-function getMonthNameEx4(monthValue) {
-  const [year, month] = monthValue.split('-');
-  const date = new Date(year, month - 1, 1);
-  const monthName = date.toLocaleString('default', { month: 'long' });
-  return monthName;
-}
-
-
-function getYearEx4(monthValue) {
-  return monthValue.split('-')[0];
-}
-
-function filterByMonthEx(monthsArray, targetMonth) {
-  const result = monthsArray.find(monthData => monthData.month === targetMonth);
-  return result ? result.total_expired_revenue : 0;
-}
-
-var finalp = 0;
-
-var ThecurrentDateEx4 = new Date();
-var theCurrentYearEx4 = ThecurrentDateEx4.getFullYear();
-var theCurrentMonthEx4 = ThecurrentDateEx4.getMonth() + 1;
-
-let allExpectedRevenueDataEx4 = []
-
-function refreshTheMonth1() {
-  let theMonth = document.querySelector("#theMonth").value
-
-  let genAmount = filterByMonthEx(allExpectedRevenueDataEx4, theMonth)
-  $("#percent").html(genAmount)
-  console.log(genAmount)
-  fetchGraph(genAmount)
-}
-
-
-async function totalE() {
-  $("#percent").html(`
-          <div class="flex mb-4">
-            <div class="animate-spin rounded-full h-5 w-5 border-b-2 border-gray-900"></div>
-          </div>
-      `)
+/**
+ * Fetch Total Monthly Revenue
+ * Endpoint: /get-total-amount-paid
+ */
+async function fetchTotalRevenue(monthYear) {
+  showSpinner("totalMonthlyRevenue");
+  const [year, month] = monthYear.split("-");
 
   try {
-    const response = await fetch(`${HOST}?getPercentage`);
-    const userAnalytics = await response.json();
-
-    console.log(userAnalytics)
-   
-      allExpectedRevenueDataEx4 = userAnalytics
-      const monthSelector = document.getElementById('theMonth');
-
-      let theSortedData = sortByDateDescendingExpired4(userAnalytics)
-
-      for (const monthData of theSortedData) {
-        const option = document.createElement('option');
-        const monthValue = monthData.month;
-        const displayText = `${getMonthNameEx4(monthValue)} ${getYearEx4(monthValue)}`;
-
-        option.value = monthValue;
-        option.text = displayText;
-
-        // Set the default selected option to the current month and year
-        if (monthValue === `${theCurrentYearEx4}-${theCurrentMonthEx4}`) {
-          option.selected = true;
-        }
-
-        monthSelector.add(option);
-      }
-
-
-      let theAmountGen = filterByMonthEx(theSortedData, `${theCurrentYearEx4}-${convertToTwoDigitsEx(theCurrentMonthEx4)}`)
-      // console.log(theAmountGen, theCurrentYearEx, theCurrentMonthEx)
-      console.log(theAmountGen)
-      $("#percent").html(theAmountGen)
-      fetchGraph(theAmountGen)
-
-
-  } catch (error) {
-    console.log(error)
-    $("#percent").html(0)
-  }
-}
-
-totalE()
-
-console.log(finalp)
-
-function fetchGraph(finalp) {
-
-  let valui = parseInt(finalp)
-  let value2 = valui / 100
-
-  var chartDom = document.getElementById('gauge-graph');
-  var myChart = echarts.init(chartDom);
-  var option;
-
-  option = {
-    series: [
+    const response = await fetch(
+      `${HOST}?getMonthlyRevenue&month=${month}&year=${year}`,
       {
-        type: 'gauge',
-        startAngle: 180,
-        endAngle: 0,
-        center: ['50%', '75%'],
-        radius: '90%',
-        min: 0,
-        max: 1,
-        splitNumber: 8,
-        axisLine: {
-          lineStyle: {
-            width: 6,
-            color: [
-              [0.25, '#FF6E76'],
-              [0.5, '#FDDD60'],
-              [0.75, '#58D9F9'],
-              [1, '#7CFFB2']
-            ]
-          }
+        method: "GET",
+        headers: {
+          
+          "Content-Type": "application/json",
         },
-        pointer: {
-          icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-          length: '12%',
-          width: 20,
-          offsetCenter: [0, '-60%'],
-          itemStyle: {
-            color: 'inherit'
-          }
-        },
-        axisTick: {
-          length: 12,
-          lineStyle: {
-            color: 'inherit',
-            width: 2
-          }
-        },
-        splitLine: {
-          length: 20,
-          lineStyle: {
-            color: 'inherit',
-            width: 5
-          }
-        },
-        axisLabel: {
-          color: '#464646',
-          fontSize: 14,
-          distance: -60,
-          rotate: 'tangential',
-          formatter: function (value) {
-            if (value === 0.875) {
-              return '100%';
-            } else if (value === 0.625) {
-              return '75%';
-            } else if (value === 0.375) {
-              return '50%';
-            } else if (value === 0.125) {
-              return '0%';
-            }
-            return '';
-          }
-        },
-        title: {
-          offsetCenter: [0, '-10%'],
-          fontSize: 14
-        },
-        detail: {
-          fontSize: 30,
-          offsetCenter: [0, '-35%'],
-          valueAnimation: true,
-          formatter: function (value) {
-            return Math.round(value * 100) + '';
-          },
-          color: 'inherit'
-        },
-        data: [
-          {
-            value: value2,
-            fontSize: 14,
-            name: ''
-          }
-        ]
       }
-    ]
-  };
+    );
+    const data = await response.json();
 
-  option && myChart.setOption(option);
-
+    if (data.status === 1) {
+      $("#totalMonthlyRevenue").html(formatMoney(data.message[0].total_monthly_revenue || 0));
+    } else {
+      $("#totalMonthlyRevenue").html(formatMoney(0));
+    }
+  } catch (error) {
+    console.error("Error fetching total monthly revenue:", error);
+    $("#totalMonthlyRevenue").html(formatMoney(0));
+  }
 }
 
+/**
+ * Fetch Expected Monthly Revenue
+ * Endpoint: /get-expected-monthly-revenue
+ */
+async function fetchExpectedMonthlyRevenue(monthYear) {
+  showSpinner("expectedMonthlyRevenue");
+  const [year, month] = monthYear.split("-");
+
+  try {
+    const response = await fetch(
+      `${HOST}?getMonthlyRevenue&month=${month}&year=${year}&sort=expected`,
+      {
+        method: "GET",
+        headers: {
+          
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+
+    if (data.status === 1) {
+      $("#expectedMonthlyRevenue").html(formatMoney(data.message[0].total_monthly_revenue || 0));
+    } else {
+      $("#expectedMonthlyRevenue").html(formatMoney(0));
+    }
+  } catch (error) {
+    console.error("Error fetching expected monthly revenue:", error);
+    $("#expectedMonthlyRevenue").html(formatMoney(0));
+  }
+}
+
+/**
+ * Fetch Accrued (Unpaid) Monthly Revenue
+ * Endpoint: /get-accrued-monthly-revenue
+ */
+async function fetchExpectedAccruedRevenue(monthYear) {
+  showSpinner("expectedAccruedRevenue");
+  const [year, month] = monthYear.split("-");
+
+  try {
+    const response = await fetch(
+      `${HOST}?getMonthlyUnpaidRevenue&month=${month}&year=${year}`,
+      {
+        method: "GET",
+        headers: {
+          
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    const data = await response.json();
+
+    if (data.status === 1) {
+      $("#expectedAccruedRevenue").html(formatMoney(data.message[0].total_unpaid_revenue || 0));
+    } else {
+      $("#expectedAccruedRevenue").html(formatMoney(0));
+    }
+  } catch (error) {
+    console.error("Error fetching accrued revenue:", error);
+    $("#expectedAccruedRevenue").html(formatMoney(0));
+  }
+}
+
+// ============================================
+// TAXPAYER STATISTICS API
+// ============================================
 
 
+// ============================================
+// INVOICE STATISTICS API
+// ============================================
 
+/**
+ * Fetch Invoice Summary Statistics
+ * Endpoint: /invoices-summary
+ * Populates multiple cards at once
+ */
+function fetchInvoiceStatistics(monthYear) {
+  // Show spinners for all invoice-related cards
+  showSpinner("totalInvoices");
+  showSpinner("totalInvoiced");
+  showSpinner("totalPaidInvoice");
+  showSpinner("totalUnpaidInvoice");
+  // showSpinner("totalInvoicesDue");
+  // showSpinner("totalInvoicesPaid");
+  // showSpinner("totalAmountDue");
+  // showSpinner("totalMDA");
+  // showSpinner("totalRevenueHeads");
+
+  const [year, month] = monthYear.split("-");
+
+  $.ajax({
+    type: "GET",
+    url: `${HOST}?invoiceSummaryTiles&year=${year}&month=${month}`,
+    dataType: "json",
+    headers: {
+      
+      "Content-Type": "application/json",
+    },
+    success: function (response) {
+      if (response.status === "success") {
+        const stats = response.data;
+        // Total number of invoices
+        $("#totalInvoices").text(stats.total_invoice.toLocaleString());
+
+        // Total amount invoiced
+        $("#totalInvoiced").text(formatMoney(stats.total_amount_invoiced || 0));
+
+        // Total amount paid
+        $("#totalPaidInvoice").text(formatMoney(stats.total_amount_paid || 0));
+
+        // Total amount unpaid
+        $("#totalUnpaidInvoice").text(formatMoney(stats.total_amount_unpaid || 0));
+
+        // $("#totalInvoicesDue").text(stats.total_invoices_due.toLocaleString());
+        // $("#totalInvoicesPaid").text(stats.total_invoices_paid.toLocaleString());
+        // $("#totalAmountDue").text(formatMoney(stats.total_invoices_amount_due || 0));
+        // $("#totalMDA").text(stats.total_mda.toLocaleString());
+        // $("#totalRevenueHeads").text(stats.total_rh.toLocaleString());
+      } else {
+        console.error("Failed to fetch invoice statistics");
+        resetInvoiceCards();
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error fetching invoice statistics:", error);
+      resetInvoiceCards();
+    },
+  });
+}
+
+/**
+ * Reset invoice cards to zero on error
+ */
+function resetInvoiceCards() {
+  $("#totalInvoices").text("0");
+  $("#totalInvoiced").text(formatMoney(0));
+  $("#totalPaidInvoice").text(formatMoney(0));
+  $("#totalUnpaidInvoice").text(formatMoney(0));
+  $("#totalInvoicesDue").text("0");
+  $("#totalInvoicesPaid").text("0");
+  $("#totalAmountDue").text(formatMoney(0));
+  $("#totalMDA").text("0");
+  $("#totalRevenueHeads").text("0");
+}
+
+// ============================================
+// E-SERVICES / TAX SUMMARY API
+// ============================================
+
+/**
+ * Fetch Tax Summary (E-Services Section)
+ * Endpoint: /admin-tax-summary
+ */
+function fetchTaxSummary(monthYear, isMonthYear = false) {
+  // Show loading indicators
+  showSpinner("tinIssued");
+  showSpinner("tccIssued");
+  showSpinner("payeRemitted");
+  showSpinner("totalAmountUnpaidPaye");
+  showSpinner("totalUnpaidPaye");
+
+  let url = `${HOST}/admin-tax-summary`;
+  if (isMonthYear && monthYear) {
+    const [year, month] = monthYear.split("-");
+    url += `?year=${year}&month=${month}`;
+  }
+
+  $.ajax({
+    type: "GET",
+    url: url,
+    dataType: "json",
+    headers: {
+      
+      "Content-Type": "application/json",
+    },
+    success: function (response) {
+      if (response.status === "success") {
+        const data = response.data;
+
+        // TIN Issued
+        $("#tinIssued").text((data.tin_issued || 0).toLocaleString());
+
+        // TCC Issued
+        $("#tccIssued").text((data.tcc_issued || 0).toLocaleString());
+
+        // PAYE Remitted
+        $("#payeRemitted").text(
+          formatMoney(data.paye_remitted || 0)
+        );
+
+        // Total Amount of Unpaid PAYE
+        $("#totalAmountUnpaidPaye").text(
+          formatMoney(data.unpaid_amount_paye_taxes || 0)
+        );
+
+        // Total Unpaid PAYE (count)
+        $("#totalUnpaidPaye").text((data.unpaid_paye_taxes || 0).toLocaleString());
+
+        // Total TIN Request (using the same element ID from HTML - note: there's a duplicate ID in HTML)
+        // If you have a separate element for TIN requests, update accordingly
+        if (data.total_tin_requests !== undefined) {
+          $("[id='totalTinRequest']").text((data.total_tin_requests || 0).toLocaleString());
+        }
+      } else {
+        console.error("Failed to fetch tax summary");
+        resetTaxSummaryCards();
+      }
+    },
+    error: function (xhr, status, error) {
+      console.error("Error fetching tax summary:", error);
+      resetTaxSummaryCards();
+    },
+  });
+}
+
+/**
+ * Reset tax summary cards to zero on error
+ */
+function resetTaxSummaryCards() {
+  $("#tinIssued").text("0");
+  $("#tccIssued").text("0");
+  $("#payeRemitted").text(formatMoney(0));
+  $("#totalAmountUnpaidPaye").text(formatMoney(0));
+  $("#totalUnpaidPaye").text("0");
+}
+
+// ============================================
+// AVERAGE DAILY REVENUE API
+// ============================================
+
+/**
+ * Fetch Average Daily Revenue
+ * Endpoint: /get-average-daily-revenue
+ */
+
+async function fetchDailyRemittance() {
+  showSpinner("dailyRemittanceAmount");
+  const date = document.getElementById("remittanceDate").value;
+
+  const url = new URL(`${HOST}?getDailyRemittance&date=${date}`);
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    // Parse and display data
+    const dailyRemittance = parseFloat((data.message[0].total_daily_amount || "0").toString().replace(/,/g, "")) || 0;
+
+    $("#dailyRemittanceAmount").text("₦" + dailyRemittance.toLocaleString("en-NG", { minimumFractionDigits: 2 }));
+    $("#remittanceCount").text(data.message[0].total_daily_remittances || 0);
+  } catch (error) {
+    $("#dailyRemittanceAmount").text("₦0");
+    $("#remittanceCount").text("0");
+  }
+}
+
+async function fetchAverageDailyRevenue() {
+  // Set default dates if not provided (first and last day of current month)
+
+  const url = `${HOST}?getDailyRevenue`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    // Parse and display data
+    const averageDailyRevenue = parseFloat((data.message[0].total_daily_revenue || "0").toString().replace(/,/g, "")) || 0;
+
+    $("#averageDailyRevenue").text("₦" + averageDailyRevenue.toLocaleString("en-NG", { minimumFractionDigits: 2 }));
+  } catch (error) {
+    $("#averageDailyRevenue").text("₦0");
+  }
+}
+
+// ============================================
+// TIN REQUEST COUNT API (Data only, no chart)
+// ============================================
+
+/**
+ * Fetch TIN Request Count
+ * Endpoint: /tin-request-counts
+ */
+async function fetchTimeRequestCountGauge() {
+  const startDate = document.getElementById("tinStartDate")?.value || "";
+  const endDate = document.getElementById("tinEndDate")?.value || "";
+  const datemonth = document.getElementById("tinMonth")?.value || "";
+
+  let month = "";
+  let year = "";
+
+  if (datemonth) {
+    [year, month] = datemonth.split("-");
+  }
+
+  const url = `${HOST}/tin-request-counts?start_date=${startDate}&end_date=${endDate}&month=${month}&year=${year}`;
+
+  try {
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        
+        "Content-Type": "application/json",
+      },
+    });
+    const data = await response.json();
+
+    if (data.status === "success") {
+      // Data available for gauge chart rendering (charts excluded per request)
+      console.log("TIN Request Count:", data.data?.tin_request_count);
+    }
+  } catch (error) {
+    console.error("Error fetching TIN request count:", error);
+  }
+}
+
+// ============================================
+// INITIALIZATION & EVENT LISTENERS
+// ============================================
+
+document.addEventListener("DOMContentLoaded", () => {
+  // Get filter elements
+  const monthInput = document.querySelector(".monthlyRevFilter");
+  const monthInput2 = document.querySelector(".monthlyRevFilter2");
+  const yearInput = document.querySelector(".annualRevFilter");
+
+  // Get current date values
+  const currentMonthYear = getCurrentMonthYear();
+  const currentYear = new Date().getFullYear();
+
+  // Populate year dropdowns
+  populateYearDropdown();
+
+  // Set default values for filter inputs
+  if (monthInput) monthInput.value = currentMonthYear;
+  if (monthInput2) monthInput2.value = currentMonthYear;
+  if (yearInput) yearInput.value = currentYear;
+
+  // ============================================
+  // INITIAL DATA FETCH
+  // ============================================
+
+  // Revenue Cards
+  fetchTotalRevenue(currentMonthYear);
+  fetchExpectedMonthlyRevenue(currentMonthYear);
+  fetchExpectedAccruedRevenue(currentMonthYear);
+
+  // Statistics Cards
+  fetchInvoiceStatistics(currentMonthYear);
+
+  // E-Services / Tax Summary
+  fetchTaxSummary(currentMonthYear, true);
+
+  // Average Daily Revenue
+  fetchAverageDailyRevenue();
+  fetchDailyRemittance()
+
+  fetchTimeRequestCountGauge();
+
+  // ============================================
+  // EVENT LISTENERS FOR FILTERS
+  // ============================================
+
+  // Total Monthly Revenue Filter
+  if (monthInput) {
+    monthInput.addEventListener("change", (event) => {
+      const selectedMonthYear = event.target.value;
+      fetchTotalRevenue(selectedMonthYear);
+      fetchExpectedMonthlyRevenue(selectedMonthYear);
+      fetchExpectedAccruedRevenue(selectedMonthYear);
+      fetchInvoiceStatistics(selectedMonthYear)
+    });
+  }
+
+  if (monthInput2) {
+    monthInput2.addEventListener("change", (event) => {
+      const selectedMonthYear = event.target.value;
+      fetchTaxSummary(selectedMonthYear, true);
+    });
+  }
+
+  if (remittanceDateInput) {
+    remittanceDateInput.addEventListener("change", (event) => {
+      fetchDailyRemittance();
+    });
+  }
+
+  // Show dashboard container after loading
+  const dashboardContainer = document.getElementById("dashboard-container");
+  if (dashboardContainer) {
+    dashboardContainer.classList.remove("d-none");
+  }
+});
+
+// ============================================
+// EXPOSE FUNCTIONS GLOBALLY (for inline handlers)
+// ============================================
+
+// These functions are called from inline onchange handlers in HTML
+window.fetchAverageDailyRevenue = fetchAverageDailyRevenue;
+window.fetchTimeRequestCountGauge = fetchTimeRequestCountGauge;

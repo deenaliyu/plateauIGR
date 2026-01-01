@@ -6,6 +6,12 @@ function formatMoney(amount) {
   });
 }
 
+function showSpinner(elementId) {
+  $(`#${elementId}`).html(
+    '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>'
+  );
+}
+
 function getFormattedDate(date) {
   date = new Date(date)
   const day = String(date.getDate()).padStart(2, '0');
@@ -15,16 +21,49 @@ function getFormattedDate(date) {
   return `${day}/${month}/${year}`;
 }
 
-$("#genInvBtn").on("click", function(){
-    window.location.href = `../generateinvoice.html?created_by=admin&id=${userInfo2?.id}`
+// Get current month and year in YYYY-MM format
+function getCurrentMonthYear() {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  return { year, month, formatted: `${year}-${month}` };
+}
+
+// Initialize month filter with current month/year
+$(document).ready(function () {
+  const current = getCurrentMonthYear();
+  $("#globalMonthFilter").val(current.formatted);
+
+  // Add event listener for month filter change
+  $("#globalMonthFilter").on("change", function () {
+    const selectedValue = $(this).val();
+    if (selectedValue) {
+      const [year, month] = selectedValue.split("-");
+      // Fetch both with selected month/year
+      fetchInvoice(month, year).then(() => {
+        $("#dataTable").DataTable();
+      });;
+      fetchAnalytics(month, year);
+    }
+  });
+});
+
+$("#genInvBtn").on("click", function () {
+  window.location.href = `../generateinvoice.html?created_by=admin&id=${userInfo2?.id}`
 })
 
 let AllInvoiceData = {}
 
-async function fetchInvoice() {
+async function fetchInvoice(month = null, year = null) {
 
   $("#showThem").html("");
+  $("#showThem2").html("");
   $("#loader").css("display", "flex");
+
+  // Destroy existing DataTable if it exists
+  if ($.fn.DataTable.isDataTable('#dataTable')) {
+    $('#dataTable').DataTable().destroy();
+  }
 
   let config = {
     mode: "cors",
@@ -34,33 +73,32 @@ async function fetchInvoice() {
       "Access-Control-Allow-Methods": "*",
     },
   };
-  const response = await fetch(
-    `${HOST}?AllInvoices`
-  );
+
+  // Build URL with optional month/year params
+  let url = `${HOST}?AllInvoices`;
+  if (month && year) {
+    url += `&month=${month}&year=${year}`;
+  }
+
+  const response = await fetch(url);
   const userInvoices = await response.json();
   // console.log(userInvoices);
-  if (userInvoices.status === 0){
-    let tt = 0;
-    $("#totalInv").html(tt)
-  }else{
-    $("#totalInv").html(userInvoices.message.length)
-  }
- 
+
   $("#loader").css("display", "none");
   if (userInvoices.status === 1) {
-    AllInvoiceData =  userInvoices.message
-    
+    AllInvoiceData = userInvoices.message
+
     displayData(userInvoices.message.reverse())
   } else {
     // $("#showInvoice").html("<tr></tr>");
-    $("#dataTable").DataTable();
   }
+  $("#dataTable").DataTable();
 }
 
 function displayData(userInvoices) {
-    userInvoices.forEach((userInvoice, i) => {
-      let addd = ""
-      addd += `
+  userInvoices.forEach((userInvoice, i) => {
+    let addd = ""
+    addd += `
         <tr class="relative">
             <td>${i + 1}</td>
             <td>${userInvoice.tax_number}</td>
@@ -72,7 +110,7 @@ function displayData(userInvoices) {
             <td id="" class="checking">
               ${userInvoice.payment_status === "paid" ? "<span class='badge bg-success'>Paid</span>" : "<span class='badge bg-danger'>Unpaid</span>"}
             </td>
-            <td>${userInvoice.admin_email ? userInvoice.admin_email : "self" }</td>
+            <td>${userInvoice.admin_email ? userInvoice.admin_email : "self"}</td>
             <td>${getFormattedDate(userInvoice.date_created)}</td>
             <td>${getFormattedDate(userInvoice.due_date)}</td>
             <td>
@@ -80,8 +118,8 @@ function displayData(userInvoices) {
             </td>
         </tr>
         `
-      $("#showThem").append(addd);
-      $("#showThem2").append(`
+    $("#showThem").append(addd);
+    $("#showThem2").append(`
         <tr>
             <td>${i + 1}</td>
             <td>${userInvoice.tax_number}</td>
@@ -95,37 +133,41 @@ function displayData(userInvoices) {
             <td>${userInvoice.payment_status}</td>
         </tr>
       `)
-    });
+  });
 }
 
-fetchInvoice().then((uu) => {
+fetchInvoice().then(() => {
   $("#dataTable").DataTable();
 });
 
-async function fetchAnalytics() {
+async function fetchAnalytics(month = null, year = null) {
+  // Default to current month/year if not provided
+  if (!month || !year) {
+    const current = getCurrentMonthYear();
+    month = current.month;
+    year = current.year;
+  }
 
-  let config = {
-    mode: "cors",
-    headers: {
-      "Content-Type": "application/json",
-      "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "*",
-    },
-  };
+  showSpinner("totalInv");
+  showSpinner("total_amount_invoiced");
+  showSpinner("total_amountP");
+  showSpinner("total_receiptC");
+
   try {
     const response = await fetch(
-      `${HOST}/php/index.php?getDashboardAnalyticsAdmin`
+      `${HOST}/php/index.php?invoiceSummaryTiles&month=${month}&year=${year}`
     );
 
     const userAnalytics = await response.json();
-    $("#due_amount").html(userAnalytics.due_amount)
-    $("#due_invoices").html(userAnalytics.due_invoices)
-    $("#total_amount_invoiced").html(userAnalytics.total_amount_invoiced.toLocaleString())
-    $("#total_amountP").html(userAnalytics.total_amount_paid.toLocaleString())
+    const stats = userAnalytics.data;
 
-    let total = (userAnalytics.total_amount_paid / userAnalytics.total_amount_invoiced) * 100
-    $("#Compliance").html(total + "%")
-    // console.log(userAnalytics)
+    console.log(stats)
+    $("#totalInv").html(stats.total_invoice.toLocaleString() || 0)
+    $("#total_amount_invoiced").html(stats.total_amount_invoiced.toLocaleString() || 0)
+    $("#total_amountP").html(stats.total_amount_paid.toLocaleString() || 0)
+    $("#total_receiptC").html(stats.total_receipt_count || 0)
+
+
   } catch (error) {
     console.log(error)
   }
