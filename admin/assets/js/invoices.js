@@ -88,7 +88,7 @@ async function fetchInvoice(month = null, year = null) {
   if (userInvoices.status === 1) {
     AllInvoiceData = userInvoices.message
 
-    displayData(userInvoices.message.reverse())
+    displayData(userInvoices.message)
   } else {
     // $("#showInvoice").html("<tr></tr>");
   }

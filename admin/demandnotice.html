@@ -78,7 +78,7 @@
                 <iconify-icon icon="mdi:filter-variant" style="font-size: 24px"></iconify-icon>
                 Filter
               </button>
-              <button class="button items-center flex gap-x-1 export-btn" id="invReportd" onclick="exportData()">
+              <button class="button items-center flex gap-x-1 export-btn" id="txdReport" onclick="exportData()">
                 <iconify-icon icon="material-symbols:cloud-download" width="28" height="28"></iconify-icon> Download
                 Report</button>
 
@@ -97,11 +97,11 @@
         <section class="content-wrapper">
 
 
-          <!--<div class="flex justify-center items-center mt-4" id="theLoader">-->
-          <!--  <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>-->
-          <!--</div>-->
+          <div class="flex justify-center items-center mt-4" id="theLoader">
+            <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+          </div>
 
-          <div class="container-xxl flex-grow-1 container-p-y taxes" id="reportDisplay">
+          <div class="container-xxl flex-grow-1 container-p-y taxes hidden" id="demandDisplay">
 
             <div class="flex justify-between  items-center mb-5">
               <p class="font-bold text-2xl text-black">Demand Notice Assessment</p>
@@ -303,8 +303,8 @@
       </div>
     </div>
   </div>
-  
-  
+
+
   <!-- Core JS -->
   <!-- build:js assets/vendor/js/core.js -->
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>

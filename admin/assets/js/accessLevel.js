@@ -156,7 +156,7 @@ async function getRolesAdmin() {
       $(".txTable2").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
       `)
-      
+
       $("#createTaxP").remove()
     }
 
@@ -167,12 +167,12 @@ async function getRolesAdmin() {
       })
     }
 
-    if(edit_tax_payer === undefined) {
+    if (edit_tax_payer === undefined) {
       $("#taxPContainerItems").html(`
         <p class="text-lg text-center p-5">No Access to Edit Taxpayer</p>  
       `)
 
-      
+
     }
 
   } else if (currentPage.includes("enumeration.html")) {
@@ -206,6 +206,140 @@ async function getRolesAdmin() {
     }
 
 
+  } else if (currentPage.includes("demandnotice.html")) {
+    let taxPayers = userRoles.demand_notice_access
+
+    let view_demand_list = taxPayers.find(ff => ff === "view_demand_list")
+    let create_demand = taxPayers.find(ff => ff === "create_demand")
+    let download_demand_rep = taxPayers.find(ff => ff === "download_demand_rep")
+
+    $('#demandDisplay').removeClass('hidden')
+    $('#theLoader').remove()
+
+    if (download_demand_rep === undefined) {
+      $("#txdReport").addClass("disabled")
+    }
+
+    if (view_demand_list === undefined) {
+      $("#demandDisplay").html(`
+        <p class="text-center text-xl fontBold">No Access to view Demand Notice !</p>
+      `)
+
+      $("#newDemandNotice").remove()
+    }
+
+    if (create_demand === undefined) {
+      $("#newDemandNotice").remove()
+    }
+
+
+  } else if (currentPage.includes("lgc-management.html")) {
+    let analyticsRoles = userRoles.lgc_access
+
+
+    let viewMda = analyticsRoles.find(ff => ff === "view_lgc")
+    let create_mda = analyticsRoles.find(ff => ff === "create_lgc")
+
+    $('#mdaContainer').removeClass('hidden')
+    $('#theLoader').remove()
+    // console.log(analyticsRoles, viewMda)
+
+    if (viewMda === undefined) {
+      $(".theTable").html(`
+        <p class="text-center text-xl fontBold">No Access to view list !</p>
+      `)
+      $("#theTable").removeAttr('id')
+    }
+
+    if (create_mda === undefined) {
+      let creareMdaCont = document.querySelectorAll("#creareMdaCont button")
+      creareMdaCont.forEach(creCon => {
+        creCon.remove()
+      });
+    }
+
+
+  } else if (currentPage.includes("direct-assessment.html")) {
+    let taxPayers = userRoles.direct_assessment_access
+
+    let view_demand_list = taxPayers.find(ff => ff === "view_direct_list")
+    let create_demand = taxPayers.find(ff => ff === "generate_direct_assessment")
+    let download_demand_rep = taxPayers.find(ff => ff === "download_direct_report")
+
+    $('#reportDisplay').removeClass('hidden')
+    $('#theLoader').remove()
+
+    if (download_demand_rep === undefined) {
+      $("#invReportd").addClass("disabled")
+    }
+
+    if (view_demand_list === undefined) {
+      $("#reportDisplay").html(`
+        <p class="text-center text-xl fontBold">No Access to view Direct Assessment !</p>
+      `)
+
+      $("#newDemandNotice").remove()
+    }
+
+    if (create_demand === undefined) {
+      $("#newDemandNotice").remove()
+    }
+
+
+  } else if (currentPage.includes("presumptive-tax.html")) {
+    let taxPayers = userRoles.presumptive_tax_access
+
+    let view_demand_list = taxPayers.find(ff => ff === "view_presumptive_list")
+    let create_demand = taxPayers.find(ff => ff === "generate_presumptive_tax")
+    let download_demand_rep = taxPayers.find(ff => ff === "download_presumptive_report")
+
+    $('#presumptiveContainer').removeClass('hidden')
+    $('#theLoader').remove()
+
+    if (download_demand_rep === undefined) {
+      $("#invReportd").addClass("disabled")
+    }
+
+    if (view_demand_list === undefined) {
+      $("#presumptiveContainer").html(`
+        <p class="text-center text-xl fontBold">No Access to view Presumptive Tax !</p>
+      `)
+
+      $("#generatePresumptiveBtn").remove()
+    }
+
+    if (create_demand === undefined) {
+      $("#generatePresumptiveBtn").remove()
+    }
+
+
+  } else if (currentPage.includes("service.html")) {
+    let taxPayers = userRoles.tax_filing_access
+
+    let view_demand_list = taxPayers.find(ff => ff === "view_tax_filing_list")
+    let create_demand = taxPayers.find(ff => ff === "generate_tax_filing")
+    let download_demand_rep = taxPayers.find(ff => ff === "download_taxfiling_report")
+
+    $('#taxfilingContainer').removeClass('hidden')
+    $('#theLoader').remove()
+
+    if (download_demand_rep === undefined) {
+      $("#invReportd").addClass("disabled")
+    }
+
+    if (view_demand_list === undefined) {
+      $("#taxfilingContainer").html(`
+        <p class="text-center text-xl fontBold">No Access to view Tax Filing !</p>
+      `)
+
+      $("#generatePresumptiveBtn").remove()
+    }
+
+    if (create_demand === undefined) {
+      $("#generatePresumptiveBtn").remove()
+    }
+
+
   } else if (currentPage.includes("user.html")) {
     let userorles = userRoles.users_access
 
@@ -216,9 +350,9 @@ async function getRolesAdmin() {
 
     $('#userDisplay').removeClass('hidden')
     $('#theLoader').remove()
-    
+
     $("#userAccessor a").removeClass('hidden')
-    
+
     if (view_admin === undefined) {
       $(".userTable").html(`
         <p class="text-center text-xl fontBold">No Access to view list !</p>
@@ -289,52 +423,52 @@ async function getRolesAdmin() {
     }
 
   } else if (currentPage.includes("etcc-management.html")) {
-        let etccRoles = userRoles.etcc_access;
-    
-        $(".main_section").removeClass('hidden');
-        $("#theLoader").remove();
-    
-        const firstReviewer = etccRoles.includes("first_reviewer");
-        const secondReviewer = etccRoles.includes("second_reviewer");
-        const thirdReviewer = etccRoles.includes("third_reviewer");
-    
-        // Check if the user has no access
-        if (!firstReviewer && !secondReviewer && !thirdReviewer) {
-            $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access!</p>`);
-            $("#initiateEtcc").remove();
-        } else {
-            // Handle role-based UI adjustments for multiple roles
-            if (thirdReviewer && secondReviewer && firstReviewer) {
-                // All three roles are present, no need to remove anything
-            } else if (thirdReviewer && secondReviewer) {
-                // If both thirdReviewer and secondReviewer are present
-                $("#first_reviewer").remove();
-            } else if (secondReviewer && firstReviewer) {
-                // If both secondReviewer and firstReviewer are present
-                $("#third_reviewer").remove();
-            } else if (thirdReviewer && firstReviewer) {
-                // If both thirdReviewer and firstReviewer are present
-                $("#second_reviewer").remove();
-            } else if (thirdReviewer) {
-                // If only thirdReviewer is present
-                $("#second_reviewer").remove();
-                $("#first_reviewer").remove();
-            } else if (secondReviewer) {
-                // If only secondReviewer is present
-                $("#third_reviewer").remove();
-                $("#first_reviewer").remove();
-            } else if (firstReviewer) {
-                // If only firstReviewer is present
-                $("#second_reviewer").remove();
-                $("#third_reviewer").remove();
-            }
-        }
-        
-    } else if (currentPage.includes("service.html")) {
+    let etccRoles = userRoles.etcc_access;
+
+    $(".main_section").removeClass('hidden');
+    $("#theLoader").remove();
+
+    const firstReviewer = etccRoles.includes("first_reviewer");
+    const secondReviewer = etccRoles.includes("second_reviewer");
+    const thirdReviewer = etccRoles.includes("third_reviewer");
+
+    // Check if the user has no access
+    if (!firstReviewer && !secondReviewer && !thirdReviewer) {
+      $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access!</p>`);
+      $("#initiateEtcc").remove();
+    } else {
+      // Handle role-based UI adjustments for multiple roles
+      if (thirdReviewer && secondReviewer && firstReviewer) {
+        // All three roles are present, no need to remove anything
+      } else if (thirdReviewer && secondReviewer) {
+        // If both thirdReviewer and secondReviewer are present
+        $("#first_reviewer").remove();
+      } else if (secondReviewer && firstReviewer) {
+        // If both secondReviewer and firstReviewer are present
+        $("#third_reviewer").remove();
+      } else if (thirdReviewer && firstReviewer) {
+        // If both thirdReviewer and firstReviewer are present
+        $("#second_reviewer").remove();
+      } else if (thirdReviewer) {
+        // If only thirdReviewer is present
+        $("#second_reviewer").remove();
+        $("#first_reviewer").remove();
+      } else if (secondReviewer) {
+        // If only secondReviewer is present
+        $("#third_reviewer").remove();
+        $("#first_reviewer").remove();
+      } else if (firstReviewer) {
+        // If only firstReviewer is present
+        $("#second_reviewer").remove();
+        $("#third_reviewer").remove();
+      }
+    }
+
+  } else if (currentPage.includes("service.html")) {
     if (adminInfo.email === "primeguage@gmail.com") {
 
     } else {
-      $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access !</p>`)
+      // $(".main_section").html(`<p class="text-center text-xl fontBold m-5">No Access !</p>`)
     }
   } else if (currentPage.includes("paye-management.html") || currentPage.includes("paye-details.html")) {
     let payeRoles = userRoles.payee_access

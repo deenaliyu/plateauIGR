@@ -8,7 +8,7 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
 
-  <title>PlateauIGR</title>
+  <title>PlateauIGR - View Tax Filing</title>
 
   <meta name="description" content="" />
 
@@ -23,30 +23,327 @@
     rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
-  <!-- Icons. Uncomment required icon fonts -->
   <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
-
-  <!-- Core CSS -->
   <link rel="stylesheet" href="./assets/css/dataTable.css">
   <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
   <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
   <link rel="stylesheet" href="./assets/css/demo.css" />
   <link rel="stylesheet" href="./assets/css/style.css" />
-  <!-- Vendors CSS -->
   <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
-  <script src="https://cdn.tiny.cloud/1/a2nnryhuz1r1qtqf4ap5nkr1msakmeqobebopr1d2o3nfx1h/tinymce/6/tinymce.min.js"
-    referrerpolicy="origin"></script>
-  <!-- Page CSS -->
 
-  <!-- Helpers -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
   <script src="./assets/vendor/js/helpers.js"></script>
-
-  <!--! Template customizer & Theme config files MUST be included after core stylesheets and helpers.js in the <head> section -->
-  <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
   <script src="./assets/js/config.js"></script>
 
+  <style>
+    /* PIT Form Styles */
+    .pit-form-container {
+      background: white;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: 'Times New Roman', Times, serif;
+      font-size: 12px;
+      line-height: 1.4;
+      color: #000;
+    }
+
+    .pit-form-header {
+      text-align: center;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #006400;
+      padding-bottom: 10px;
+    }
+
+    .pit-form-header .logo-section {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 5px;
+    }
+
+    .pit-form-header .logo {
+      width: 70px;
+      height: 70px;
+    }
+
+    .pit-form-header .header-text {
+      text-align: center;
+    }
+
+    .pit-form-header h1 {
+      font-size: 18px;
+      font-weight: bold;
+      color: #006400;
+      margin: 0;
+      letter-spacing: 1px;
+    }
+
+    .pit-form-header .contact-info {
+      font-size: 9px;
+      color: #333;
+      margin-top: 3px;
+    }
+
+    .pit-form-title {
+      text-align: center;
+      margin: 15px 0;
+    }
+
+    .pit-form-title h2 {
+      font-size: 14px;
+      font-weight: bold;
+      margin: 0;
+      text-decoration: underline;
+    }
+
+    .pit-form-title h3 {
+      font-size: 12px;
+      font-weight: bold;
+      margin: 5px 0 0 0;
+    }
+
+    .pit-form-to-section {
+      margin: 15px 0;
+    }
+
+    .pit-form-to-section p {
+      margin: 2px 0;
+    }
+
+    .pit-form-meta {
+      display: flex;
+      justify-content: space-between;
+      margin: 15px 0;
+      flex-wrap: wrap;
+    }
+
+    .pit-form-meta-item {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 5px;
+    }
+
+    .pit-form-meta-item label {
+      font-weight: bold;
+    }
+
+    .pit-form-meta-item .value {
+      border-bottom: 1px solid #000;
+      min-width: 120px;
+      padding: 0 5px;
+    }
+
+    .pit-form-notice {
+      margin: 15px 0;
+      text-align: justify;
+      font-size: 11px;
+    }
+
+    .pit-form-instructions {
+      margin: 10px 0;
+      font-size: 11px;
+    }
+
+    .pit-form-instructions ol {
+      margin: 0;
+      padding-left: 20px;
+    }
+
+    .pit-form-instructions li {
+      margin-bottom: 5px;
+      text-align: justify;
+    }
+
+    .pit-form-section {
+      margin: 20px 0;
+    }
+
+    .pit-form-section-title {
+      font-weight: bold;
+      font-size: 12px;
+      margin-bottom: 10px;
+      background: #f0f0f0;
+      padding: 5px 10px;
+      border-left: 4px solid #006400;
+    }
+
+    .pit-form-field {
+      display: flex;
+      margin-bottom: 8px;
+      align-items: flex-start;
+    }
+
+    .pit-form-field label {
+      font-weight: bold;
+      min-width: 220px;
+      font-size: 11px;
+    }
+
+    .pit-form-field .value {
+      flex: 1;
+      border-bottom: 1px dotted #000;
+      min-height: 18px;
+      padding: 0 5px;
+      font-size: 11px;
+    }
+
+    /* Income Table */
+    .pit-income-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+      font-size: 11px;
+    }
+
+    .pit-income-table th,
+    .pit-income-table td {
+      border: 1px solid #000;
+      padding: 6px 8px;
+      text-align: center;
+    }
+
+    .pit-income-table th {
+      background: #f5f5f5;
+      font-weight: bold;
+    }
+
+    .pit-income-table td:first-child {
+      text-align: left;
+    }
+
+    .pit-income-table .amount {
+      text-align: right;
+      font-family: 'Courier New', monospace;
+    }
+
+    .pit-form-note {
+      font-style: italic;
+      font-size: 10px;
+      margin: 10px 0;
+      font-weight: bold;
+    }
+
+    .pit-form-declaration {
+      margin: 20px 0;
+      text-align: justify;
+      font-size: 11px;
+    }
+
+    .pit-form-signature-section {
+      margin: 20px 0;
+    }
+
+    .pit-form-signature-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 15px;
+    }
+
+    .pit-form-signature-item {
+      text-align: center;
+      width: 45%;
+    }
+
+    .pit-form-signature-item .line {
+      border-bottom: 1px solid #000;
+      min-height: 25px;
+      margin-bottom: 3px;
+    }
+
+    .pit-form-signature-item label {
+      font-size: 10px;
+      font-style: italic;
+    }
+
+    .pit-form-recommendation {
+      margin: 20px 0;
+    }
+
+    .pit-form-recommendation h4 {
+      font-size: 11px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .pit-form-recommendation .lines {
+      border-bottom: 1px solid #000;
+      min-height: 20px;
+      margin-bottom: 8px;
+    }
+
+    .pit-form-footer {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px dotted #000;
+    }
+
+    .pit-form-footer-item {
+      text-align: center;
+      width: 30%;
+    }
+
+    .pit-form-footer-item .line {
+      border-bottom: 1px dotted #000;
+      min-height: 30px;
+      margin-bottom: 3px;
+    }
+
+    .pit-form-footer-item label {
+      font-size: 9px;
+      font-weight: bold;
+    }
+
+    /* Buttons */
+    .btn-download-pit {
+      background-color: #006400;
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 5px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .btn-download-pit:hover {
+      background-color: #004d00;
+      color: white;
+    }
+
+    .detail-label {
+      font-weight: 500;
+      color: #555;
+      width: 200px;
+    }
+
+    .detail-value {
+      color: #333;
+    }
+
+    .section-divider {
+      border-top: 2px solid #006400;
+      margin: 30px 0;
+    }
+
+    /* Print/PDF specific styles */
+    @media print {
+      .no-print {
+        display: none !important;
+      }
+      
+      .pit-form-container {
+        padding: 0;
+        max-width: 100%;
+      }
+    }
+  </style>
 </head>
 
 <body>
@@ -54,16 +351,14 @@
   <div class="layout-wrapper layout-content-navbar">
     <div class="layout-container">
       <!-- Menu -->
-
       <aside id="layout-menu" class="aside layout-menu menu-vertical menu bg-menu-theme"></aside>
       <!-- / Menu -->
 
       <!-- Layout container -->
       <div class="layout-page">
         <!-- Navbar -->
-
         <nav
-          class="layout-navbar navi container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          class="layout-navbar navi container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme no-print"
           id="layout-navbar">
 
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
@@ -74,63 +369,260 @@
 
           <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
             <div class="">
-              <p class="text-sm text-black" id="datei">-</p>
-              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">E-services</h1>
+              <p class="text-sm text-black datei" id="datei">-</p>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">View Tax Filing</h1>
             </div>
 
             <div class="mt-4 flex gap-x-5">
-
-
-
               <div class="avatar avatar-online">
                 <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
-
               </div>
               <h4 class="text-mm text-black self-center hidden md:flex adminName">System Admin</h4>
             </div>
-
           </div>
-
         </nav>
-
         <!-- / Navbar -->
 
         <!-- Content wrapper -->
         <section class="content-wrapper">
           <div class="container-xxl flex-grow-1 container-p-y">
-            <div class="flex align-items-center gap-1 mb-3">
-                <a type="button" style='color: #CDA545; font-weight: 500;' href="service.html">Back to
-                  taxfilling</a>
-              </div>
-            <section class="md:w-10/12 main_section">
+            <div class="flex align-items-center gap-1 mb-3 no-print">
+              <a type="button" style='color: #CDA545; font-weight: 500;' href="service.html">← Back to Tax Filing List</a>
+            </div>
+
+            <section class="main_section">
               <div class="p-2">
                 <div class="w-full">
-                      <div class="card card-body">
-                        <div class="table-responsive p-2">
-                          <table class="table invoiceTable" id="dataTable4">
-                            
-                            <tbody class="table-border-bottom-0" id="showdetails">
-                            </tbody>
-                          </table>
+                  <!-- Basic Information Card -->
+                  <div class="card card-body no-print">
+                    <h5 class="card-title mb-3" style="color: #006400; font-weight: 600;">Basic Information</h5>
+                    <div class="table-responsive p-2">
+                      <table class="table invoiceTable" id="dataTable4">
+                        <tbody class="table-border-bottom-0" id="showdetails">
+                        </tbody>
+                      </table>
+                    </div>
+                    <div class="flex justify-center items-center mt-4" id="loader">
+                      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
+                    </div>
+                  </div>
+
+                  <!-- Action Buttons -->
+                  <div class="flex justify-center gap-4 mt-4 mb-4 no-print" id="actionButtons" style="display: none;">
+                    <button class="btn-download-pit" id="downloadPITBtn">
+                      <iconify-icon icon="material-symbols:picture-as-pdf"></iconify-icon>
+                      Download PIT Form (PDF)
+                    </button>
+                    <div class="flex space-x-4" id="showbtn"></div>
+                  </div>
+                  
+                  <div id="msg_box" class="w-full mt-3 no-print"></div>
+
+                  <!-- PIT Returns Form (HTML Design) -->
+                  <div class="card card-body mt-4" id="pitFormCard" style="display: none;">
+                    <h5 class="card-title mb-3 no-print" style="color: #006400; font-weight: 600;">PIT Returns Form Preview</h5>
+                    
+                    <div class="pit-form-container" id="pitFormContent">
+                      <!-- Header -->
+                      <div class="pit-form-header">
+                        <div class="logo-section">
+                          <img src="./assets/img/favicon.png" alt="PSIRS Logo" class="logo" id="psirs-logo">
+                          <div class="header-text">
+                            <h1>PLATEAU STATE INTERNAL REVENUE SERVICE</h1>
+                            <p class="contact-info">
+                              No. 6 Bank Road, P. M. B. 2061, Jos, Plateau State, NIGERIA. Tel: 08031230301; 07056990777, 08175771117<br>
+                              Website: www.psirs.gov.ng; Email: psirjos@gmail.com
+                            </p>
+                          </div>
                         </div>
-                        <div class="flex justify-center items-center mt-4" id="loader">
-                          <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-                        </div>
-                        <div class="flex justify-center mt-4" >
-                            <div class="flex space-x-6" id="showbtn">
-                               
-                                
-                            </div>
-                        </div>
-                        <div id="msg_box" class="w-full mt-3"></div>
                       </div>
+
+                      <!-- Title -->
+                      <div class="pit-form-title">
+                        <h2>PERSONAL INCOME TAX RETURNS FORM</h2>
+                        <h3>FORM A</h3>
+                      </div>
+
+                      <!-- TO Section -->
+                      <div class="pit-form-to-section">
+                        <p><strong>TO</strong></p>
+                        <p style="margin-left: 30px;">The Executive Chairman,</p>
+                        <p style="margin-left: 30px;">Plateau State Internal Revenue Service</p>
+                      </div>
+
+                      <!-- Meta Information -->
+                      <div class="pit-form-meta">
+                        <div style="width: 48%;">
+                          <div class="pit-form-meta-item">
+                            <label>TIN NO:</label>
+                            <span class="value" id="pdf-tin"></span>
+                          </div>
+                          <div class="pit-form-meta-item">
+                            <label>INCOME TAX YEAR:</label>
+                            <span class="value" id="pdf-tax-year"></span>
+                          </div>
+                        </div>
+                        <div style="width: 48%;">
+                          <div class="pit-form-meta-item">
+                            <label>FILE NO:</label>
+                            <span class="value" id="pdf-file-no"></span>
+                          </div>
+                          <div class="pit-form-meta-item">
+                            <label>DATE OF ISSUE:</label>
+                            <span class="value" id="pdf-issue-date"></span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Notice -->
+                      <div class="pit-form-notice">
+                        <p>
+                          <strong>PURSUANT TO THE</strong> provisions of the <strong>Personal Income Tax (Amendment) Act 2011, Sections 44</strong> which 
+                          provides for persons chargeable and returns, and <strong>Section 95 and 96</strong> which provides for penalty for incorrect 
+                          and late returns.
+                        </p>
+                      </div>
+
+                      <!-- Instructions -->
+                      <div class="pit-form-instructions">
+                        <ol>
+                          <li>You are to submit the return form to Plateau State Internal Revenue Service not later than 31st January of every year.</li>
+                          <li>You will be charged for penalty and interest at the prevailing Central Bank rate on the established liabilities on default.</li>
+                          <li>You are to complete statement of particulars as provided for in PART A 1-8 and PART B 1-8 respectively. This information must be true and complete statement of the amount of your income from <strong>EVERY</strong> source, <strong>ACCRUING</strong> in, <strong>DERIVED</strong> from, <strong>BROUGHT</strong> into or <strong>RECEIVED</strong> in NIGERIA for the year ending 31st December, 20<span id="pdf-year-ending">__</span></li>
+                        </ol>
+                      </div>
+
+                      <!-- Section A: Personal Data -->
+                      <div class="pit-form-section">
+                        <div class="pit-form-section-title">A. &nbsp;&nbsp;&nbsp; PERSONAL DATA</div>
+                        
+                        <div class="pit-form-field">
+                          <label>1. NAME OF TAX PAYER/REGISTERED NAME:</label>
+                          <span class="value" id="pdf-name"></span>
+                        </div>
+                        <div class="pit-form-field">
+                          <label>2. NATIONALITY:</label>
+                          <span class="value" id="pdf-nationality"></span>
+                        </div>
+                        <div class="pit-form-field">
+                          <label>3. RESIDENTIAL ADDRESS:</label>
+                          <span class="value" id="pdf-residential-address"></span>
+                        </div>
+                        <div class="pit-form-field">
+                          <label>4. OFFICE ADDRESS:</label>
+                          <span class="value" id="pdf-office-address"></span>
+                        </div>
+                        <div class="pit-form-field">
+                          <label>5. CONTACT NO:</label>
+                          <span class="value" id="pdf-contact"></span>
+                        </div>
+                        <div class="pit-form-field">
+                          <label>6. TIN NO:</label>
+                          <span class="value" id="pdf-tin-2"></span>
+                        </div>
+                        <div class="pit-form-field">
+                          <label>7. OCCUPATION/TYPE OF BUSINESS:</label>
+                          <span class="value" id="pdf-occupation"></span>
+                        </div>
+                        <div class="pit-form-field">
+                          <label>8. COMMENCEMENT DATE:</label>
+                          <span class="value" id="pdf-commencement-date"></span>
+                        </div>
+                      </div>
+
+                      <!-- Section B: Source of Income -->
+                      <div class="pit-form-section">
+                        <div class="pit-form-section-title">B. &nbsp;&nbsp;&nbsp; SOURCE OF INCOME AND INCOME RECEIVED FROM:</div>
+                        
+                        <table class="pit-income-table">
+                          <thead>
+                            <tr>
+                              <th style="width: 40%;">SOURCE</th>
+                              <th id="pdf-year-col-1">RENT/INCOME RECEIVED (₦)<br>20__</th>
+                              <th id="pdf-year-col-2">20__</th>
+                              <th id="pdf-year-col-3">20__</th>
+                            </tr>
+                          </thead>
+                          <tbody id="pdf-income-table-body">
+                            <!-- Dynamic rows will be inserted here -->
+                          </tbody>
+                        </table>
+
+                        <p class="pit-form-note">
+                          <strong>NOTE:</strong> PLEASE ATTACH ALL RELEVANT DOCUMENTS FOR THE PURPOSE OF VERIFICATION FOR ABOVE PARAGRAPH
+                        </p>
+                      </div>
+
+                      <!-- Section C: Declaration -->
+                      <div class="pit-form-section">
+                        <div class="pit-form-section-title">C. &nbsp;&nbsp;&nbsp; DECLARATION</div>
+                        
+                        <div class="pit-form-declaration">
+                          <p>
+                            I, <strong><span id="pdf-declarant-name">_________________________________</span></strong>, hereby declare that PART A and B of 
+                            this form contains a true and correct statement of the amount of my income In respect of all sources, accruing in or 
+                            derived from Nigeria and of my income brought into or received in Nigeria computed to the best of my knowledge 
+                            and belief is correct in accordance with the provision of the Personal Income Tax Act 2011 (as Amended) PITA.
+                          </p>
+                        </div>
+
+                        <div class="pit-form-signature-section">
+                          <div class="pit-form-signature-row">
+                            <div class="pit-form-signature-item">
+                              <div class="line" id="pdf-sig-name"></div>
+                              <label>NAME IN FULL</label>
+                            </div>
+                            <div class="pit-form-signature-item">
+                              <div class="line"></div>
+                              <label>SIGNATURE</label>
+                            </div>
+                          </div>
+                          <div class="pit-form-signature-row">
+                            <div class="pit-form-signature-item">
+                              <div class="line" id="pdf-sig-designation"></div>
+                              <label>DESIGNATION</label>
+                            </div>
+                            <div class="pit-form-signature-item">
+                              <div class="line"></div>
+                              <label>DATE</label>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <!-- Recommendation -->
+                      <div class="pit-form-recommendation">
+                        <h4>Recommendation (for or against Tax Clearance Certificate)</h4>
+                        <div class="lines"></div>
+                        <div class="lines"></div>
+                        <div class="lines"></div>
+                      </div>
+
+                      <!-- Footer -->
+                      <div class="pit-form-footer">
+                        <div class="pit-form-footer-item">
+                          <div class="line"></div>
+                          <label>Approved/Not Approved</label>
+                        </div>
+                        <div class="pit-form-footer-item">
+                          <div class="line"></div>
+                          <label>Approving Officer's Sign</label>
+                        </div>
+                        <div class="pit-form-footer-item">
+                          <div class="line"></div>
+                          <label>Processing Officer's Sign</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
+              </div>
             </section>
           </div>
-          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer no-print"></section>
           <div class="content-backdrop fade"></div>
         </section>
-
         <!-- Content wrapper -->
       </div>
       <!-- / Layout page -->
@@ -142,8 +634,6 @@
   <!-- / Layout wrapper -->
 
   <!-- Core JS -->
-  <!-- build:js assets/vendor/js/core.js -->
-  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
   <script src="./assets/vendor/libs/jquery/jquery.js"></script>
   <script src="./assets/vendor/libs/popper/popper.js"></script>
   <script src="./assets/vendor/js/bootstrap.js"></script>
@@ -154,10 +644,14 @@
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <script src="./assets/js/jquery.datatables.min.js"></script>
   <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
+  
+  <!-- html2pdf.js for PDF generation -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+  
   <script src="./assets/js/nav.js"></script>
   <script src="./assets/vendor/js/menu.js"></script>
   <script src="./assets/js/main.js"></script>
-  <script src="./assets/js/veiwservice.js?v=1.0"></script>
+  <script src="./assets/js/veiwservice.js"></script>
   <script>
     let theAtivo = document.querySelector(".mdol")
     theAtivo.parentElement.classList.add("active")
