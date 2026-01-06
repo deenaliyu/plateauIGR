@@ -171,7 +171,7 @@ function populatePITForm(data) {
   ];
 
   // Meta information
-  $("#pdf-tin").text(data.tin_number || '');
+  $("#pdf-tin").text(data.tin || '');
   $("#pdf-file-no").text(data.tax_filling_refrence || '');
   $("#pdf-tax-year").text(years[0]);
   $("#pdf-issue-date").text(new Date().toLocaleDateString('en-GB'));
@@ -180,11 +180,11 @@ function populatePITForm(data) {
   // Personal data
   $("#pdf-name").text(fullName);
   $("#pdf-nationality").text(data.nationality || 'Nigerian');
-  $("#pdf-residential-address").text(data.residential_address || '');
-  $("#pdf-office-address").text(data.office_address || '');
-  $("#pdf-contact").text(data.phone_number || '');
-  $("#pdf-tin-2").text(data.tin_number || '');
-  $("#pdf-occupation").text(data.occupation_business || '');
+  $("#pdf-residential-address").text(data.address || '');
+  $("#pdf-office-address").text(data.address || 'N/A');
+  $("#pdf-contact").text(data.phone_number || 'N/A');
+  $("#pdf-tin-2").text(data.tin || '');
+  $("#pdf-occupation").text(data.occupation || '');
   $("#pdf-commencement-date").text(formatDate(data.start_date));
 
   // Income table headers
@@ -255,7 +255,7 @@ function populatePITForm(data) {
   // Declaration section
   $("#pdf-declarant-name").text(fullName);
   $("#pdf-sig-name").text(fullName);
-  $("#pdf-sig-designation").text(data.occupation_business || '');
+  $("#pdf-sig-designation").text(data.occupation || '');
 }
 
 function formatCurrency(amount) {

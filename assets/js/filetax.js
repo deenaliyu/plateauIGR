@@ -69,19 +69,19 @@ function validateEmail() {
   const emailInput = document.getElementById('emailInput');
   const emailError = document.getElementById('emailError');
   const email = emailInput.value.trim();
-  
+
   if (!email) {
     emailInput.classList.add('is-invalid');
     emailError.textContent = 'Email is required';
     return false;
   }
-  
+
   if (!isValidEmail(email)) {
     emailInput.classList.add('is-invalid');
     emailError.textContent = 'Please enter a valid email address';
     return false;
   }
-  
+
   emailInput.classList.remove('is-invalid');
   return true;
 }
@@ -91,19 +91,19 @@ function validatePhone() {
   const phoneInput = document.getElementById('phoneInput');
   const phoneError = document.getElementById('phoneError');
   const phone = phoneInput.value.trim();
-  
+
   if (!phone) {
     phoneInput.classList.add('is-invalid');
     phoneError.textContent = 'Phone number is required';
     return false;
   }
-  
+
   if (!isValidNigerianPhone(phone)) {
     phoneInput.classList.add('is-invalid');
     phoneError.textContent = 'Please enter a valid Nigerian phone number (e.g., 08012345678)';
     return false;
   }
-  
+
   phoneInput.classList.remove('is-invalid');
   return true;
 }
@@ -113,62 +113,85 @@ function validateTIN() {
   const tinInput = document.getElementById('tinInput');
   const tinError = document.getElementById('tinError');
   const tin = tinInput.value.trim();
-  
+
   if (!tin) {
     tinInput.classList.add('is-invalid');
     tinError.textContent = 'TIN is required';
     return false;
   }
-  
+
   if (!isValidTIN(tin)) {
     tinInput.classList.add('is-invalid');
     tinError.textContent = 'Please enter a valid TIN (at least 8 alphanumeric characters)';
     return false;
   }
-  
+
   tinInput.classList.remove('is-invalid');
   return true;
 }
 
 // Real-time validation on blur
-$(document).ready(function() {
-  $('#emailInput').on('blur', function() {
+$(document).ready(function () {
+  $('#emailInput').on('blur', function () {
     if (this.value.trim()) {
       validateEmail();
     }
   });
-  
-  $('#phoneInput').on('blur', function() {
+
+  $('#phoneInput').on('blur', function () {
     if (this.value.trim()) {
       validatePhone();
     }
   });
 
-  $('#tinInput').on('blur', function() {
+  $('#tinInput').on('blur', function () {
     if (this.value.trim()) {
       validateTIN();
     }
   });
-  
+
   // Clear error on input
-  $('#emailInput').on('input', function() {
+  $('#emailInput').on('input', function () {
     if (this.classList.contains('is-invalid') && isValidEmail(this.value.trim())) {
       this.classList.remove('is-invalid');
     }
   });
-  
-  $('#phoneInput').on('input', function() {
+
+  $('#phoneInput').on('input', function () {
     if (this.classList.contains('is-invalid') && isValidNigerianPhone(this.value.trim())) {
       this.classList.remove('is-invalid');
     }
   });
 
-  $('#tinInput').on('input', function() {
+  $('#tinInput').on('input', function () {
     if (this.classList.contains('is-invalid') && isValidTIN(this.value.trim())) {
       this.classList.remove('is-invalid');
     }
   });
 });
+
+async function fetchBusiness() {
+  try {
+    const response = await fetch(`${HOST}?getPresumptiveTax`)
+    const data = await response.json()
+
+    // console.log(data)
+
+    if (data.status === 1) {
+
+      data.message.forEach(busness => {
+        $("#busiType").append(`
+          <option value="${busness.business_type}">${busness.business_type}</option>
+        `)
+      })
+    }
+
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+fetchBusiness()
 
 // ==================== END VALIDATION FUNCTIONS ====================
 
@@ -325,7 +348,7 @@ $("#generateReferenceNum").on("click", async function () {
   const isEmailValid = validateEmail();
   const isPhoneValid = validatePhone();
   const isTINValid = validateTIN();
-  
+
   if (!isEmailValid || !isPhoneValid || !isTINValid) {
     alert("Please correct the errors in the form");
     return;
@@ -361,7 +384,7 @@ $("#generateReferenceNum").on("click", async function () {
   // Validate required text inputs (exclude income source inputs which are optional)
   let hasEmptyRequired = false;
   let firstInvalidField = null;
-  
+
   allInputs.forEach(input => {
     const dataName = input.getAttribute('data-name') || '';
     const isIncomeInput = dataName.includes('_year1') || dataName.includes('_year2') || dataName.includes('_year3');

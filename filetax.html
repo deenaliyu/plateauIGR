@@ -151,7 +151,7 @@
       margin-top: 4px;
     }
 
-    .is-invalid ~ .invalid-feedback,
+    .is-invalid~.invalid-feedback,
     .show-error .invalid-feedback {
       display: block;
     }
@@ -276,14 +276,18 @@
     }
 
     /* Ensure form inputs look consistent */
-    .form-control, .form-select {
+    .form-control,
+    .form-select {
       font-size: 14px;
       padding: 8px 12px;
     }
 
     @media (max-width: 768px) {
-      .form-control, .form-select {
-        font-size: 16px; /* Prevents zoom on iOS */
+
+      .form-control,
+      .form-select {
+        font-size: 16px;
+        /* Prevents zoom on iOS */
         padding: 10px 12px;
       }
     }
@@ -354,7 +358,7 @@
                 <td>Personal Income Tax (PAYE)</td>
                 <td>Monthly</td>
                 <td>
-                  <a href="annual-returns-template.xlsx" download>
+                  <a href="./assets/annual-returns-template.xlsx" download>
                     <iconify-icon icon="material-symbols:download" class="text-2xl"></iconify-icon>
                   </a>
                 </td>
@@ -364,7 +368,7 @@
                 <td>Withholding Tax (WHT)</td>
                 <td>Monthly</td>
                 <td>
-                  <a href="annual-returns-template.xlsx" download>
+                  <a href="./assets/annual-returns-template.xlsx" download>
                     <iconify-icon icon="material-symbols:download" class="text-2xl"></iconify-icon>
                   </a>
                 </td>
@@ -374,7 +378,7 @@
                 <td>Education Tax</td>
                 <td>Annually</td>
                 <td>
-                  <a href="annual-returns-template.xlsx" download>
+                  <a href="./assets/annual-returns-template.xlsx" download>
                     <iconify-icon icon="material-symbols:download" class="text-2xl"></iconify-icon>
                   </a>
                 </td>
@@ -384,7 +388,7 @@
                 <td>Development levy</td>
                 <td>One-off</td>
                 <td>
-                  <a href="annual-returns-template.xlsx" download>
+                  <a href="./assets/annual-returns-template.xlsx" download>
                     <iconify-icon icon="material-symbols:download" class="text-2xl"></iconify-icon>
                   </a>
                 </td>
@@ -481,8 +485,8 @@
               </div>
               <div class="form-group w-full md:w-6/12">
                 <label class="">Evidence of Tax Payment</label>
-                <input class="form-control mt-1 taxFInput2" data-name="evidence_of_tax_payment" accept=".xlsx, .csv, .pdf, .jpg, .png"
-                  type="file" />
+                <input class="form-control mt-1 taxFInput2" data-name="evidence_of_tax_payment"
+                  accept=".xlsx, .csv, .pdf, .jpg, .png" type="file" />
               </div>
             </div>
           </div>
@@ -506,7 +510,7 @@
             <div class="flex flex-col md:flex-row items-start gap-3 mb-4 form-row">
               <div class="form-group w-full md:w-6/12">
                 <label for="">TIN (Tax Identification Number)*</label>
-                <input type="text" class="form-control taxFInput" data-name="tin_number" required id="tinInput"
+                <input type="text" class="form-control taxFInput" data-name="tin" required id="tinInput"
                   placeholder="Enter your TIN">
                 <div class="invalid-feedback" id="tinError">Please enter a valid TIN</div>
               </div>
@@ -521,22 +525,24 @@
             <div class="flex flex-col md:flex-row items-start gap-3 mb-4 form-row">
               <div class="form-group w-full md:w-6/12">
                 <label for="">Occupation/Type of Business*</label>
-                <input type="text" class="form-control taxFInput" data-name="occupation_business" required
-                  placeholder="Enter your occupation or type of business">
+                <select class="form-select taxFInput" id="busiType" data-name="occupation" required>
+                  <option value="">Select --</option>
+                </select>
+
               </div>
 
               <div class="form-group w-full md:w-6/12">
                 <label for="">Residential Address*</label>
-                <input type="text" class="form-control taxFInput" data-name="residential_address" required
+                <input type="text" class="form-control taxFInput" data-name="address" required
                   placeholder="Enter your residential address">
               </div>
             </div>
 
-            <div class="form-group w-full mb-4">
+            <!-- <div class="form-group w-full mb-4">
               <label for="">Office Address</label>
-              <input type="text" class="form-control taxFInput" data-name="office_address"
+              <input type="text" class="form-control taxFInput" data-name="address"
                 placeholder="Enter your office address">
-            </div>
+            </div> -->
 
             <h3 class="text-md fontBold mb-3">Source of Income and Income Received</h3>
 
@@ -553,21 +559,30 @@
                 <tbody>
                   <tr>
                     <td>1. Trustees/Properties</td>
-                    <td><input type="number" class="form-control taxFInput" data-name="trustees_year1" placeholder="0.00" min="0" step="0.01"></td>
-                    <td><input type="number" class="form-control taxFInput" data-name="trustees_year2" placeholder="0.00" min="0" step="0.01"></td>
-                    <td><input type="number" class="form-control taxFInput" data-name="trustees_year3" placeholder="0.00" min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="trustees_year1"
+                        placeholder="0.00" min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="trustees_year2"
+                        placeholder="0.00" min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="trustees_year3"
+                        placeholder="0.00" min="0" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>2. Trade/Profession/Business</td>
-                    <td><input type="number" class="form-control taxFInput" data-name="trade_year1" placeholder="0.00" min="0" step="0.01"></td>
-                    <td><input type="number" class="form-control taxFInput" data-name="trade_year2" placeholder="0.00" min="0" step="0.01"></td>
-                    <td><input type="number" class="form-control taxFInput" data-name="trade_year3" placeholder="0.00" min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="trade_year1" placeholder="0.00"
+                        min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="trade_year2" placeholder="0.00"
+                        min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="trade_year3" placeholder="0.00"
+                        min="0" step="0.01"></td>
                   </tr>
                   <tr>
                     <td>3. Dividend/Interest</td>
-                    <td><input type="number" class="form-control taxFInput" data-name="dividend_year1" placeholder="0.00" min="0" step="0.01"></td>
-                    <td><input type="number" class="form-control taxFInput" data-name="dividend_year2" placeholder="0.00" min="0" step="0.01"></td>
-                    <td><input type="number" class="form-control taxFInput" data-name="dividend_year3" placeholder="0.00" min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="dividend_year1"
+                        placeholder="0.00" min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="dividend_year2"
+                        placeholder="0.00" min="0" step="0.01"></td>
+                    <td><input type="number" class="form-control taxFInput" data-name="dividend_year3"
+                        placeholder="0.00" min="0" step="0.01"></td>
                   </tr>
                 </tbody>
                 <tbody id="otherSourcesContainer">

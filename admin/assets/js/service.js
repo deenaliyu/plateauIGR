@@ -20,35 +20,20 @@ async function fetchInvoice() {
       let addd = "";
       addd += `
         <tr class="relative">
-        <td>${userInvoice.first_name} ${userInvoice.surname}</td>
-        <td>${userInvoice.email}</td>
-        <td>${userInvoice.tax_type || '-'}</td>
-        <td>${userInvoice.tax_to_file}</td>
-        <td>${userInvoice.tax_filling_refrence}</td>
-        <td>${userInvoice.start_date}</td>
-        <td>${userInvoice.end_date}</td>
-            `;
-      if (userInvoice.application_status === "approved") {
-        addd += `
-              <td id="" class="checking">
-                <p class='text-success'>${userInvoice.application_status}</p>
-              </td>
-              
-              `;
-      } else {
-        addd += `
-              <td id="" class="checking">
-                <p class='text-danger'>${userInvoice.application_status}</p>
-              </td>
-              `;
-      }
-
-      addd += `
+          <td>${i + 1}</td>
+          <td>${userInvoice.first_name} ${userInvoice.surname}</td>
+          <td>${userInvoice.email}</td>
+          <td>${userInvoice.tin || 'N/A'}</td>
+          <td>${userInvoice.tax_type || '-'}</td>
+          <td>${userInvoice.tax_to_file}</td>
+          <td>${userInvoice.tax_filling_refrence}</td>
+          <td>${userInvoice.start_date}</td>
+          <td>${userInvoice.application_status === "approved" ? '<span class="badge bg-success">Approved</span>' : '<span class="badge bg-warning">Pending</span>'}</td>
           <td>
             <a href="viewtaxfilling.html?id=${userInvoice.id}&load=true" target="_blank" class="btn btn-primary btn-sm viewUser" >View</a>
           </td>
-          </tr>
-          `;
+        </tr>
+      `;
       $("#showThem").append(addd);
     });
   } else {
