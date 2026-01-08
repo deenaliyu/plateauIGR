@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PlateauIGR</title>
+
+  <!-- FAVION ICON -->
+
+  <link rel="shortcut icon" href="assets/img/favicon.png" type="image/x-icon" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.css" />
+  <link rel="stylesheet" href="assets/css/style.css" />
+  <!-- <link rel="stylesheet" href="assets/css/responsive.css" /> -->
+  <link rel="stylesheet" href="assets/fontawesome/css/all.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/css/selectize.default.min.css"
+    integrity="sha512-pTaEn+6gF1IeWv3W1+7X7eM60TFu/agjgoHmYhAfLEU8Phuf6JKiiE8YmsNC0aCgQv4192s4Vai8YZ6VNM6vyQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+  <style>
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+
+      #reviewSummary,
+      #reviewSummary * {
+        visibility: visible;
+      }
+
+      #reviewSummary {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      .card {
+        border: none;
+        box-shadow: none;
+      }
+    }
+
+    .form-section {
+      display: none;
+    }
+
+    .form-section.active {
+      display: block;
+    }
+
+    .sideTabs {
+      display: none;
+    }
+
+    .sideTabs.active {
+      display: block;
+    }
+
+    #reviewSummary p {
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    label.required::after {
+      content: "*";
+      color: #dc3545;
+      opacity: 0.8;
+      margin-left: 0.25rem;
+      font-size: 1.1em;
+    }
+
+    .selectize-input:after {
+      content: '▾';
+      /* the dropdown arrow */
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      margin-top: -10px;
+      font-size: 20px;
+      color: #999;
+      pointer-events: none;
+    }
+
+    .progress {
+      height: 10px;
+      margin-bottom: 20px;
+    }
+
+    .progress-bar {
+      height: 20px;
+      background-color: #CDA545;
+    }
+
+    .invalid-feedback {
+      display: none;
+    }
+
+    .was-validated .form-control:invalid~.invalid-feedback,
+    .was-validated .form-select:invalid~.invalid-feedback {
+      display: block;
+    }
+
+    .branch-entry {
+      border: 1px solid #dee2e6;
+      padding: 15px;
+      margin-bottom: 15px;
+      border-radius: 5px;
+      background-color: #f8f9fa;
+    }
+
+    .branch-entry:last-child {
+      margin-bottom: 0;
+    }
+
+    .remove-branch {
+      margin-top: 10px;
+    }
+
+    .tinTabs {
+      display: none;
+    }
+
+    .tax-options {
+      margin-top: 1rem;
+    }
+
+    .tax-options .form-check {
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+    }
+
+    .tax-options .form-check-input {
+      margin-top: 0.25rem;
+      margin-left: -1.5rem;
+    }
+
+    .tax-options .form-check-label {
+      cursor: pointer;
+      padding-left: 0.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="modal fade" id="snapModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Take a Snap</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <div class="row pakainfo">
+              <div class="col-md-6 pakainfo">
+                <div id="live_camera"></div>
+
+
+                <input class="button mt-3" type=button value="Take Snapshot" onClick="capture_web_snapshot()">
+                <input type="hidden" name="image" class="image-tag">
+              </div>
+              <div class="col-md-6">
+                <div id="preview">Your captured image will appear here...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="outline-btn" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="button" data-bs-dismiss="modal">Save changes</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <header>
+    <div class="flex gap-2 items-center p-3 border-b">
+      <img src="./assets/img/logo.png" class="w-[50px]" alt="">
+      <p class="text-md fontBold">Plateau IGR</p>
+    </div>
+
+  </header>
+
+
+  <section class="flex h-[89vh] overflow-y-scroll headerBeginner">
+
+    <div class="w-3/12 md:block hidden bg-[#F9FAFB] p-3">
+
+      <div class="flex px-1 h-full">
+        <div class="flex px-1 h-full">
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v1.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v2.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v3.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v4.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v5.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v6.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v7.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v8.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v9.png" />
+          </div>
+          <div class="mt-5 sideTabs">
+            <img src="./assets/img/v9.png" />
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="md:w-9/12 w-full bg-center overflow-y-scroll md:px-10 px-4">
+
+      <!-- TIN STATUS SECTION -->
+      <section class="form-section h-full">
+        <div class="md:pt-4 pt-3 mb-2">
+          <a class="flex items-center gap-2" href="enumeration.html">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </a>
+        </div>
+
+        <form action="">
+          <h1 class="fontBold text-lg">TIN Validation</h1>
+          <p class="mt-2 mb-4">Validate Customer TIN Number</p>
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="sector" class="form-label font-bold text-lg required">Do you have a TIN Number?</label>
+              <div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="hasTIN" id="hasTINYes" value="yes" required>
+                  <label class="form-check-label" for="hasTINYes">
+                    Yes
+                  </label>
+                </div>
+                <div class="form-check">
+                  <input class="form-check-input" type="radio" name="hasTIN" id="hasTINNo" value="no" required>
+                  <label class="form-check-label" for="hasTINNo">
+                    No
+                  </label>
+                </div>
+              </div>
+
+              <div id="selectionContainer">
+
+              </div>
+            </div>
+          </div>
+
+          <div class="flex justify-end">
+            <!-- <button class="button mb-4 next-section" type="button">Continue</button> -->
+          </div>
+        </form>
+
+      </section>
+
+      <!-- USER CATEGORY SECTION -->
+      <section class="form-section h-full">
+        <!-- <div class="md:pt-4 pt-3 mb-2">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+
+
+        <form action="">
+          <h1 class="fontBold text-lg">User Category</h1>
+          <p class="mt-2 mb-5">Choose the type of facility owner</p>
+
+          <div class="flex gap-x-5 justify-center flex-wrap">
+            <div class="md:w-5/12">
+              <div class="flex gap-x-5 mt-3 justify-center flex-wrap">
+                <!-- <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="individual">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/individual.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">Individual</p>
+                  <p class="text-center pt-2">These are individuals who are required to
+                    pay taxes on their personal income, such as salary, freelance work, rental
+                    income, etc.</p>
+                </div> -->
+                <div class="w-[244px] px-3 pb-4 card card-body cardi selectedcat" data-name="corporate">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/corporate.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">Corporate</p>
+                  <p class="text-center pt-2">These are businesses, including corporations
+                    and limited liability companies, that are required to pay taxes on their
+                    profits.</p>
+                </div>
+              </div>
+              <!-- <div class="flex gap-x-5 mt-4 justify-center flex-wrap">
+                <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="state">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/properties.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">State Agency</p>
+                  <p class="text-center pt-2">These are government agencies and
+                    departments at the state level that are responsible for paying taxes on their
+                    operations.</p>
+                </div>
+                <div class="w-[244px] px-3 pb-4 card card-body cardi" data-name="federal">
+                  <div class="flex justify-center pt-2">
+                    <img src="./assets/img/properties.png" class="text-center" alt="">
+                  </div>
+                  <p class="text-[#000] font-bold text-center">Federal Agency</p>
+                  <p class="text-center pt-2">These are government agencies and
+                    departments at the federal level that are responsible for paying taxes on their
+                    operations.</p>
+                </div>
+              </div> -->
+            </div>
+
+          </div>
+          <div class="flex justify-between mt-4">
+            <button class="outline-btn mb-4 prev-section" type="button">Previous</button>
+            <button class="button mb-4 next-section" type="button">Continue</button>
+          </div>
+        </form>
+
+      </section>
+
+      <!-- Identification & Registration -->
+      <section class="form-section h-full">
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">Facility Info</h1>
+          <p class="mt-2 mb-4">Enter registration</p>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="legalName" class="form-label required">Name of School</label>
+              <input type="text" class="form-control" id="legalName" required>
+              <div class="invalid-feedback">Please provide the legal name of the facility.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="facilityType" class="form-label required">Facility Type</label>
+              <select class="form-select" id="facilityType" required>
+                <option value="">Select Type of School</option>
+                <option value="Primary Healthcare Facility">Primary Schools </option>
+                <option value="Secondary Healthcare Facility">Secondary Schools </option>
+                <option value="Tertiary Healthcare Facilities">Nursery Schools </option>
+                <option value="Private Hospitals/Clinics">Special Needs Schools </option>
+                <option value="Maternity Home / Clinic">ACE Schools </option>
+              </select>
+              <div class="invalid-feedback">Please select the facility type.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="registrationNumber" class="form-label required">Business Registration Number (CAC)</label>
+              <input type="text" class="form-control" id="registrationNumber">
+              <div class="invalid-feedback">Please provide the business registration number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="ownershipType" class="form-label required">Type of Ownership</label>
+              <select class="form-select" id="ownershipType" required>
+                <option value="">Select ownership type</option>
+                <option value="Private">Private</option>
+                <option value="Faith-Based">Faith-Based</option>
+                <option value="Missionary">Missionary</option>
+              </select>
+              <div class="invalid-feedback">Please select the ownership type.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="operatingLicenseNumber" class="form-label">Operating License Number</label>
+              <input type="text" class="form-control" id="operatingLicenseNumber" >
+              <div class="invalid-feedback">Please provide the operating license number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="licenseExpiryDate" class="form-label">Operating License Expiry Date</label>
+              <input type="date" class="form-control" id="licenseExpiryDate" >
+              <div class="invalid-feedback">Please provide the license expiry date.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="taxIdentificationNumber" class="form-label required">Tax Identification Number (TIN)</label>
+              <input type="text" class="form-control" id="taxIdentificationNumber" required>
+              <div class="invalid-feedback">Please provide the tax identification number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="dateOfEstablishment" class="form-label">Date of Establishment/Commencement of
+                Operations</label>
+              <input type="date" class="form-control" id="dateOfEstablishment" >
+              <div class="invalid-feedback">Please provide the date of establishment.</div>
+            </div>
+          </div>
+
+
+
+          <div class="flex justify-between">
+            <button class="outline-btn mb-4 prev-section" type="button">Previous</button>
+            <button class="button mb-4 next-section" type="button">Continue</button>
+          </div>
+        </form>
+
+      </section>
+
+      <!-- Operations Info -->
+     <!-- Operations Info -->
+<section class="form-section h-full">
+  <form action="">
+    <h1 class="fontBold text-lg">Operations Info</h1>
+    <p class="mt-2 mb-4">Provide facility operational information</p>
+
+    <!-- Universal fields for ALL facility types -->
+    <div class="row mb-3">
+      <div class="col-md-4">
+        <label for="numberOfStaff" class="form-label required">Number of Staff</label>
+        <input type="number" class="form-control" id="numberOfStaff" required>
+        <div class="invalid-feedback">Please provide the number of staff.</div>
+        <small class="form-text text-muted">Total number of staff members</small>
+      </div>
+      <div class="col-md-4">
+        <label for="avgNewIntakes" class="form-label required">Average Number of New Intakes per Session</label>
+        <input type="number" class="form-control" id="avgNewIntakes" required>
+        <div class="invalid-feedback">Please provide the average new intakes.</div>
+        <small class="form-text text-muted">Average new students per session</small>
+      </div>
+      <div class="col-md-4">
+        <label for="avgStudents" class="form-label required">Average Number of Students</label>
+        <input type="number" class="form-control" id="avgStudents" required>
+        <div class="invalid-feedback">Please provide the average number of students.</div>
+        <small class="form-text text-muted">Average total students</small>
+      </div>
+    </div>
+
+    <div class="flex justify-between">
+      <button class="outline-btn mb-4 prev-section" type="button">Previous</button>
+      <button class="button mb-4 next-section" type="button">Continue</button>
+    </div>
+  </form>
+</section>
+
+      <!-- Contact & Location -->
+      <section class="form-section h-full">
+
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">Contact & Location</h1>
+          <p class="mt-2 mb-4">Enter facility address and contact details</p>
+
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="address" class="form-label required">Primary Physical Address</label>
+              <input type="text" class="form-control" id="address" required>
+              <div class="invalid-feedback">Please provide the physical address.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-4">
+              <label for="city" class="form-label required">City/Town</label>
+              <input type="text" class="form-control" id="city" required>
+              <div class="invalid-feedback">Please provide the city/town.</div>
+            </div>
+            <div class="col-md-4">
+              <label for="lga" class="form-label required">Local Government Area (LGA)</label>
+              <select class="form-select" id="lga" required>
+                <option value="">Select LGA</option>
+                <option value="Barkin Ladi">Barkin Ladi</option>
+                <option value="Bassa">Bassa</option>
+                <option value="Bokkos">Bokkos</option>
+                <option value="Jos East">Jos East</option>
+                <option value="Jos North">Jos North</option>
+                <option value="Jos South">Jos South</option>
+                <option value="Kanam">Kanam</option>
+                <option value="Kanke">Kanke</option>
+                <option value="Langtang North">Langtang North</option>
+                <option value="Langtang South">Langtang South</option>
+                <option value="Mangu">Mangu</option>
+                <option value="Mikang">Mikang</option>
+                <option value="Pankshin">Pankshin</option>
+                <option value="Qua'an Pan">Qua'an Pan</option>
+                <option value="Riyom">Riyom</option>
+                <option value="Shendam">Shendam</option>
+                <option value="Wase">Wase</option>
+              </select>
+              <div class="invalid-feedback">Please select the LGA.</div>
+            </div>
+            <div class="col-md-4">
+              <label for="state" class="form-label required">State</label>
+              <input type="text" class="form-control" id="state" value="Plateau" readonly>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="postalCode" class="form-label">Postal Code (optional)</label>
+              <input type="text" class="form-control" id="postalCode">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="phoneNumber" class="form-label required">Phone Number</label>
+              <input type="tel" class="form-control" id="phoneNumber" required>
+              <div class="invalid-feedback">Please provide a phone number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="email" class="form-label required">Email Address</label>
+              <input type="email" class="form-control" id="email" required>
+              <div class="invalid-feedback">Please provide an email address.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <label for="website" class="form-label">Website (optional)</label>
+              <input type="url" class="form-control" id="website">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-12">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="hasBranches">
+                <label class="form-check-label" for="hasBranches">
+                  Does this facility have additional branches?
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div id="branchesContainer" style="display: none;">
+            <h5 class="mt-4 mb-3">Branch Information</h5>
+            <div id="branchEntries">
+              <!-- Branch entries will be added here dynamically -->
+            </div>
+            <button type="button" class="btn btn-outline-primary mt-2" id="addBranch">Add Another Branch</button>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="latitude" class="form-label required">Latitude (Geo-tagging)</label>
+              <input type="number" step="any" class="form-control" id="latitude" readonly required>
+              <div class="invalid-feedback">Please provide the latitude coordinate.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="longitude" class="form-label required">Longitude (Geo-tagging)</label>
+              <input type="number" step="any" class="form-control" id="longitude" readonly required>
+              <div class="invalid-feedback">Please provide the longitude coordinate.</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <button type="button" class="button next-section">Next</button>
+          </div>
+
+        </form>
+      </section>
+
+      <!-- Facility Representative  -->
+      <section class="form-section h-full">
+
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">Facility Representative</h1>
+          <p class="mt-2 mb-4">Capture details of the facility’s authorized contact</p>
+
+
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="repName" class="form-label">Full Name of Representative</label>
+              <input type="text" class="form-control" id="repName">
+              <div class="invalid-feedback">Please provide the full name.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="repemail" class="form-label">Email Address</label>
+              <input type="email" class="form-control" id="repemail">
+              <div class="invalid-feedback">Please provide an email address.</div>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="repphonenumber" class="form-label">Phone Number</label>
+              <input type="text" class="form-control" id="repphonenumber">
+              <div class="invalid-feedback">Please provide a phone number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="repaltphone" class="form-label">Alternate Phone Number</label>
+              <input type="email" class="form-control" id="repaltphone">
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <label for="repTIN" class="form-label">TIN</label>
+              <input type="text" class="form-control" id="repTIN">
+              <div class="invalid-feedback">Please provide a TIN Number.</div>
+            </div>
+            <div class="col-md-6">
+              <label for="repAddress" class="form-label">Address</label>
+              <input type="email" class="form-control" id="repAddress">
+              <div class="invalid-feedback">Please provide an address.</div>
+            </div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <button type="button" class="button next-section">Next</button>
+          </div>
+        </form>
+      </section>
+
+
+
+      <!-- Document Uploads -->
+      <section class="form-section h-full">
+
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">Document Uploads</h1>
+          <p class="mt-2 mb-4">Facility capture and documents uploads</p>
+
+
+          <div>
+
+            <div class="form-group mb-4">
+              <!-- <label for="">Profile Picture*</label> -->
+              <div class="flex flex-col md:flex-row gap-4 items-center">
+                <!-- Preview Box -->
+                <div class="w-32 h-32 border-2 border-gray-300 rounded-lg overflow-hidden mb-2 md:mb-0">
+                  <img id="imagePreview" src="assets/img/userprofile.png" alt="Preview"
+                    class="w-full h-full object-cover">
+                </div>
+
+                <!-- Capture/Upload Buttons -->
+                <div class="flex flex-col gap-2">
+                  <button type="button" onclick="openCamera()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+                    Capture from Camera
+                  </button>
+                  <button type="button" onclick="document.getElementById('fileInput').click()"
+                    class="button bg-green-600 hover:bg-green-700 text-white">
+                    Upload from Device
+                  </button>
+                  <input type="file" id="fileInput" accept="image/*" class="hidden"
+                    onchange="handleFileUpload(this.files)">
+                </div>
+              </div>
+              <input type="hidden" id="imageUrl" data-name="img" required>
+              <div class="invalid-feedback">Please upload a profile picture.</div>
+            </div>
+
+
+            <p class="my-4">Document Upload (Optional)</p>
+
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="repName" class="form-label">CAC Certificate</label>
+                <input type="file" class="form-control" id="repName">
+                <!-- <div class="invalid-feedback">Please.</div> -->
+              </div>
+              <div class="col-md-6">
+                <label for="repemail" class="form-label">Operating License</label>
+                <input type="file" class="form-control" id="repemail">
+                <!-- <div class="invalid-feedback">Please provide an email address.</div> -->
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+              <button type="button" class="outline-btn prev-section">Previous</button>
+              <button type="button" class="button next-section">Next</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <!-- Enumeration Use Uploads -->
+      <section class="form-section h-full">
+
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">Facility Scale & Structure (Enumerator Use Only)</h1>
+          <p class="mt-2 mb-4">Confirm these details yourself before proceeding.</p>
+
+          <div class="">
+            <h5 class="text-lg font-bold">Applicable Tax Liabilities</h5>
+            <div class="row tax-options">
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-paye" value="PAYE">
+                  <label class="form-check-label" for="tax-paye">PAYE</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-withholding"
+                    value="Withholding Tax">
+                  <label class="form-check-label" for="tax-withholding">Withholding Tax</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-stamp-duty" value="Stamp Duty">
+                  <label class="form-check-label" for="tax-stamp-duty">Stamp Duty</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-dev-levy"
+                    value="Development Levy">
+                  <label class="form-check-label" for="tax-dev-levy">Development Levy</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-premise-license"
+                    value="Business Premise license">
+                  <label class="form-check-label" for="tax-premise-license">Business Premise License</label>
+                </div>
+              </div>
+
+              <div class="col-md-6">
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-health-license"
+                    value="Health facility licensing/registration & inspections">
+                  <label class="form-check-label" for="tax-health-license">Health Facility Licensing/Registration &
+                    Inspections</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-medical-waste"
+                    value="Medical/Healthcare waste management charges">
+                  <label class="form-check-label" for="tax-medical-waste">Medical/Healthcare Waste Management
+                    Charges</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-signage"
+                    value="Signage & outdoor advertising permits">
+                  <label class="form-check-label" for="tax-signage">Signage & Outdoor Advertising Permits</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-fire-safety"
+                    value="Fire Safety Certificate/inspection">
+                  <label class="form-check-label" for="tax-fire-safety">Fire Safety Certificate/Inspection</label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input tax-checkbox" type="checkbox" id="tax-water-permits"
+                    value="Water & environmental permits">
+                  <label class="form-check-label" for="tax-water-permits">Water & Environmental Permits</label>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <button type="button" class="button next-section">Next</button>
+          </div>
+        </form>
+      </section>
+
+      <section class="form-section h-full">
+
+        <!-- <div class="md:pt-4 pt-3">
+          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
+            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+            <span>Go back</span>
+          </button>
+        </div> -->
+
+        <form action="">
+          <h1 class="fontBold text-lg">Review & Submit</h1>
+          <p class="mt-2 mb-4">Review all entries before submission</p>
+
+
+          <div class="card mb-4">
+            <div class="card-header">
+              <h5>Facility Information Summary</h5>
+            </div>
+            <div class="card-body">
+              <div id="reviewSummary">
+                <!-- Summary will be generated here -->
+              </div>
+            </div>
+          </div>
+
+          <div class="form-check mb-4">
+            <input class="form-check-input" type="checkbox" id="declaration" required>
+            <label class="form-check-label" for="declaration">
+              By checking this box, I confirm that I have been fully informed about the purpose of this enumeration (to
+              identify healthcare facilities and ensure their tax compliance) and how the data will be processed; I
+              freely give my explicit consent for this processing, and I declare that all information provided is
+              accurate, complete, and true to the best of my knowledge.
+            </label>
+            <div class="invalid-feedback">You must agree to the declaration before submitting.</div>
+          </div>
+
+          <div class="d-flex justify-content-between">
+            <button type="button" class="outline-btn prev-section">Previous</button>
+            <div>
+              <button type="button" class="outline-btn me-2" id="printSummary">
+                <iconify-icon icon="material-symbols:print-outline"></iconify-icon> Print Summary
+              </button>
+              <button type="submit" class="button" id="SubmitButton">Submit</button>
+            </div>
+
+          </div>
+
+          <div id="msg_box"></div>
+        </form>
+      </section>
+
+
+
+    </div>
+
+
+  </section>
+
+  <!-- Camera Modal -->
+  <div id="cameraModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 hidden flex items-center justify-center">
+    <div class="bg-white rounded-lg p-4 w-11/12 md:w-1/2">
+      <div class="flex justify-between items-center mb-4">
+        <h3 class="text-lg font-bold">Take a Photo</h3>
+        <button onclick="closeCamera()" class="text-2xl">&times;</button>
+      </div>
+      <video id="video" width="100%" autoplay class="bg-gray-200"></video>
+      <div class="flex justify-center mt-4 gap-4">
+        <button onclick="capturePhoto()" class="button bg-blue-600 hover:bg-blue-700 text-white">
+          Capture
+        </button>
+        <button onclick="closeCamera()" class="button bg-gray-600 hover:bg-gray-700 text-white">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="tingenerateModal" data-bs-backdrop="static" data-bs-keyboard="false">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Generate TIN</h5>
+          <button data-bs-dismiss="modal">
+            <iconify-icon icon="ph:x"></iconify-icon>
+          </button>
+
+        </div>
+        <div class="modal-body">
+
+          <form action="" class="formTabs pb-10">
+
+            <h1 class="fontBold text-2xl">Generate Tin</h1>
+            <h1 class="mb-3 mt-3">Personal Details</h1>
+
+            <div class="form-group w-full mb-4">
+              <label for="">Name of Organization*</label>
+              <input type="text" class="form-control payInputs" required data-name="organization_name">
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Email *</label>
+                <input type="text" class="form-control payInputs" required data-name="email"
+                  placeholder="Enter your Email Address">
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Phone number *</label>
+                <input type="number" class="form-control payInputs" minlength="11" maxlength="11" required
+                  data-name="phone_number" placeholder="Your 11-digits phone number">
+              </div>
+            </div>
+
+
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Sector*</label>
+                <select class="form-select payInputs" id="sectorSelect" data-name="sector" required>
+                  <option value="">Select</option>
+                </select>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Industry*</label>
+                <select class="form-select payInputs" id="industrySelect" data-name="industry" required>
+                  <option value="">Select</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">CAC*</label>
+                <input type="text" class="form-control payInputs" data-name="cac_number" placeholder="Enter your CAC"
+                  required>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Number of Employee*</label>
+                <select class="form-select payInputs" data-name="num_employees" required>
+                  <option value="">Select</option>
+                  <option value="0 - 10">0 - 10</option>
+                  <option value="11 - 50">11 - 50</option>
+                  <option value="51 - 500">51 - 500</option>
+                  <option value="500 and above">500 and above</option>
+                </select>
+              </div>
+
+            </div>
+
+
+            <div class="flex items-center mb-4 gap-2">
+
+              <div class="form-group w-full">
+                <label for="">State of Residence*</label>
+                <select id="selectState" class="form-select payInputs" data-name="state" required>
+                  <option value="Plateau">Plateau</option>
+                </select>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">LGA*</label>
+                <select id="selectLGA" class="form-select payInputs" required data-name="lga">
+                  <option value="Bokkos">Bokkos</option>
+                  <option value="Barkin Ladi">Barkin Ladi</option>
+                  <option value="Bassa">Bassa</option>
+                  <option value="Jos East">Jos East</option>
+                  <option value="Jos North">Jos North</option>
+                  <option value="Jos South">Jos South</option>
+                  <option value="Kanam">Kanam</option>
+                  <option value="Kanke">Kanke</option>
+                  <option value="Langtang South">Langtang South</option>
+                  <option value="Langtang North">Langtang North</option>
+                  <option value="Mangu">Mangu</option>
+                  <option value="Mikang">Mikang</option>
+                  <option value="Pankshin">Pankshin</option>
+                  <option value="Qua an Pan">Qua an Pan</option>
+                  <option value="Riyom">Riyom</option>
+                  <option value="Shendam">Shendam</option>
+                  <option value="Wase">Wase</option>
+                </select>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Address*</label>
+                <input type="text" class="form-control payInputs" data-name="address" placeholder="" required>
+              </div>
+            </div>
+
+
+            <div class="form-group w-full mb-3">
+              <label for="">Website</label>
+              <input type="text" class="form-control payInputs" data-name="website" placeholder="example.com">
+            </div>
+
+            <button class="button w-full" type="button" onclick="previewPage()">Preview</button>
+          </form>
+
+          <form action="" class="formTabs pb-10">
+            <div>
+              <button class="flex items-center gap-2" onclick="nextPrev(-1)" type="button">
+                <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
+                <span>Go back</span>
+              </button>
+            </div>
+
+            <h1 class="fontBold text-2xl">Generate Tin</h1>
+            <h1 class="mb-3 mt-3">Preview Details</h1>
+
+            <div class="form-group w-full mb-4">
+              <label for="">Name of Organization</label>
+              <input type="text" class="form-control payInputs2" data-name="organization_name" readonly>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Email</label>
+                <input type="text" class="form-control payInputs2" data-name="email" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Phone number </label>
+                <input type="number" class="form-control payInputs2" data-name="phone_number" readonly>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">CAC</label>
+                <input type="text" class="form-control payInputs2" data-name="cac_number" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Industry</label>
+                <input type="text" class="form-control payInputs2" data-name="industry" readonly>
+              </div>
+            </div>
+
+            <div class="flex items-center mb-4 gap-2">
+              <div class="form-group w-full">
+                <label for="">Sector</label>
+                <input type="text" class="form-control payInputs2" data-name="sector" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Number of Employee</label>
+                <input type="text" class="form-control payInputs2" data-name="num_employees" readonly>
+              </div>
+
+            </div>
+
+
+            <div class="flex items-center mb-4 gap-2">
+
+              <div class="form-group w-full">
+                <label for="">State of Residence</label>
+                <input type="text" class="form-control payInputs2" data-name="state" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">LGA</label>
+                <input type="text" class="form-control payInputs2" data-name="lga" readonly>
+              </div>
+
+              <div class="form-group w-full">
+                <label for="">Address</label>
+                <input type="text" class="form-control payInputs2" data-name="address" readonly>
+              </div>
+            </div>
+
+
+            <div class="form-group w-full mb-3">
+              <label for="">Website</label>
+              <input type="text" class="form-control payInputs2" id="tin" data-name="website" readonly>
+            </div>
+
+            <button class="button w-full" id="generateTinBtn" type="button" onclick="generateTin('corporate')">Generate
+              Tin</button>
+            <div id="msg_box2"></div>
+          </form>
+
+          <form action="" class="formTabs mt-[15%]" id="tinDisplayForm">
+            <div class="flex justify-center mb-3">
+              <img src="./assets/img/paid.png" />
+            </div>
+            <p class="text-center text-black text-lg">TIN has been generated successfully</p>
+            <p class="text-center text-black text-lg">Your TIN has been sent to your email/phone number.</p>
+
+            <p class="text-3xl text-center text-[#CDA545] cursor-pointer mt-5" id="tinNumber"></p>
+
+            <div class="flex justify-center mt-5 gap-3" id="goHomeBtnCont">
+              <!-- <a href="#" class="button" id="goHomeBtn">Validate TIN</a> -->
+              <!-- <a href="tin-slip.html" class="button" id="printSlipBtn">Print Slip</a> -->
+            </div>
+          </form>
+
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="ModalsContainer"></div>
+
+
+
+  <script src="assets/js/jquery.js"></script>
+  <script src="assets/bootstrap/js/bootstrap.bundle.js"></script>
+  <script src="assets/js/aos-master/dist/aos.js"></script>
+  <script src="assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.3.1/jspdf.umd.min.js"></script>
+  <script src="./assets/node_modules/publitio_js_sdk/build/publitio-api.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/selectize.js/0.15.2/js/selectize.min.js"
+    integrity="sha512-IOebNkvA/HZjMM7MxL0NYeLYEalloZ8ckak+NDtOViP7oiYzG5vn6WVXyrJDiJPhl4yRdmNAG49iuLmhkUdVsQ=="
+    crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+  <script src="assets/js/nav.js"></script>
+  <script src="assets/js/webcam.js"></script>
+  <script src="assets/js/snapping.js"></script>
+  <script src="assets/js/tabHandler.js"></script>
+  <script src="assets/js/enumeration-schools.js"></script>
+  <script src="assets/js/hadleTinGen.js"></script>
+</body>
+
+</html>
