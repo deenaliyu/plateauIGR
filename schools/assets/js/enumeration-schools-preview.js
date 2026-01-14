@@ -295,7 +295,7 @@ async function loadFacilityDetails(facilityId) {
     }
 
     try {
-        const response = await fetch(`${HOST}?gettHospitalFacilities&enumeration_id=${facilityId}`);
+        const response = await fetch(`${HOST}?getSchoolFacilities&enumeration_id=${facilityId}`);
         const data = await response.json();
 
         if (data.status === 1 && data.facilities && data.facilities.length > 0) {

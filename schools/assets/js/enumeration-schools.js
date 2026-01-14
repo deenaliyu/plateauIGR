@@ -562,7 +562,7 @@ const facilityTypeData = prepareFacilityTypeData();
 
   // Construct the full payload
   const payload = {
-    endpoint: "NewcreateFacilityEducation",
+    endpoint: "NewcreateFacilitySchools",
     data: {
       payer_user: {
         tin: document.getElementById('taxIdentificationNumber').value,
@@ -689,7 +689,7 @@ async function registerUser() {
 
     // Prepare the payload
     const payload = preparePayload();
-
+    console.log('Payload:', payload);
     // Submit to API
     const response = await fetch(HOST, {
       method: "POST",

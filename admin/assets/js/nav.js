@@ -148,6 +148,12 @@ $(".aside").html(`
             </a>
           </li>
 
+           <li class="menu-item">
+            <a href="schools-report.html" class="menu-link">
+              <div data-i18n="Basic Inputs">School Sectors</div>
+            </a>
+          </li>
+
         </ul>
       </li>
       

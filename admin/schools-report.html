@@ -67,7 +67,7 @@
 
           <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
             <div class="flex-1">
-              <p class="text-sm text-black">Date: <span class="datei"> </span></p>
+              <p class="text-sm text-black">Date: <span class="datei" id="datei"> </span></p>
               <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Education Sector - Schools</h1>
             </div>
 
@@ -75,8 +75,7 @@
             <div class="mt-4 flex gap-x-5 ms-auto">
               <button class="text-dark items-center flex gap-x-1" data-bs-toggle="modal" data-bs-target="#filterModal"
                 type="button" data-bs-toggle="dropdown" aria-expanded="false">
-                <iconify-icon icon="cuida:filter-outline" width="28" height="28"></iconify-icon>
-                Filters</button>
+                <iconify-icon icon="cuida:filter-outline" width="28" height="28"></iconify-icon> Filters</button>
 
               <div class="dropdown">
                 <button class="button dropdown-toggle items-center flex gap-x-1" type="button" id="dropdownMenuButton"
@@ -106,30 +105,29 @@
           <div class="container-xxl flex-grow-1 container-p-y taxes">
             <div class="row mb-4" id="summaryTiles">
               <div class="col-md-12">
-                <h4 class="mb-3 text-xl text-black fontBold">Facilities Summary</h4>
+                <h4 class="mb-3 text-xl text-black fontBold">Schools Summary</h4>
                 <div class="row" id="facilityTypeSummary">
                   <!-- Summary tiles will be loaded here -->
                 </div>
               </div>
             </div>
-
-
             <div class="card py-4 mt-6 px-2">
               <div class="table-responsive">
                 <table class="table hospitalTabl" id="dataTable">
-                  <thead>
+                 <thead>
                     <tr>
                       <th>S/N</th>
                       <th>Enumeration ID</th>
                       <th>School Name</th>
                       <th>School Type</th>
-                      <th>Staff Count</th>
-                      <th>Total Students</th>
+                      <!-- <th>Number of Staff</th> -->
+                      <th>Enumeration TIN Status</th>
                       <th>State</th>
                       <th>LGA</th>
                       <th>Contact Number</th>
                       <th>Email</th>
                       <th>Status</th>
+                      <th>Date Created</th>
                       <th>Actions</th>
                     </tr>
                   </thead>
@@ -159,12 +157,13 @@
     <!-- Overlay -->
     <div class="layout-overlay layout-menu-toggle"></div>
   </div>
-  <!-- / Layout wrapper -->
-<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+
+  <!-- Add this modal for filters -->
+ <div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="filterModalLabel">Filter Facilities</h5>
+        <h5 class="modal-title" id="filterModalLabel">Filter Schools</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
@@ -173,7 +172,6 @@
             <div class="col-md-6 mb-3">
               <label for="facilityTypeFilter" class="form-label">School Type</label>
               <select class="form-select" id="facilityTypeFilter">
-                <option value="">All Types</option>
                 <option value="">All Types</option>
                 <option value="Primary Schools Facility">Primary Schools </option>
                 <option value="Secondary Schools Facility">Secondary Schools </option>
@@ -225,7 +223,7 @@
           <div class="row">
             <div class="col-md-6 mb-3">
               <label for="searchFilter" class="form-label">Search</label>
-              <input type="text" class="form-control" id="searchFilter" placeholder="Search facilities...">
+              <input type="text" class="form-control" id="searchFilter" placeholder="Search schools...">
             </div>
           </div>
         </form>
@@ -238,7 +236,6 @@
     </div>
   </div>
 </div>
-</div>
 
   <!-- Add this modal for facility details -->
   <div class="modal fade" id="facilityDetailsModal" tabindex="-1" aria-labelledby="facilityDetailsModalLabel"
@@ -246,7 +243,7 @@
     <div class="modal-dialog modal-lg modal-dialog-scrollable">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="facilityDetailsModalLabel">Facility Details</h5>
+          <h5 class="modal-title" id="facilityDetailsModalLabel">School Details</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body" id="facilityDetailsContent">
@@ -303,10 +300,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-  <!-- <script>
+  <script>
     let theAtivo = document.querySelector(`.enu`);
     theAtivo.parentElement.classList.add("active");
-  </script> -->
+  </script>
   <!-- Vendors JS -->
   <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
   <!-- Main JS -->

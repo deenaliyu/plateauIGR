@@ -21,7 +21,6 @@ $(document).ready(function () {
 
   // Initial load
   loadFacilities();
-  // loadSummaryTiles();
 
   // Apply filters
   $('#applyFilters').click(function () {
@@ -51,7 +50,7 @@ $(document).ready(function () {
   });
 });
 
-// Load facilities
+// Load school facilities
 function loadFacilities() {
   try {
     const facilityType = $('#facilityTypeFilter').val();
@@ -60,7 +59,7 @@ function loadFacilities() {
     const dateRange = $('#dateRangeFilter').val();
     const search = $('#searchFilter').val();
 
-    let url = `${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`;
+    let url = `${HOST}?getSchoolFacilities=1&enumerator_id=${userInfo2.id}`;
     if (facilityType) url += `&facility_type=${encodeURIComponent(facilityType)}`;
     if (lga) url += `&lga=${encodeURIComponent(lga)}`;
     if (category) url += `&category=${encodeURIComponent(category)}`;
@@ -97,6 +96,7 @@ function loadFacilities() {
       })
       .then(data => {
         clearTimeout(timeoutId);
+        console.log('Facilities data:', data); // Debug
         if (data.status === 1 && data.facilities) {
           renderFacilities(data.facilities);
           initializeDataTable();
@@ -122,31 +122,36 @@ function renderFacilities(facilities) {
   list.innerHTML = ''; // clear previous rows
 
   if (!facilities || facilities.length === 0) {
-    list.innerHTML = `<tr><td colspan="11" class="text-center text-muted">No facilities found</td></tr>`;
+    list.innerHTML = `<tr><td colspan="12" class="text-center text-muted">No schools found</td></tr>`;
     return;
   }
 
   let html = '';
   facilities.forEach((facility, index) => {
+    // Get school-specific data
+    const numberOfStaff = facility.type_data?.number_of_staff || '0';
+    const avgIntakes = facility.type_data?.avg_new_intakes_per_session || '0';
+    const avgStudents = facility.type_data?.avg_number_of_students || '0';
+
     html += `
       <tr>
         <td>${index + 1}</td>
-         <td>${facility.enumeration_id}</td>
+        <td>${facility.enumeration_id || 'N/A'}</td>
         <td>${facility.first_name || 'N/A'}</td>
         <td>${formatFacilityType(facility.facility_type) || 'N/A'}</td>
-        <td>${facility.number_of_beds || '0'}</td>
-        <td>${facility.avg_monthly_visits || '0'}</td>
+        <td>${numberOfStaff}</td>
+        <td>${avgStudents}</td>
         <td>${facility.state || 'N/A'}</td>
         <td>${facility.lga || 'N/A'}</td>
         <td>${facility.phone || 'N/A'}</td>
         <td>${facility.email || 'N/A'}</td>
-        <td>${facility.status || 'Active'}</td>
+        <td><span class="badge bg-success">Active</span></td>
         <td>
-         <button class="btn btn-sm btn-outline-primary view-facility" 
-              data-id="${facility.enumeration_id}" 
-              title="View Details">
-        <iconify-icon icon="mdi:eye-outline"></iconify-icon>
-      </button>
+          <button class="btn btn-sm btn-outline-primary view-facility" 
+            data-id="${facility.enumeration_id}" 
+            title="View Details">
+            <iconify-icon icon="mdi:eye-outline"></iconify-icon>
+          </button>
         </td>
       </tr>
     `;
@@ -154,200 +159,72 @@ function renderFacilities(facilities) {
 
   list.innerHTML = html;
 
+  // Add click handler for view buttons
   $('.view-facility').click(function () {
     const facilityId = $(this).data('id');
     showFacilityDetails(facilityId);
   });
-
-  // Add click handlers for edit buttons
-  $('.edit-facility').click(function () {
-    const facilityId = $(this).data('id');
-    editFacility(facilityId);
-  });
 }
 
+// Show facility details
+function showFacilityDetails(enumerationId) {
+  const url = `${HOST}?getSchoolFacilities=1&enumeration_id=${enumerationId}`;
 
-
-// Show error message
-function showErrorMessage(message) {
-  document.getElementById('showFacilitiesList').innerHTML = `
-    <tr>
-      <td colspan="12" class="text-center text-danger">
-        ${message}
-      </td>
-    </tr>
-  `;
-}
-
-// Show "no data" message
-function showNoDataMessage() {
-  document.getElementById('showFacilitiesList').innerHTML = `
-    <tr>
-      <td colspan="12" class="text-center text-muted">
-        No data available for the selected filters.
-      </td>
-    </tr>
-  `;
-}
-
-// Initialize DataTable
-function initializeDataTable() {
-  if ($.fn.DataTable.isDataTable('#dataTable')) {
-    $('#dataTable').DataTable().clear().destroy();
-  }
-
-  $('#dataTable').DataTable({
-    paging: true,
-    searching: true,
-    ordering: true,
-    responsive: true
-  });
-}
-
-
-
-// Updated filter modal HTML with all parameters
-
-
-// Load summary tiles
-// function loadSummaryTiles() {
-//   fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`)
-//     .then(response => response.json())
-//     .then(data => {
-//       if (data.status === 1) {
-//         renderSummaryTiles(data.facilities);
-//       }
-//     });
-// }
-
-// // Render summary tiles
-// function renderSummaryTiles(facilities) {
-//   const facilityTypes = {};
-//   const lgaCounts = {};
-
-//   // Count facilities by type
-//   facilities.forEach(facility => {
-//     const type = facility.facility.facility_type;
-//     const lga = facility.location.lga;
-
-//     if (!facilityTypes[type]) {
-//       facilityTypes[type] = 0;
-//     }
-//     facilityTypes[type]++;
-
-//     if (!lgaCounts[lga]) {
-//       lgaCounts[lga] = 0;
-//     }
-//     lgaCounts[lga]++;
-//   });
-
-//   // Create tiles for each facility type
-//   $('#facilityTypeSummary').empty();
-//   for (const [type, count] of Object.entries(facilityTypes)) {
-//     $('#facilityTypeSummary').append(`
-//       <div class="col-md-3 mb-3">
-//         <div class="card h-100">
-//           <div class="card-body">
-//             <h5 class="card-title text-black fontBold">${type}</h5>
-//             <p class="card-text display-4 text-primary">${count}</p>
-//           </div>
-//         </div>
-//       </div>
-//     `);
-//   }
-
-//   // Add click handlers to filter by facility type
-//   // $('.card').click(function () {
-//   //   const type = $(this).find('.card-title').text();
-//   //   $('#facilityTypeFilter').val(type);
-//   //   loadFacilities();
-//   // });
-// }
-
-// Show facility details in modal
-function showFacilityDetails(facilityId) {
-  $('#facilityDetailsContent').html(`
-    <div class="flex justify-center items-center my-4">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-    </div>
-  `);
-
-
-  fetch(`${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}&enumeration_id=${facilityId}`)
+  fetch(url)
     .then(response => response.json())
     .then(data => {
-      if (data.status === 1 && data.facilities.length > 0) {
-        const facility = data.facilities[0];
-        console.log('Facility details loaded:', facility);
-        renderFacilityDetails(facility);
+      if (data.status === 1 && data.facilities && data.facilities.length > 0) {
+        const facilityData = data.facilities[0];
+        renderFacilityDetails(facilityData);
+        $('#facilityDetailsModal').modal('show');
       } else {
-        $('#facilityDetailsContent').html(`
-          <div class="alert alert-danger">Facility details not found</div>
-        `);
+        Swal.fire({
+          title: 'Not Found',
+          text: 'School facility details not found',
+          icon: 'warning',
+          confirmButtonText: 'OK'
+        });
       }
     })
     .catch(error => {
       console.error('Error loading facility details:', error);
-      $('#facilityDetailsContent').html(`
-        <div class="alert alert-danger">Error loading facility details</div>
-      `);
+      Swal.fire({
+        title: 'Error',
+        text: 'Failed to load school facility details',
+        icon: 'error',
+        confirmButtonText: 'OK'
+      });
     });
-
-  $('#facilityDetailsModal').modal('show');
 }
 
-// // Render facility details
-function renderFacilityDetails(facility) {
-  const facilityData = facility;
-  const typeData = facility.type_data || {};
-  
-  // Parse JSON strings if they exist
-  const servicesOffered = typeData.services_offered ? JSON.parse(typeData.services_offered) : [];
-  const primaryServices = typeData.primary_services_offered ? JSON.parse(typeData.primary_services_offered) : [];
-  
-  // Create dynamic type-specific fields
-  let typeSpecificFields = '';
-  
-  // Generate fields based on type_data properties
-  for (const [key, value] of Object.entries(typeData)) {
-    if (key !== 'id' && key !== 'facility_hospital_id' && key !== 'created_at' && key !== 'updated_at' && 
-        key !== 'services_offered' && key !== 'primary_services_offered') {
-      const label = key
-        .replace(/_/g, ' ')
-        .replace(/\b\w/g, l => l.toUpperCase());
-      
-      let displayValue = value;
-      if (key.includes('fee') || key.includes('cost')) {
-        displayValue = value ? `₦${parseFloat(value).toLocaleString()}` : 'N/A';
-      }
-      
-      typeSpecificFields += `
-        <tr>
-          <th>${label}:</th>
-          <td>${displayValue || 'N/A'}</td>
-        </tr>
-      `;
+// Render facility details modal
+function renderFacilityDetails(facilityData) {
+  // Get school-specific type data
+  const typeData = facilityData.type_data || {};
+  const numberOfStaff = typeData.number_of_staff || 'N/A';
+  const avgIntakes = typeData.avg_new_intakes_per_session || 'N/A';
+  const avgStudents = typeData.avg_number_of_students || 'N/A';
+
+  // Process liabilities
+  let liabilitiesHTML = 'N/A';
+  if (facilityData.liabilities) {
+    const liabilitiesArray = facilityData.liabilities.split('\n').filter(Boolean);
+    if (liabilitiesArray.length > 0) {
+      liabilitiesHTML = '<ul class="mb-0">';
+      liabilitiesArray.forEach(liability => {
+        liabilitiesHTML += `<li>${liability}</li>`;
+      });
+      liabilitiesHTML += '</ul>';
     }
   }
 
-  // Generate branch data HTML
+  // Process branches
   let branchDataHTML = '';
-  const facilityBranches = facility.facility_branches || [];
-
-  // Handle both single object and array cases
-  let branchesArray = [];
-  if (Array.isArray(facilityBranches)) {
-    branchesArray = facilityBranches;
-  } else if (facilityBranches && typeof facilityBranches === 'object' && facilityBranches.branch_name) {
-    // Single branch object
-    branchesArray = [facilityBranches];
-  }
-
-  if (branchesArray.length > 0) {
-    branchesArray.forEach((branch, index) => {
+  if (facilityData.facility_branches && facilityData.facility_branches.length > 0) {
+    facilityData.facility_branches.forEach((branch, index) => {
       branchDataHTML += `
         <div class="mb-3 p-3 border rounded" style="background-color: #f8f9fa;">
-          <h6 class="fw-bold mb-2" style="font-size: 14px; color: #495057;">Branch ${index + 1}</h6>
+          <h6 style="font-size: 14px; font-weight: bold; margin-bottom: 10px;">Branch ${index + 1}</h6>
           <div class="row">
             <div class="col-6">
               <div class="mb-1">
@@ -402,23 +279,39 @@ function renderFacilityDetails(facility) {
   $('#facilityDetailsContent').html(`
     <div class="row">
       <div class="col-md-12 mb-4">
-        <h5 class="text-xl fontBold text-black">Facility Information</h5>
-        <table class="table table-sm">
-        <tr>
+        <h5 class="text-xl fontBold text-black">School Information</h5>
+        <table class="table table-sm table-bordered">
+          <tr>
             <th>Enumeration ID:</th>
-            <td>${facilityData.enumeration_id ||'N/A'}</td>
+            <td>${facilityData.enumeration_id || 'N/A'}</td>
           </tr>
           <tr>
-            <th>Legal Name:</th>
-            <td>${facilityData.first_name ||'N/A'}</td>
+            <th>School Name:</th>
+            <td>${facilityData.first_name || 'N/A'}</td>
           </tr>
           <tr>
             <th>Facility Type:</th>
             <td>${formatFacilityType(facilityData.facility_type) || 'N/A'}</td>
           </tr>
           <tr>
-            <th>CAC Number:</th>
+            <th>CAC/RC Number:</th>
             <td>${facilityData.cac_rc_number || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>Ownership Type:</th>
+            <td>${facilityData.ownership_type || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>License Number:</th>
+            <td>${facilityData.license_number || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>License Expiry:</th>
+            <td>${facilityData.license_expiry || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>Date Established:</th>
+            <td>${facilityData.date_established || 'N/A'}</td>
           </tr>
           <tr>
             <th>State:</th>
@@ -427,6 +320,10 @@ function renderFacilityDetails(facility) {
           <tr>
             <th>LGA:</th>
             <td>${facilityData.lga || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>Address:</th>
+            <td>${facilityData.address || 'N/A'}</td>
           </tr>
           <tr>
             <th>Phone:</th>
@@ -440,30 +337,60 @@ function renderFacilityDetails(facility) {
       </div>
       
       <div class="col-md-12 mb-4">
-        <h5 class="text-xl fontBold text-black">Services</h5>
-        <table class="table table-sm">
+        <h5 class="text-xl fontBold text-black">Operational Information</h5>
+        <table class="table table-sm table-bordered">
           <tr>
-            <th>Primary Services:</th>
-            <td>${primaryServices.join(', ') || 'N/A'}</td>
+            <th>Number of Staff:</th>
+            <td>${numberOfStaff}</td>
           </tr>
           <tr>
-            <th>All Services Offered:</th>
-            <td>${servicesOffered.join(', ') || 'N/A'}</td>
+            <th>Average New Intakes per Session:</th>
+            <td>${avgIntakes}</td>
+          </tr>
+          <tr>
+            <th>Average Number of Students:</th>
+            <td>${avgStudents}</td>
           </tr>
         </table>
       </div>
       
       <div class="col-md-12 mb-4">
-        <h5 class="text-xl fontBold text-black">${formatFacilityType(facilityData.facility_type)} Specific Information</h5>
-        <table class="table table-sm">
-          ${typeSpecificFields}
+        <h5 class="text-xl fontBold text-black">Tax Liabilities</h5>
+        <div class="p-3 border rounded" style="background-color: #f8f9fa;">
+          ${liabilitiesHTML}
+        </div>
+      </div>
+      
+      <div class="col-md-12 mb-4">
+        <h5 class="text-xl fontBold text-black">Representative Information</h5>
+        <table class="table table-sm table-bordered">
           <tr>
-            <th>Number of Beds:</th>
-            <td>${facilityData.number_of_beds || '0'}</td>
+            <th>Name:</th>
+            <td>${facilityData.rep_firstname || ''} ${facilityData.rep_surname || ''}</td>
           </tr>
           <tr>
-            <th>Avg Monthly Visits:</th>
-            <td>${facilityData.avg_monthly_visits || '0'}</td>
+            <th>Email:</th>
+            <td>${facilityData.rep_email || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>Phone:</th>
+            <td>${facilityData.rep_phone || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>Position:</th>
+            <td>${facilityData.rep_position || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>State:</th>
+            <td>${facilityData.rep_state || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>LGA:</th>
+            <td>${facilityData.rep_lga || 'N/A'}</td>
+          </tr>
+          <tr>
+            <th>Address:</th>
+            <td>${facilityData.rep_address || 'N/A'}</td>
           </tr>
         </table>
       </div>
@@ -472,13 +399,48 @@ function renderFacilityDetails(facility) {
         <h5 class="text-xl fontBold text-black">Branch Information</h5>
         ${branchDataHTML}
       </div>
-
-      
     </div>
   `);
 }
 
-// // Helper function to format facility type
+// Show error message
+function showErrorMessage(message) {
+  document.getElementById('showFacilitiesList').innerHTML = `
+    <tr>
+      <td colspan="12" class="text-center text-danger">
+        ${message}
+      </td>
+    </tr>
+  `;
+}
+
+// Show "no data" message
+function showNoDataMessage() {
+  document.getElementById('showFacilitiesList').innerHTML = `
+    <tr>
+      <td colspan="12" class="text-center text-muted">
+        No data available for the selected filters.
+      </td>
+    </tr>
+  `;
+}
+
+// Initialize DataTable
+function initializeDataTable() {
+  if ($.fn.DataTable.isDataTable('#dataTable')) {
+    $('#dataTable').DataTable().clear().destroy();
+  }
+
+  $('#dataTable').DataTable({
+    paging: true,
+    searching: true,
+    ordering: true,
+    responsive: true,
+    pageLength: 25
+  });
+}
+
+// Helper function to format facility type
 function formatFacilityType(type) {
   if (!type) return 'N/A';
   return type.split('_')
@@ -486,17 +448,7 @@ function formatFacilityType(type) {
     .join(' ');
 }
 
-// // Edit facility
-// function editFacility(facilityId) {
-//   Swal.fire({
-//     title: 'Edit Facility',
-//     text: 'This feature will be available soon',
-//     icon: 'info',
-//     confirmButtonText: 'OK'
-//   });
-// }
-
-// // Export data
+// Export data
 function exportData(format) {
   // Match filter logic
   const facilityType = $('#facilityTypeFilter').val();
@@ -505,7 +457,7 @@ function exportData(format) {
   const dateRange = $('#dateRangeFilter').val();
   const search = $('#searchFilter').val();
 
-  let url = `${HOST}?gettHospitalFacilities&enumerator_id=${userInfo2.id}`;
+  let url = `${HOST}?getSchoolFacilities=1&enumerator_id=${userInfo2.id}`;
   if (facilityType) url += `&facility_type=${encodeURIComponent(facilityType)}`;
   if (lga) url += `&lga=${encodeURIComponent(lga)}`;
   if (category) url += `&category=${encodeURIComponent(category)}`;
@@ -518,50 +470,63 @@ function exportData(format) {
   fetch(url)
     .then(response => response.json())
     .then(data => {
-      if (data.status === 1) {
+      if (data.status === 1 && data.facilities) {
         const facilities = data.facilities;
 
         // Map facilities and merge type_data dynamically
         const exportData = facilities.map(facility => {
           // Base fields
           let row = {
+            "Enumeration ID": facility.enumeration_id,
             "Payer User ID": facility.payer_user_id,
-            "Facility Name": facility.first_name,
+            "School Name": facility.first_name,
+            "Facility Type": facility.facility_type,
+            "CAC/RC Number": facility.cac_rc_number,
+            "Ownership Type": facility.ownership_type,
+            "License Number": facility.license_number,
+            "License Expiry": facility.license_expiry,
+            "Date Established": facility.date_established,
             "Email": facility.email,
             "Phone": facility.phone,
             "State": facility.state,
             "LGA": facility.lga,
-            "TIN": facility.tin,
             "Address": facility.address,
-            "Enumerator ID": facility.enumerator_id,
-            "Facility Hospital ID": facility.facility_hospital_id,
-            "Facility Type": facility.facility_type,
-            "Number of Beds": facility.number_of_beds,
+            "TIN": facility.tin,
+            "TIN Response": facility.tin_response,
             "Liabilities": facility.liabilities,
-            "Average Monthly Visits": facility.avg_monthly_visits,
-            "Branch Name": facility.branch_name,
-            "Physical Address": facility.physical_address,
-            "City": facility.city,
-            "Branch Phone Numbers": facility.branch_phone_numbers,
-            "Branch Email": facility.branch_email,
-            "Branch Website": facility.branch_website,
-            "CAC Certificate Path": facility.cac_certificate_path,
-            "Operating License Path": facility.operating_license_path,
-            "TIN Response": facility.tin_response
+            "Enumerator ID": facility.enumerator_id,
+            "Category": facility.category,
+            "Industry": facility.industry,
+            "Postal Code": facility.postal_code
           };
 
-          // Merge type_data if available
+          // Add school-specific operational data
           if (facility.type_data) {
-            Object.entries(facility.type_data).forEach(([key, value]) => {
-              // Use the original key as heading
-              row[key] = value;
-            });
+            row["Number of Staff"] = facility.type_data.number_of_staff || '0';
+            row["Avg New Intakes per Session"] = facility.type_data.avg_new_intakes_per_session || '0';
+            row["Avg Number of Students"] = facility.type_data.avg_number_of_students || '0';
           }
-          if (facility.facility_classification) {
-            Object.entries(facility.facility_classification).forEach(([key, value]) => {
-              // Use the original key as heading
-              row[key] = value;
-            });
+
+          // Add representative info
+          row["Rep First Name"] = facility.rep_firstname;
+          row["Rep Surname"] = facility.rep_surname;
+          row["Rep Email"] = facility.rep_email;
+          row["Rep Phone"] = facility.rep_phone;
+          row["Rep Position"] = facility.rep_position;
+          row["Rep State"] = facility.rep_state;
+          row["Rep LGA"] = facility.rep_lga;
+          row["Rep Address"] = facility.rep_address;
+
+          // Add branch info if available
+          if (facility.facility_branches && facility.facility_branches.length > 0) {
+            const branch = facility.facility_branches[0]; // First branch
+            row["Branch Name"] = branch.branch_name;
+            row["Branch Address"] = branch.physical_address;
+            row["Branch City"] = branch.city;
+            row["Branch LGA"] = branch.lga;
+            row["Branch Phone"] = branch.phone_numbers;
+            row["Branch Email"] = branch.email;
+            row["Branch Website"] = branch.website;
           }
 
           return row;
@@ -570,24 +535,24 @@ function exportData(format) {
         // Convert to Excel or CSV
         const ws = XLSX.utils.json_to_sheet(exportData);
         const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Facilities");
+        XLSX.utils.book_append_sheet(wb, ws, "Schools");
 
         const fileExtension = format === 'csv' ? 'csv' : 'xlsx';
         const bookType = format === 'csv' ? 'csv' : 'xlsx';
-        const fileName = `Facilities_Export_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
+        const fileName = `Schools_Export_${new Date().toISOString().slice(0, 10)}.${fileExtension}`;
 
         XLSX.writeFile(wb, fileName, { bookType });
 
         Swal.fire({
           title: 'Export Successful',
-          text: `Facilities data has been exported as ${format.toUpperCase()}`,
+          text: `School facilities data has been exported as ${format.toUpperCase()}`,
           icon: 'success',
           confirmButtonText: 'OK'
         });
       } else {
         Swal.fire({
           title: 'No Data',
-          text: 'No facilities found to export',
+          text: 'No school facilities found to export',
           icon: 'warning',
           confirmButtonText: 'OK'
         });
