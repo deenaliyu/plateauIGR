@@ -1,6 +1,5 @@
 let USERINFO = JSON.parse(window.localStorage.getItem("enumDataPrime"));
 
-
 async function getTaxPayers() {
   try {
     const response = await fetch(`${HOST}?getEnumerationTaxPayerById&id=${USERINFO.id}`);
