@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+
+
+<html lang="en" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="./assets/"
+  data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>PlateauIGR</title>
+
+  <meta name="description" content="" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
+
+  <!-- Fonts -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Icons. Uncomment required icon fonts -->
+  <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="./assets/css/dataTable.css">
+  <link rel="stylesheet" href="./assets/vendor/css/core.css" class="template-customizer-core-css" />
+  <link rel="stylesheet" href="./assets/vendor/css/theme-default.css" class="template-customizer-theme-css" />
+  <link rel="stylesheet" href="./assets/css/demo.css" />
+  <link rel="stylesheet" href="./assets/css/style.css">
+  <!-- Vendors CSS -->
+  <link rel="stylesheet" href="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css">
+
+  <script src="./assets/vendor/js/helpers.js"></script>
+  <script src="./assets/js/config.js"></script>
+</head>
+
+<body class="taxpayer">
+  <!-- Layout wrapper -->
+  <div class="layout-wrapper layout-content-navbar">
+    <div class="layout-container">
+      <!-- Menu -->
+
+      <aside id="layout-menu" class="aside layout-menu menu-vertical menu bg-menu-theme">
+
+      </aside>
+      <!-- / Menu -->
+
+      <!-- Layout container -->
+      <div class="layout-page">
+        <!-- Navbar -->
+
+        <nav
+          class="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+          id="layout-navbar">
+          <div class="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+            <a class="nav-item nav-link px-0 me-xl-4" href="javascript:void(0)">
+              <i class="bx bx-menu bx-sm"></i>
+            </a>
+          </div>
+
+          <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
+            <div class="flex-1">
+              <p class="text-sm text-black">Date: <span class="datei"> </span></p>
+              <h1 class="md:text-[30px] text-[14px] text-[#151515] pt-2">Education Sector - Schools</h1>
+            </div>
+
+
+            <div class="mt-4 flex gap-x-5 ms-auto">
+              <button class="text-dark items-center flex gap-x-1" data-bs-toggle="modal" data-bs-target="#filterModal"
+                type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <iconify-icon icon="cuida:filter-outline" width="28" height="28"></iconify-icon>
+                Filters</button>
+
+              <div class="dropdown">
+                <button class="button dropdown-toggle items-center flex gap-x-1" type="button" id="dropdownMenuButton"
+                  data-bs-toggle="dropdown" aria-expanded="false">
+                  <iconify-icon icon="material-symbols:cloud-download" width="28" height="28"></iconify-icon> Download
+                  Report</button>
+                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                  <li><a class="dropdown-item dropdown-item-download">CSV</a></li>
+                  <li><a class="dropdown-item dropdown-item-download">Excel</a></li>
+                </ul>
+              </div>
+              <div class="avatar avatar-online">
+                <img src="./assets/img/avatars/1.png" alt class="w-px-40 h-auto rounded-circle theProfImg1" />
+
+              </div>
+              <h4 class="text-mm text-black self-center hidden md:flex adminName">System Admin</h4>
+            </div>
+
+          </div>
+        </nav>
+
+        <!-- / Navbar -->
+
+        <!-- Content wrapper -->
+        <section class="content-wrapper">
+
+          <div class="container-xxl flex-grow-1 container-p-y taxes">
+            <div class="row mb-4" id="summaryTiles">
+              <div class="col-md-12">
+                <h4 class="mb-3 text-xl text-black fontBold">Facilities Summary</h4>
+                <div class="row" id="facilityTypeSummary">
+                  <!-- Summary tiles will be loaded here -->
+                </div>
+              </div>
+            </div>
+
+
+            <div class="card py-4 mt-6 px-2">
+              <div class="table-responsive">
+                <table class="table hospitalTabl" id="dataTable">
+                  <thead>
+                    <tr>
+                      <th>S/N</th>
+                      <th>Enumeration ID</th>
+                      <th>School Name</th>
+                      <th>School Type</th>
+                      <th>Staff Count</th>
+                      <th>Total Students</th>
+                      <th>State</th>
+                      <th>LGA</th>
+                      <th>Contact Number</th>
+                      <th>Email</th>
+                      <th>Status</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody id="showFacilitiesList">
+                    <!-- Facilities will be loaded here -->
+                  </tbody>
+                </table>
+
+              </div>
+              <div class="flex justify-center items-center mt-4" id="loader">
+                <!-- <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div> -->
+              </div>
+            </div>
+
+          </div>
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer">
+
+          </section>
+          <div class="content-backdrop fade"></div>
+        </section>
+
+        <!-- Content wrapper -->
+      </div>
+      <!-- / Layout page -->
+    </div>
+
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
+  </div>
+  <!-- / Layout wrapper -->
+<div class="modal fade" id="filterModal" tabindex="-1" aria-labelledby="filterModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="filterModalLabel">Filter Facilities</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="filterForm">
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="facilityTypeFilter" class="form-label">School Type</label>
+              <select class="form-select" id="facilityTypeFilter">
+                <option value="">All Types</option>
+                <option value="">All Types</option>
+                <option value="Primary Schools Facility">Primary Schools </option>
+                <option value="Secondary Schools Facility">Secondary Schools </option>
+                <option value="Nursery Schools Facilities">Nursery Schools </option>
+                <option value="Special Needs Schools Facilities">Special Needs Schools </option>
+                <option value="ACE Schools Facilities">ACE Schools </option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="lgaFilter" class="form-label">Local Government Area</label>
+              <select class="form-select" id="lgaFilter">
+                <option value="">All LGAs</option>
+                <option value="Barkin Ladi">Barkin Ladi</option>
+                <option value="Bassa">Bassa</option>
+                <option value="Bokkos">Bokkos</option>
+                <option value="Jos East">Jos East</option>
+                <option value="Jos North">Jos North</option>
+                <option value="Jos South">Jos South</option>
+                <option value="Kanam">Kanam</option>
+                <option value="Kanke">Kanke</option>
+                <option value="Langtang North">Langtang North</option>
+                <option value="Langtang South">Langtang South</option>
+                <option value="Mangu">Mangu</option>
+                <option value="Mikang">Mikang</option>
+                <option value="Pankshin">Pankshin</option>
+                <option value="Qua'an Pan">Qua'an Pan</option>
+                <option value="Riyom">Riyom</option>
+                <option value="Shendam">Shendam</option>
+                <option value="Wase">Wase</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="categoryFilter" class="form-label">Category Type</label>
+              <select class="form-select" id="categoryFilter">
+                <option value="">All Types</option>
+                <option value="Individual">Individual</option>
+                <option value="Corporate">Corporate</option>
+                <option value="Federal">Federal</option>
+                <option value="State">State</option>
+              </select>
+            </div>
+            <div class="col-md-6 mb-3">
+              <label for="dateRangeFilter" class="form-label">Date Range</label>
+              <input type="text" class="form-control date-range-picker" id="dateRangeFilter" placeholder="Select date range">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6 mb-3">
+              <label for="searchFilter" class="form-label">Search</label>
+              <input type="text" class="form-control" id="searchFilter" placeholder="Search facilities...">
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="applyFilters">Apply Filters</button>
+        <button type="button" class="btn btn-outline-danger" id="resetFilters">Reset</button>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+  <!-- Add this modal for facility details -->
+  <div class="modal fade" id="facilityDetailsModal" tabindex="-1" aria-labelledby="facilityDetailsModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="facilityDetailsModalLabel">Facility Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="facilityDetailsContent">
+          <!-- Content will be loaded dynamically -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <!-- <button type="button" class="btn btn-primary" id="editFacilityBtn">Edit Facility</button> -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="editMod" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
+      <div class="modal-content">
+        <div class="modal-header ">
+          <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
+            aria-label="Close"><iconify-icon icon="ph:x-thin"></iconify-icon></button>
+        </div>
+        <div class="modal-body mb-5">
+
+          <h1 class="text-center text-2xl">TIN Status</h1>
+          <form action="">
+            <p class="text-center mt-4">Update the status of the payer Tax <br>Identification
+              Number.</p>
+
+            <select name="" id="selectInput" class="form-select mt-5">
+              <option disabled selected>update status</option>
+              <option value="0">Un-verfied</option>
+              <option value="1">Verified</option>
+            </select>
+
+            <button class="btn btn-primary mt-4 w-full" id="updateStatus">Update Status</button>
+            <div id="msg_box" class="w-full"></div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- build:js assets/vendor/js/core.js -->
+  <script src="./assets/vendor/libs/jquery/jquery.js"></script>
+  <script src="./assets/vendor/libs/popper/popper.js"></script>
+  <script src="./assets/vendor/js/bootstrap.js"></script>
+  <script src="./assets/js/jquery.datatables.min.js"></script>
+  <script src="./assets/js/dataTables.bootstrap5.min.js"></script>
+  <script src="./assets/vendor/libs/echarts/echarts.js"></script>
+  <script src="./assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+  <script src="./assets/js/nav.js"></script>
+  <script src="./assets/vendor/js/menu.js"></script>
+  <script src="../assets/js/sweetalert2/dist/sweetalert2.all.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
+  <!-- <script>
+    let theAtivo = document.querySelector(`.enu`);
+    theAtivo.parentElement.classList.add("active");
+  </script> -->
+  <!-- Vendors JS -->
+  <script src="https://code.iconify.design/iconify-icon/1.0.2/iconify-icon.min.js"></script>
+  <!-- Main JS -->
+
+  <script src="./assets/js/main.js"></script>
+  <script src="./assets/js/schools-report.js"></script>
+</body>
+
+</html>
