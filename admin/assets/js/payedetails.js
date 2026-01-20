@@ -83,7 +83,7 @@ async function getStaffLists() {
     AllEmployees = specialUsers.message
     dataToExport = specialUsers.message
     $("#reg_staff").html(AllEmployees.length)
-    specialUsers.message.reverse().forEach((rhUser, i) => {
+    specialUsers.message.forEach((rhUser, i) => {
 
       $("#stafflistTable").append(`
           <tr>
@@ -93,8 +93,8 @@ async function getStaffLists() {
             <td>${rhUser.fullname}</td>
             <td>${formatMoney(parseFloat(rhUser.annual_gross_income))}</td>
             <td>${formatMoney(parseInt(rhUser.basic_salary))}</td>
-            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12))}</td>
-            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly))}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly * 12) || 0)}</td>
+            <td>${rhUser.monthly === "" ? '-' : formatMoney(parseInt(rhUser.monthly) || 0)}</td>
             <td>${rhUser.timeIn}</td>
             <td>
               <div class="flex items-center gap-2">
@@ -116,10 +116,58 @@ getStaffLists().then(tt => {
   $('#dataTable').DataTable();
 })
 
+// Tax Law Selection for Edit Modal
+function selectEditTaxLaw(type) {
+  const oldOption = document.getElementById('editOldTaxOption');
+  const newOption = document.getElementById('editNewTaxOption');
+  const selectedInput = document.getElementById('editSelectedTaxLaw');
+  const submitBtn = document.getElementById('theButton');
+  const btnText = document.getElementById('editBtnText');
+
+  // Remove selected class from both options
+  oldOption.classList.remove('selected');
+  newOption.classList.remove('selected');
+
+  // Add selected class to the chosen option
+  if (type === 'old') {
+    oldOption.classList.add('selected');
+    selectedInput.value = 'old';
+    btnText.textContent = 'Update Employee (Old Tax Law)';
+  } else {
+    newOption.classList.add('selected');
+    selectedInput.value = 'new';
+    btnText.textContent = 'Update Employee (New Tax Law)';
+  }
+
+  // Enable the submit button
+  submitBtn.disabled = false;
+}
+
+// Reset tax law selection when modal opens
+function resetEditTaxLawSelection() {
+  const oldOption = document.getElementById('editOldTaxOption');
+  const newOption = document.getElementById('editNewTaxOption');
+  const selectedInput = document.getElementById('editSelectedTaxLaw');
+  const submitBtn = document.getElementById('theButton');
+  const btnText = document.getElementById('editBtnText');
+
+  // Reset selection state
+  oldOption.classList.remove('selected');
+  newOption.classList.remove('selected');
+  selectedInput.value = '';
+  submitBtn.disabled = true;
+  btnText.textContent = 'Select a Tax Law to Update';
+  
+  // Clear any previous messages
+  $("#msg_box").html('');
+}
+
 function editMDAFunc(e) {
   let editaID = e.dataset.revid
-  // console.log(editaID)
   sessionStorage.setItem("userUpdate", editaID)
+
+  // Reset tax law selection
+  resetEditTaxLawSelection();
 
   let theREV = AllEmployees.find(dd => dd.id === editaID)
 
@@ -133,25 +181,53 @@ function editMDAFunc(e) {
 }
 
 $("#theButton").on("click", () => {
+  const selectedTaxLaw = document.getElementById('editSelectedTaxLaw').value;
+  
+  // Check if tax law is selected
+  if (!selectedTaxLaw) {
+    Swal.fire({
+      title: 'Selection Required',
+      text: 'Please select a tax law calculation method before updating.',
+      icon: 'warning',
+      confirmButtonColor: '#CDA545'
+    });
+    return;
+  }
+
   let theRevId = sessionStorage.getItem("userUpdate")
-  $("#msg_box").html(`
-    <div class="flex justify-center items-center mt-4">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-    </div>
-  `)
-  $("#theButton").addClass("hidden")
+  const btnText = document.getElementById('editBtnText');
+  
+  // Show loading state
+  btnText.innerHTML = `
+    <span class="flex items-center justify-center gap-2">
+      <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+      </svg>
+      Processing...
+    </span>
+  `;
+  $("#theButton").prop("disabled", true);
 
   let allInputs = document.querySelectorAll(".enumInput")
 
+  // Determine endpoint based on tax law type
+  const endpoint = selectedTaxLaw === 'new' ? 'updatePayee' : 'updateSpecialUsers';
+
   let obj = {
-    endpoint: "updateSpecialUsers",
+    endpoint: endpoint,
     data: {
       id: theRevId,
+      tax_law_type: selectedTaxLaw // Include tax law type in payload
     }
   }
+  
   allInputs.forEach(allInput => {
     obj.data[allInput.dataset.name] = allInput.value
   })
+
+  console.log('Updating with endpoint:', endpoint);
+  console.log('Payload:', obj);
 
   $.ajax({
     type: "POST",
@@ -162,27 +238,36 @@ $("#theButton").on("click", () => {
       console.log(data)
       if (data.status === 2) {
         $("#msg_box").html(`
-          <p class="text-warning text-center mt-4 text-lg">${data.message}</p>
+          <div class="bg-yellow-50 border border-yellow-200 text-yellow-800 px-4 py-3 rounded-lg text-center mt-3">
+            <p class="font-medium">${data.message}</p>
+          </div>
         `)
-        $("#theButton").removeClass("hidden")
+        // Re-enable button
+        $("#theButton").prop("disabled", false);
+        btnText.textContent = `Update Employee (${selectedTaxLaw === 'new' ? 'New' : 'Old'} Tax Law)`;
 
       } else if (data.status === 1) {
-        $("#msg_box").html(`
-          <p class="text-success text-center mt-4 text-lg">${data.message}</p>
-        `)
-        $("#theButton").removeClass("hidden")
-        setTimeout(() => {
-          $('#theButton').modal('hide');
-          window.location.reload()
-        }, 1000);
-
+        $("#editStaff").modal('hide');
+        Swal.fire({
+          title: 'Success!',
+          text: `Employee updated successfully using the ${selectedTaxLaw === 'new' ? 'New' : 'Old'} Tax Law calculation.`,
+          icon: 'success',
+          confirmButtonColor: '#CDA545'
+        }).then(() => {
+          $('#editStaff').modal('hide');
+          window.location.reload();
+        });
       }
     },
     error: function (request, error) {
       $("#msg_box").html(`
-        <p class="text-danger text-center mt-4 text-lg">Something went wrong, Try again !</p>
+        <div class="bg-red-50 border border-red-200 text-red-800 px-4 py-3 rounded-lg text-center mt-3">
+          <p class="font-medium">Something went wrong! Please try again.</p>
+        </div>
       `)
-      $("#theButton").removeClass("hidden")
+      // Re-enable button
+      $("#theButton").prop("disabled", false);
+      btnText.textContent = `Update Employee (${selectedTaxLaw === 'new' ? 'New' : 'Old'} Tax Law)`;
       console.log(error);
     }
   });

@@ -47,6 +47,102 @@
   <script src="./assets/js/config.js"></script>
   <script src="https://cdn.tiny.cloud/1/a2nnryhuz1r1qtqf4ap5nkr1msakmeqobebopr1d2o3nfx1h/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
+
+  <style>
+    .tax-law-card {
+      border: 2px solid #e5e7eb;
+      border-radius: 12px;
+      padding: 20px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      background: #fff;
+    }
+
+    .tax-law-card:hover {
+      border-color: #CDA545;
+      box-shadow: 0 4px 12px rgba(205, 165, 69, 0.15);
+    }
+
+    .tax-law-card.selected {
+      border-color: #CDA545;
+      background: linear-gradient(135deg, #fefce8 0%, #fef9c3 100%);
+    }
+
+    .tax-law-card .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .tax-law-card.old-law .card-icon {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+
+    .tax-law-card.new-law .card-icon {
+      background: #ecfdf5;
+      color: #059669;
+    }
+
+    .tax-law-card .badge {
+      font-size: 10px;
+      padding: 4px 8px;
+      border-radius: 20px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .tax-law-card.new-law .badge {
+      background: #d1fae5;
+      color: #059669;
+    }
+
+    .submit-btn {
+      background: linear-gradient(135deg, #CDA545 0%, #b8943d 100%);
+      color: white;
+      border: none;
+      padding: 14px 28px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      width: 100%;
+    }
+
+    .submit-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(205, 165, 69, 0.4);
+    }
+
+    .submit-btn:disabled {
+      background: #d1d5db;
+      cursor: not-allowed;
+      transform: none;
+      box-shadow: none;
+    }
+
+    .info-banner {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+    }
+
+    .info-banner p {
+      color: #1e40af;
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .info-banner iconify-icon {
+      color: #3b82f6;
+    }
+  </style>
 </head>
 
 <body>
@@ -163,7 +259,7 @@
             </div>
           </div>
 
-           <div class="mb-4">
+          <div class="mb-4">
             <div class="form-check form-check-inline col-md-3">
               <input class="form-check-input" type="checkbox" id="Pension" value="pension">
               <label class="form-check-label font-bold" for="Pension">Pension</label>
@@ -180,188 +276,70 @@
 
           <div class="mb-4" id="employeeNhis"></div>
 
+          <!-- Tax Law Selection Section -->
+          <div class="mt-6 mb-4">
+            <h2 class="fontBold text-lg mb-2">Select Tax Calculation Method</h2>
+            <p class="text-gray-500 text-sm mb-4">Choose the applicable tax law for calculating PAYE deductions</p>
 
-          <!-- <div class="flex gap-3 md:flex-row flex-col mb-3">
+            <div class="grid md:grid-cols-2 gap-4">
+              <!-- Old Tax Law Card -->
+              <div class="tax-law-card old-law" onclick="selectTaxLaw('old')" id="oldTaxCard">
+                <div class="card-icon">
+                  <iconify-icon icon="mdi:file-document-outline" width="24"></iconify-icon>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">Old Tax Law</h3>
+                <p class="text-gray-500 text-sm mb-3">Previous PAYE calculation method with standard relief and tax
+                  bands</p>
+                <ul class="text-xs text-gray-400 space-y-1">
+                  <li class="flex items-center gap-1">
+                    <iconify-icon icon="mdi:check" width="14"></iconify-icon>
+                    Standard consolidated relief
+                  </li>
+                  <li class="flex items-center gap-1">
+                    <iconify-icon icon="mdi:check" width="14"></iconify-icon>
+                    Traditional tax bands
+                  </li>
+                </ul>
+              </div>
 
-
-
-            <div class="form-group md:w-6/12">
-              <label for="">Medical</label>
-              <input type="text" class="form-control w-full enumInput" data-name="medical">
+              <!-- New Tax Law Card -->
+              <div class="tax-law-card new-law" onclick="selectTaxLaw('new')" id="newTaxCard">
+                <div class="flex items-start justify-between">
+                  <div class="card-icon">
+                    <iconify-icon icon="mdi:file-document-check-outline" width="24"></iconify-icon>
+                  </div>
+                  <span class="badge">Recommended</span>
+                </div>
+                <h3 class="font-semibold text-gray-800 mb-1">New Tax Law</h3>
+                <p class="text-gray-500 text-sm mb-3">Updated 2025 PAYE calculation with revised relief and tax
+                  structure</p>
+                <ul class="text-xs text-gray-400 space-y-1">
+                  <li class="flex items-center gap-1">
+                    <iconify-icon icon="mdi:check" width="14"></iconify-icon>
+                    Enhanced relief calculation
+                  </li>
+                  <li class="flex items-center gap-1">
+                    <iconify-icon icon="mdi:check" width="14"></iconify-icon>
+                    Updated tax bands
+                  </li>
+                </ul>
+              </div>
             </div>
 
+            <!-- Hidden input to store selected tax law -->
+            <input type="hidden" id="selectedTaxLaw" value="">
           </div>
 
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
+          <!-- Single Submit Button -->
+          <button class="submit-btn my-4" type="button" id="theButton" onclick="continueReg()" disabled>
+            <span id="btnText">Select a Tax Law to Continue</span>
+          </button>
 
-            <div class="form-group md:w-6/12">
-              <label for="">Entertainment</label>
-              <input type="text" class="form-control w-full enumInput" data-name="entertainment">
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Leave</label>
-              <input type="text" class="form-control w-full enumInput" data-name="leaves">
-            </div>
-
-          </div> -->
-
-
-        <div class="flex justify-between">
-            <button class="button w-full my-4 w-4/12" type="button" id="theButton" onclick="continueReg()">Old Tax Law</button>
-           <button class="button w-full my-4 w-4/12" type="button" id="theButton" onclick="continueReg()">New Tax Law</button>
-        </div>
-
-          
           <div id="msg_box"></div>
 
         </form>
 
       </section>
-
-      <!-- <section class="formTabs h-full">
-
-        <div class="md:pt-4 pt-3">
-          <button class="flex items-center gap-2" onclick="nextPrev(-1)">
-            <iconify-icon icon="eva:arrow-back-outline"></iconify-icon>
-            <span>Go back</span>
-          </button>
-        </div>
-
-        <form action="" class="mt-4 w-8/12">
-
-          <h1 class="fontBold text-xl">Add New Employee</h1>
-          <p class="mt-2 mb-4">Secondary Information</p>
-
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Consilidated Allowance*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="consilidated_allowance" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">NHF*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="nhf" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">NHS*</label>
-              <input type="tel" class="form-control w-full enumInput" data-name="nhs" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Life Insurance*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="life_insurance" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Pension*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="pension" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Gratuities*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="gratuities" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Total Allowance*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="total_allowance" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Chargeable Income*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="chargeable_income" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">1st 300,000 @ 7%*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="fist_thouse_perc" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Next 300,000 @ 7%*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="next_thouse_perc" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Next 500,000 @ 17%*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="fist_thouse_perc" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Next 300,000 @ 19%*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="next_thouse_perc" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Next 1,600,000 @ 21%*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="fist_thouse_perc" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Excess 3,200,000 @ 24%*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="next_thouse_perc" required>
-            </div>
-
-          </div>
-
-          <div class="flex gap-3 md:flex-row flex-col mb-3">
-
-            <div class="form-group md:w-6/12">
-              <label for="">Annual Minimum Tax*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="annual_minimum_tax" required>
-            </div>
-
-            <div class="form-group md:w-6/12">
-              <label for="">Annual Tax Payable*</label>
-              <input type="text" class="form-control w-full enumInput" data-name="annual_tax_payable" required>
-            </div>
-
-          </div>
-
-          <div class="form-group md:w-6/12 mb-3">
-            <label for="">Monthly Tax Payable*</label>
-            <input type="text" class="form-control w-full enumInput" data-name="monthly_tax_payable" required>
-          </div>
-
-          <button class="button w-full mb-4" type="button" onclick="window.open('privatepaye.html', '_self')">Continue</button>
-
-        </form>
-
-      </section> -->
-
-
-
-
-
-
 
     </div>
 
@@ -389,7 +367,7 @@
   <script src="./assets/js/main.js"></script>
   <script src="./assets/js/tabHandler.js"></script>
 
-  <script src="assets/js/create-employee.js?v=1.2"></script>
+  <script src="assets/js/create-employee.js"></script>
 
 </body>
 

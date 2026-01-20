@@ -25,7 +25,7 @@
     rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
   <!-- Icons. Uncomment required icon fonts -->
-   <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.7.0/fonts/remixicon.css" rel="stylesheet">
   <link rel="stylesheet" href="./assets/vendor/fonts/boxicons.css" />
 
   <!-- Core CSS -->
@@ -98,19 +98,19 @@
       box-shadow: none !important;
       border: none !important;
       backdrop-filter: unset !important;
-      color: #fff !important;
+      color: #000 !important;
     }
 
     .layout-navbar.navbar-detached #navPageTitle {
-      color: #D4EDCE !important;
+      color: #000000 !important;
     }
 
     .layout-navbar.navbar-detached .datei {
-      color: #D4EDCE !important;
+      color: #000000 !important;
     }
 
     .layout-navbar.navbar-detached .adminName {
-      color: #D4EDCE !important;
+      color: #000000 !important;
     }
 
     .collapse {
@@ -134,26 +134,36 @@
     }
 
     .revenue-card.first {
-      background: #E99F37;
+      background: #CEA546;
       color: #fff;
     }
 
     .revenue-card.second {
-      background: #D08317;
+      background: #AF882E;
       color: #FFFFFF;
     }
 
     .revenue-card.third {
-      background: #EFB86B;
+      background: #DABA72;
       color: #FFFFFF;
     }
 
     .revenue-card.first .card-subtitle,
+    .revenue-card.third .card-subtitle {
+      color: #864E00;
+    }
+
+    .revenue-card.first .card-title,
+    .revenue-card.third .card-title {
+      font-size: 1.8rem;
+      color: #864E00;
+      font-weight: bold;
+    }
+
     .revenue-card.second .card-subtitle {
       color: #FFFFFF;
     }
 
-    .revenue-card.first .card-title,
     .revenue-card.second .card-title {
       font-size: 1.8rem;
       color: #FFFFFF;
@@ -183,16 +193,6 @@
       display: flex;
       justify-content: center;
       align-items: center;
-    }
-
-    .revenue-card.third .card-subtitle {
-      color: #000000;
-    }
-
-    .revenue-card.third .card-title {
-      font-size: 1.8rem;
-      color: #000000;
-      font-weight: bold;
     }
 
     .revenue-icon {
@@ -324,9 +324,12 @@
       align-items: center;
       bottom: 30px;
       right: 30px;
-      width: 60px;
-      height: 60px;
-      font-size: 24px;
+      border-radius: 30px;
+      /* width: 60px; */
+      /* height: 60px; */
+      font-size: 16px;
+      color: #513E15;
+      font-weight: bold;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
       z-index: 999;
     }
@@ -410,6 +413,14 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
+
+    /* Global Filter Styles */
+    .global-filter-container {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
   </style>
 </head>
 
@@ -441,8 +452,8 @@
 
           <div class="navbar-nav-right flex items-center justify-between" id="navbar-collapse">
             <div class="">
-              <p class="text-sm text-[#D4EDCE]">Date: <span class="datei" id="datei"> </span></p>
-              <h1 class="md:text-[30px] text-[14px] text-[#D4EDCE] pt-2">Dashboard</h1>
+              <p class="text-sm text-[#000000]">Date: <span class="datei" id="datei"> </span></p>
+              <h1 class="md:text-[30px] text-[14px] text-[#000000] pt-2">Dashboard</h1>
             </div>
 
             <div class="mt-4 flex gap-x-5 ms-auto">
@@ -472,10 +483,26 @@
 
           <div class="container-xxl flex-grow-1 container-p-y">
 
+            <!-- Global Filter - Month & Year Dropdowns -->
             <div class="d-flex justify-content-end relative mb-4" style="z-index: 100;">
-              <div class="col-md-3 d-flex">
-                <input type="month" class="form-control monthlyRevFilter" value="2025-12">
-
+              <div class="global-filter-container col-md-4">
+                <select id="globalMonthFilter" class="form-select">
+                  <option value="01">January</option>
+                  <option value="02">February</option>
+                  <option value="03">March</option>
+                  <option value="04">April</option>
+                  <option value="05">May</option>
+                  <option value="06">June</option>
+                  <option value="07">July</option>
+                  <option value="08">August</option>
+                  <option value="09">September</option>
+                  <option value="10">October</option>
+                  <option value="11">November</option>
+                  <option value="12">December</option>
+                </select>
+                <select id="globalYearFilter" class="form-select">
+                  <!-- Years will be populated dynamically (2023 to current year) -->
+                </select>
               </div>
             </div>
 
@@ -721,7 +748,7 @@
 
                           <!-- ACCRUED -->
                           <div class="metric-box mb-2">
-                            <small>Unpaid Invoices</small>
+                            <small>Accured</small>
                             <div class="d-flex align-items-center gap-1">
                               <strong class="text-danger" id="metricAccrued" style="font-size: 0.6rem;">₦0</strong>
                               <i class="ri-arrow-down-line text-danger" style="font-size: 0.75rem;"></i>
@@ -762,7 +789,7 @@
                   <div class="card-body p-4">
                     <div class="d-flex justify-content-between align-items-center mb-3">
                       <h5 class="card-title mb-0" style="font-weight: 600; font-size: 1rem;">Revenue Gauge</h5>
-                      <input type="month" id="gauge-month-filter" class="form-control sm-control">
+                      <!-- Filter removed - now uses global filter -->
                     </div>
 
                     <div class="text-center my-3">
@@ -835,9 +862,7 @@
               <div class="card-body">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                   <h5 class="card-title mb-0 text-xl fontBold">E-services</h5>
-                  <div class="d-flex gap-2">
-                    <input type="month" class="form-control monthlyRevFilter2">
-                  </div>
+                  <!-- Filter removed - now uses global filter -->
                 </div>
 
                 <div class="row g-3">
@@ -991,9 +1016,9 @@
           </div>
 
           <!-- Floating Action Button -->
-          <button class="btn btn-primary rounded-circle floating-btn"
+          <button class="btn btn-primary floating-btn"
             onclick="window.location.href='tax-calculator.html'">
-            <i class="ri-calculator-line"></i>
+            <i class="ri-calculator-line me-2"></i> Tax Calculator
           </button>
 
           <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>

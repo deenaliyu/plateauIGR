@@ -36,7 +36,7 @@ if (THE_SESSION) {
   heeaderr += `
     <div class="md:flex hidden items-center gap-5 text-[#555555]">
 
-      <div class="flex gap-3 items-center">
+      <div class="flex gap-3">
         <a href="index.html">Home</a>
         <a href="about.html">About Us</a>
         <a href="eservices.html">E-Services</a>
@@ -46,6 +46,7 @@ if (THE_SESSION) {
       </div>
 
       <div class="flex items-center gap-3">
+        <a class="button" style="background: #71470D !important; color: #FFFFFF !important" href="tax-calculator.html">Tax Calculator</a>
         <a class="outline-btn" href="signin.html">Sign In</a>
         <a class="button" href="regcategory.html">Register</a>
       </div>
@@ -132,6 +133,7 @@ if (THE_SESSION) {
     </div>
 
   <div class="flex items-center gap-3 mt-5">
+    <a class="button" style="background: #71470D !important; color: #FFFFFF !important" href="tax-calculator.html">Tax Calculator</a>
     <a class="outline-btn" href="signin.html">Sign In</a>
     <a class="button" href="regcategory.html">Register</a>
   </div>
@@ -164,6 +166,8 @@ $("#footer").html(`
       <div class="flex items-center gap-2">
           <p class="text-[#555555] md:text-sm text-xs">Copyright 2021 - ${currentYear} Primeguage Solutions Limited</p>
           <img src="./assets/img/logo1.png" class="w-[60px] h-[30px]" alt="">
+          <img src="./assets/img/ncc.svg" class="w-[60px] h-[40px]" alt="">
+          <img src="./assets/img/pci.svg" class="w-[60px] h-[40px]" alt="">
       </div>
 
       <div class="flex items-center gap-3">
@@ -174,7 +178,7 @@ $("#footer").html(`
       </div>
 
       <div class="md:flex hidden items-center gap-3 text-[#555555] theNav">
-        <a type="button" class="text-center" data-bs-toggle="modal" data-bs-target="#tax_calc_modal">
+        <a href="tax-calculator.html" class="text-center">
             <iconify-icon icon="solar:calculator-bold"></iconify-icon>
             <p class="text-sm m-0">Tax Calculator</p>
         </a>
@@ -245,7 +249,7 @@ let lgaList2 = {
     "Yola North",
     "Yola South"
   ],
-  AkwaIbom: [
+  "Akwa Ibom": [
     "Abak",
     "Eastern Obolo",
     "Eket",
@@ -1059,6 +1063,7 @@ let lgaList2 = {
 }
 
 let STATES2 = `
+  <option value="Plateau">Plateau</option>
   <option value="Abia">Abia</option>
   <option value="Adamawa">Adamawa</option>
   <option value="Akwa Ibom">Akwa Ibom</option>
@@ -1104,7 +1109,8 @@ $(".stat").html(STATES2)
 let stateSelect2 = document.querySelector("#selectState")
 let lgaSelect2 = document.querySelector('#selectLGA')
 
-
+let stateSelect3 = document.querySelector(".selectState")
+let lgaSelect3 = document.querySelector(".selectLGA")
 
 if (stateSelect2) {
   // lgaSelect = ""
@@ -1122,7 +1128,7 @@ if (stateSelect2) {
     let selectedState = $(this).val()
 
     let arrStates = Object.values(lgaList2)
-    let finalarrState = arrStates[stateSelect2.selectedIndex]
+    let finalarrState = arrStates[stateSelect2.selectedIndex - 1]
 
     lgaSelect2.innerHTML = ''
 
@@ -1137,243 +1143,135 @@ if (stateSelect2) {
 
 }
 
-function convertNumberToWords(number) {
-  let [integer, fraction] = String(number).split('.');
-  let output = "";
-
-  if (integer[0] === "-") {
-    output = "negative ";
-    integer = integer.substring(1);
-  } else if (integer[0] === "+") {
-    output = "positive ";
-    integer = integer.substring(1);
+if (stateSelect3) {
+  // lgaSelect = ""
+  stateSelect3.innerHTML = STATES2
+if (lgaSelect3) {
+    lgaList2["Plateau"].forEach(lga => {
+      lgaSelect3.innerHTML += `
+    <option value="${lga}">${lga}</option>
+  `
+    })
   }
 
-  if (integer[0] === "0") {
-    output += "zero";
-  } else {
-    integer = integer.padStart(36, "0");
-    let group = integer.match(/.{1,3}/g);
-    let groups2 = group.map(g => convertThreeDigit(g[0], g[1], g[2]));
+  stateSelect3.addEventListener('change', function () {
+    let selectedState = $(this).val()
 
-    for (let z = 0; z < groups2.length; z++) {
-      if (groups2[z] !== "") {
-        output += groups2[z] + convertGroup(11 - z) +
-          (z < 11 && !groups2.slice(z + 1, -1).includes('') &&
-            groups2[11] !== '' && group[11][0] === '0' ? " and " : ", ");
-      }
+    let arrStates = Object.values(lgaList2)
+    let finalarrState = arrStates[stateSelect3.selectedIndex]
+
+    lgaSelect3.innerHTML = ''
+
+    finalarrState.forEach((opt, ii) => {
+      lgaSelect3.innerHTML += `
+        <option value="${opt}">${opt}</option>
+      `
+    })
+
+
+  })
+
+}
+
+function convertNumberToWords(amount) {
+  const ones = [
+    "",
+    "One",
+    "Two",
+    "Three",
+    "Four",
+    "Five",
+    "Six",
+    "Seven",
+    "Eight",
+    "Nine",
+  ];
+  const tens = [
+    "",
+    "",
+    "Twenty",
+    "Thirty",
+    "Forty",
+    "Fifty",
+    "Sixty",
+    "Seventy",
+    "Eighty",
+    "Ninety",
+  ];
+  const teens = [
+    "Ten",
+    "Eleven",
+    "Twelve",
+    "Thirteen",
+    "Fourteen",
+    "Fifteen",
+    "Sixteen",
+    "Seventeen",
+    "Eighteen",
+    "Nineteen",
+  ];
+
+  function convertToWords(num) {
+    if (num === 0) return "";
+    if (num < 10) return ones[num];
+    if (num < 20) return teens[num - 10];
+    if (num < 100) {
+      return (
+        tens[Math.floor(num / 10)] +
+        (num % 10 !== 0 ? " " + ones[num % 10] : "")
+      );
     }
-
-    output = output.replace(/, $/, "");
-  }
-
-  if (fraction > 0) {
-    output += " naira and";
-    output += " " + numberToWords(fraction);
-    
-    output += " Kobo"
-  }
-
-  return output;
-}
-
-function convertGroup(index) {
-  switch (index) {
-    case 11:
-      return " decillion";
-    case 10:
-      return " nonillion";
-    case 9:
-      return " octillion";
-    case 8:
-      return " septillion";
-    case 7:
-      return " sextillion";
-    case 6:
-      return " quintrillion";
-    case 5:
-      return " quadrillion";
-    case 4:
-      return " trillion";
-    case 3:
-      return " billion";
-    case 2:
-      return " million";
-    case 1:
-      return " thousand";
-    case 0:
-      return "";
-  }
-}
-
-function convertThreeDigit(digit1, digit2, digit3) {
-  let buffer = "";
-
-  if (digit1 === "0" && digit2 === "0" && digit3 === "0") {
-    return "";
-  }
-
-  if (digit1 !== "0") {
-    buffer += convertDigit(digit1) + " hundred";
-    if (digit2 !== "0" || digit3 !== "0") {
-      buffer += " and ";
+    if (num < 1000) {
+      return (
+        ones[Math.floor(num / 100)] +
+        " Hundred" +
+        (num % 100 !== 0 ? " and " + convertToWords(num % 100) : "")
+      );
     }
-  }
-
-  if (digit2 !== "0") {
-    buffer += convertTwoDigit(digit2, digit3);
-  } else {
-    if (digit3 !== "0") {
-      buffer += convertDigit(digit3);
+    if (num < 1000000) {
+      return (
+        convertToWords(Math.floor(num / 1000)) +
+        " Thousand" +
+        (num % 1000 !== 0 ? ", " + convertToWords(num % 1000) : "")
+      );
     }
-  }
-
-  return buffer;
-}
-
-function convertTwoDigit(digit1, digit2) {
-  if (digit2 === "0") {
-    switch (digit1) {
-      case "1":
-        return "ten";
-      case "2":
-        return "twenty";
-      case "3":
-        return "thirty";
-      case "4":
-        return "forty";
-      case "5":
-        return "fifty";
-      case "6":
-        return "sixty";
-      case "7":
-        return "seventy";
-      case "8":
-        return "eighty";
-      case "9":
-        return "ninety";
+    if (num < 1000000000) {
+      return (
+        convertToWords(Math.floor(num / 1000000)) +
+        " Million" +
+        (num % 1000000 !== 0 ? ", " + convertToWords(num % 1000000) : "")
+      );
     }
-  } else {
-    if (digit1 === "1") {
-      switch (digit2) {
-        case "1":
-          return "eleven";
-        case "2":
-          return "twelve";
-        case "3":
-          return "thirteen";
-        case "4":
-          return "fourteen";
-        case "5":
-          return "fifteen";
-        case "6":
-          return "sixteen";
-        case "7":
-          return "seventeen";
-        case "8":
-          return "eighteen";
-        case "9":
-          return "nineteen";
-      }
-    } else {
-      let temp = convertDigit(digit2);
-      switch (digit1) {
-        case "2":
-          return "twenty-" + temp;
-        case "3":
-          return "thirty-" + temp;
-        case "4":
-          return "forty-" + temp;
-        case "5":
-          return "fifty-" + temp;
-        case "6":
-          return "sixty-" + temp;
-        case "7":
-          return "seventy-" + temp;
-        case "8":
-          return "eighty-" + temp;
-        case "9":
-          return "ninety-" + temp;
-      }
-    }
+    return "Amount too large";
   }
+
+  function getNairaKoboParts(amount) {
+    const naira = Math.floor(amount); // Whole number part
+    const kobo = Math.round((amount - naira) * 100); // Decimal part converted to kobo
+    return { naira, kobo };
+  }
+
+  // Get naira and kobo parts
+  const { naira, kobo } = getNairaKoboParts(amount);
+
+  // Convert to words
+  const nairaWords = naira > 0 ? convertToWords(naira) + " Naira" : "";
+  const koboWords = kobo > 0 ? convertToWords(kobo) + " Kobo" : "";
+
+  // Combine results
+  if (!naira && !kobo) return "Zero Naira";
+  if (!naira) return koboWords;
+  if (!kobo) return nairaWords;
+  return nairaWords + " and " + koboWords;
 }
 
-function convertDigit(digit) {
-  switch (digit) {
-    case "0":
-      return "zero";
-    case "1":
-      return "one";
-    case "2":
-      return "two";
-    case "3":
-      return "three";
-    case "4":
-      return "four";
-    case "5":
-      return "five";
-    case "6":
-      return "six";
-    case "7":
-      return "seven";
-    case "8":
-      return "eight";
-    case "9":
-      return "nine";
-  }
-}
 
-function numberToWords(num) {
-  const ones = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
-  const teens = ['', 'eleven', 'twelve', 'thirteen', 'fourteen', 'fifteen', 'sixteen', 'seventeen', 'eighteen', 'nineteen'];
-  const tens = ['', 'ten', 'twenty', 'thirty', 'forty', 'fifty', 'sixty', 'seventy', 'eighty', 'ninety'];
-
-  function convertLessThanOneThousand(n) {
-      let word = '';
-      if (n >= 100) {
-          word += ones[Math.floor(n / 100)] + ' hundred ';
-          n %= 100;
-      }
-      if (n >= 20) {
-          word += tens[Math.floor(n / 10)] + ' ';
-          n %= 10;
-      }
-      if (n > 0) {
-          if (n < 10) word += ones[n] + ' ';
-          else word += teens[n - 10] + ' ';
-      }
-      return word.trim();
-  }
-
-  if (num === 0) return 'zero';
-
-  let words = '';
-  if (num < 0) {
-      words += 'negative ';
-      num = Math.abs(num);
-  }
-
-  if (num >= 1000000000) {
-      words += convertLessThanOneThousand(Math.floor(num / 1000000000)) + ' billion ';
-      num %= 1000000000;
-  }
-  if (num >= 1000000) {
-      words += convertLessThanOneThousand(Math.floor(num / 1000000)) + ' million ';
-      num %= 1000000;
-  }
-  if (num >= 1000) {
-      words += convertLessThanOneThousand(Math.floor(num / 1000)) + ' thousand ';
-      num %= 1000;
-  }
-  if (num > 0) {
-      words += convertLessThanOneThousand(num);
-  }
-
-  return words.trim();
-}
-
-window.$crisp = []; window.CRISP_WEBSITE_ID = "c669b149-3ed9-4ff4-b7f2-2c76a219eee3"; (function () {
-  d = document; s = d.createElement("script"); s.src = "https://client.crisp.chat/l.js";
-  s.async = 1; d.getElementsByTagName("head")[0].appendChild(s);
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/660e8ab6a0c6737bd128535e/1hqkcrmn0';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
 })();

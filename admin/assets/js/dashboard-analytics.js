@@ -1,3 +1,12 @@
+/**
+ * Dashboard Analytics - Collection Trend & Revenue Gauge
+ * Updated: 
+ * - Revenue Gauge now uses global filter (month/year dropdowns)
+ * - Collection Trend uses its own yearSelector (not affected by global filter)
+ * - Quarterly Performance/Metrics uses its own yearSelector (not affected by global filter)
+ * - Bar chart now uses custom colors: #D08317, #E99F37, #37E946, #3781E9, #E937DA
+ */
+
 function toggleLoader(cardId, show) {
   const card = document.getElementById(cardId);
   if (!card) return;
@@ -6,13 +15,9 @@ function toggleLoader(cardId, show) {
   else loader.classList.remove('active');
 }
 
-let gaugeMonthFilter = document.getElementById('gauge-month-filter');
-if (gaugeMonthFilter) {
-  const today = new Date();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const year = today.getFullYear();
-  gaugeMonthFilter.value = `${year}-${month}`;
-}
+// ============================================
+// REVENUE GAUGE (Now uses global filter)
+// ============================================
 
 async function updateRevenueGauge(month = '', year = '') {
   toggleLoader('gauge-card', true);
@@ -20,7 +25,7 @@ async function updateRevenueGauge(month = '', year = '') {
     const response = await fetch(`${HOST}?dashboardAnalyticsRevenueGauge&month=${month}&year=${year}`, {
       method: "GET",
       headers: {
-        
+
         "Content-Type": "application/json",
       },
     });
@@ -52,28 +57,28 @@ async function updateRevenueGauge(month = '', year = '') {
   }
 }
 
-// Event Listener for the Month Input
-document.getElementById('gauge-month-filter').addEventListener('change', function (e) {
-  const val = e.target.value; // Format: "YYYY-MM"
-  if (val) {
-    const [year, month] = val.split('-');
-    updateRevenueGauge(month, year);
-  }
-});
+// Expose updateRevenueGauge globally so dashboard.js can call it
+window.updateRevenueGauge = updateRevenueGauge;
 
-// Initial Load
-updateRevenueGauge(gaugeMonthFilter.value.split('-')[1], gaugeMonthFilter.value.split('-')[0]);
+// ============================================
+// COLLECTION TREND & QUARTERLY PERFORMANCE
+// (Uses its own yearSelector - NOT affected by global filter)
+// ============================================
 
 let collectionChart = null;
 let currentView = 'quarterly'; // matches API param: 'quarterly' or 'yearly'
 
+// Custom colors for the bar chart
+const CHART_COLORS = ['#D08317', '#E99F37', '#37E946', '#3781E9', '#E937DA'];
+
 document.addEventListener('DOMContentLoaded', function () {
-  // Initial data fetch
+  // Initial data fetch for Collection Trend & Quarterly Performance
   fetchPerformanceAndMetrics();
   fetchChartData();
 });
 
 // --- API 1: Quarterly Performance & Sidebar Metrics ---
+// Note: This uses yearSelector, NOT the global filter
 async function fetchPerformanceAndMetrics() {
   const yearValue = document.querySelector("#yearSelector")?.value || new Date().getFullYear();
   toggleLoader('trend-card', true); // START LOADER (covers the whole trend card)
@@ -81,7 +86,7 @@ async function fetchPerformanceAndMetrics() {
     const response = await fetch(`${HOST}?dashboardAnalyticsQuarterlyPerformance&year=${yearValue}`, {
       method: "GET",
       headers: {
-        
+
         "Content-Type": "application/json",
       },
     });
@@ -134,6 +139,7 @@ function updateQuarterlyIndicators(quarters) {
 }
 
 // --- API 2: Collection Trends (The Chart) ---
+// Note: This uses yearSelector, NOT the global filter
 async function fetchChartData() {
   toggleLoader('trend-card', true); // START LOADER
   const yearValue = document.querySelector("#yearSelector")?.value || new Date().getFullYear();
@@ -141,7 +147,7 @@ async function fetchChartData() {
     const response = await fetch(`${HOST}?dashboardAnalyticsCollectionTrend&view_type=${currentView}&year=${yearValue}`, {
       method: "GET",
       headers: {
-        
+
         "Content-Type": "application/json",
       },
     });
@@ -167,6 +173,9 @@ function renderChart(labels, values) {
     collectionChart.destroy();
   }
 
+  // Generate background colors array based on the number of data points
+  const backgroundColors = values.map((_, index) => CHART_COLORS[index % CHART_COLORS.length]);
+
   collectionChart = new Chart(ctx, {
     type: 'bar',
     data: {
@@ -175,7 +184,7 @@ function renderChart(labels, values) {
         {
           label: 'Collection Amount',
           data: values,
-          backgroundColor: '#5ba35a',
+          backgroundColor: backgroundColors,
           borderRadius: 8,
           barThickness: currentView === 'quarterly' ? 60 : 40,
           order: 2
@@ -200,7 +209,20 @@ function renderChart(labels, values) {
       scales: {
         y: {
           beginAtZero: true,
-          ticks: { callback: (val) => '₦' + (val / 1000).toFixed(1) + 'k' }
+          ticks: {
+            callback: (val) => {
+              if (val >= 1_000_000_000) {
+                return '₦' + (val / 1_000_000_000).toFixed(1) + 'B'
+              }
+              if (val >= 1_000_000) {
+                return '₦' + (val / 1_000_000).toFixed(1) + 'M'
+              }
+              if (val >= 1_000) {
+                return '₦' + (val / 1_000).toFixed(1) + 'K'
+              }
+              return '₦' + val
+            }
+          }
         }
       }
     }
@@ -227,3 +249,7 @@ function formatCurrency(value) {
   if (value >= 1000) return '₦' + (value / 1000).toFixed(1) + 'K';
   return '₦' + value;
 }
+
+// Expose functions globally for inline handlers
+window.changeView = changeView;
+window.handleYearChange = handleYearChange;

@@ -47,6 +47,120 @@
   <script src="./assets/js/config.js"></script>
   <script src="https://cdn.tiny.cloud/1/a2nnryhuz1r1qtqf4ap5nkr1msakmeqobebopr1d2o3nfx1h/tinymce/6/tinymce.min.js"
     referrerpolicy="origin"></script>
+  
+  <style>
+    /* Tax Law Selection Styles */
+    .tax-law-option {
+      border: 2px solid #e5e7eb;
+      border-radius: 10px;
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      background: #fff;
+      flex: 1;
+    }
+    
+    .tax-law-option:hover {
+      border-color: #CDA545;
+      background: #fffbeb;
+    }
+    
+    .tax-law-option.selected {
+      border-color: #CDA545;
+      background: linear-gradient(135deg, #fffbeb 0%, #fef3c7 100%);
+    }
+    
+    .tax-law-option .option-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    
+    .tax-law-option.old-law .option-icon {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+    
+    .tax-law-option.new-law .option-icon {
+      background: #d1fae5;
+      color: #059669;
+    }
+    
+    .tax-law-option .option-badge {
+      font-size: 9px;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      background: #d1fae5;
+      color: #059669;
+    }
+    
+    .tax-law-option .option-title {
+      font-weight: 600;
+      font-size: 14px;
+      color: #1f2937;
+      margin-bottom: 2px;
+    }
+    
+    .tax-law-option .option-desc {
+      font-size: 11px;
+      color: #6b7280;
+      line-height: 1.3;
+    }
+    
+    .tax-law-option .check-indicator {
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      border: 2px solid #d1d5db;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      transition: all 0.2s ease;
+    }
+    
+    .tax-law-option.selected .check-indicator {
+      border-color: #CDA545;
+      background: #CDA545;
+    }
+    
+    .tax-law-option.selected .check-indicator iconify-icon {
+      display: block;
+    }
+    
+    .tax-law-option .check-indicator iconify-icon {
+      display: none;
+      color: white;
+      font-size: 12px;
+    }
+    
+    .update-btn {
+      background: linear-gradient(135deg, #CDA545 0%, #b8943d 100%);
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      width: 100%;
+    }
+    
+    .update-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(205, 165, 69, 0.3);
+    }
+    
+    .update-btn:disabled {
+      background: #d1d5db;
+      cursor: not-allowed;
+    }
+  </style>
 </head>
 
 <body>
@@ -215,138 +329,82 @@
                             <th>Annual Tax Payable</th>
                             <th>Monthly Tax Payable</th>
                             <th>Date Added</th>
-                            <th>Manage</th>
+                            <th></th>
                           </tr>
                         </thead>
-
                         <tbody id="stafflistTable">
 
                         </tbody>
                       </table>
-
-
-
                     </div>
-
-                    <div class="flex justify-center items-center mt-4" id="loader">
-                      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-                    </div>
-
                   </div>
-
                   <div class="tab-pane fade" id="invoiceHistory" role="tabpanel">
 
-                    <div class="table-responsive">
-                      <table class="table payeTable" id="dataTable3">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th>Payer ID</th>
-                            <th>Invoice No.</th>
-                            <th>Revenue Head</th>
-                            <th>Invoice Amount</th>
-                            <th>Amount paid</th>
-                            <th>Created by</th>
-                            <th>Invoice date</th>
-                            <th>Due date</th>
-                            <th>status</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody id="invoiceHistoryTable">
-
-
-
-                        </tbody>
-                      </table>
-                    </div>
-
+                    <table class="table payeTable" id="dataTable3">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Payer ID</th>
+                          <th>Invoice Number</th>
+                          <th>Description</th>
+                          <th>Tax</th>
+                          <th>Amount</th>
+                          <th>Created By</th>
+                          <th>Date Created</th>
+                          <th>Due Date</th>
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="invoiceHistoryTable">
+                      </tbody>
+                    </table>
                   </div>
-
                   <div class="tab-pane fade" id="paymentHistory" role="tabpanel">
 
-                    <div class="table-responsive">
-                      <table class="table payeTable" id="dataTable2">
-                        <thead>
-                          <tr>
-                            <th></th>
-                            <th>Payment ref No.</th>
-                            <th>Payment for</th>
-                            <th>Month</th>
-                            <th>Amount</th>
-                            <th>Payment method</th>
-                            <th>Date of Payment</th>
-                            <th>Status</th>
-                            <th></th>
-                          </tr>
-                        </thead>
-                        <tbody id="paymentHistoryTable">
-
-                          <!-- 
-                          <tr>
-                            <td>2</td>
-                            <td>INV-576383IRP</td>
-                            <td>Pay as you Earn(PAYE)</td>
-                            <td>September</td>
-                            <td>Nil</td>
-                            <td>Nil</td>
-                            <td>26/09/2023</td>
-                            <td><span class="badge bg-danger rounded-pill">Due</span></td>
-                            <td><button data-bs-toggle="modal" data-bs-target="#queryModal"
-                                class="btn btn-sm button-3">Query</a></td>
-                          </tr>
-
-                          <tr>
-                            <td>2</td>
-                            <td>INV-576383IRP</td>
-                            <td>Pay as you Earn(PAYE)</td>
-                            <td>September</td>
-                            <td>&#8358; 1,500,000</td>
-                            <td>Remita</td>
-                            <td>26/09/2023</td>
-                            <td><span class="badge bg-warning rounded-pill">Partial</span></td>
-                            <td><button data-bs-toggle="modal" data-bs-target="#queryModal"
-                                class="btn btn-sm button-3">Query</a></td>
-                          </tr> -->
-
-
-                        </tbody>
-                      </table>
-                    </div>
-
+                    <table class="table payeTable" id="dataTable2">
+                      <thead>
+                        <tr>
+                          <th></th>
+                          <th>Receipt Number</th>
+                          <th>Description</th>
+                          <th>Month</th>
+                          <th>Amount</th>
+                          <th>Channel</th>
+                          <th>Date Created</th>
+                          <th>Status</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody id="paymentHistoryTable">
+                      </tbody>
+                    </table>
                   </div>
 
                 </div>
-
               </section>
+
 
 
             </section>
           </div>
 
-          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
-          <div class="content-backdrop fade"></div>
         </section>
 
-        <!-- Content wrapper -->
       </div>
-      <!-- / Layout page -->
     </div>
 
-
-    <!-- MODALS -->
     <div class="modal fade" id="queryModal" tabindex="-1" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable" role="document">
         <div class="modal-content">
           <div class="modal-header ">
-            <h5 class="modal-title" id="exampleModalCenterTitle">Query</h5>
+            <h5 class="modal-title" id="exampleModalCenterTitle">Query Payer</h5>
 
             <button type="button" class="btn-close flex justify-content-center" data-bs-dismiss="modal"
               aria-label="Close"><iconify-icon icon="fa6-solid:x"></iconify-icon></button>
           </div>
           <div class="modal-body">
-            <form>
-
+            <form action="">
               <div class="form-group mb-4">
                 <label>Why you are queried</label>
                 <textarea class="form-control"></textarea>
@@ -377,7 +435,7 @@
           <div class="modal-body">
             <form action="">
 
-              <h1 class="fontBold text-xl">Add New Employee</h1>
+              <h1 class="fontBold text-xl">Update Employee</h1>
               <p class="mt-2 mb-4">Basic Information</p>
 
 
@@ -470,10 +528,54 @@
 
               </div>
 
+              <!-- Tax Law Selection for Edit -->
+              <div class="mb-4">
+                <label class="block text-sm font-semibold text-gray-700 mb-3">Select Tax Calculation Method</label>
+                
+                <div class="flex gap-3">
+                  <!-- Old Tax Law Option -->
+                  <div class="tax-law-option old-law" onclick="selectEditTaxLaw('old')" id="editOldTaxOption">
+                    <div class="flex items-center gap-3">
+                      <div class="option-icon">
+                        <iconify-icon icon="mdi:file-document-outline" width="18"></iconify-icon>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="option-title">Old Tax Law</div>
+                        <div class="option-desc">Standard calculation method</div>
+                      </div>
+                      <div class="check-indicator">
+                        <iconify-icon icon="mdi:check" width="12"></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
 
+                  <!-- New Tax Law Option -->
+                  <div class="tax-law-option new-law" onclick="selectEditTaxLaw('new')" id="editNewTaxOption">
+                    <div class="flex items-center gap-3">
+                      <div class="option-icon">
+                        <iconify-icon icon="mdi:file-document-check-outline" width="18"></iconify-icon>
+                      </div>
+                      <div class="flex-1 min-w-0">
+                        <div class="flex items-center gap-2 mb-1">
+                          <div class="option-title">New Tax Law</div>
+                          <span class="option-badge">2025</span>
+                        </div>
+                        <div class="option-desc">Updated tax calculation</div>
+                      </div>
+                      <div class="check-indicator">
+                        <iconify-icon icon="mdi:check" width="12"></iconify-icon>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Hidden input to store selected tax law -->
+                <input type="hidden" id="editSelectedTaxLaw" value="">
+              </div>
 
-
-              <button class="button w-full mb-4" type="button" id="theButton">Continue</button>
+              <button class="update-btn mb-4" type="button" id="theButton" disabled>
+                <span id="editBtnText">Select a Tax Law to Update</span>
+              </button>
               <div id="msg_box"></div>
 
             </form>
@@ -545,7 +647,7 @@
   <script src="./assets/js/accessLevel.js"></script>
   <script src="./assets/js/main.js"></script>
 
-  <script src="./assets/js/payedetails.js?v=1.0"></script>
+  <script src="./assets/js/payedetails.js"></script>
 
   <script>
 

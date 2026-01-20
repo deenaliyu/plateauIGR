@@ -2,6 +2,7 @@
  * PayZamfara Dashboard - API Integration
  * Integrates dashboard cards with backend APIs
  * Charts excluded from this integration
+ * Updated: Global filter (Month & Year dropdowns) applied to all endpoints except Collection Trend
  */
 
 // ============================================
@@ -10,7 +11,16 @@
 
 function getCurrentMonthYear() {
   const now = new Date();
-  return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, "0")}`;
+  return {
+    month: String(now.getMonth() + 1).padStart(2, "0"),
+    year: now.getFullYear()
+  };
+}
+
+function getGlobalFilterValues() {
+  const month = document.getElementById("globalMonthFilter")?.value || getCurrentMonthYear().month;
+  const year = document.getElementById("globalYearFilter")?.value || getCurrentMonthYear().year;
+  return { month, year };
 }
 
 function formatMoney(amount) {
@@ -26,7 +36,7 @@ function showSpinner(elementId) {
 }
 
 // ============================================
-// YEAR DROPDOWN POPULATION
+// GLOBAL FILTER POPULATION
 // ============================================
 
 let remittanceDateInput = document.getElementById("remittanceDate");
@@ -34,6 +44,37 @@ if (remittanceDateInput) {
   remittanceDateInput.value = new Date().toISOString().split("T")[0];
 }
 
+function populateGlobalYearFilter() {
+  const yearSelect = document.getElementById("globalYearFilter");
+  if (!yearSelect) return;
+
+  const currentYear = new Date().getFullYear();
+  const startYear = 2023;
+
+  // Clear existing options
+  yearSelect.innerHTML = "";
+
+  for (let year = startYear; year <= currentYear; year++) {
+    const option = document.createElement("option");
+    option.value = year;
+    option.textContent = year;
+    yearSelect.appendChild(option);
+  }
+
+  // Set current year as default
+  yearSelect.value = currentYear;
+}
+
+function populateGlobalMonthFilter() {
+  const monthSelect = document.getElementById("globalMonthFilter");
+  if (!monthSelect) return;
+
+  // Set current month as default
+  const currentMonth = String(new Date().getMonth() + 1).padStart(2, "0");
+  monthSelect.value = currentMonth;
+}
+
+// Keep the year dropdown for Collection Trend (this is separate from global filter)
 function populateYearDropdown() {
   const yearSelects = document.querySelectorAll(".annualRevFilter");
   const currentYear = new Date().getFullYear();
@@ -53,6 +94,31 @@ function populateYearDropdown() {
 
     yearSelect.value = currentYear;
   });
+}
+
+// ============================================
+// GLOBAL FILTER CHANGE HANDLER
+// ============================================
+
+function onGlobalFilterChange() {
+  const { month, year } = getGlobalFilterValues();
+  const monthYear = `${year}-${month}`;
+
+  // Revenue Cards
+  fetchTotalRevenue(monthYear);
+  fetchExpectedMonthlyRevenue(monthYear);
+  fetchExpectedAccruedRevenue(monthYear);
+
+  // Invoice Statistics
+  fetchInvoiceStatistics(monthYear);
+
+  // E-Services / Tax Summary
+  fetchTaxSummary(monthYear, true);
+
+  // Revenue Gauge (now uses global filter)
+  if (typeof updateRevenueGauge === 'function') {
+    updateRevenueGauge(month, year);
+  }
 }
 
 // ============================================
@@ -175,11 +241,7 @@ function fetchInvoiceStatistics(monthYear) {
   showSpinner("totalInvoiced");
   showSpinner("totalPaidInvoice");
   showSpinner("totalUnpaidInvoice");
-  // showSpinner("totalInvoicesDue");
-  // showSpinner("totalInvoicesPaid");
-  // showSpinner("totalAmountDue");
-  // showSpinner("totalMDA");
-  // showSpinner("totalRevenueHeads");
+  showSpinner("expectedAccruedRevenue")
 
   const [year, month] = monthYear.split("-");
 
@@ -206,11 +268,7 @@ function fetchInvoiceStatistics(monthYear) {
         // Total amount unpaid
         $("#totalUnpaidInvoice").text(formatMoney(stats.total_amount_unpaid || 0));
 
-        // $("#totalInvoicesDue").text(stats.total_invoices_due.toLocaleString());
-        // $("#totalInvoicesPaid").text(stats.total_invoices_paid.toLocaleString());
-        // $("#totalAmountDue").text(formatMoney(stats.total_invoices_amount_due || 0));
-        // $("#totalMDA").text(stats.total_mda.toLocaleString());
-        // $("#totalRevenueHeads").text(stats.total_rh.toLocaleString());
+        $("#expectedAccruedRevenue").text(formatMoney(stats.total_amount_unpaid || 0));
       } else {
         console.error("Failed to fetch invoice statistics");
         resetInvoiceCards();
@@ -424,31 +482,25 @@ async function fetchTimeRequestCountGauge() {
 // ============================================
 
 document.addEventListener("DOMContentLoaded", () => {
-  // Get filter elements
-  const monthInput = document.querySelector(".monthlyRevFilter");
-  const monthInput2 = document.querySelector(".monthlyRevFilter2");
-  const yearInput = document.querySelector(".annualRevFilter");
-
   // Get current date values
-  const currentMonthYear = getCurrentMonthYear();
-  const currentYear = new Date().getFullYear();
+  const { month: currentMonth, year: currentYear } = getCurrentMonthYear();
+  const currentMonthYear = `${currentYear}-${currentMonth}`;
 
-  // Populate year dropdowns
+  // Populate global filter dropdowns
+  populateGlobalYearFilter();
+  populateGlobalMonthFilter();
+
+  // Populate year dropdown for Collection Trend (separate from global filter)
   populateYearDropdown();
 
-  // Set default values for filter inputs
-  if (monthInput) monthInput.value = currentMonthYear;
-  if (monthInput2) monthInput2.value = currentMonthYear;
-  if (yearInput) yearInput.value = currentYear;
-
   // ============================================
-  // INITIAL DATA FETCH
+  // INITIAL DATA FETCH (using global filter values)
   // ============================================
 
   // Revenue Cards
   fetchTotalRevenue(currentMonthYear);
   fetchExpectedMonthlyRevenue(currentMonthYear);
-  fetchExpectedAccruedRevenue(currentMonthYear);
+  // fetchExpectedAccruedRevenue(currentMonthYear);
 
   // Statistics Cards
   fetchInvoiceStatistics(currentMonthYear);
@@ -458,32 +510,31 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Average Daily Revenue
   fetchAverageDailyRevenue();
-  fetchDailyRemittance()
+  fetchDailyRemittance();
 
   fetchTimeRequestCountGauge();
 
-  // ============================================
-  // EVENT LISTENERS FOR FILTERS
-  // ============================================
-
-  // Total Monthly Revenue Filter
-  if (monthInput) {
-    monthInput.addEventListener("change", (event) => {
-      const selectedMonthYear = event.target.value;
-      fetchTotalRevenue(selectedMonthYear);
-      fetchExpectedMonthlyRevenue(selectedMonthYear);
-      fetchExpectedAccruedRevenue(selectedMonthYear);
-      fetchInvoiceStatistics(selectedMonthYear)
-    });
+  // Initial Revenue Gauge fetch (uses global filter)
+  if (typeof updateRevenueGauge === 'function') {
+    updateRevenueGauge(currentMonth, currentYear);
   }
 
-  if (monthInput2) {
-    monthInput2.addEventListener("change", (event) => {
-      const selectedMonthYear = event.target.value;
-      fetchTaxSummary(selectedMonthYear, true);
-    });
+  // ============================================
+  // EVENT LISTENERS FOR GLOBAL FILTER
+  // ============================================
+
+  const globalMonthFilter = document.getElementById("globalMonthFilter");
+  const globalYearFilter = document.getElementById("globalYearFilter");
+
+  if (globalMonthFilter) {
+    globalMonthFilter.addEventListener("change", onGlobalFilterChange);
   }
 
+  if (globalYearFilter) {
+    globalYearFilter.addEventListener("change", onGlobalFilterChange);
+  }
+
+  // Daily Remittance date filter (separate, not affected by global filter)
   if (remittanceDateInput) {
     remittanceDateInput.addEventListener("change", (event) => {
       fetchDailyRemittance();
@@ -504,3 +555,4 @@ document.addEventListener("DOMContentLoaded", () => {
 // These functions are called from inline onchange handlers in HTML
 window.fetchAverageDailyRevenue = fetchAverageDailyRevenue;
 window.fetchTimeRequestCountGauge = fetchTimeRequestCountGauge;
+window.getGlobalFilterValues = getGlobalFilterValues;
