@@ -106,84 +106,85 @@
           </div>
 
           <div class="container-xxl flex-grow-1 container-p-y service hidden" id="taxfilingContainer"">
-            <section class=" w-12/12 main_section">
 
-            <div class="flex justify-end">
-              <a href="../filetax.html" class="btn btn-primary">
-                <i class="bx bx-plus"></i>
-                Initiate Tax Filing
-              </a>
-            </div>
+            <div class=" flex justify-end">
+            <a href="../filetax.html" class="btn btn-primary">
+              <i class="bx bx-plus"></i>
+              Initiate Tax Filing
+            </a>
+          </div>
 
-            <div class="p-2">
-              <div class="w-full">
-                <div class="grid grid-cols-3 gap-3 mt-2" id="cardsForSummaray">
+          <div class="p-2">
+            <div class="w-full">
+              <div class="grid grid-cols-3 gap-3 mt-2" id="cardsForSummaray">
 
-                  <div class="card dashCards">
-                    <div class="icoCont bg-[#e850391f]">
-                      <iconify-icon class="text-[#E85039]" icon="material-symbols:finance-chip"></iconify-icon>
-                    </div>
-                    <p class="headder">TOTAL TAX FILLING</p>
-                    <p class="zanumbers" id="total">-</p>
+                <div class="card dashCards">
+                  <div class="icoCont bg-[#e850391f]">
+                    <iconify-icon class="text-[#E85039]" icon="material-symbols:finance-chip"></iconify-icon>
                   </div>
-                  <!-- 7ad0c7 -->
-                  <div class="card dashCards">
-                    <div class="icoCont bg-[#7ad0c714]">
-                      <iconify-icon class="text-[#7ad0c7]" icon="la:file-invoice-dollar"></iconify-icon>
-                    </div>
-                    <p class="headder">TOTAL PENDING</p>
-                    <p class="zanumbers"><span id="pending">-</span></p>
-                  </div>
-
-                  <div class="card dashCards">
-                    <div class="icoCont bg-[#d7a1271f]">
-                      <iconify-icon class="text-[#D7A127]" icon="mdi:recurring-payment"></iconify-icon>
-                    </div>
-                    <p class="headder">TOTAL APPROVED</p>
-                    <p class="zanumbers"> <span id="approved">-</span></p>
-                  </div>
-
+                  <p class="headder">TOTAL TAX FILLING</p>
+                  <p class="zanumbers" id="total">-</p>
                 </div>
-                <div class="card card-body mt-5">
-                  <div class="table-responsive p-2">
-                    <table class="table invoiceTable" id="dataTable">
-                      <thead>
-                        <tr class="text-center">
-                          <th>S/N</th>
-                          <th>Name</th>
-                          <th>Email</th>
-                          <th>TIN</th>
-                          <th>Tax Type</th>
-                          <th>Tax filled</th>
-                          <th>Reference number</th>
-                          <th>Start date</th>
-                          <th>Status</th>
-                          <th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody class="table-border-bottom-0" id="showThem">
+                <!-- 7ad0c7 -->
+                <div class="card dashCards">
+                  <div class="icoCont bg-[#7ad0c714]">
+                    <iconify-icon class="text-[#7ad0c7]" icon="la:file-invoice-dollar"></iconify-icon>
+                  </div>
+                  <p class="headder">TOTAL PENDING</p>
+                  <p class="zanumbers"><span id="pending">-</span></p>
+                </div>
 
-                      </tbody>
-                    </table>
+                <div class="card dashCards">
+                  <div class="icoCont bg-[#d7a1271f]">
+                    <iconify-icon class="text-[#D7A127]" icon="mdi:recurring-payment"></iconify-icon>
                   </div>
-                  <div class="flex justify-center items-center mt-4" id="loader">
-                    <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
-                  </div>
+                  <p class="headder">TOTAL APPROVED</p>
+                  <p class="zanumbers"> <span id="approved">-</span></p>
+                </div>
+
+              </div>
+              <div class="card card-body mt-5">
+                <div class="table-responsive p-2">
+                  <table class="table invoiceTable" id="dataTable">
+                    <thead>
+                      <tr class="text-center">
+                        <th>S/N</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>TIN</th>
+                        <th>Tax Type</th>
+                        <th>Tax filled</th>
+                        <th>Reference number</th>
+                        <th>Start date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                      </tr>
+                    </thead>
+                    <tbody class="table-border-bottom-0" id="showThem">
+
+                    </tbody>
+                  </table>
+                </div>
+                <div class="flex justify-center items-center mt-4" id="loader">
+                  <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-gray-900"></div>
                 </div>
               </div>
+            </div>
+          </div>
+
+          <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
+          <div class="content-backdrop fade"></div>
+
         </section>
+
+        <!-- Content wrapper -->
+        <!-- / Layout page -->
       </div>
-      <section class="mt-4 bg-[#FFFFFF] pt-4 px-4 pb-2 footer"></section>
-      <div class="content-backdrop fade"></div>
-      </section>
 
-      <!-- Content wrapper -->
     </div>
-    <!-- / Layout page -->
-  </div>
 
-  <!-- Overlay -->
-  <div class="layout-overlay layout-menu-toggle"></div>
+    <!-- Overlay -->
+    <div class="layout-overlay layout-menu-toggle"></div>
   </div>
   <!-- / Layout wrapper -->
 

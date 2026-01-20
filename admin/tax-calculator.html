@@ -890,7 +890,7 @@
         if (taxableAmount > 0) {
           breakdown.push({
             description: bracket.label,
-            calculation: `₦${formatNumber(taxableAmount)} × ${(bracket.rate * 100)}%`,
+            calculation: `₦${formatNumber(taxableAmount)} × ${(Math.round(bracket.rate * 100))}%`,
             amount: bracketTax
           });
         }
@@ -1159,7 +1159,7 @@
       buttons.forEach(btn => btn.classList.remove('active'));
 
       // Activate clicked button
-      event.target.classList.add('active');
+      // event.target.classList.add('active');
 
       // Show/hide columns based on selection
       const oldHeader = document.getElementById('oldLawHeader');
@@ -1233,6 +1233,7 @@
       // Reset law toggle to Old Tax Law
       const buttons = document.querySelectorAll('.law-toggle-btn');
       buttons.forEach(btn => btn.classList.remove('active'));
+      
       buttons[0].classList.add('active');
     }
 
